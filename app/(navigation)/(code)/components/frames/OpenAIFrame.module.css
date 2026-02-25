@@ -52,3 +52,7 @@
       0px 2.02px 2.297px 0px rgba(0, 0, 0, 0.01);
   }
 }
+
+.frame.noBackground {
+  background: transparent;
+}
