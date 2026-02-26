@@ -16,7 +16,6 @@
   position: relative;
   overflow: visible;
   padding-bottom: 0px;
-  container-type: inline-size;
 }
 
 /* Negative inset extends overlay to frame edges (black box); canvas draws lines to its edges. */
@@ -41,11 +40,16 @@
   stroke: currentColor;
 }
 
-.asciiArt {
+.asciiArtContainer {
   position: absolute;
   right: 0;
   bottom: 0;
   left: 0;
+  container-type: inline-size;
+  pointer-events: none;
+}
+
+.asciiArt {
   margin: 0;
   color: #f97316;
   font-family: monospace;
@@ -58,7 +62,6 @@
     rgba(0, 0, 0, 0.9) 100%
   );
   mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.9) 100%);
-  pointer-events: none;
   text-align: center;
   white-space: pre;
 }

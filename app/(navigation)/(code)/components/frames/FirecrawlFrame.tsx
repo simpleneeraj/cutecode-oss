@@ -135,7 +135,11 @@ const FirecrawlFrame = () => {
     >
       {!showBackground && <div data-ignore-in-export className={sharedStyles.transparentPattern}></div>}
       <div className={styles.window}>
-        {showBackground && <pre className={styles.asciiArt}>{FIRECRAWL_ASCII_ART}</pre>}
+        {showBackground && (
+          <div className={styles.asciiArtContainer}>
+            <pre className={styles.asciiArt}>{FIRECRAWL_ASCII_ART}</pre>
+          </div>
+        )}
         <Editor />
         {showBackground && (
           <FirecrawlFrameCanvas gridColor={gridColor} padding={padding} exportPixelRatio={exportSize} />
