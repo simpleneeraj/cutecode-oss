@@ -1,13 +1,18 @@
 import { ImageResponse } from "next/og";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { shareLinks } from "@/db/schema";
-import { BASE_URL } from "@/utils/common";
 import { exposesShareDetails } from "@/lib/share/access";
 
+export const alt = "Code snippet on CuteCode";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export const runtime = "nodejs";
+
+const logoData = await readFile(join(process.cwd(), "public/favicon.png"), "base64");
+const logoUrl = `data:image/png;base64,${logoData}`;
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -29,7 +34,6 @@ export default async function SnippetOgImage({ params }: Props) {
   const title = snippet?.title || "Code Snippet";
   const author = snippet?.user?.name || "Anonymous";
   const tags = snippet?.tags?.slice(0, 4) ?? [];
-  const logoUrl = `${BASE_URL}/favicon.png`;
 
   return new ImageResponse(
     (

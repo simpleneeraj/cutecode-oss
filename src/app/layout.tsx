@@ -61,18 +61,9 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     type: "website",
-    url: BASE_URL,
     siteName: "CuteCode",
     title,
     description,
-    images: [
-      {
-        url: `${BASE_URL}/og-image.png`,
-        width: 1200,
-        height: 630,
-        alt: "CuteCode — Create beautiful images of your code",
-      },
-    ],
     locale: "en_US",
   },
   twitter: {
@@ -81,16 +72,19 @@ export const metadata: Metadata = {
     creator: "@iamsimpleneeraj",
     title,
     description,
-    images: [`${BASE_URL}/og-image.png`],
   },
   applicationName: "CuteCode",
   category: "Developer Tools",
+  authors: [{ name: "Neeraj", url: "https://x.com/iamsimpleneeraj" }],
   creator: "CuteCode",
   publisher: "CuteCode",
 };
 
 export const viewport: Viewport = {
-  themeColor: "#181818",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f3efe8" },
+    { media: "(prefers-color-scheme: dark)", color: "#16120d" },
+  ],
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",

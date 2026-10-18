@@ -3,7 +3,7 @@ import View from "@/components/view";
 import { Header } from "../../components/header";
 
 export const metadata: Metadata = {
-  title: "Dashboard | CuteCode",
+  title: "Dashboard",
   description: "Your CuteCode creator analytics — views, upvotes, followers, and snippet performance.",
   robots: { index: false, follow: false },
 };

@@ -29,5 +29,10 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <PageClient />;
+  return (
+    <>
+      <h1 className="sr-only">CuteCode: create beautiful images of your code</h1>
+      <PageClient />
+    </>
+  );
 }

@@ -1,3 +1,7 @@
+"use client";
+
+import { mergeProps } from "@base-ui/react/merge-props";
+import { useRender } from "@base-ui/react/use-render";
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/utils/cn";
@@ -70,8 +74,17 @@ function EmptyMedia({
   );
 }
 
-function EmptyTitle({ className, ...props }: React.ComponentProps<"div">) {
-  return <div className={cn("font-heading font-semibold text-xl", className)} data-slot="empty-title" {...props} />;
+function EmptyTitle({ className, render, ...props }: useRender.ComponentProps<"div">) {
+  const defaultProps = {
+    className: cn("font-heading font-semibold text-xl", className),
+    "data-slot": "empty-title",
+  };
+
+  return useRender({
+    defaultTagName: "div",
+    props: mergeProps<"div">(defaultProps, props),
+    render,
+  });
 }
 
 function EmptyDescription({ className, ...props }: React.ComponentProps<"p">) {

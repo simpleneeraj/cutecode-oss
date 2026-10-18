@@ -28,11 +28,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const share = await getShareLinkMeta(slug);
 
   if (!share || !share.snippet) {
-    return { title: "Snippet not found | CuteCode" };
+    return { title: "Snippet not found", robots: { index: false, follow: false } };
   }
 
   if (!exposesShareDetails(share)) {
-    return { title: "Protected snippet | CuteCode", robots: { index: false, follow: false } };
+    return { title: "Protected snippet", robots: { index: false, follow: false } };
   }
 
   const { snippet, visibility, indexable } = share;
@@ -49,7 +49,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const ogImageUrl = `${BASE_URL}/preview/${slug}/opengraph-image`;
 
   return {
-    title,
+    title: { absolute: title },
     description,
     keywords: snippet.tags?.length ? snippet.tags : undefined,
     alternates: { canonical: `${BASE_URL}/preview/${slug}` },
@@ -60,7 +60,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       siteName: "CuteCode",
       title,
       description,
-      images: [{ url: ogImageUrl, width: 1200, height: 630, alt: title }],
     },
     twitter: {
       card: "summary_large_image",

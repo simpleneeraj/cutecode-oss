@@ -1,15 +1,15 @@
-# CuteCode — Full Documentation
+# CuteCode: Full Documentation
 
-> CuteCode is a free, open-source code screenshot tool and ray.so alternative. Create beautiful images of your code with 45+ themes, share snippets via unique URLs, and explore community-created code art. Built with Next.js, React, and TypeScript.
+> CuteCode is an open-source code screenshot tool and ray.so alternative. Create beautiful images and videos of your code with 65+ themes, publish snippets to shareable URLs, and remix other people's snippets. Built with Next.js, React, and TypeScript.
 
 ---
 
 ## Overview
 
-CuteCode lets developers and designers turn code into stunning, shareable images. Choose from 45+ curated themes — including brand themes from companies like Vercel, Stripe, and OpenAI — paste your code, and export a pixel-perfect screenshot in seconds. Every snippet can be saved, shared via a unique URL, and remixed by the community.
+CuteCode lets developers and designers turn code into stunning, shareable images and videos. Choose from 65+ curated themes, including brand themes inspired by companies like Vercel, Stripe, and OpenAI, paste your code, and export a pixel-perfect screenshot in seconds. Every snippet can be published to a unique URL and remixed by anyone.
 
-**Website:** https://cutecode.app
-**GitHub:** https://github.com/simpleneeraj/cutecode
+**Website:** https://www.cutecode.app
+**GitHub:** https://github.com/simpleneeraj/cool-snippets
 **Author:** simpleneeraj
 **License:** MIT
 
@@ -17,13 +17,15 @@ CuteCode lets developers and designers turn code into stunning, shareable images
 
 ## Pages & Routes
 
-- [Homepage](https://cutecode.app): The main code screenshot editor. Paste code, pick a theme, customize, and export.
-- [Explore Snippets](https://cutecode.app/explore): Browse public snippets shared by the community. Discover creative code art.
-- [Snippets](https://cutecode.app/snippets): View and manage your saved code snippets (requires sign-in).
-- [Pricing](https://cutecode.app/pricing): Compare Free and Pro plans. Pro includes unlimited HD exports, all premium themes, and watermark-free images.
-- [Embed](https://cutecode.app/embed): Embeddable code preview route for integrating snippets into blogs and docs.
-- [Sign In](https://cutecode.app/sign-in): Authentication page powered by Clerk.
-- [Sign Up](https://cutecode.app/sign-up): Create a new CuteCode account.
+- [Homepage](https://www.cutecode.app): The main code screenshot editor. Paste code, pick a theme, customize, and export.
+- [Snippets](https://www.cutecode.app/snippets): View and manage your saved code snippets (requires sign-in).
+- [Pricing](https://www.cutecode.app/pricing): Compare Free, Pro and Premium plans.
+- Preview (https://www.cutecode.app/preview/{slug}): Public page for a published snippet.
+- Remix (https://www.cutecode.app/remix/{slug}): Open a copy of a public snippet in your own editor.
+- Profile (https://www.cutecode.app/u/{userId}): A user's public profile with their published snippets.
+- Embed (https://www.cutecode.app/embed/{slug}): Embeddable code preview for blogs and docs.
+- [Sign In](https://www.cutecode.app/account/sign-in): Sign in with email and password, GitHub, or Google.
+- [Sign Up](https://www.cutecode.app/account/sign-up): Create a new CuteCode account.
 
 ---
 
@@ -36,12 +38,13 @@ CuteCode lets developers and designers turn code into stunning, shareable images
 - Customizable padding, font size, and background
 - Window-style frame with macOS-style traffic light buttons
 - Line numbers toggle
+- Typing animation and multi-slide reels
 
-### 45+ Built-in Themes
-CuteCode ships with 45+ themes organized into two categories: **Brand Themes** and **Aesthetic Themes**.
+### 65+ Built-in Themes
+CuteCode ships with 65+ themes organized into groups: **Brands**, **Classic**, **Night**, **Cozy**, **Romantic**, **Lofi**, **Vintage**, **Retro**, and **Seasonal**.
 
-#### Brand Themes (16)
-Officially inspired color palettes from popular developer tools and companies:
+#### Brands (18)
+Color palettes inspired by popular developer tools and companies:
 
 1. Vercel
 2. Supabase
@@ -58,53 +61,34 @@ Officially inspired color palettes from popular developer tools and companies:
 13. Cloudflare
 14. Gemini
 15. Stripe
-16. Claude
+16. Claude AI
+17. Firecrawl
+18. Evil Rabbit
 
-#### Aesthetic Themes (30)
-Handcrafted color palettes for artistic and creative code screenshots:
+#### Other Themes (51)
+Handcrafted palettes for artistic and creative code screenshots:
 
-1. Bitmap
-2. Noir
-3. Ice
-4. Sand
-5. Forest
-6. Mono
-7. Breeze
-8. Candy
-9. Crimson
-10. Falcon
-11. Meadow
-12. Midnight
-13. Raindrop
-14. Sunset
-15. Roses
-16. Retro Mac
-17. Love
-18. Valentine
-19. Coffee Date
-20. Sunset Chill
-21. PS6
-22. Aurora Nights
-23. Starry Night
-24. Strawberry Milk
-25. Frosted Glass
-26. Velvet Night
-27. Peachy Mood
-28. Neon Dreams
-29. Golden Hour
-30. Rabbit
+- **Classic:** Bitmap, Breeze, Candy, Carbon Night, Crimson, Dusk, Ember, Falcon, Fjord, Forest, Ice, Latte, Meadow, Midnight, Mono, Neon City, Noir, Paper, Petal, Raindrop, Sand, Sunset
+- **Night:** Aurora Nights, Neon Dreams, Starry Night, Velvet Night
+- **Cozy:** Coffee Date, Frosted Glass, Golden Hour, Peachy Mood, Sunset Chill
+- **Romantic:** Love, Roses, Strawberry Milk, Valentine
+- **Lofi:** Cassette, Lofi Rain, Lofi Rooftop, Vinyl
+- **Vintage:** Groovy 70s, Instant Film, Typewriter, Home Video
+- **Retro:** PS6, Retro Mac
+- **Seasonal:** Christmas, Diwali, Halloween, Holi, Lunar New Year, New Year, Winter Frost
 
 ### Export & Sharing
-- **Export as PNG:** Download a high-resolution PNG image of your code screenshot
+- **Image export:** PNG and SVG at 1x and 2x (3x on Pro, up to 4x on Premium)
 - **Copy to clipboard:** One-click copy for pasting into docs, slides, or social media
-- **Share via URL:** Every saved snippet gets a unique, shareable URL
-- **Embed:** Use the /embed route to embed live code previews in blogs and documentation
+- **GIF and video export:** Animated exports with typing animation (HD video on Premium)
+- **Publish via URL:** Every published snippet gets a unique /preview/{slug} URL
+- **Embed:** Use /embed/{slug} to embed live code previews in blogs and documentation
 
-### Snippet Sharing & Remixing
-- Save snippets to your account (requires Clerk authentication)
-- Every saved snippet gets a unique URL that preserves code, theme, and settings
-- Anyone can view a public snippet and remix/fork it into their own editor
-- Browse community snippets on the Explore page
+### Snippet Publishing & Remixing
+- Save snippets to your account (requires sign-in)
+- Every published snippet gets a unique URL that preserves code, theme, and settings
+- Anyone can view a public snippet and remix it into their own editor
+- Public profile pages list each user's published snippets
 
 ### Dark & Light Mode
 - Full dark mode and light mode support
@@ -112,15 +96,14 @@ Handcrafted color palettes for artistic and creative code screenshots:
 - Manual toggle available in the UI
 
 ### Authentication
-- Powered by Clerk
-- Sign in with email, Google, GitHub, or other social providers
-- Required for saving snippets and accessing Pro features
+- Powered by Better Auth
+- Sign in with email and password, GitHub, or Google
+- Required for saving and publishing snippets and for paid plans
 
-### Pro Plan
-- Unlimited HD exports
-- Access to all premium themes
-- Watermark-free images
-- Priority support
+### Plans
+- **Free ($0):** All Classic and Brand themes, PNG, SVG and copy at 1x and 2x, GIF and video export with watermark, typing animation and multi-slide reels, limited daily publishes and live snippets
+- **Pro ($5/month or $48/year):** Everything in Free, premium animated themes and fonts, 3x image export, no watermark on images or video, 30 publishes a day with unlimited live snippets
+- **Premium ($12/month or $120/year):** Everything in Pro, 4x image export, HD video exports, passcode and private shares, per-snippet analytics, 100 publishes a day
 
 ---
 
@@ -133,10 +116,11 @@ Handcrafted color palettes for artistic and creative code screenshots:
 | **TypeScript** | Type-safe codebase |
 | **Tailwind CSS 4** | Utility-first styling |
 | **Shiki** | Syntax highlighting engine (100+ languages) |
-| **Clerk** | Authentication and user management |
+| **Better Auth** | Authentication and user management |
 | **PostgreSQL** | Primary database |
-| **Prisma** | ORM and database toolkit |
-| **Dodo Payments** | Payment processing for Pro plan |
+| **Drizzle ORM** | ORM and migrations |
+| **tRPC** | Typed API layer |
+| **Dodo Payments** | Payment processing for Pro and Premium |
 | **Jotai** | Atomic state management |
 | **Motion** | Animation library |
 | **AWS Amplify** | Hosting and deployment |
@@ -146,30 +130,27 @@ Handcrafted color palettes for artistic and creative code screenshots:
 ## Getting Started (Local Development)
 
 ### Prerequisites
-- Node.js 18+
-- npm, yarn, or pnpm
+- Node.js 20+
+- npm
 - PostgreSQL database (local or hosted)
-- Clerk account (for authentication)
 
 ### Setup
 
 ```bash
 # Clone the repository
-git clone https://github.com/simpleneeraj/cutecode.git
-cd cutecode
+git clone https://github.com/simpleneeraj/cool-snippets.git
+cd cool-snippets
 
 # Install dependencies
 npm install
 
-# Set up environment variables
-cp .env.example .env.local
-# Fill in the required values:
-#   DATABASE_URL — PostgreSQL connection string
-#   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY — Clerk publishable key
-#   CLERK_SECRET_KEY — Clerk secret key
+# Create .env.local with the required values:
+#   DATABASE_URL: PostgreSQL connection string
+#   BETTER_AUTH_SECRET: Better Auth secret
+#   BETTER_AUTH_URL: App URL, e.g. http://localhost:3000
 
 # Set up the database
-npx prisma db push
+npm run db:migrate
 
 # Start the development server
 npm run dev
@@ -189,22 +170,22 @@ npm start
 ## Project Structure
 
 ```
-cutecode/
+cool-snippets/
 ├── public/              # Static assets, llms.txt, llms-full.txt
+├── drizzle/             # SQL migrations
 ├── src/
 │   ├── app/             # Next.js App Router pages and layouts
-│   │   ├── (app)/       # Main application routes
-│   │   ├── (auth)/      # Authentication routes (sign-in, sign-up)
-│   │   ├── embed/       # Embeddable snippet preview
-│   │   ├── explore/     # Public snippet gallery
-│   │   ├── pricing/     # Pricing page
-│   │   └── snippets/    # User's saved snippets
-│   ├── components/      # Reusable React components
-│   ├── lib/             # Utility functions and shared logic
-│   ├── themes/          # Theme definitions and configurations
-│   └── stores/          # Jotai atoms and state management
-├── prisma/              # Prisma schema and migrations
-├── tailwind.config.ts   # Tailwind CSS configuration
+│   │   ├── (navigation)/ # Editor, preview, remix, profile, snippets, embed
+│   │   ├── account/     # Sign-in, sign-up, password reset
+│   │   ├── api/         # Auth, tRPC and cron routes
+│   │   ├── checkout/    # Checkout result pages
+│   │   └── pricing/     # Pricing page
+│   ├── components/      # React components, including theme presets
+│   ├── db/              # Drizzle schema
+│   ├── lib/             # Auth, billing and shared logic
+│   ├── server/          # tRPC routers
+│   └── store/           # Jotai atoms and state management
+├── drizzle.config.ts    # Drizzle configuration
 ├── next.config.ts       # Next.js configuration
 └── package.json
 ```
@@ -214,20 +195,20 @@ cutecode/
 ## How Themes Work
 
 Each theme is a configuration object that defines:
-- **Background:** Gradient, solid color, or image background for the frame
+- **Background:** Gradient, solid color, image, or animated scene behind the frame
 - **Editor colors:** Syntax highlighting colors for the code editor
 - **Frame style:** Window chrome appearance, border radius, shadows
 - **Accent colors:** Highlight colors for UI elements
 
-Themes are stored in `src/themes/` and can be selected from the theme picker in the editor UI.
+Themes live in `src/components/presets/` and can be selected from the theme picker in the editor UI.
 
 ---
 
 ## Snippet URL Format
 
-Saved snippets follow this URL pattern:
+Published snippets follow this URL pattern:
 ```
-https://cutecode.app/snippet/{snippetId}
+https://www.cutecode.app/preview/{slug}
 ```
 
 Each snippet URL preserves:
@@ -243,11 +224,11 @@ Each snippet URL preserves:
 ### Embeddable Previews
 Use the `/embed` route to embed live, read-only code previews:
 ```
-https://cutecode.app/embed/{snippetId}
+https://www.cutecode.app/embed/{slug}
 ```
 
 ### Shareable URLs
-Every snippet generates a unique URL that can be shared on social media, documentation, or chat.
+Every published snippet has a unique URL that can be shared on social media, documentation, or chat.
 
 ### Open Source
 CuteCode is open source under the MIT License. Contributions, issues, and pull requests are welcome.
@@ -274,21 +255,21 @@ CuteCode is open source under the MIT License. Contributions, issues, and pull r
 
 | Feature | CuteCode | ray.so | Carbon |
 |---|---|---|---|
-| Open source | ✅ Yes (MIT) | ❌ No | ✅ Yes |
-| Themes | 45+ | ~10 | ~15 |
-| Brand themes | ✅ 16 brands | ❌ | ❌ |
-| Snippet sharing | ✅ URL sharing | ❌ | ❌ |
-| Remix/fork | ✅ | ❌ | ❌ |
-| 100+ languages | ✅ (Shiki) | ✅ | ✅ |
-| Self-hostable | ✅ | ❌ | ✅ |
-| Authentication | ✅ (Clerk) | ❌ | ❌ |
+| Open source | Yes (MIT) | No | Yes |
+| Themes | 65+ | ~10 | ~15 |
+| Brand themes | 18 brands | No | No |
+| Snippet publishing | Yes | No | No |
+| Remix | Yes | No | No |
+| Video and GIF export | Yes | No | No |
+| 100+ languages | Yes (Shiki) | Yes | Yes |
+| Self-hostable | Yes | No | Yes |
 
 ---
 
 ## FAQ
 
 **Is CuteCode free?**
-Yes. The core features — code screenshots, 45+ themes, PNG export, and sharing — are completely free. A Pro plan is available with additional premium features.
+Yes. The core features (code screenshots, Classic and Brand themes, PNG and SVG export, and publishing) are free. Pro and Premium plans add premium themes, higher-resolution exports, watermark-free output and more.
 
 **Can I self-host CuteCode?**
 Yes. CuteCode is open source under the MIT License. Clone the repo, set up your environment, and deploy anywhere that supports Next.js.
@@ -297,7 +278,7 @@ Yes. CuteCode is open source under the MIT License. Clone the repo, set up your 
 CuteCode supports 100+ programming languages through Shiki, including JavaScript, TypeScript, Python, Rust, Go, Java, C++, Ruby, Swift, Kotlin, and many more.
 
 **How do I share a snippet?**
-Save your snippet (requires sign-in), then copy the unique URL. Anyone with the link can view and remix your snippet.
+Publish your snippet (requires sign-in), then copy its /preview URL. Anyone with the link can view and remix your snippet.
 
 **Can I use CuteCode screenshots commercially?**
 Yes. Screenshots you create are yours. The tool itself is MIT-licensed.
@@ -306,11 +287,10 @@ Yes. Screenshots you create are yours. The tool itself is MIT-licensed.
 
 ## Links
 
-- **Website:** https://cutecode.app
-- **GitHub:** https://github.com/simpleneeraj/cutecode
-- **Explore Snippets:** https://cutecode.app/explore
-- **Pricing:** https://cutecode.app/pricing
+- **Website:** https://www.cutecode.app
+- **GitHub:** https://github.com/simpleneeraj/cool-snippets
+- **Pricing:** https://www.cutecode.app/pricing
 
 ---
 
-*This document is auto-generated for AI agents and LLMs. For the concise version, see [llms.txt](https://cutecode.app/llms.txt).*
+*This document is written for AI agents and LLMs. For the concise version, see [llms.txt](https://www.cutecode.app/llms.txt).*

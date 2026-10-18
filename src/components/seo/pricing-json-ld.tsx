@@ -12,12 +12,13 @@ const schema = {
       name: "CuteCode",
       description: "Code screenshot and snippet sharing tool with Free, Pro and Premium plans.",
       url: `${BASE_URL}/pricing`,
+      image: `${BASE_URL}/opengraph-image`,
       brand: { "@type": "Brand", name: "CuteCode" },
       offers: [PLANS.FREE, ...paidPlans].flatMap((plan) => {
         const cycles = plan.prices.monthly === 0 ? [["month", plan.prices.monthly] as const] : [["month", plan.prices.monthly] as const, ["year", plan.prices.yearly] as const];
         return cycles.map(([cycle, price]) => ({
           "@type": "Offer",
-          name: `${plan.name} (${cycle}ly)`,
+          name: price === 0 ? plan.name : `${plan.name} ${cycle}ly`,
           price: String(price),
           priceCurrency: "USD",
           url: `${BASE_URL}/pricing`,

@@ -1,9 +1,29 @@
+import { BASE_URL } from "@/utils/common";
+
+const organizationId = `${BASE_URL}/#organization`;
+
 export default function JsonLd() {
-  const schema = {
-    "@context": "https://schema.org",
+  const organization = {
+    "@type": "Organization",
+    "@id": organizationId,
+    name: "CuteCode",
+    url: BASE_URL,
+    logo: `${BASE_URL}/brand/logo-mark.svg`,
+    sameAs: ["https://x.com/iamsimpleneeraj"],
+  };
+
+  const website = {
+    "@type": "WebSite",
+    "@id": `${BASE_URL}/#website`,
+    name: "CuteCode",
+    url: BASE_URL,
+    publisher: { "@id": organizationId },
+  };
+
+  const webApplication = {
     "@type": "WebApplication",
     name: "CuteCode",
-    url: "https://www.cutecode.app",
+    url: BASE_URL,
     description:
       "Create beautiful code screenshots in seconds. Pick a theme, export HD images, share instantly. CuteCode is the best alternative to ray.so and Carbon for developers.",
     applicationCategory: "DeveloperApplication",
@@ -31,7 +51,7 @@ export default function JsonLd() {
         price: "12",
         priceCurrency: "USD",
         name: "Premium Plan",
-        description: "Everything in Pro plus 4x and 6x export, HD video exports, private shares, per-snippet analytics and 100 publishes a day. $120 billed yearly.",
+        description: "Everything in Pro plus 4x export, HD video exports, private shares, per-snippet analytics and 100 publishes a day. $120 billed yearly.",
       },
     ],
     featureList: [
@@ -43,12 +63,13 @@ export default function JsonLd() {
       "Dark and light mode support",
       "Embed snippets anywhere",
     ],
-    screenshot: "https://www.cutecode.app/og-image.png",
-    author: {
-      "@type": "Organization",
-      name: "CuteCode",
-      url: "https://www.cutecode.app",
-    },
+    screenshot: `${BASE_URL}/opengraph-image`,
+    author: { "@id": organizationId },
+  };
+
+  const schema = {
+    "@context": "https://schema.org",
+    "@graph": [organization, website, webApplication],
   };
 
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />;

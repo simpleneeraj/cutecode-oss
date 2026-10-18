@@ -3,7 +3,7 @@ import View from "@/components/view";
 import { Header } from "../../components/header";
 
 export const metadata: Metadata = {
-  title: "Preview | CuteCode",
+  title: "Preview",
   description: "Preview your elegant code snippets on CuteCode.",
 };
 

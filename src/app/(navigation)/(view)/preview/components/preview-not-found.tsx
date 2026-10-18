@@ -14,7 +14,7 @@ export default function SnippetNotFound() {
           <EmptyMedia variant="icon">
             <HugeiconsIcon icon={FileNotFoundIcon} aria-hidden="true" />
           </EmptyMedia>
-          <EmptyTitle>Snippet not found</EmptyTitle>
+          <EmptyTitle render={<h1 />}>Snippet not found</EmptyTitle>
           <EmptyDescription>It may have been deleted, expired, or the link is incorrect.</EmptyDescription>
         </EmptyHeader>
         <EmptyContent>

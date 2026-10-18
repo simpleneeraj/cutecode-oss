@@ -1,15 +1,15 @@
 import Image from "next/image";
 import { cn } from "@/utils/cn";
 
-export function BrandMark({ className }: { className?: string }) {
+export function BrandMark({ className, preload }: { className?: string; preload?: boolean }) {
   return (
     <Image
-      src="/brand/logo-mark.png"
+      src="/brand/logo-mark.svg"
       alt=""
       width={200}
       height={200}
-      priority
-      className={cn("size-7 shrink-0 rounded-lg", className)}
+      preload={preload}
+      className={cn("size-7 shrink-0", className)}
     />
   );
 }

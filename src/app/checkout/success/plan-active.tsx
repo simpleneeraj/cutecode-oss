@@ -20,7 +20,7 @@ export default function PlanActive({ plan }: PlanActiveProps) {
         <EmptyMedia variant="icon" className="text-success">
           <HugeiconsIcon icon={CheckmarkCircle02Icon} aria-hidden="true" />
         </EmptyMedia>
-        <EmptyTitle>You&apos;re on {name}</EmptyTitle>
+        <EmptyTitle render={<h1 />}>You&apos;re on {name}</EmptyTitle>
         <EmptyDescription>Your {name} features are unlocked and ready to use.</EmptyDescription>
       </EmptyHeader>
       <EmptyContent className="gap-8">

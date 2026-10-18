@@ -1,9 +1,13 @@
-"use client";
+import type { Metadata } from "next";
 import { Link } from "@/components/link";
 import { Button } from "@/components/ui/button";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { AddSquareIcon, Route01Icon } from "@hugeicons/core-free-icons";
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
+
+export const metadata: Metadata = {
+  title: "Page not found",
+};
 
 export default function NotFound() {
   return (
@@ -13,7 +17,7 @@ export default function NotFound() {
           <EmptyMedia variant="icon">
             <HugeiconsIcon icon={Route01Icon} aria-hidden="true" />
           </EmptyMedia>
-          <EmptyTitle>Page not found</EmptyTitle>
+          <EmptyTitle render={<h1 />}>Page not found</EmptyTitle>
           <EmptyDescription>The page you are looking for doesn&apos;t exist.</EmptyDescription>
         </EmptyHeader>
         <EmptyContent>

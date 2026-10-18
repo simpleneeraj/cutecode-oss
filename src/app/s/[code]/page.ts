@@ -1,7 +1,7 @@
 import { db } from "@/db";
 import { shortUrls } from "@/db/schema";
 import { eq, sql } from "drizzle-orm";
-import { notFound, redirect } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 
 export default async function ShortRedirect({ params }: { params: Promise<{ code: string }> }) {
   const { code } = await params;
@@ -15,5 +15,5 @@ export default async function ShortRedirect({ params }: { params: Promise<{ code
 
   await db.update(shortUrls).set({ clicks: sql`${shortUrls.clicks} + 1` }).where(eq(shortUrls.code, code));
 
-  redirect(row.url);
+  permanentRedirect(row.url);
 }

@@ -11,7 +11,7 @@ export default function CheckoutFailurePage() {
         <EmptyMedia variant="icon" className="text-muted-foreground">
           <HugeiconsIcon icon={CreditCardIcon} aria-hidden="true" />
         </EmptyMedia>
-        <EmptyTitle>Payment didn&apos;t go through</EmptyTitle>
+        <EmptyTitle render={<h1 />}>Payment didn&apos;t go through</EmptyTitle>
         <EmptyDescription>No charge was made and nothing changed on your account.</EmptyDescription>
       </EmptyHeader>
       <EmptyContent>

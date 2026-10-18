@@ -30,7 +30,7 @@ export function EmbedFooter({ slug, code }: EmbedFooterProps) {
         className="text-muted-foreground"
         render={<a href={`/preview/${slug}`} target="_blank" rel="noopener noreferrer" />}
       >
-        <BrandMark className="size-3.5 rounded-sm" />
+        <BrandMark className="size-3.5" />
         {siteConfig.name}
       </Button>
       {code && (
