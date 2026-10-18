@@ -10,7 +10,6 @@ export type PricingResult = RouterOutput["billing"]["pricing"];
 
 export function usePricing() {
   return useSWR(["billing.pricing"], () => trpc.billing.pricing.query(), {
-    revalidateOnFocus: false,
     dedupingInterval: 5 * 60 * 1000,
   });
 }

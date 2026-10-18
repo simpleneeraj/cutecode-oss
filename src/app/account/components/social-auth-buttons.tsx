@@ -1,13 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { Separator } from "@/components/ui/separator";
-import { authClient } from "@/lib/auth-client";
+import { useSocialSignIn, type SocialProvider } from "@/hooks/use-auth-mutations";
 import { tv } from "tailwind-variants";
-
-type Provider = "github" | "google";
 
 const divider = tv({
   slots: {
@@ -45,27 +42,21 @@ export function SocialAuthButtons({
   redirectedFrom?: string;
   onError?: (message: string) => void;
 }) {
-  const [loading, setLoading] = useState<Provider | null>(null);
+  const github = useSocialSignIn("github");
+  const google = useSocialSignIn("google");
+  const triggers = { github: github.trigger, google: google.trigger };
 
-  async function signInWith(provider: Provider) {
-    setLoading(provider);
+  async function signInWith(provider: SocialProvider) {
     onError?.("");
     try {
-      const { error } = await authClient.signIn.social({
-        provider,
-        callbackURL: redirectedFrom,
-      });
-      if (error) {
-        onError?.(error.message || `Failed to continue with ${provider}.`);
-        setLoading(null);
-      }
+      const { error } = await triggers[provider](redirectedFrom);
+      if (error) onError?.(error.message || `Failed to continue with ${provider}.`);
     } catch (err) {
       onError?.(err instanceof Error ? err.message : `Failed to continue with ${provider}.`);
-      setLoading(null);
     }
   }
 
-  const isDisabled = disabled || loading !== null;
+  const isDisabled = disabled || github.isMutating || google.isMutating;
   const { root, line, label } = divider();
 
   return (
@@ -79,7 +70,7 @@ export function SocialAuthButtons({
           aria-label="Continue with GitHub"
           onClick={() => signInWith("github")}
         >
-          {loading === "github" ? <Spinner /> : <GitHubIcon />}
+          {github.isMutating ? <Spinner /> : <GitHubIcon />}
           Continue with GitHub
         </Button>
         <Button
@@ -90,7 +81,7 @@ export function SocialAuthButtons({
           aria-label="Continue with Google"
           onClick={() => signInWith("google")}
         >
-          {loading === "google" ? <Spinner /> : <GoogleIcon />}
+          {google.isMutating ? <Spinner /> : <GoogleIcon />}
           Continue with Google
         </Button>
       </div>

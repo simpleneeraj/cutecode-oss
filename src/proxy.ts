@@ -1,45 +1,25 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { getSessionCookie } from "better-auth/cookies";
 import { ensureRuntimeSecrets } from "@/lib/secrets";
 import { CLIENT_IP_HEADER, clientIpFromHeaders } from "@/lib/client-ip";
 
-const publicPaths = [
-  /^\/$/,
-  /^\/pricing(\/.*)?$/,
-  /^\/checkout\/success(\/.*)?$/,
-  /^\/checkout\/failure(\/.*)?$/,
-  /^\/api\/auth(\/.*)?$/,
-  /^\/api\/trpc(\/.*)?$/,
-  /^\/api\/cron(\/.*)?$/,
-  /^\/api\/shorten-url(\/.*)?$/,
-  /^\/api\/avatar(\/.*)?$/,
-  /^\/s(\/.*)?$/,
-  /^\/waitlist(\/.*)?$/,
-  /^\/legal\/terms(\/.*)?$/,
-  /^\/legal\/privacy(\/.*)?$/,
-  /^\/legal\/refund(\/.*)?$/,
-  /^\/legal\/credits(\/.*)?$/,
-  /^\/embed(\/.*)?$/,
-  /^\/icon(\/.*)?$/,
-  /^\/sitemap\.xml$/,
-  /^\/robots\.txt$/,
-  /^\/account(\/.*)?$/,
-];
+const protectedPaths = [/^\/dashboard(\/.*)?$/, /^\/edit(\/.*)?$/, /^\/remix(\/.*)?$/];
 
-function isPublicPath(pathname: string) {
-  return publicPaths.some((regex) => regex.test(pathname));
+function isProtectedPath(pathname: string) {
+  return protectedPaths.some((regex) => regex.test(pathname));
+}
+
+function redirectToSignIn(request: NextRequest) {
+  const url = new URL("/account/sign-in", request.url);
+  url.searchParams.set("redirectedFrom", request.nextUrl.pathname);
+  return NextResponse.redirect(url);
 }
 
 export default async function proxy(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-
   await ensureRuntimeSecrets();
-  const { auth } = await import("@/lib/auth");
-  const session = await auth.api.getSession({ headers: request.headers });
 
-  if (!session && !isPublicPath(pathname)) {
-    const url = new URL("/account/sign-in", request.url);
-    url.searchParams.set("redirectedFrom", pathname);
-    return NextResponse.redirect(url);
+  if (isProtectedPath(request.nextUrl.pathname) && !getSessionCookie(request)) {
+    return redirectToSignIn(request);
   }
 
   const headers = new Headers(request.headers);

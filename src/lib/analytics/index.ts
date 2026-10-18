@@ -1,6 +1,6 @@
 /**
  * @file analytics/index.ts
- * @description Enterprise-grade analytics utility for Cool Snippets.
+ * @description Enterprise-grade analytics utility for CuteCode.
  *
  * Routes events to CloudWatch RUM `recordEvent` with:
  *  - Fully typed event names and payloads via discriminated-union contract.

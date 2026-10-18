@@ -7,6 +7,7 @@
 "use client";
 
 import useSWR, { useSWRConfig } from "swr";
+import useSWRMutation from "swr/mutation";
 import { trpc } from "@/lib/trpc";
 import type { inferRouterOutputs } from "@trpc/server";
 import type { AppRouter } from "@/server/types";
@@ -34,25 +35,21 @@ export type PublishInput = {
 export function usePublish() {
   const { mutate } = useSWRConfig();
 
-  const publish = async (input: PublishInput): Promise<PublishOutput> => {
-    const result = await trpc.publish.publish.mutate({
-      ...input,
-      slides: input.slides ?? {},
-      slideElements: input.slideElements ?? {},
-      visibility: input.visibility ?? "PUBLIC",
-    });
-
-    // Revalidate snippet and presentation lists after a publish
-    await Promise.all([
-      mutate((key) => Array.isArray(key) && key[0] === "snippet.list"),
-      mutate((key) => Array.isArray(key) && key[0] === "presentation.list"),
-      mutate(QUOTA_KEY, result.quota, { revalidate: false }),
-    ]);
-
-    return result;
-  };
-
-  return { publish };
+  return useSWRMutation(
+    QUOTA_KEY,
+    (_key, { arg }: { arg: PublishInput }) =>
+      trpc.publish.publish.mutate({
+        ...arg,
+        slides: arg.slides ?? {},
+        slideElements: arg.slideElements ?? {},
+        visibility: arg.visibility ?? "PUBLIC",
+      }),
+    {
+      populateCache: (result) => result.quota,
+      revalidate: false,
+      onSuccess: () => mutate((key) => Array.isArray(key) && key[0] === "snippet.list"),
+    },
+  );
 }
 
 export function usePublishQuota(enabled: boolean) {

@@ -11,7 +11,6 @@ export type BillingStatusOutput = RouterOutput["billing"]["status"];
 
 export function useBillingStatus(enabled = true) {
   return useSWR(enabled ? ["billing.status"] : null, () => trpc.billing.status.query(), {
-    revalidateOnFocus: false,
     dedupingInterval: 60_000,
   });
 }

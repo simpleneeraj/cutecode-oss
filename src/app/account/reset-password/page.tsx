@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { authClient } from "@/lib/auth-client";
+import { useResetPassword } from "@/hooks/use-auth-mutations";
 import { Card, CardDescription, CardFooter, CardHeader, CardPanel, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,8 +14,8 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 export default function ResetPasswordPage() {
   const router = useRouter();
   const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { trigger: resetPassword, isMutating: isLoading } = useResetPassword();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -24,10 +24,9 @@ export default function ResetPasswordPage() {
       return;
     }
     setError(null);
-    setIsLoading(true);
 
     try {
-      const { error: updateError } = await authClient.resetPassword({ newPassword: password });
+      const { error: updateError } = await resetPassword({ newPassword: password });
       if (updateError) {
         setError(updateError.message || "Couldn't update your password. The reset link may have expired.");
         return;
@@ -36,8 +35,6 @@ export default function ResetPasswordPage() {
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "An unexpected error occurred. Please try again.");
-    } finally {
-      setIsLoading(false);
     }
   }
 

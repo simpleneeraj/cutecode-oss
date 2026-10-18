@@ -2,12 +2,10 @@
 
 import useSWR from "swr";
 import { authClient } from "@/lib/auth-client";
-import { toast } from "@/components/toast";
 import { avatarUrl } from "@/lib/avatar";
 
 export function useUser() {
   const { data: res, isLoading } = useSWR("auth-session", () => authClient.getSession(), {
-    revalidateOnFocus: false,
     dedupingInterval: 60_000,
   });
 
@@ -37,18 +35,17 @@ export function useUser() {
   };
 }
 
+export function useLinkedAccounts(isEnabled: boolean) {
+  return useSWR(isEnabled ? "auth-accounts" : null, () => authClient.listAccounts());
+}
+
 export function useAuthActions() {
   const signOut = async () => {
     await authClient.signOut();
     window.location.href = "/";
   };
 
-  const openUserProfile = () => {
-    toast.info("Account details are managed through your profile settings.");
-  };
-
   return {
     signOut,
-    openUserProfile,
   };
 }

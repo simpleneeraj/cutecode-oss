@@ -19,13 +19,13 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
               <path d="M13 15H17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
             </svg>
           </span>
-          <span className="text-xl">Cool Snippets</span>
+          <span className="text-xl">CuteCode</span>
         </Link>
 
         {children}
 
         <p className="text-center text-xs text-muted-foreground">
-          By continuing, you agree to Cool Snippets&apos;s{" "}
+          By continuing, you agree to CuteCode&apos;s{" "}
           <Link href="/legal/terms" className="underline underline-offset-2 hover:text-foreground">
             Terms of Service
           </Link>{" "}

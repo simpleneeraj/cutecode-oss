@@ -3,8 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { mutate } from "swr";
-import { authClient } from "@/lib/auth-client";
+import { useSignIn } from "@/hooks/use-auth-mutations";
 import { tv } from "tailwind-variants";
 import { Card, CardDescription, CardFooter, CardHeader, CardPanel, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -29,33 +28,25 @@ export default function SignInPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { trigger: signIn, isMutating: isLoading } = useSignIn();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
-    setIsLoading(true);
 
     try {
-      const { error: signInError } = await authClient.signIn.email({
-        email,
-        password,
-        rememberMe,
-      });
+      const { error: signInError } = await signIn({ email, password, rememberMe });
 
       if (signInError) {
         setError(signInError.message || "Invalid email or password. Please try again.");
         return;
       }
 
-      await mutate("auth-session");
       router.push(redirectedFrom);
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "An unexpected error occurred. Please try again.");
-    } finally {
-      setIsLoading(false);
     }
   }
 

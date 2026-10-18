@@ -1,41 +1,40 @@
 "use client";
 
-import React from "react";
+import useSWRMutation from "swr/mutation";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "@/components/toast";
 
+type RedirectResponse = {
+  data?: { url?: string } | null;
+  error?: { message?: string } | null;
+};
+
+function followRedirect({ data, error }: RedirectResponse) {
+  if (data?.url) window.location.href = data.url;
+  else toast.error(error?.message ?? "Something went wrong. Try again.");
+}
+
 function useBilling() {
   const router = useRouter();
-  const [isLoading, setIsLoading] = React.useState(false);
+  const portal = useSWRMutation("billing.portal", () => authClient.dodopayments.customer.portal());
+  const checkout = useSWRMutation("billing.checkout", (_key, { arg }: { arg: string }) =>
+    authClient.dodopayments.checkoutSession({ slug: arg }),
+  );
 
-  async function openPortal() {
+  async function redirectWith(request: Promise<RedirectResponse>) {
     try {
-      setIsLoading(true);
-      const res = await authClient.dodopayments.customer.portal();
-      if (res.data?.url) window.location.href = res.data.url;
-      else toast.error(res.error?.message ?? "Something went wrong. Try again.");
+      followRedirect(await request);
     } catch {
       router.push("/");
-    } finally {
-      setIsLoading(false);
     }
   }
 
-  async function openCheckout(slug: string) {
-    try {
-      setIsLoading(true);
-      const res = await authClient.dodopayments.checkoutSession({ slug });
-      if (res.data?.url) window.location.href = res.data.url;
-      else toast.error(res.error?.message ?? "Something went wrong. Try again.");
-    } catch {
-      router.push("/");
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-  return { openPortal, openCheckout, isLoading };
+  return {
+    openPortal: () => redirectWith(portal.trigger()),
+    openCheckout: (slug: string) => redirectWith(checkout.trigger(slug)),
+    isLoading: portal.isMutating || checkout.isMutating,
+  };
 }
 
 export default useBilling;

@@ -3,8 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { mutate } from "swr";
-import { authClient } from "@/lib/auth-client";
+import { useResendVerification, useSignUp } from "@/hooks/use-auth-mutations";
 import { tv } from "tailwind-variants";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Mail01Icon } from "@hugeicons/core-free-icons";
@@ -38,9 +37,10 @@ export default function SignUpPage() {
   const [password, setPassword] = useState("");
 
   const [step, setStep] = useState<"form" | "sent">("form");
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [resendSuccess, setResendSuccess] = useState(false);
+  const { trigger: signUp, isMutating: isLoading } = useSignUp();
+  const { trigger: resendVerification } = useResendVerification();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -49,10 +49,9 @@ export default function SignUpPage() {
       return;
     }
     setError(null);
-    setIsLoading(true);
 
     try {
-      const { data, error: signUpError } = await authClient.signUp.email({
+      const { data, error: signUpError } = await signUp({
         email,
         password,
         name: fullName.trim(),
@@ -65,7 +64,6 @@ export default function SignUpPage() {
       }
 
       if (data?.token) {
-        await mutate("auth-session");
         router.push(redirectedFrom);
         router.refresh();
       } else {
@@ -73,8 +71,6 @@ export default function SignUpPage() {
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "An unexpected error occurred. Please try again.");
-    } finally {
-      setIsLoading(false);
     }
   }
 
@@ -82,7 +78,7 @@ export default function SignUpPage() {
     setError(null);
     setResendSuccess(false);
     try {
-      const { error: resendError } = await authClient.sendVerificationEmail({ email });
+      const { error: resendError } = await resendVerification(email);
       if (resendError) setError(resendError.message || "Failed to resend the email.");
       else setResendSuccess(true);
     } catch (err) {

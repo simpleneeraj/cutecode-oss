@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import type { SWRInfiniteResponse } from "swr/infinite";
 import { Dialog, DialogTrigger, DialogPopup, DialogHeader, DialogTitle, DialogPanel } from "@/components/ui/dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -52,23 +53,19 @@ function UserRow({ user, currentUserId }: { user: FollowUser; currentUserId?: st
   );
 }
 
-function FollowersList({ userId, currentUserId }: { userId: string; currentUserId?: string }) {
-  const [cursor, setCursor] = useState<string | undefined>();
-  const [allUsers, setAllUsers] = useState<FollowUser[]>([]);
-  const [localNextCursor, setLocalNextCursor] = useState<string | null>(null);
-  const { data, isLoading } = useUserFollowers(userId, cursor);
+type ConnectionListProps = {
+  connections: SWRInfiniteResponse<UserFollowersOutput>;
+  emptyMessage: string;
+  currentUserId?: string;
+};
 
-  React.useEffect(() => {
-    if (!data) return;
-    setAllUsers((prev) => {
-      const ids = new Set(prev.map((u) => u.id));
-      const fresh = data.users.filter((u) => !ids.has(u.id));
-      return [...prev, ...fresh];
-    });
-    setLocalNextCursor(data.nextCursor);
-  }, [data]);
+function ConnectionList({ connections, emptyMessage, currentUserId }: ConnectionListProps) {
+  const { data: pages, size, setSize, isLoading } = connections;
+  const users = pages?.flatMap((page) => page.users) ?? [];
+  const nextCursor = pages?.at(-1)?.nextCursor;
+  const isLoadingMore = isLoading || (!!pages && pages[size - 1] === undefined);
 
-  if (isLoading && allUsers.length === 0) {
+  if (isLoading) {
     return (
       <div className="flex justify-center py-8">
         <Spinner className="size-5 text-muted-foreground" />
@@ -76,77 +73,39 @@ function FollowersList({ userId, currentUserId }: { userId: string; currentUserI
     );
   }
 
-  if (!isLoading && allUsers.length === 0) {
-    return <p className="text-sm text-muted-foreground text-center py-8">No followers yet.</p>;
+  if (users.length === 0) {
+    return <p className="text-sm text-muted-foreground text-center py-8">{emptyMessage}</p>;
   }
 
   return (
     <div className="flex flex-col">
-      {allUsers.map((u) => (
+      {users.map((u) => (
         <UserRow key={u.id} user={u} currentUserId={currentUserId} />
       ))}
-      {localNextCursor && (
+      {nextCursor && (
         <Button
           variant="ghost"
           size="sm"
           className="mt-2 mx-auto"
-          disabled={isLoading}
-          onClick={() => setCursor(localNextCursor)}
+          disabled={isLoadingMore}
+          onClick={() => setSize(size + 1)}
         >
-          {isLoading ? <Spinner className="size-4" /> : "Load more"}
+          {isLoadingMore ? <Spinner className="size-4" /> : "Load more"}
         </Button>
       )}
     </div>
   );
 }
 
-// ─── Following List ────────────────────────────────────────────────────────────
+function FollowersList({ userId, currentUserId }: { userId: string; currentUserId?: string }) {
+  const followers = useUserFollowers(userId);
+  return <ConnectionList connections={followers} emptyMessage="No followers yet." currentUserId={currentUserId} />;
+}
 
 function FollowingList({ userId, currentUserId }: { userId: string; currentUserId?: string }) {
-  const [cursor, setCursor] = useState<string | undefined>();
-  const [allUsers, setAllUsers] = useState<FollowUser[]>([]);
-  const [localNextCursor, setLocalNextCursor] = useState<string | null>(null);
-  const { data, isLoading } = useUserFollowing(userId, cursor);
-
-  React.useEffect(() => {
-    if (!data) return;
-    setAllUsers((prev) => {
-      const ids = new Set(prev.map((u) => u.id));
-      const fresh = data.users.filter((u) => !ids.has(u.id));
-      return [...prev, ...fresh];
-    });
-    setLocalNextCursor(data.nextCursor);
-  }, [data]);
-
-  if (isLoading && allUsers.length === 0) {
-    return (
-      <div className="flex justify-center py-8">
-        <Spinner className="size-5 text-muted-foreground" />
-      </div>
-    );
-  }
-
-  if (!isLoading && allUsers.length === 0) {
-    return <p className="text-sm text-muted-foreground text-center py-8">Not following anyone yet.</p>;
-  }
-
+  const following = useUserFollowing(userId);
   return (
-    <div className="flex flex-col">
-      {allUsers.map((u) => (
-        <UserRow key={u.id} user={u} currentUserId={currentUserId} />
-      ))}
-      {localNextCursor && (
-        <Button
-          variant="ghost"
-          size="sm"
-          className="mt-2 mx-auto"
-          disabled={isLoading}
-          onClick={() => setCursor(localNextCursor)}
-        >
-          {isLoading ? <Spinner className="size-4" /> : "Load more"}
-        </Button>
-      )}
-    </div>
+    <ConnectionList connections={following} emptyMessage="Not following anyone yet." currentUserId={currentUserId} />
   );
 }
 

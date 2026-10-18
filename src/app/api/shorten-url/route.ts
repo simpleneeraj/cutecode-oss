@@ -7,7 +7,7 @@ import { CLIENT_IP_HEADER } from "@/lib/client-ip";
 import { apiRateLimit, checkRateLimit } from "@/lib/in-memory-store";
 import { logger } from "@/lib/logger";
 
-const ALLOWED_HOSTS = new Set(["localhost", "coolsnippets.fun", "www.coolsnippets.fun"]);
+const ALLOWED_HOSTS = new Set(["localhost", "cutecode.app", "www.cutecode.app"]);
 
 function isUniqueViolation(error: unknown): boolean {
   const code = (e: unknown) => (e && typeof e === "object" && "code" in e ? e.code : undefined);

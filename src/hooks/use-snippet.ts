@@ -12,9 +12,11 @@
 "use client";
 
 import useSWR, { useSWRConfig } from "swr";
+import useSWRMutation from "swr/mutation";
 import { trpc } from "@/lib/trpc";
 import type { inferRouterOutputs } from "@trpc/server";
 import type { AppRouter } from "@/server/types";
+import type { SharePreviewKey } from "@/hooks/use-share";
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
 
@@ -31,9 +33,7 @@ export type SnippetAddCommentOutput = RouterOutput["snippet"]["addComment"];
 // ─────────────────────────────────────────────
 
 export function useSnippetList({ page = 1, limit = 20 }: { page?: number; limit?: number } = {}) {
-  return useSWR(["snippet.list", page, limit] as const, () => trpc.snippet.list.query({ page, limit }), {
-    keepPreviousData: true,
-  });
+  return useSWR(["snippet.list", page, limit] as const, () => trpc.snippet.list.query({ page, limit }));
 }
 
 // ─────────────────────────────────────────────
@@ -45,16 +45,17 @@ export function useSnippetExplore({
   limit = 24,
   sort = "recent" as "recent" | "popular",
   language,
+  userId,
 }: {
   page?: number;
   limit?: number;
   sort?: "recent" | "popular";
   language?: string;
+  userId?: string;
 } = {}) {
   return useSWR(
-    ["snippet.explore", page, limit, sort, language] as const,
-    () => trpc.snippet.explore.query({ page, limit, sort, language }),
-    { keepPreviousData: true },
+    ["snippet.explore", page, limit, sort, language, userId] as const,
+    () => trpc.snippet.explore.query({ page, limit, sort, language, userId }),
   );
 }
 
@@ -107,19 +108,32 @@ export function useSnippetMutations() {
     return result;
   };
 
-  const toggleUpvote = async (snippetId: string) => {
-    return trpc.snippet.toggleUpvote.mutate({ snippetId });
-  };
-
-  const toggleBookmark = async (snippetId: string) => {
-    return trpc.snippet.toggleBookmark.mutate({ snippetId });
-  };
-
-  const addComment = async (snippetId: string, content: string) => {
-    const result = await trpc.snippet.addComment.mutate({ snippetId, content });
-    await mutate((key) => Array.isArray(key) && key[0] === "snippet.comments" && key[1] === snippetId);
+  const togglePin = async (id: string) => {
+    const result = await trpc.snippet.togglePin.mutate({ id });
+    await mutate((key) => Array.isArray(key) && (key[0] === "share.preview" || key[0] === "snippet.explore"));
     return result;
   };
 
-  return { createSnippet, updateSnippet, deleteSnippet, toggleUpvote, toggleBookmark, addComment };
+  return { createSnippet, updateSnippet, deleteSnippet, togglePin };
+}
+
+export function useAddComment(snippetId: string | null) {
+  return useSWRMutation(
+    snippetId ? (["snippet.comments", snippetId, null] as const) : null,
+    ([, id], { arg }: { arg: string }) => trpc.snippet.addComment.mutate({ snippetId: id, content: arg }),
+  );
+}
+
+export function useSnippetReactions(previewKey: SharePreviewKey) {
+  const upvote = useSWRMutation(previewKey, (_key, { arg }: { arg: string }) =>
+    trpc.snippet.toggleUpvote.mutate({ snippetId: arg }),
+  );
+  const bookmark = useSWRMutation(previewKey, (_key, { arg }: { arg: string }) =>
+    trpc.snippet.toggleBookmark.mutate({ snippetId: arg }),
+  );
+  return {
+    toggleUpvote: upvote.trigger,
+    toggleBookmark: bookmark.trigger,
+    isMutating: upvote.isMutating || bookmark.isMutating,
+  };
 }

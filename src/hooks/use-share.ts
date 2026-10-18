@@ -46,18 +46,34 @@ export function useShareList({
 // useShareLinkPreview
 // ─────────────────────────────────────────────
 
+export function sharePreviewKey(slug: string, passcode?: string) {
+  return ["share.preview", slug, passcode ?? null] as const;
+}
+
+export type SharePreviewKey = ReturnType<typeof sharePreviewKey>;
+
 export function useSharePreview(slug: string | null, { passcode }: { passcode?: string } = {}) {
   return useSWR(
-    slug ? (["share.preview", slug, passcode ?? null] as const) : null,
+    slug ? sharePreviewKey(slug, passcode) : null,
     () => trpc.share.preview.mutate({ slug: slug!, passcode: passcode || undefined }),
-    {
-      refreshInterval: 30_000,
-      revalidateOnFocus: false,
-      dedupingInterval: 5_000,
-      // Don't retry on FORBIDDEN — it's intentional (passcode required / wrong passcode)
-      shouldRetryOnError: (err: any) => err?.data?.code !== "FORBIDDEN",
-    },
+    { dedupingInterval: 5_000 },
   );
+}
+
+type ShareLoadCallbacks = {
+  onSuccess: (data: SharePreviewOutput) => void;
+  onError: () => void;
+};
+
+export function useShareLoad(slug: string, { onSuccess, onError }: ShareLoadCallbacks) {
+  return useSWR(["share.load", slug] as const, () => trpc.share.preview.mutate({ slug }), {
+    onSuccess,
+    onError,
+    dedupingInterval: 0,
+    revalidateOnMount: true,
+    revalidateOnReconnect: false,
+    shouldRetryOnError: false,
+  });
 }
 
 // ─────────────────────────────────────────────
@@ -67,7 +83,6 @@ export function useSharePreview(slug: string | null, { passcode }: { passcode?: 
 export function useShareAnalytics(id: string | null) {
   const setPlansOpen = useSetAtom(plansDialogOpenAtom);
   return useSWR(id ? (["share.analytics", id] as const) : null, () => trpc.share.analytics.query({ id: id! }), {
-    shouldRetryOnError: (error: unknown) => !isForbiddenError(error),
     onError: (error: unknown) => {
       if (isForbiddenError(error)) setPlansOpen(true);
     },
@@ -127,7 +142,7 @@ export function useShareMutations() {
 
   const updateShare = async (id: string, data: UpdateShareInput) => {
     const result = await trpc.share.update.mutate({ id, data }).catch(openPlansOnForbidden);
-    await mutate((key) => Array.isArray(key) && key[0] === "share.list");
+    await mutate((key) => Array.isArray(key) && (key[0] === "share.list" || key[0] === "share.preview"));
     return result;
   };
 

@@ -11,7 +11,9 @@
 
 "use client";
 
-import useSWR, { useSWRConfig } from "swr";
+import useSWR from "swr";
+import useSWRInfinite from "swr/infinite";
+import useSWRMutation from "swr/mutation";
 import { trpc } from "@/lib/trpc";
 import type { inferRouterOutputs } from "@trpc/server";
 import type { AppRouter } from "@/server/types";
@@ -28,50 +30,66 @@ export type UserToggleFollowOutput = RouterOutput["user"]["toggleFollow"];
 // ─────────────────────────────────────────────
 
 export function useUserProfile(userId: string | null | undefined) {
-  return useSWR(
-    userId ? (["user.profile", userId] as const) : null,
-    () => trpc.user.profile.query({ userId: userId! }),
-    { revalidateOnFocus: false, dedupingInterval: 10_000 },
+  return useSWR(userId ? (["user.profile", userId] as const) : null, () =>
+    trpc.user.profile.query({ userId: userId! }),
   );
 }
 
 // ─────────────────────────────────────────────
-// useUserFollowers
+// useUserFollowers / useUserFollowing
 // ─────────────────────────────────────────────
 
-export function useUserFollowers(userId: string | null | undefined, cursor?: string) {
-  return useSWR(
-    userId ? (["user.followers", userId, cursor ?? null] as const) : null,
-    () => trpc.user.followers.query({ userId: userId!, cursor }),
-    { revalidateOnFocus: false },
-  );
-}
+type ConnectionsScope = "user.followers" | "user.following";
 
-// ─────────────────────────────────────────────
-// useUserFollowing
-// ─────────────────────────────────────────────
-
-export function useUserFollowing(userId: string | null | undefined, cursor?: string) {
-  return useSWR(
-    userId ? (["user.following", userId, cursor ?? null] as const) : null,
-    () => trpc.user.following.query({ userId: userId!, cursor }),
-    { revalidateOnFocus: false },
-  );
-}
-
-// ─────────────────────────────────────────────
-// useUserMutations
-// ─────────────────────────────────────────────
-
-export function useUserMutations() {
-  const { mutate } = useSWRConfig();
-
-  const toggleFollow = async (targetUserId: string) => {
-    const result = await trpc.user.toggleFollow.mutate({ targetUserId });
-    // Revalidate profile cache for both parties
-    await mutate((key) => Array.isArray(key) && key[0] === "user.profile" && key[1] === targetUserId);
-    return result;
+function connectionsKeyLoader(scope: ConnectionsScope, userId: string) {
+  return (_index: number, previousPage: UserFollowersOutput | null) => {
+    if (previousPage && !previousPage.nextCursor) return null;
+    return [scope, userId, previousPage?.nextCursor ?? null] as const;
   };
+}
 
-  return { toggleFollow };
+export function useUserFollowers(userId: string) {
+  return useSWRInfinite(
+    connectionsKeyLoader("user.followers", userId),
+    ([, id, cursor]) => trpc.user.followers.query({ userId: id, cursor: cursor ?? undefined }),
+    { revalidateFirstPage: false },
+  );
+}
+
+export function useUserFollowing(userId: string) {
+  return useSWRInfinite(
+    connectionsKeyLoader("user.following", userId),
+    ([, id, cursor]) => trpc.user.following.query({ userId: id, cursor: cursor ?? undefined }),
+    { revalidateFirstPage: false },
+  );
+}
+
+// ─────────────────────────────────────────────
+// useToggleFollow
+// ─────────────────────────────────────────────
+
+type ProfileKey = readonly ["user.profile", string];
+type ProfileCache = UserProfileOutput | undefined;
+
+function flipFollow(profile?: ProfileCache): ProfileCache {
+  if (!profile) return profile;
+  const followers = profile._count.followers + (profile.isFollowing ? -1 : 1);
+  return { ...profile, isFollowing: !profile.isFollowing, _count: { ...profile._count, followers } };
+}
+
+function applyFollowResult(result: UserToggleFollowOutput, profile?: ProfileCache): ProfileCache {
+  if (!profile) return profile;
+  return {
+    ...profile,
+    isFollowing: result.following,
+    _count: { ...profile._count, followers: result.followerCount },
+  };
+}
+
+export function useToggleFollow(targetUserId: string) {
+  return useSWRMutation<UserToggleFollowOutput, Error, ProfileKey, never, ProfileCache>(
+    ["user.profile", targetUserId],
+    () => trpc.user.toggleFollow.mutate({ targetUserId }),
+    { optimisticData: flipFollow, populateCache: applyFollowResult, rollbackOnError: true },
+  );
 }

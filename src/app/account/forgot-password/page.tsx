@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { authClient } from "@/lib/auth-client";
+import { useForgotPassword } from "@/hooks/use-auth-mutations";
 import { tv } from "tailwind-variants";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowLeft01Icon, Mail01Icon } from "@hugeicons/core-free-icons";
@@ -27,16 +27,15 @@ const sentState = tv({
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [step, setStep] = useState<"request" | "sent">("request");
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { trigger: requestPasswordReset, isMutating: isLoading } = useForgotPassword();
 
   async function handleSendLink(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
-    setIsLoading(true);
 
     try {
-      const { error: resetError } = await authClient.requestPasswordReset({
+      const { error: resetError } = await requestPasswordReset({
         email,
         redirectTo: `${window.location.origin}/account/reset-password`,
       });
@@ -47,8 +46,6 @@ export default function ForgotPasswordPage() {
       setStep("sent");
     } catch (err) {
       setError(err instanceof Error ? err.message : "An unexpected error occurred. Please try again.");
-    } finally {
-      setIsLoading(false);
     }
   }
 

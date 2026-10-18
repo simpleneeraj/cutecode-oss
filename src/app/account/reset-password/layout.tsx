@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Choose a New Password",
-  description: "Choose a new password for your Cool Snippets account.",
+  description: "Choose a new password for your CuteCode account.",
   robots: { index: false, follow: false },
 };
 

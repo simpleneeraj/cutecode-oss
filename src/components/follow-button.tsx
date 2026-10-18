@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { UserCheckIcon, UserAdd01Icon } from "@hugeicons/core-free-icons";
-import { useUserMutations, useUserProfile } from "@/hooks/use-user";
+import { useToggleFollow, useUserProfile } from "@/hooks/use-user";
 
 interface FollowButtonProps {
   /** DB user ID of the person to follow */
@@ -30,7 +30,6 @@ interface FollowButtonProps {
  *  - Loading spinner (no double-submit)
  *  - Auth guard
  *  - Self-follow prevention
- *  - Local state sync so the count updates instantly
  */
 export function FollowButton({
   targetUserId,
@@ -41,16 +40,13 @@ export function FollowButton({
   className,
   size = "sm",
 }: FollowButtonProps) {
-  const [isFollowing, setIsFollowing] = useState(initialIsFollowing);
-  const [followerCount, setFollowerCount] = useState(initialFollowerCount);
   const [isHovering, setIsHovering] = useState(false);
 
-  const [isFollowPending, setIsFollowPending] = useState(false);
+  const { data: profile } = useUserProfile(targetUserId);
+  const { trigger: toggleFollow, isMutating: isFollowPending } = useToggleFollow(targetUserId);
 
-  const { toggleFollow } = useUserMutations();
-  // Revalidate the public profile in the background after toggle
-  const { mutate: mutateProfile } = useUserProfile(targetUserId);
-
+  const isFollowing = profile?.isFollowing ?? initialIsFollowing;
+  const followerCount = profile?._count.followers ?? initialFollowerCount;
   const isOwnProfile = !!currentUserId && currentUserId === targetUserId;
 
   if (isOwnProfile) return null;
@@ -66,26 +62,9 @@ export function FollowButton({
 
     if (isFollowPending) return;
 
-    // Optimistic update
-    const next = !isFollowing;
-    setIsFollowing(next);
-    setFollowerCount((c) => c + (next ? 1 : -1));
-    setIsFollowPending(true);
-
-    try {
-      const res = await toggleFollow(targetUserId);
-      // Sync with server truth
-      if (typeof res?.followerCount === "number") setFollowerCount(res.followerCount);
-      setIsFollowing(res?.following ?? next);
-    } catch {
-      // Revert on failure
-      setIsFollowing(!next);
-      setFollowerCount((c) => c + (!next ? 1 : -1));
-      toast.error(next ? "Could not follow user." : "Could not unfollow user.");
-    } finally {
-      setIsFollowPending(false);
-      mutateProfile(); // refresh profile counts
-    }
+    await toggleFollow().catch(() => {
+      toast.error(isFollowing ? "Could not unfollow user." : "Could not follow user.");
+    });
   };
 
   const label = isFollowing ? (isHovering ? "Unfollow" : "Following") : "Follow";
