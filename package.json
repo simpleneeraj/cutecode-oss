@@ -20,7 +20,9 @@
     "dodo:products": "tsx scripts/dodo/products.ts",
     "dodo:discounts": "tsx scripts/dodo/discounts.ts",
     "env:pull": "tsx scripts/env.ts pull",
-    "env:check": "tsx scripts/env.ts check"
+    "env:check": "tsx scripts/env.ts check",
+    "videos:render": "tsx scripts/render-brand-videos.ts",
+    "videos:music": "bash scripts/add-music.sh"
   },
   "dependencies": {
     "@astral-sh/ruff-wasm-web": "0.17.1",
