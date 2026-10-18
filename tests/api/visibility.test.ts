@@ -36,16 +36,16 @@ async function seed(visibility: ShareVisibility) {
   return { owner, ...seeded };
 }
 
-type PreviewInput = { slug: string; passcode?: string };
+type PreviewInput = { slug: string; passcode?: string; asVisitor?: boolean };
 
-function previewInput(slug: string, passcode?: string, clientIp?: string): PreviewInput {
-  const input = { slug, passcode, ip: clientIp };
+function previewInput(slug: string, passcode?: string, clientIp?: string, asVisitor?: boolean): PreviewInput {
+  const input = { slug, passcode, ip: clientIp, asVisitor };
   return input;
 }
 
-async function preview(slug: string, { user = null, passcode, ip, clientIp }: { user?: Awaited<ReturnType<typeof createUser>> | null; passcode?: string; ip?: string; clientIp?: string } = {}) {
+async function preview(slug: string, { user = null, passcode, ip, clientIp, asVisitor }: { user?: Awaited<ReturnType<typeof createUser>> | null; passcode?: string; ip?: string; clientIp?: string; asVisitor?: boolean } = {}) {
   const caller = await callerFor(user, ip);
-  return caller.share.preview(previewInput(slug, passcode, clientIp));
+  return caller.share.preview(previewInput(slug, passcode, clientIp, asVisitor));
 }
 
 function expectNoPasscodeHash(value: unknown, hash?: string | null) {
@@ -84,6 +84,11 @@ describe("share.preview: private", () => {
     await expect(preview(link.slug, { user: owner })).resolves.toMatchObject({ snippet: { title: SECRET.title } });
   });
 
+  it("hides a private snippet from its owner viewing as a visitor", async () => {
+    const { link, owner } = await seed(ShareVisibility.PRIVATE);
+    await expect(preview(link.slug, { user: owner, asVisitor: true })).rejects.toMatchObject({ code: "NOT_FOUND" });
+  });
+
   it("refuses to remix a private snippet", async () => {
     const { link } = await seed(ShareVisibility.PRIVATE);
     const caller = await callerFor(await createUser(Plan.PREMIUM));
@@ -113,6 +118,19 @@ describe("share.preview: passcode", () => {
     const { link, owner } = await seed(ShareVisibility.PASSCODE);
     const result = await preview(link.slug, { user: owner });
     expectNoPasscodeHash(result, link.passcodeHash);
+  });
+
+  it("makes the owner enter the passcode when viewing as a visitor", async () => {
+    const { link, owner } = await seed(ShareVisibility.PASSCODE);
+    await expect(preview(link.slug, { user: owner, asVisitor: true })).rejects.toMatchObject({ code: "FORBIDDEN", message: "Passcode required" });
+    await denied(preview(link.slug, { user: owner, asVisitor: true, passcode: "000000" }));
+  });
+
+  it("unlocks for the owner as a visitor with the right passcode without counting a view", async () => {
+    const { link, owner } = await seed(ShareVisibility.PASSCODE);
+    await expect(preview(link.slug, { user: owner, asVisitor: true, passcode: PASSCODE })).resolves.toMatchObject({ snippet: { title: SECRET.title } });
+    const row = await db.query.shareLinks.findFirst({ where: eq(shareLinks.id, link.id) });
+    expect(row?.viewCount).toBe(0);
   });
 
   it("does not open a passcode link that has no hash", async () => {

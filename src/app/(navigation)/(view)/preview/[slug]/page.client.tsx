@@ -10,18 +10,53 @@ import { SnippetFrame } from "../components/snippet-frame";
 import { SnippetCard } from "../components/snippet-card";
 import { PreviewLoading } from "../components/preview-loading";
 import SnippetNotFound from "../components/preview-not-found";
-import { useSnippetPreview } from "../hooks/use-snippet-preview";
+import { useSnippetPreview, type OwnedSnippet } from "../hooks/use-snippet-preview";
 import { useAddComment, useSnippetComments } from "@/hooks/use-snippet";
 import SnippetInfo from "../components/snippet-info";
+import SponsorCard from "@/components/sponsors/sponsor-card";
 import copy from "copy-to-clipboard";
 
 type PreviewSnippetClientProps = { slug: string };
+
+type OwnerShareBannerProps = {
+  ownedSnippet: OwnedSnippet | undefined;
+  asVisitor: boolean;
+  onViewAsVisitor: () => void;
+  onExitVisitor: () => void;
+};
+
+function OwnerShareBanner({ ownedSnippet, asVisitor, onViewAsVisitor, onExitVisitor }: OwnerShareBannerProps) {
+  if (asVisitor) {
+    return (
+      <div className="mb-4 flex items-center justify-between gap-3 rounded-lg border px-3 py-1.5 text-xs text-muted-foreground">
+        <span>Viewing as a visitor.</span>
+        <Button size="xs" variant="ghost" onClick={onExitVisitor}>
+          Exit
+        </Button>
+      </div>
+    );
+  }
+  if (ownedSnippet?.visibility === "PRIVATE") {
+    return <p className="mb-4 rounded-lg border px-3 py-2 text-xs text-muted-foreground">Private. Only you can see this.</p>;
+  }
+  if (ownedSnippet?.visibility !== "PASSCODE") return null;
+  return (
+    <div className="mb-4 flex items-center justify-between gap-3 rounded-lg border px-3 py-1.5 text-xs text-muted-foreground">
+      <span>Passcode protected. Visitors must enter the code; you see it because you own it.</span>
+      <Button size="xs" variant="outline" className="shrink-0" onClick={onViewAsVisitor}>
+        View as visitor
+      </Button>
+    </div>
+  );
+}
 
 export default function PreviewSnippetClient({ slug }: PreviewSnippetClientProps) {
   const {
     passcodeInput,
     setPasscodeInput,
     setSubmittedPasscode,
+    asVisitor,
+    setAsVisitor,
     isInitialLoadPending,
     isPasscodeVerifying,
     isPasscodeRequired,
@@ -110,11 +145,28 @@ export default function PreviewSnippetClient({ slug }: PreviewSnippetClientProps
     setTimeout(() => setCopied(false), 2000);
   };
 
+  function switchVisitorMode(next: boolean) {
+    setPasscodeInput("");
+    setSubmittedPasscode("");
+    setAsVisitor(next);
+  }
+
+  const ownerBanner = (
+    <OwnerShareBanner
+      ownedSnippet={ownedSnippet}
+      asVisitor={asVisitor}
+      onViewAsVisitor={() => switchVisitorMode(true)}
+      onExitVisitor={() => switchVisitorMode(false)}
+    />
+  );
+
   if (isInitialLoadPending) return <PreviewLoading />;
 
   if (isPasscodeRequired || isPasscodeVerifying) {
     return (
-      <PasscodeGate
+      <>
+        {asVisitor && <div className="mx-auto w-full max-w-4xl px-4 pt-4 md:px-6">{ownerBanner}</div>}
+        <PasscodeGate
         passcode={passcodeInput}
         onChange={(val) => {
           setPasscodeInput(val);
@@ -123,7 +175,8 @@ export default function PreviewSnippetClient({ slug }: PreviewSnippetClientProps
         isLoading={isPasscodeVerifying}
         onSubmit={() => setSubmittedPasscode(passcodeInput)}
         invalidPasscode={isInvalidPasscode}
-      />
+        />
+      </>
     );
   }
 
@@ -131,6 +184,7 @@ export default function PreviewSnippetClient({ slug }: PreviewSnippetClientProps
 
   return (
     <div className="mx-auto flex w-full max-w-4xl flex-col px-4 py-8 md:px-6 md:py-10">
+      {ownerBanner}
       <SnippetCard
         slug={slug}
         author={snippetRecord.user ?? undefined}
@@ -170,6 +224,7 @@ export default function PreviewSnippetClient({ slug }: PreviewSnippetClientProps
           );
         })}
       </SnippetCard>
+      <SponsorCard className="mt-6 self-start" />
     </div>
   );
 }

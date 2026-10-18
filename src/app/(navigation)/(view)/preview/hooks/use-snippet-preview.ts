@@ -56,14 +56,15 @@ function buildBookmarkOptimisticPayload(payload: ShareLinkPayload): ShareLinkPay
 export function useSnippetPreview(slug: string) {
   const [passcodeInput, setPasscodeInput] = useState("");
   const [submittedPasscode, setSubmittedPasscode] = useState("");
+  const [asVisitor, setAsVisitor] = useState(false);
 
   const {
     data: shareLinkPayload,
     isLoading: isShareLinkLoading,
     error: shareLinkError,
-  } = useSharePreview(slug, { passcode: submittedPasscode });
+  } = useSharePreview(slug, { passcode: submittedPasscode, asVisitor });
 
-  const { toggleUpvote, toggleBookmark, isMutating } = useSnippetReactions(sharePreviewKey(slug, submittedPasscode));
+  const { toggleUpvote, toggleBookmark, isMutating } = useSnippetReactions(sharePreviewKey(slug, submittedPasscode, asVisitor));
 
   const snippetId = shareLinkPayload?.snippet?.id ?? "";
   const authorId = shareLinkPayload?.snippet?.user?.id ?? "";
@@ -114,6 +115,8 @@ export function useSnippetPreview(slug: string) {
     setPasscodeInput,
     submittedPasscode,
     setSubmittedPasscode,
+    asVisitor,
+    setAsVisitor,
     // state flags
     isInitialLoadPending,
     isPasscodeVerifying,

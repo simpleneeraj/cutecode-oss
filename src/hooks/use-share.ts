@@ -46,16 +46,16 @@ export function useShareList({
 // useShareLinkPreview
 // ─────────────────────────────────────────────
 
-export function sharePreviewKey(slug: string, passcode?: string) {
-  return ["share.preview", slug, passcode ?? null] as const;
+export function sharePreviewKey(slug: string, passcode?: string, asVisitor = false) {
+  return ["share.preview", slug, passcode ?? null, asVisitor] as const;
 }
 
 export type SharePreviewKey = ReturnType<typeof sharePreviewKey>;
 
-export function useSharePreview(slug: string | null, { passcode }: { passcode?: string } = {}) {
+export function useSharePreview(slug: string | null, { passcode, asVisitor = false }: { passcode?: string; asVisitor?: boolean } = {}) {
   return useSWR(
-    slug ? sharePreviewKey(slug, passcode) : null,
-    () => trpc.share.preview.mutate({ slug: slug!, passcode: passcode || undefined }),
+    slug ? sharePreviewKey(slug, passcode, asVisitor) : null,
+    () => trpc.share.preview.mutate({ slug: slug!, passcode: passcode || undefined, asVisitor: asVisitor || undefined }),
     { dedupingInterval: 5_000 },
   );
 }

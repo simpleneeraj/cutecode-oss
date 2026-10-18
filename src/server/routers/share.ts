@@ -30,7 +30,7 @@ import {
   recordRateLimitHit,
 } from "@/lib/in-memory-store";
 import { consumePublishQuota } from "@/lib/billing/publish-quota";
-import { assertPremiumAssetsAllowed } from "@/lib/billing/premium-assets";
+import { assertPremiumAssetsAllowed, assertSlideLimit } from "@/lib/billing/premium-assets";
 import { can } from "@/lib/billing/plans";
 import { requireCapability, requireShareVisibility } from "@/lib/billing/require-capability";
 import { isShareExpired, resolveShareAccess } from "@/lib/share/access";
@@ -148,11 +148,14 @@ export const shareRouter = router({
     const snippet = snippetId
       ? await db.query.snippets.findFirst({
           where: and(eq(snippets.id, snippetId), eq(snippets.userId, ctx.user.id)),
-          with: { presentation: { columns: { elements: true } }, shareLinks: { columns: { id: true }, limit: 1 } },
+          with: { presentation: { columns: { elements: true, slides: true } }, shareLinks: { columns: { id: true }, limit: 1 } },
         })
       : undefined;
     if (snippetId && !snippet) throw new TRPCError({ code: "BAD_REQUEST", message: "Snippet not found" });
-    if (snippet) assertPremiumAssetsAllowed(ctx.user.plan, snippet.presentation.elements);
+    if (snippet) {
+      assertPremiumAssetsAllowed(ctx.user.plan, snippet.presentation.elements);
+      assertSlideLimit(ctx.user.plan, snippet.presentation.slides);
+    }
 
     if (presentationId) {
       const presentation = await db.query.presentations.findFirst({ where: and(eq(presentations.id, presentationId), eq(presentations.userId, ctx.user.id)) });
@@ -254,10 +257,11 @@ export const shareRouter = router({
       z.object({
         slug: z.string().min(1),
         passcode: passcodeSchema.optional(),
+        asVisitor: z.boolean().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const { slug, passcode } = input;
+      const { slug, passcode, asVisitor } = input;
 
       const { success } = await checkRateLimit(apiRateLimit, `preview:${ctx.ip}`);
       if (!success) {
@@ -282,7 +286,7 @@ export const shareRouter = router({
       const access = resolveShareAccess({
         visibility: shareLink.visibility,
         ownerId: shareLink.userId,
-        viewerId: ctx.user?.id,
+        viewerId: asVisitor ? undefined : ctx.user?.id,
         hasPasscodeHash: !!shareLink.passcodeHash,
         passcode,
         expired: isShareExpired(shareLink),
