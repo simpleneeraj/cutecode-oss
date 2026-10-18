@@ -5,8 +5,8 @@ export const halloween: Theme = {
   id: "halloween",
   name: "Halloween",
   background: {
-    from: "#f6f0fd",
-    to: "#fde7d4",
+    from: "#e6daf6",
+    to: "#fbc69c",
   },
   icon: { type: IconType.IMAGE, source: "/editor/assets/halloween/glyph.svg" },
   group: "Seasonal",
