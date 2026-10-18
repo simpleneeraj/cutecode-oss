@@ -82,6 +82,15 @@ The record of the first production deploy of CuteCode, finished 2026-10-18. No s
 - **Lightsail SSH needs short-lived keys.** The instance only trusts `LightsailDefaultKeyPair`, so use `get-instance-access-details`. The keys expire within minutes.
 - **The local production build needs a real `DATABASE_URL`.** The sitemap is prerendered at build time and queries the database. `.env.production` now mirrors SSM; run `yarn env:check` to confirm.
 
+## Dodo products
+
+`yarn dodo:products` is `scripts/dodo/products.ts`. It is idempotent: it matches products by name `CuteCode <Plan> <Interval>`, creates missing ones and updates changed prices.
+- **Live:** `NODE_ENV=production npx tsx scripts/dodo/products.ts --live`. Use `--dry-run` first.
+- **Test:** `NODE_ENV=development npx tsx scripts/dodo/products.ts`.
+- **Where the IDs go:** live IDs go in `.env.production` and the Amplify environment variables, test IDs in `.env.development`. They're `NEXT_PUBLIC_*`, so changing them needs a rebuild.
+- **Prices:** Pro $5/month or $48/year, Premium $12/month or $120/year, from `src/lib/billing/plans.ts`. Created 2026-10-18 in both modes.
+- **Legacy product:** `NEXT_PUBLIC_DODO_PRODUCT_PREMIUM` stays set for webhook mapping of the old Premium product.
+
 ## Env workflow
 
 - `.env.development` and `.env.production` share the same 27 keys. Production-only keys are empty in development.
@@ -104,7 +113,6 @@ The record of the first production deploy of CuteCode, finished 2026-10-18. No s
 ## Follow-ups
 
 - **Domain:** turn on cutecode.app auto-renew (it expires 2027-03-08). Remove cutecode.app from the old Vercel account.
-- **Dodo:** create the live products for Pro and Premium monthly and yearly. Until then only live Premium exists, and the others show "Coming soon".
 - **Alarms:** add an SNS topic and alert email to the CDK stack. The alarms currently have no actions.
 - **AWS login:** create an IAM user or SSO for deploys instead of the root login.
 - **Database:**
