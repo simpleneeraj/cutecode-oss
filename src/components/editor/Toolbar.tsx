@@ -1,7 +1,7 @@
 "use client";
 
 import { useAtomValue, useSetAtom } from "jotai";
-import { ArrowLeft01Icon, ArrowRight01Icon, Copy01Icon, AddSquareIcon, Delete02Icon } from "@hugeicons/core-free-icons";
+import { ArrowLeft01Icon, ArrowRight01Icon, Copy01Icon, AddSquareIcon, Delete02Icon, Moon02Icon, Sun03Icon } from "@hugeicons/core-free-icons";
 import { Toolbar, ToolbarGroup, ToolbarSeparator } from "@/components/ui/toolbar";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import {
@@ -9,8 +9,10 @@ import {
   currentSlideIdAtom,
   deleteSlideAtom,
   duplicateSlideAtom,
+  elementDarkModeAtom,
   selectSlideAtom,
   slidesAtom,
+  updateSlideElementAtom,
 } from "@/store/editor/editor";
 import useHotkeys from "@/utils/useHotkeys";
 import ToolbarAction from "./toolbar-action";
@@ -22,6 +24,8 @@ export default function ToolbarParticle() {
   const duplicateSlide = useSetAtom(duplicateSlideAtom);
   const deleteSlide = useSetAtom(deleteSlideAtom);
   const selectSlide = useSetAtom(selectSlideAtom);
+  const darkMode = useAtomValue(elementDarkModeAtom);
+  const updateSlideElement = useSetAtom(updateSlideElementAtom);
 
   const currentIndex = slides.findIndex((slide) => slide.id === slideId);
   const isFirst = currentIndex === 0;
@@ -44,11 +48,16 @@ export default function ToolbarParticle() {
     if (canDelete) deleteSlide();
   };
 
+  const toggleDarkMode = () => {
+    updateSlideElement({ properties: { darkMode: !darkMode } });
+  };
+
   useHotkeys("shift+left", previousSlide);
   useHotkeys("shift+right", nextSlide);
   useHotkeys("a", addSlide);
   useHotkeys("shift+d", duplicateSlide);
   useHotkeys("shift+backspace", removeSlide);
+  useHotkeys("d", toggleDarkMode);
 
   return (
     <TooltipProvider>
@@ -66,6 +75,13 @@ export default function ToolbarParticle() {
           {canDelete && (
             <ToolbarAction label="Delete slide" icon={Delete02Icon} keys={["Shift", "⌫"]} onClick={removeSlide} isDestructive />
           )}
+          <ToolbarSeparator orientation="vertical" />
+          <ToolbarAction
+            label={darkMode ? "Light mode" : "Dark mode"}
+            icon={darkMode ? Sun03Icon : Moon02Icon}
+            keys={["D"]}
+            onClick={toggleDarkMode}
+          />
           <ToolbarSeparator orientation="vertical" />
           <ToolbarAction label="Next slide" icon={ArrowRight01Icon} keys={["Shift", "→"]} onClick={nextSlide} disabled={isLast} />
         </ToolbarGroup>

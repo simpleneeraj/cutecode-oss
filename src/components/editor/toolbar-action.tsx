@@ -30,7 +30,7 @@ export default function ToolbarAction({ label, icon, keys, onClick, disabled, is
                 variant="ghost"
                 onClick={onClick}
                 disabled={disabled}
-                className={cn("rounded-full before:rounded-full", isDestructive ? "text-destructive hover:bg-destructive/8" : "text-muted-foreground hover:text-foreground")}
+                className={cn("rounded-full before:rounded-full", isDestructive ? "text-destructive hover:bg-destructive/8" : "text-foreground")}
                 render={<motion.button whileTap={{ scale: 0.9 }} />}
               />
             }

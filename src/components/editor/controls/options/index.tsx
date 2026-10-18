@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "@/components/ui/tooltip";
 import { useAtomValue, useSetAtom } from "jotai";
 import {
-  elementDarkModeAtom,
   elementShowLineNumbersAtom,
   elementTransparentAtom,
   updateSlideElementAtom,
@@ -15,7 +14,7 @@ import { motion } from "motion/react";
 import OptionToggle from "./option-toggle";
 import { dockPopup, dockTrigger } from "../dock-styles";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { SlidersHorizontalIcon, Image01Icon, Moon02Icon, HashtagIcon, Delete02Icon } from "@hugeicons/core-free-icons";
+import { SlidersHorizontalIcon, Image01Icon, HashtagIcon, Delete02Icon } from "@hugeicons/core-free-icons";
 
 const OptionsControl: React.FC = () => {
   const updateSlideElement = useSetAtom(updateSlideElementAtom);
@@ -25,18 +24,12 @@ const OptionsControl: React.FC = () => {
     resetEditor();
   }, [resetEditor]);
 
-  const darkMode = useAtomValue(elementDarkModeAtom);
   const transparent = useAtomValue(elementTransparentAtom);
   const showLineNumbers = useAtomValue(elementShowLineNumbersAtom);
 
   useHotkeys("n", (e) => {
     e.preventDefault();
     updateSlideElement({ properties: { showLineNumbers: !showLineNumbers } });
-  });
-
-  useHotkeys("d", (e) => {
-    e.preventDefault();
-    updateSlideElement({ properties: { darkMode: !darkMode } });
   });
 
   useHotkeys("b", (e) => {
@@ -74,12 +67,6 @@ const OptionsControl: React.FC = () => {
             label="Background"
             checked={!transparent}
             onCheckedChange={(checked) => updateSlideElement({ properties: { transparent: !checked } })}
-          />
-          <OptionToggle
-            icon={Moon02Icon}
-            label="Dark mode"
-            checked={darkMode}
-            onCheckedChange={(checked) => updateSlideElement({ properties: { darkMode: checked } })}
           />
           <OptionToggle
             icon={HashtagIcon}
