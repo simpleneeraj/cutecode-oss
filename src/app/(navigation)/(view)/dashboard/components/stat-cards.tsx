@@ -1,5 +1,6 @@
 import { Card } from "@/components/ui/card";
-import { Icon } from "@/components/ui/icon";
+import { Plan } from "@/db/schema";
+import PremiumBadge from "../../preview/components/premium-badge";
 
 type Totals = {
   views: number | null;
@@ -8,38 +9,40 @@ type Totals = {
   followers: number;
 };
 
+type StatCardsProps = {
+  totals: Totals;
+};
+
 function formatCount(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1).replace(/\.0$/, "")}M`;
   if (n >= 1_000) return `${(n / 1_000).toFixed(1).replace(/\.0$/, "")}K`;
   return String(n);
 }
 
-export function StatCards({ totals, totalSnippets }: { totals: Totals; totalSnippets: number }) {
+export function StatCards({ totals }: StatCardsProps) {
   const stats = [
-    { label: "Total views", value: totals.views, icon: "solar:eye-bold", sub: "across all share links" },
-    { label: "Snippets published", value: totals.published, icon: "solar:code-square-bold", sub: `${totalSnippets} total` },
-    { label: "Total upvotes", value: totals.upvotes, icon: "solar:like-bold", sub: "from the community" },
-    { label: "Followers", value: totals.followers, icon: "solar:users-group-rounded-bold", sub: "creators following you" },
+    { label: "Total views", value: totals.views },
+    { label: "Published", value: totals.published },
+    { label: "Upvotes", value: totals.upvotes },
+    { label: "Followers", value: totals.followers },
   ];
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      {stats.map((s) => (
-        <Card key={s.label} className="flex flex-col gap-3 p-5">
-          <div className="flex items-center justify-between">
-            <span className="text-sm text-muted-foreground">{s.label}</span>
-            <span className="flex size-8 items-center justify-center rounded-lg bg-muted text-muted-foreground">
-              <Icon icon={s.icon} className="size-4" />
-            </span>
+    <Card className="grid grid-cols-2 gap-px overflow-hidden bg-border lg:grid-cols-4">
+      {stats.map((stat) => (
+        <div key={stat.label} className="flex flex-col gap-1 bg-card p-5">
+          <span className="text-xs text-muted-foreground">{stat.label}</span>
+          <div className="flex h-8 items-center">
+            {stat.value === null ? (
+              <PremiumBadge plan={Plan.PREMIUM} />
+            ) : (
+              <span className="text-2xl font-semibold tracking-tight text-foreground tabular-nums">
+                {formatCount(stat.value)}
+              </span>
+            )}
           </div>
-          <div className="flex flex-col gap-0.5">
-            <span className="text-3xl font-semibold tracking-tight text-foreground tabular-nums">
-              {s.value === null ? "Premium" : formatCount(s.value)}
-            </span>
-            <span className="text-xs text-muted-foreground">{s.sub}</span>
-          </div>
-        </Card>
+        </div>
       ))}
-    </div>
+    </Card>
   );
 }

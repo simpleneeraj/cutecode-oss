@@ -25,6 +25,29 @@ function formatDate(iso: string): string {
   return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(new Date(iso));
 }
 
+function SnippetTitle({ title, slug }: { title: string | null; slug: string | null }) {
+  const label = title || "Untitled snippet";
+  if (!slug) return <span className="block truncate font-medium text-foreground">{label}</span>;
+
+  return (
+    <div className="flex min-w-0 flex-col">
+      <Link href={getShareUrl(slug)} target="_blank" className="truncate font-medium text-foreground hover:underline">
+        {label}
+      </Link>
+      <span className="truncate font-mono text-xs text-muted-foreground">{slug}</span>
+    </div>
+  );
+}
+
+function VisibilityBadge({ isPublic }: { isPublic: boolean }) {
+  return (
+    <Badge variant={isPublic ? "secondary" : "outline"}>
+      <Icon icon={isPublic ? "solar:global-linear" : "solar:lock-password-linear"} className="size-3" aria-hidden="true" />
+      {isPublic ? "Public" : "Private"}
+    </Badge>
+  );
+}
+
 export function SnippetsTable({ snippets }: { snippets: DashboardSnippet[] }) {
   const { can } = useSubscription();
   const hasFullAnalytics = can("fullAnalytics");
@@ -59,41 +82,25 @@ export function SnippetsTable({ snippets }: { snippets: DashboardSnippet[] }) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {snippets.map((s) => (
-              <TableRow key={s.id}>
-                <TableCell className="max-w-[220px]">
-                  {s.slug ? (
-                    <Link
-                      href={getShareUrl(s.slug)}
-                      target="_blank"
-                      className="block truncate font-medium text-foreground hover:underline"
-                    >
-                      {s.title || "Untitled snippet"}
-                    </Link>
-                  ) : (
-                    <span className="block truncate font-medium text-foreground">{s.title || "Untitled snippet"}</span>
-                  )}
+            {snippets.map((snippet) => (
+              <TableRow key={snippet.id}>
+                <TableCell className="max-w-56">
+                  <SnippetTitle title={snippet.title} slug={snippet.slug} />
                 </TableCell>
                 {hasFullAnalytics && (
                   <>
-                    <TableCell className="text-right tabular-nums text-muted-foreground">{s.views}</TableCell>
-                    <TableCell className="text-right tabular-nums text-muted-foreground">{s.upvotes}</TableCell>
-                    <TableCell className="text-right tabular-nums text-muted-foreground">{s.comments}</TableCell>
+                    <TableCell className="text-right tabular-nums text-muted-foreground">{snippet.views}</TableCell>
+                    <TableCell className="text-right tabular-nums text-muted-foreground">{snippet.upvotes}</TableCell>
+                    <TableCell className="text-right tabular-nums text-muted-foreground">{snippet.comments}</TableCell>
                   </>
                 )}
                 <TableCell>
-                  <Badge variant={s.isPublic ? "secondary" : "outline"} className="gap-1">
-                    <Icon
-                      icon={s.isPublic ? "solar:global-linear" : "solar:lock-keyhole-minimalistic-linear"}
-                      className="size-3"
-                    />
-                    {s.isPublic ? "Public" : "Private"}
-                  </Badge>
+                  <VisibilityBadge isPublic={snippet.isPublic} />
                 </TableCell>
                 <TableCell className="text-right whitespace-nowrap text-xs text-muted-foreground">
-                  {formatDate(s.createdAt)}
+                  {formatDate(snippet.createdAt)}
                 </TableCell>
-                <TableCell>{s.slug ? <CopyLinkButton slug={s.slug} /> : null}</TableCell>
+                <TableCell>{snippet.slug && <CopyLinkButton slug={snippet.slug} />}</TableCell>
               </TableRow>
             ))}
           </TableBody>

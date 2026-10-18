@@ -1,6 +1,6 @@
-import { eq, inArray, sql } from "drizzle-orm";
+import { and, count, eq, gte, inArray, sql } from "drizzle-orm";
 import { db } from "@/db";
-import { snippets, shareLinks, snippetUpvotes, snippetBookmarks, snippetComments, userFollows, subscriptions } from "@/db/schema";
+import { snippets, shareLinks, shareLinkViews, snippetUpvotes, snippetBookmarks, snippetComments, userFollows, subscriptions } from "@/db/schema";
 import { router, protectedProcedure } from "../init";
 import { can } from "@/lib/billing/plans";
 import { getPublishQuota } from "@/lib/billing/publish-quota";
@@ -14,6 +14,28 @@ async function batchCounts(ids: string[]) {
   ]);
   const toMap = (rows: { snippetId: string; c: number }[]) => Object.fromEntries(rows.map((r) => [r.snippetId, Number(r.c)]));
   return { upvotes: toMap(upRows), comments: toMap(cmRows), bookmarks: toMap(bmRows) };
+}
+
+const DAY_MS = 86_400_000;
+const VIEW_DAYS = 30;
+
+function lastDays(): string[] {
+  const today = new Date();
+  today.setUTCHours(0, 0, 0, 0);
+  return Array.from({ length: VIEW_DAYS }, (_, index) =>
+    new Date(today.getTime() - (VIEW_DAYS - 1 - index) * DAY_MS).toISOString().slice(0, 10),
+  );
+}
+
+async function viewsByDay(userId: string, since: string) {
+  const day = sql<string>`to_char(date_trunc('day', ${shareLinkViews.viewedAt}), 'YYYY-MM-DD')`;
+  return db
+    .select({ day, views: count() })
+    .from(shareLinkViews)
+    .innerJoin(shareLinks, eq(shareLinks.id, shareLinkViews.shareLinkId))
+    .innerJoin(snippets, eq(snippets.id, shareLinks.snippetId))
+    .where(and(eq(snippets.userId, userId), gte(shareLinkViews.viewedAt, new Date(since))))
+    .groupBy(day);
 }
 
 export const dashboardRouter = router({
@@ -85,5 +107,12 @@ export const dashboardRouter = router({
       cancelAtPeriodEnd: sub?.cancelAtPeriodEnd ?? false,
       userName: ctx.user.name,
     };
+  }),
+  viewsByDay: protectedProcedure.query(async ({ ctx }) => {
+    if (!can(ctx.user.plan, "fullAnalytics")) return null;
+    const days = lastDays();
+    const rows = await viewsByDay(ctx.user.id, days[0]);
+    const viewsOn = new Map(rows.map((row) => [row.day, row.views]));
+    return days.map((date) => ({ date, views: viewsOn.get(date) ?? 0 }));
   }),
 });

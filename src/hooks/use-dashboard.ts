@@ -15,11 +15,15 @@ export type DashboardSummaryOutput = RouterOutput["dashboard"]["summary"];
 export function useDashboard() {
   const setPlansOpen = useSetAtom(plansDialogOpenAtom);
   return useSWR(["dashboard.summary"], () => trpc.dashboard.summary.query(), {
-    revalidateOnFocus: false,
     dedupingInterval: 30_000,
-    shouldRetryOnError: (error: unknown) => !isForbiddenError(error),
     onError: (error: unknown) => {
       if (isForbiddenError(error)) setPlansOpen(true);
     },
+  });
+}
+
+export function useDashboardViews() {
+  return useSWR(["dashboard.viewsByDay"], () => trpc.dashboard.viewsByDay.query(), {
+    dedupingInterval: 30_000,
   });
 }

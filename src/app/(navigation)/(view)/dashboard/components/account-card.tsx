@@ -11,13 +11,16 @@ import { usePricing, type PricingResult } from "@/hooks/use-pricing";
 import { Plan } from "@/db/schema";
 import type { PaidPlan } from "@/lib/billing/products";
 import { plansDialogOpenAtom } from "@/store/editor/plans";
-import { FREE_DAILY_PUBLISH_LIMIT } from "@/lib/billing/constants";
+import type { PublishQuota } from "@/lib/billing/publish-quota";
+import { Meter, MeterIndicator, MeterLabel, MeterTrack, MeterValue } from "@/components/ui/meter";
+import PremiumBadge from "../../preview/components/premium-badge";
 
 type AccountCardProps = {
   plan: keyof typeof PLANS;
   renewsAt: string | null;
   cancelAtPeriodEnd: boolean;
   totalSnippets: number;
+  quota: PublishQuota;
 };
 
 function formatDate(iso: string): string {
@@ -36,7 +39,21 @@ function nextPlanPrice(plan: PaidPlan, pricing?: PricingResult) {
   return `$${PLANS[plan].prices.monthly}/month`;
 }
 
-export function AccountCard({ plan, renewsAt, cancelAtPeriodEnd, totalSnippets }: AccountCardProps) {
+function PublishMeter({ used, limit }: { used: number; limit: number }) {
+  return (
+    <Meter value={used} max={limit}>
+      <div className="flex items-center justify-between">
+        <MeterLabel className="font-normal text-muted-foreground">Daily publishes</MeterLabel>
+        <MeterValue className="font-medium">{() => `${used}/${limit}`}</MeterValue>
+      </div>
+      <MeterTrack className="h-1.5 rounded-full">
+        <MeterIndicator className="rounded-full" />
+      </MeterTrack>
+    </Meter>
+  );
+}
+
+export function AccountCard({ plan, renewsAt, cancelAtPeriodEnd, totalSnippets, quota }: AccountCardProps) {
   const { openPortal, isLoading } = useBilling();
   const setPlansOpen = useSetAtom(plansDialogOpenAtom);
   const { data: pricing } = usePricing();
@@ -49,10 +66,7 @@ export function AccountCard({ plan, renewsAt, cancelAtPeriodEnd, totalSnippets }
     <Card className="flex h-fit flex-col gap-5 p-5">
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-semibold text-foreground">Account</h2>
-        <Badge variant={isFree ? "outline" : "secondary"} className="gap-1">
-          <Icon icon="solar:crown-bold" className="size-3" />
-          {planMeta.name}
-        </Badge>
+        {isFree ? <Badge variant="outline">{planMeta.name}</Badge> : <PremiumBadge plan={plan} />}
       </div>
 
       <dl className="flex flex-col gap-3 text-sm">
@@ -70,30 +84,25 @@ export function AccountCard({ plan, renewsAt, cancelAtPeriodEnd, totalSnippets }
           <dt className="text-muted-foreground">Snippets</dt>
           <dd className="font-medium text-foreground tabular-nums">{totalSnippets}</dd>
         </div>
-        {isFree ? (
+        {!isFree && renewsAt && (
           <div className="flex items-center justify-between">
-            <dt className="text-muted-foreground">Daily publishes</dt>
-            <dd className="font-medium text-foreground">{FREE_DAILY_PUBLISH_LIMIT}/day</dd>
+            <dt className="text-muted-foreground">{cancelAtPeriodEnd ? "Ends" : "Renews"}</dt>
+            <dd className="font-medium text-foreground">{formatDate(renewsAt)}</dd>
           </div>
-        ) : (
-          renewsAt && (
-            <div className="flex items-center justify-between">
-              <dt className="text-muted-foreground">{cancelAtPeriodEnd ? "Ends" : "Renews"}</dt>
-              <dd className="font-medium text-foreground">{formatDate(renewsAt)}</dd>
-            </div>
-          )
         )}
       </dl>
 
+      {isFree && quota.dailyLimit !== null && <PublishMeter used={quota.dailyUsed} limit={quota.dailyLimit} />}
+
       {nextPlan && (
         <Button size="lg" className="w-full" onClick={() => setPlansOpen(true)}>
-          <Icon icon="solar:crown-linear" className="size-4" />
+          <Icon icon="solar:crown-linear" className="size-4" aria-hidden="true" />
           {`Upgrade to ${PLANS[nextPlan].name}`}
         </Button>
       )}
       {!isFree && (
         <Button variant="outline" size="lg" className="w-full" disabled={isLoading} onClick={openPortal}>
-          <Icon icon="solar:card-linear" className="size-4" />
+          <Icon icon="solar:card-linear" className="size-4" aria-hidden="true" />
           Manage billing
         </Button>
       )}

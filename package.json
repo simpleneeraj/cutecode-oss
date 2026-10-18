@@ -1,5 +1,5 @@
 {
-  "name": "cool-snippets",
+  "name": "cutecode",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -21,8 +21,10 @@
   },
   "dependencies": {
     "@astral-sh/ruff-wasm-web": "0.15.9",
+    "@aws-sdk/client-dynamodb": "3.1152.0",
     "@aws-sdk/client-ses": "^3.1141.0",
     "@aws-sdk/client-ssm": "^3.1152.0",
+    "@aws-sdk/lib-dynamodb": "3.1152.0",
     "@base-ui/react": "^1.4.1",
     "@better-auth/drizzle-adapter": "^1.7.6",
     "@dodopayments/better-auth": "^1.6.6",
@@ -79,6 +81,7 @@
     "react-day-picker": "^9.14.0",
     "react-dom": "19.2.4",
     "react-use": "^17.6.1",
+    "recharts": "3.10.1",
     "server-only": "^0.0.1",
     "shiki": "^4.0.2",
     "swr": "^2.4.1",
