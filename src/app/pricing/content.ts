@@ -7,7 +7,7 @@ export const PRICING_HERO = {
 
 export const PRICING_FAQ: FaqItem[] = [
   {
-    question: "Is Cool Snippets free to use?",
+    question: "Is CuteCode free to use?",
     answer:
       "Yes. The Free plan includes all Classic and Brand themes, PNG, SVG and copy at 1x and 2x, GIF and video export with a watermark, typing animation, multi-slide reels, and 3 publishes a day with up to 25 live snippets. No credit card is required.",
   },

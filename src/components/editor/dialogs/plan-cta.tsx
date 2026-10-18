@@ -29,12 +29,14 @@ type PlanCtaProps = {
   isSignedIn: boolean;
   isLoaded: boolean;
   isAvailable: boolean;
+  isRecommended: boolean;
   signInRedirect?: string;
 };
 
-export default function PlanCta({ tier, currentPlan, interval, isSignedIn, isLoaded, isAvailable, signInRedirect }: PlanCtaProps) {
+export default function PlanCta({ tier, currentPlan, interval, isSignedIn, isLoaded, isAvailable, isRecommended, signInRedirect }: PlanCtaProps) {
   const { openCheckout, openPortal, isLoading } = useBilling();
   const label = disabledLabel(tier, currentPlan, isAvailable);
+  const variant = isRecommended ? "default" : "outline";
 
   if (tier === Plan.FREE || label) {
     return (
@@ -46,7 +48,7 @@ export default function PlanCta({ tier, currentPlan, interval, isSignedIn, isLoa
 
   if (!isSignedIn) {
     return (
-      <Button className="w-full" onClick={() => trackUpgrade.ctaClicked(false)} render={<Link href={signInHref(signInRedirect)} />}>
+      <Button variant={variant} className="w-full" onClick={() => trackUpgrade.ctaClicked(false)} render={<Link href={signInHref(signInRedirect)} />}>
         Sign in to upgrade
       </Button>
     );
@@ -64,7 +66,7 @@ export default function PlanCta({ tier, currentPlan, interval, isSignedIn, isLoa
   }
 
   return (
-    <Button className="w-full" disabled={!isLoaded || isLoading} onClick={onUpgrade}>
+    <Button variant={variant} className="w-full" disabled={!isLoaded || isLoading} onClick={onUpgrade}>
       {isLoading && <Spinner />}
       {`Upgrade to ${PLANS[tier].name}`}
     </Button>
