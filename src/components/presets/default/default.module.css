@@ -20,55 +20,53 @@
 
 .window {
   display: flex;
-  min-height: 100px;
+  min-height: 96px;
   flex-direction: column;
   align-items: stretch;
-  padding-top: 10px;
-  border: 1px solid hsl(0 0% 100% / 0.3);
-  border-radius: 18px;
+  padding-top: 8px;
+  border: 1px solid var(--frame-highlight-border);
+  border-radius: 16px;
   background: var(--frame-background);
+  filter: drop-shadow(0 0 0.5px var(--frame-shadow-border));
   transition: all ease 0.3s;
 
-  &.withBorder {
-    border: none;
-    box-shadow:
-      0 0 0 1px var(--frame-highlight-border),
-      0 0 0 1.5px var(--frame-shadow-border);
-  }
-
   &.withShadow {
-    border: none;
-    box-shadow:
-      0 0 0 1px var(--frame-highlight-border),
-      0 0 0 1.5px var(--frame-shadow-border),
-      0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-      0 6.7px 5.3px rgba(0, 0, 0, 0.048),
-      0 12.5px 10px rgba(0, 0, 0, 0.06),
-      0 22.3px 17.9px rgba(0, 0, 0, 0.072),
-      0 41.8px 33.4px rgba(0, 0, 0, 0.086),
-      0 100px 80px rgba(0, 0, 0, 0.12);
+    filter: drop-shadow(0 0 0.5px var(--frame-shadow-border)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.06))
+      drop-shadow(0 8px 16px var(--frame-ambient)) drop-shadow(0 24px 40px var(--frame-ambient));
   }
 }
 
 .header {
   display: grid;
-  height: 24px;
+  height: 32px;
   align-items: center;
   padding: 0 16px;
-  grid-gap: 12px;
-  grid-template-columns: 60px 1fr 60px;
+  grid-gap: 16px;
+  grid-template-columns: 56px 1fr 56px;
 }
 
 .controls {
   display: flex;
-  gap: 9px;
+  gap: 8px;
 }
 
 .control {
-  width: 14px;
-  height: 14px;
-  border-radius: 7px;
+  width: 12px;
+  height: 12px;
+  border-radius: 6px;
   background-color: var(--frame-control-color);
+
+  &:nth-child(1) {
+    background-color: var(--frame-control-close, var(--frame-control-color));
+  }
+
+  &:nth-child(2) {
+    background-color: var(--frame-control-minimize, var(--frame-control-color));
+  }
+
+  &:nth-child(3) {
+    background-color: var(--frame-control-zoom, var(--frame-control-color));
+  }
 }
 
 .fileName {
@@ -119,6 +117,29 @@
 }
 
 /* All Themes */
+
+.default {
+  --frame-background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(246, 247, 249, 0.97));
+  --frame-highlight-border: rgba(255, 255, 255, 0.8);
+  --frame-shadow-border: rgba(24, 30, 42, 0.2);
+  --frame-control-color: rgba(60, 66, 80, 0.2);
+  --frame-control-close: #ff5f57;
+  --frame-control-minimize: #febc2e;
+  --frame-control-zoom: #28c840;
+  --frame-title-color: #1d222c;
+  --frame-title-placeholder-color: #8a909c;
+  --frame-ambient: rgba(24, 30, 42, 0.16);
+
+  &.darkMode {
+    --frame-background: linear-gradient(180deg, rgba(33, 36, 43, 0.96), rgba(24, 26, 32, 0.97));
+    --frame-highlight-border: rgba(255, 255, 255, 0.08);
+    --frame-shadow-border: rgba(0, 0, 0, 0.7);
+    --frame-control-color: rgba(255, 255, 255, 0.16);
+    --frame-title-color: #e6e8ec;
+    --frame-title-placeholder-color: #7c8391;
+    --frame-ambient: rgba(0, 0, 0, 0.4);
+  }
+}
 
 .bitmap {
   --frame-background: linear-gradient(180deg, rgba(247, 239, 239, 0.94), rgba(254, 237, 238, 0.95));
@@ -195,12 +216,8 @@
   }
 
   .withShadow {
-    border: none;
-    box-shadow:
-      0 0 0 1px var(--frame-highlight-border),
-      0 0 0 1.5px var(--frame-shadow-border),
-      0 4px 6px rgba(0, 0, 0, 0.04),
-      0 12px 24px -8px var(--frame-ambient);
+    filter: drop-shadow(0 0 0.5px var(--frame-shadow-border)) drop-shadow(0 4px 6px rgba(0, 0, 0, 0.04))
+      drop-shadow(0 12px 16px var(--frame-ambient));
   }
 
   &.darkMode {
@@ -597,6 +614,7 @@
 }
 
 :is(
+  .default,
   .bitmap,
   .noir,
   .dusk,
@@ -620,11 +638,6 @@
   .sunset
 )
   .withShadow {
-    box-shadow:
-      0 0 0 1px var(--frame-highlight-border),
-      0 0 0 1.5px var(--frame-shadow-border),
-      0 1px 2px rgba(0, 0, 0, 0.06),
-      0 8px 16px -6px var(--frame-ambient),
-      0 24px 48px -16px var(--frame-ambient),
-      0 64px 100px -32px var(--frame-ambient);
+    filter: drop-shadow(0 0 0.5px var(--frame-shadow-border)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.06))
+      drop-shadow(0 8px 16px var(--frame-ambient)) drop-shadow(0 24px 40px var(--frame-ambient));
   }

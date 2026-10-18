@@ -1,7 +1,6 @@
 import { cn } from "@/utils/cn";
 import { BaseFrameProps } from "@/typings/presets";
 import styles from "./default.module.css";
-import useIsSafari from "@/components/editor/util/useIsSafari";
 
 const DefaultFrame = ({
   padding,
@@ -14,8 +13,6 @@ const DefaultFrame = ({
   themeId,
   children,
 }: BaseFrameProps) => {
-  const isSafari = useIsSafari();
-
   return (
     <div
       className={cn(
@@ -32,17 +29,12 @@ const DefaultFrame = ({
       }}
     >
       {transparent && <div data-ignore-in-export className={styles.transparentPattern}></div>}
-      <div
-        className={cn(styles.window, {
-          [styles.withBorder]: !isSafari,
-          [styles.withShadow]: !isSafari && !transparent,
-        })}
-      >
+      <div className={cn(styles.window, !transparent && styles.withShadow)}>
         <div className={styles.header}>
           <div className={styles.controls}>
-            <div className={styles.control}></div>
-            <div className={styles.control}></div>
-            <div className={styles.control}></div>
+            <div className={styles.control} />
+            <div className={styles.control} />
+            <div className={styles.control} />
           </div>
           <div className={styles.fileName}>
             <input
