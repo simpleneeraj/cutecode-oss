@@ -1,6 +1,7 @@
 import { Accordion, AccordionItem, AccordionPanel, AccordionTrigger } from "@/components/ui/accordion";
 import { PRICING_FAQ, PRICING_HERO } from "./content";
 import PricingPlans from "./components/pricing-plans";
+import BrandPlans from "./components/brand-plans";
 
 export default function PricingPage() {
   return (
@@ -14,6 +15,8 @@ export default function PricingPage() {
         </header>
 
         <PricingPlans />
+
+        <BrandPlans />
 
         <section className="grid gap-6 border-t pt-16 md:grid-cols-3 md:gap-4">
           <h2 className="font-heading text-xl font-semibold tracking-tight text-foreground">Frequently asked questions</h2>

@@ -25,6 +25,8 @@ export const passcodeRateLimit = rl(5, 15 * MINUTE, "passcode");
 
 export const passcodeShareRateLimit = rl(30, 60 * MINUTE, "passcode-share");
 
+export const brandRequestRateLimit = rl(3, 60 * MINUTE, "brand-request");
+
 function currentWindow(limiter: RateLimiter, identifier: string): Window {
   const now = Date.now();
   const bucket = Math.floor(now / limiter.windowMs);

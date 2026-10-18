@@ -133,6 +133,12 @@
   background: linear-gradient(135deg, #ffd27a, #ff7a59 55%, #b46cff);
 }
 
+.watermarkCredit {
+  padding-left: 6px;
+  border-left: 1px solid rgb(255 255 255 / 0.24);
+  color: rgb(255 255 255 / 0.72);
+}
+
 .outerFrame input[type="text"] {
   font-family: var(--code-font, inherit) !important;
 }

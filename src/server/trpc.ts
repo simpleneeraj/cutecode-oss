@@ -25,6 +25,7 @@ import { userRouter } from "./routers/user";
 import { publishRouter } from "./routers/publish";
 import { billingRouter } from "./routers/billing";
 import { dashboardRouter } from "./routers/dashboard";
+import { brandRouter } from "./routers/brand";
 
 export const appRouter = router({
   snippet: snippetRouter,
@@ -34,6 +35,7 @@ export const appRouter = router({
   publish: publishRouter,
   billing: billingRouter,
   dashboard: dashboardRouter,
+  brand: brandRouter,
 });
 
 /**
