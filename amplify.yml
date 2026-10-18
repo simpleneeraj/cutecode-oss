@@ -6,7 +6,7 @@ frontend:
   phases:
     preBuild:
       commands:
-        - nvm use 22 || nvm install 22 --skip-default-packages
+        - nvm install 24 --skip-default-packages && nvm use 24
         - node --version
         - yarn --version || npm install -g yarn@1.22.22
         - yarn install --frozen-lockfile --cache-folder .yarn-cache --prefer-offline --non-interactive
