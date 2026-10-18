@@ -1,0 +1,1 @@
+ALTER TYPE "public"."plan" ADD VALUE 'PRO' BEFORE 'PREMIUM';
