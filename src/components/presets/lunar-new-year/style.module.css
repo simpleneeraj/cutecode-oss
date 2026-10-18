@@ -1,7 +1,6 @@
 .scene {
   position: relative;
   overflow: hidden;
-  border-radius: 24px;
   isolation: isolate;
 }
 
