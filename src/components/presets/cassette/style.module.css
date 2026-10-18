@@ -134,16 +134,12 @@
 
 .light .tape {
   background: linear-gradient(160deg, #e3d6fb, #c9b6f2);
-  box-shadow:
-    0 18px 40px rgba(107, 79, 196, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  filter: drop-shadow(0 18px 40px rgba(107, 79, 196, 0.2));
 }
 
 .dark .tape {
   background: linear-gradient(160deg, #4a3d7a, #362b60);
-  box-shadow:
-    0 18px 40px rgba(0, 0, 0, 0.45),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  filter: drop-shadow(0 18px 40px rgba(0, 0, 0, 0.45));
 }
 
 .tapeLabel {
@@ -241,20 +237,15 @@
 }
 
 .light .window {
+  border: 1px solid rgba(107, 79, 196, 0.14);
   background: rgba(255, 253, 252, 0.95);
-  box-shadow:
-    0 0 0 1px rgba(107, 79, 196, 0.14),
-    0 14px 44px rgba(47, 42, 68, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.98);
+  filter: drop-shadow(0 14px 44px rgba(47, 42, 68, 0.12));
 }
 
 .dark .window {
+  border: 1px solid rgba(187, 166, 255, 0.1);
   background: #15122a;
-  box-shadow:
-    0 0 0 1px rgba(187, 166, 255, 0.1),
-    0 0 55px rgba(159, 240, 212, 0.06),
-    0 24px 75px rgba(0, 0, 0, 0.75),
-    inset 0 1px 0 rgba(253, 231, 176, 0.05);
+  filter: drop-shadow(0 0 55px rgba(159, 240, 212, 0.06)) drop-shadow(0 24px 75px rgba(0, 0, 0, 0.75));
 }
 
 .topEdge {
@@ -326,17 +317,17 @@
 
 .dot:nth-child(1) {
   background: radial-gradient(circle at 35% 35%, #ffd0de, #e0628a);
-  box-shadow: 0 1px 4px rgba(224, 98, 138, 0.4);
+  filter: drop-shadow(0 1px 4px rgba(224, 98, 138, 0.4));
 }
 
 .dot:nth-child(2) {
   background: radial-gradient(circle at 35% 35%, #fff0b8, #e0a92a);
-  box-shadow: 0 1px 4px rgba(224, 169, 42, 0.4);
+  filter: drop-shadow(0 1px 4px rgba(224, 169, 42, 0.4));
 }
 
 .dot:nth-child(3) {
   background: radial-gradient(circle at 35% 35%, #c8f5e4, #2fa883);
-  box-shadow: 0 1px 4px rgba(47, 168, 131, 0.4);
+  filter: drop-shadow(0 1px 4px rgba(47, 168, 131, 0.4));
 }
 
 .fileName {
