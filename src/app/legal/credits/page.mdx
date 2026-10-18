@@ -1,4 +1,5 @@
-import fonts from "@/fonts/editor/fonts";
+import CreditList from "../components/credit-list";
+import { FONT_CREDITS, LIBRARY_CREDITS } from "../components/credits";
 
 export const metadata = {
   title: "Credits",
@@ -8,28 +9,25 @@ export const metadata = {
 
 # Credits
 
-**Last updated: October 2026**
+Last updated October 2026
 
-Cool Snippets is built on the work of many people. This page credits them.
+Cool Snippets is built on the work of many people. Each font and library below is used under its own license, and the full license text is at its source link.
 
 ## Fonts
 
-The code fonts in Cool Snippets belong to their authors. Each font is used under its own license. The license texts are available at the source links.
+<CreditList credits={FONT_CREDITS} />
 
-<ul>
-  {fonts.map((font) => (
-    <li key={font.name}>
-      <a href={font.source_url}>{font.name}</a> by {font.provider}, {font.license}
-    </li>
-  ))}
-</ul>
+## Open source
 
-## Open source code
+<CreditList credits={LIBRARY_CREDITS} />
 
-Cool Snippets is based on [ray.so](https://github.com/raycast/ray-so) by Raycast, used under the MIT License.
+## ray.so license
 
-```
-MIT License
+Cool Snippets started from ray.so by Raycast. Its MIT license notice:
+
+<details className="not-prose rounded-xl border">
+  <summary className="cursor-pointer px-4 py-2.5 text-sm font-medium text-foreground">MIT License</summary>
+  <pre className="overflow-x-auto border-t px-4 py-3 text-xs leading-relaxed whitespace-pre-wrap text-muted-foreground">{`MIT License
 
 Copyright (c) 2024 Raycast Technologies Ltd
 Copyright (c) 2026 simpleneeraj
@@ -50,20 +48,5 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
-We also use these open source libraries:
-
-* [Next.js](https://nextjs.org), MIT License
-* [React](https://react.dev), MIT License
-* [Shiki](https://shiki.style), MIT License
-* [Motion](https://motion.dev), MIT License
-* [Jotai](https://jotai.org), MIT License
-* [Radix UI](https://www.radix-ui.com), MIT License
-* [Tailwind CSS](https://tailwindcss.com), MIT License
-* [Mediabunny](https://mediabunny.dev), MPL-2.0 License
-
-## Icons
-
-* [Hugeicons](https://hugeicons.com) (@hugeicons/core-free-icons and @hugeicons/react), MIT License
+SOFTWARE.`}</pre>
+</details>

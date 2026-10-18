@@ -17,6 +17,7 @@ const publicPaths = [
   /^\/legal\/terms(\/.*)?$/,
   /^\/legal\/privacy(\/.*)?$/,
   /^\/legal\/refund(\/.*)?$/,
+  /^\/legal\/credits(\/.*)?$/,
   /^\/embed(\/.*)?$/,
   /^\/icon(\/.*)?$/,
   /^\/sitemap\.xml$/,
