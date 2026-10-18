@@ -1,55 +1,47 @@
-import { motion, easeInOut } from "motion/react";
-import { useLoop } from "../scene";
-import DataRail, { type Rail } from "./data-rail";
-import JunctionNode, { type Junction } from "./junction-node";
+import Aurora, { type AuroraRibbon } from "./aurora";
+import Bolt from "./bolt";
+import EnergyLine, { type Streak } from "./energy-line";
+import Spark, { type Ember } from "./spark";
 import styles from "./supabase.module.css";
 
-const ROWS = [12, 34, 66, 88];
-const COLUMNS = [6, 50, 94];
-
-const RAILS: Rail[] = [
-  ...ROWS.map((position, index) => ({
-    id: `row-${position}`,
-    position,
-    isVertical: false,
-    flows: [
-      { id: `row-${position}-lead`, cycles: 1, phase: index * 0.27 },
-      { id: `row-${position}-trail`, cycles: 2, phase: index * 0.19 + 0.5 },
-    ],
-  })),
-  ...COLUMNS.map((position, index) => ({
-    id: `column-${position}`,
-    position,
-    isVertical: true,
-    flows: [
-      { id: `column-${position}-lead`, cycles: 1, phase: index * 0.33 + 0.1 },
-      { id: `column-${position}-trail`, cycles: 2, phase: index * 0.21 + 0.6 },
-    ],
-  })),
+const RIBBONS: AuroraRibbon[] = [
+  { id: "north", className: styles.auroraNorth, phase: 0 },
+  { id: "south", className: styles.auroraSouth, phase: 0.5 },
 ];
 
-const JUNCTIONS: Junction[] = [
-  ...ROWS.flatMap((y, row) =>
-    [6, 94].map((x, column) => ({ id: `node-${x}-${y}`, x, y, phase: (row * 2 + column) / 10 })),
-  ),
-  { id: "node-50-12", x: 50, y: 12, phase: 0.8 },
-  { id: "node-50-88", x: 50, y: 88, phase: 0.9 },
+const STREAKS: Streak[] = [
+  { id: "north-near", x1: 1500, y1: -60, x2: 1060, y2: 350, phase: 0 },
+  { id: "north-mid", x1: 1600, y1: 120, x2: 1240, y2: 456, phase: 0.35 },
+  { id: "north-far", x1: 1640, y1: 420, x2: 1380, y2: 663, phase: 0.7 },
+  { id: "south-near", x1: 400, y1: 560, x2: 40, y2: 896, phase: 0.2 },
+  { id: "south-mid", x1: 560, y1: 700, x2: 200, y2: 1036, phase: 0.55 },
+  { id: "south-far", x1: 220, y1: 380, x2: -80, y2: 660, phase: 0.85 },
+];
+
+const EMBERS: Ember[] = [
+  { id: "inner-left", x: 560, y: 560, phase: 0 },
+  { id: "inner-right", x: 1040, y: 420, phase: 0.25 },
+  { id: "far-right", x: 1320, y: 820, phase: 0.5 },
+  { id: "far-left", x: 260, y: 180, phase: 0.75 },
+  { id: "top", x: 1420, y: 220, phase: 0.4 },
 ];
 
 export default function SupabaseScene() {
-  const bloomScale = useLoop([1, 1.12, 1], { ease: easeInOut });
-  const bloomOpacity = useLoop([0.7, 1, 0.7], { ease: easeInOut });
-
   return (
     <div className={styles.layer} aria-hidden>
+      {RIBBONS.map((ribbon) => (
+        <Aurora key={ribbon.id} ribbon={ribbon} />
+      ))}
       <div className={styles.dotGrid} />
-      <motion.div className={styles.bloom} style={{ scale: bloomScale, opacity: bloomOpacity }} />
-      {RAILS.map((rail) => (
-        <DataRail key={rail.id} rail={rail} />
-      ))}
-      {JUNCTIONS.map((junction) => (
-        <JunctionNode key={junction.id} junction={junction} />
-      ))}
+      <svg className={styles.energy} viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+        {STREAKS.map((streak) => (
+          <EnergyLine key={streak.id} streak={streak} />
+        ))}
+        <Bolt />
+        {EMBERS.map((ember) => (
+          <Spark key={ember.id} ember={ember} />
+        ))}
+      </svg>
     </div>
   );
 }

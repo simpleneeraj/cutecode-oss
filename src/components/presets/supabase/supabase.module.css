@@ -6,20 +6,30 @@
 
 .dark {
   --emerald: #3ecf8e;
-  --grid-dot: rgba(255, 255, 255, 0.08);
-  --rail: rgba(62, 207, 142, 0.12);
-  --bloom: rgba(62, 207, 142, 0.22);
-  --node-fill: #121212;
-  background: radial-gradient(ellipse at 50% 100%, #0f2a1d 0%, #141414 45%, #0f0f0f 100%);
+  --emerald-glow: rgba(62, 207, 142, 0.6);
+  --aurora: rgba(62, 207, 142, 0.24);
+  --aurora-deep: rgba(0, 163, 92, 0.2);
+  --grid-dot: rgba(255, 255, 255, 0.06);
+  --streak: rgba(62, 207, 142, 0.14);
+  --glow: rgba(62, 207, 142, 0.18);
+  --bolt-fill: rgba(62, 207, 142, 0.16);
+  --bolt-edge: rgba(62, 207, 142, 0.5);
+  --bolt-echo: rgba(62, 207, 142, 0.16);
+  background: radial-gradient(ellipse at 70% 0%, #0d2219 0%, #0b0f0d 50%, #070908 100%);
 }
 
 .light {
   --emerald: #00a35c;
-  --grid-dot: rgba(0, 0, 0, 0.1);
-  --rail: rgba(0, 154, 85, 0.16);
-  --bloom: rgba(62, 207, 142, 0.28);
-  --node-fill: #fcfcfc;
-  background: radial-gradient(ellipse at 50% 100%, #e3f7ec 0%, #fcfcfc 50%, #f6f6f6 100%);
+  --emerald-glow: rgba(0, 163, 92, 0.35);
+  --aurora: rgba(62, 207, 142, 0.3);
+  --aurora-deep: rgba(110, 231, 183, 0.32);
+  --grid-dot: rgba(0, 92, 52, 0.1);
+  --streak: rgba(0, 163, 92, 0.16);
+  --glow: rgba(255, 255, 255, 0.9);
+  --bolt-fill: rgba(62, 207, 142, 0.18);
+  --bolt-edge: rgba(0, 163, 92, 0.45);
+  --bolt-echo: rgba(0, 163, 92, 0.14);
+  background: radial-gradient(ellipse at 70% 0%, #ffffff 0%, #effcf5 50%, #e0f7ea 100%);
 }
 
 .transparent {
@@ -33,106 +43,103 @@
   pointer-events: none;
 }
 
+.aurora {
+  position: absolute;
+  width: 80%;
+  height: 64%;
+  border-radius: 50%;
+}
+
+.auroraNorth {
+  top: -32%;
+  right: -16%;
+  background: radial-gradient(ellipse, var(--aurora) 0%, transparent 70%);
+}
+
+.auroraSouth {
+  bottom: -32%;
+  left: -24%;
+  background: radial-gradient(ellipse, var(--aurora-deep) 0%, transparent 70%);
+}
+
 .dotGrid {
   position: absolute;
   background-image: radial-gradient(circle, var(--grid-dot) 1px, transparent 1.5px);
   background-position: center;
-  background-size: 22px 22px;
+  background-size: 24px 24px;
   inset: 0;
-  mask-image: radial-gradient(ellipse at 50% 50%, black 35%, transparent 85%);
+  mask-image: radial-gradient(ellipse at 50% 50%, black 30%, transparent 80%);
 }
 
-.bloom {
+.energy {
   position: absolute;
-  bottom: -260px;
-  left: 50%;
-  width: 720px;
-  height: 420px;
-  margin-left: -360px;
-  border-radius: 50%;
-  background: radial-gradient(ellipse, var(--bloom) 0%, transparent 70%);
+  width: 100%;
+  height: 100%;
+  inset: 0;
 }
 
-.rail {
-  position: absolute;
-  right: 0;
-  left: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--rail) 12%, var(--rail) 88%, transparent);
+.stopGlow {
+  stop-color: var(--glow);
 }
 
-.railVertical {
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  height: auto;
-  background: linear-gradient(180deg, transparent, var(--rail) 12%, var(--rail) 88%, transparent);
+.stopFill {
+  stop-color: var(--bolt-fill);
 }
 
-.runner {
-  position: absolute;
-  top: 0;
-  left: -72px;
-  width: calc(100% + 72px);
-  height: 1px;
+.streak {
+  stroke: var(--streak);
 }
 
-.railVertical .runner {
-  top: -72px;
-  left: 0;
-  width: 1px;
-  height: calc(100% + 72px);
+.streakPulse {
+  stroke: var(--emerald);
+  filter: drop-shadow(0 0 6px var(--emerald-glow));
 }
 
-.packet {
-  position: absolute;
-  top: -0.5px;
-  left: 0;
-  width: 72px;
-  height: 2px;
-  border-radius: 2px;
-  background: linear-gradient(90deg, transparent, var(--emerald));
-  filter: drop-shadow(0 0 10px rgba(62, 207, 142, 0.45));
+.boltCore {
+  stroke: var(--bolt-edge);
+  stroke-linejoin: round;
+  stroke-width: 1.5;
 }
 
-.railVertical .packet {
-  top: 0;
-  left: -0.5px;
-  width: 2px;
-  height: 72px;
-  background: linear-gradient(180deg, transparent, var(--emerald));
+.boltEcho {
+  fill: none;
+  stroke: var(--bolt-echo);
+  stroke-dasharray: 4 8;
+  stroke-linejoin: round;
+  stroke-width: 1;
 }
 
-.node {
-  position: absolute;
-  width: 7px;
-  height: 7px;
-  border: 1.5px solid var(--emerald);
-  margin: -3.5px 0 0 -3.5px;
-  background: var(--node-fill);
-  border-radius: 2px;
-  filter: drop-shadow(0 0 8px rgba(62, 207, 142, 0.5));
+.boltPulse {
+  fill: none;
+  stroke: var(--emerald);
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 8px var(--emerald-glow));
+}
+
+.spark {
+  fill: var(--emerald);
+  filter: drop-shadow(0 0 6px var(--emerald-glow));
 }
 
 .window {
-  --line-number: rgba(255, 255, 255, 0.22);
+  --line-number: rgba(255, 255, 255, 0.24);
   position: relative;
   z-index: 10;
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: 16px;
 }
 
 .dark .window {
-  border: 1px solid #2e2e2e;
-  background: #171717;
-  filter: drop-shadow(0 0 70px rgba(62, 207, 142, 0.07)) drop-shadow(0 24px 64px rgba(0, 0, 0, 0.65));
+  border: 1px solid rgba(62, 207, 142, 0.16);
+  background: linear-gradient(180deg, #141815 0%, #101311 100%);
+  filter: drop-shadow(0 0 48px rgba(62, 207, 142, 0.08)) drop-shadow(0 24px 64px rgba(0, 0, 0, 0.7));
 }
 
 .light .window {
-  --line-number: rgba(0, 0, 0, 0.25);
-  border: 1px solid #dfdfdf;
+  --line-number: rgba(0, 0, 0, 0.24);
+  border: 1px solid rgba(0, 120, 68, 0.12);
   background: #fff;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.03)) drop-shadow(0 18px 44px rgba(0, 110, 60, 0.1));
+  filter: drop-shadow(0 2px 8px rgba(0, 92, 52, 0.06)) drop-shadow(0 24px 48px rgba(0, 120, 68, 0.12));
 }
 
 .topEdge {
@@ -155,44 +162,44 @@
 .header {
   display: grid;
   align-items: center;
-  padding: 12px 16px 11px;
-  grid-gap: 12px;
-  grid-template-columns: 60px 1fr 60px;
+  padding: 12px 16px;
+  grid-gap: 16px;
+  grid-template-columns: 56px 1fr 56px;
 }
 
 .dark .header {
-  border-bottom: 1px solid #292929;
-  background: #1c1c1c;
+  border-bottom: 1px solid rgba(62, 207, 142, 0.1);
+  background: rgba(62, 207, 142, 0.03);
 }
 
 .light .header {
-  border-bottom: 1px solid #e6e6e6;
-  background: #f8f8f8;
+  border-bottom: 1px solid rgba(0, 120, 68, 0.08);
+  background: #f4fbf7;
 }
 
 .dots {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
 }
 
 .dot {
-  width: 11px;
-  height: 11px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
 }
 
 .dot:nth-child(1) {
   background: var(--emerald);
-  filter: drop-shadow(0 0 6px rgba(62, 207, 142, 0.5));
+  filter: drop-shadow(0 0 6px var(--emerald-glow));
 }
 
 .dark .dot:nth-child(n + 2) {
-  background: #2e2e2e;
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .light .dot:nth-child(n + 2) {
-  background: #e2e2e2;
+  background: rgba(0, 92, 52, 0.12);
 }
 
 .fileName {
