@@ -5,11 +5,11 @@
 }
 
 .dark {
-  background: radial-gradient(ellipse at 80% 0%, #2c2350 0%, #1a1633 50%, #100d22 100%);
+  background: radial-gradient(ellipse at 75% 0%, #34206a 0%, #1a1240 48%, #0c0920 100%);
 }
 
 .light {
-  background: linear-gradient(135deg, #fdeee6 0%, #f3e8fb 50%, #dff3ec 100%);
+  background: radial-gradient(ellipse at 75% 0%, #efe4ff 0%, #f8f2fd 48%, #fde9f1 100%);
 }
 
 .transparent {
@@ -23,46 +23,83 @@
   pointer-events: none;
 }
 
-.blobMint,
-.blobPeach {
+.stars {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 12% 22%, var(--star) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 34% 14%, var(--star) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 58% 28%, var(--star) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 78% 18%, var(--star) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 92% 56%, var(--star) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 66% 76%, var(--star) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 40% 88%, var(--star) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 8% 62%, var(--star) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 24% 40%, var(--star) 0 1px, transparent 1.5px);
+}
+
+.light .stars {
+  --star: rgba(116, 72, 214, 0.35);
+}
+
+.dark .stars {
+  --star: rgba(255, 255, 255, 0.7);
+}
+
+.blobPink,
+.blobCyan {
   position: absolute;
   border-radius: 50%;
-  filter: blur(70px);
+  filter: blur(72px);
   will-change: transform;
 }
 
-.blobMint {
-  top: -90px;
+.blobPink {
+  top: -96px;
   right: -80px;
-  width: 300px;
+  width: 304px;
   height: 280px;
 }
 
-.blobPeach {
-  bottom: -100px;
-  left: 20%;
+.blobCyan {
+  bottom: -104px;
+  left: 24%;
   width: 320px;
-  height: 260px;
+  height: 256px;
 }
 
-.light .blobMint {
-  background: #b9ecd9;
-  opacity: 0.6;
-}
-
-.light .blobPeach {
-  background: #ffd3c2;
+.light .blobPink {
+  background: #ffc4de;
   opacity: 0.55;
 }
 
-.dark .blobMint {
-  background: #3fb08f;
-  opacity: 0.16;
+.light .blobCyan {
+  background: #bfe9f8;
+  opacity: 0.55;
 }
 
-.dark .blobPeach {
-  background: #e8678f;
+.dark .blobPink {
+  background: #ff4f9a;
+  opacity: 0.18;
+}
+
+.dark .blobCyan {
+  background: #3fc8f0;
   opacity: 0.14;
+}
+
+.sparkle {
+  position: absolute;
+  will-change: transform, opacity;
+}
+
+.light .sparkle {
+  fill: #a77bff;
+}
+
+.dark .sparkle {
+  fill: #fff4fb;
+  filter: drop-shadow(0 0 4px rgba(255, 140, 200, 0.8));
 }
 
 .shape {
@@ -75,118 +112,136 @@
 }
 
 .light .shape {
-  opacity: 0.75;
+  opacity: 0.8;
 }
 
 .dark .shape {
-  opacity: 0.55;
+  opacity: 0.85;
 }
 
-.mint {
-  stroke: #5cc9a7;
+.pink {
+  stroke: #ff5fa2;
 }
 
-.lilac {
-  stroke: #a98bf0;
+.cyan {
+  stroke: #3fc8f0;
 }
 
-.peach {
-  stroke: #f59a7f;
+.violet {
+  stroke: #a77bff;
 }
 
-.butter {
-  stroke: #f2c94c;
+.amber {
+  stroke: #ffb35c;
+}
+
+.dark .pink {
+  filter: drop-shadow(0 0 4px rgba(255, 95, 162, 0.6));
+}
+
+.dark .cyan {
+  filter: drop-shadow(0 0 4px rgba(63, 200, 240, 0.6));
+}
+
+.dark .violet {
+  filter: drop-shadow(0 0 4px rgba(167, 123, 255, 0.6));
+}
+
+.dark .amber {
+  filter: drop-shadow(0 0 4px rgba(255, 179, 92, 0.6));
 }
 
 .meter {
   position: absolute;
-  top: 7%;
+  top: 6%;
   right: 4%;
   display: flex;
-  height: 44px;
+  height: 48px;
   align-items: flex-end;
   gap: 4px;
 }
 
 .bar {
-  width: 5px;
+  width: 6px;
   height: 100%;
   border-radius: 3px;
-  background: linear-gradient(0deg, #5cc9a7 0%, #f2c94c 60%, #f08aa8 100%);
+  background: linear-gradient(0deg, #3fc8f0 0%, #a77bff 50%, #ff5fa2 80%, #ffb35c 100%);
   transform-origin: bottom;
   will-change: transform;
 }
 
 .dark .bar {
-  opacity: 0.8;
+  filter: drop-shadow(0 0 4px rgba(255, 95, 162, 0.45));
 }
 
 .tape {
   position: absolute;
-  bottom: -54px;
-  left: -36px;
-  width: 300px;
-  height: 188px;
-  border-radius: 14px;
+  bottom: -56px;
+  left: -40px;
+  width: 304px;
+  height: 192px;
+  border-radius: 20px;
   transform: rotate(-9deg);
 }
 
 .light .tape {
-  background: linear-gradient(160deg, #e3d6fb, #c9b6f2);
-  filter: drop-shadow(0 18px 40px rgba(107, 79, 196, 0.2));
+  border: 1px solid rgba(116, 72, 214, 0.18);
+  background: linear-gradient(160deg, #ece2ff, #d4c2f7);
+  filter: drop-shadow(0 16px 32px rgba(116, 72, 214, 0.18));
 }
 
 .dark .tape {
-  background: linear-gradient(160deg, #4a3d7a, #362b60);
-  filter: drop-shadow(0 18px 40px rgba(0, 0, 0, 0.45));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(160deg, #2e2552, #1c163a);
+  filter: drop-shadow(0 16px 40px rgba(0, 0, 0, 0.5));
 }
 
 .tapeLabel {
   position: absolute;
-  top: 14px;
-  right: 16px;
-  left: 16px;
-  height: 116px;
+  top: 12px;
+  right: 12px;
+  left: 12px;
+  height: 120px;
   border-radius: 8px;
   background:
     linear-gradient(
       180deg,
-      transparent 0 18px,
-      #f59a7f 18px 24px,
-      #f2c94c 24px 30px,
-      #5cc9a7 30px 36px,
-      transparent 36px
+      transparent 0 16px,
+      #ff5fa2 16px 24px,
+      #ff8a6b 24px 32px,
+      #ffb35c 32px 40px,
+      transparent 40px
     ),
-    #fff6ee;
+    #fff6f0;
 }
 
 .dark .tapeLabel {
   background:
     linear-gradient(
       180deg,
-      transparent 0 18px,
-      #f59a7f 18px 24px,
-      #f2c94c 24px 30px,
-      #5cc9a7 30px 36px,
-      transparent 36px
+      transparent 0 16px,
+      #ff5fa2 16px 24px,
+      #ff8a6b 24px 32px,
+      #ffb35c 32px 40px,
+      transparent 40px
     ),
-    #f3ece4;
+    #f2ebf4;
 }
 
 .tapeWindow {
   position: absolute;
-  top: 60px;
+  top: 64px;
   left: 50%;
   width: 176px;
-  height: 54px;
-  border-radius: 27px;
+  height: 56px;
+  border-radius: 28px;
   margin-left: -88px;
-  background: linear-gradient(180deg, transparent 44%, #5b3a2e 44% 56%, transparent 56%), #2f2a44;
+  background: linear-gradient(180deg, transparent 44%, #4a2f3a 44% 56%, transparent 56%), #1c163a;
 }
 
 .reel {
   position: absolute;
-  top: 7px;
+  top: 8px;
   width: 40px;
   height: 40px;
   stroke-linecap: round;
@@ -194,57 +249,57 @@
 }
 
 .reel circle {
-  fill: #fff6ee;
+  fill: #fff6f0;
 }
 
 .reel path {
-  stroke: #2f2a44;
+  stroke: #1c163a;
   stroke-width: 3;
 }
 
 .reelLeft {
-  left: 12px;
+  left: 8px;
 }
 
 .reelRight {
-  right: 12px;
+  right: 8px;
 }
 
 .tapeFoot {
   position: absolute;
   bottom: 0;
   left: 50%;
-  width: 180px;
-  height: 36px;
-  margin-left: -90px;
+  width: 176px;
+  height: 32px;
+  margin-left: -88px;
   clip-path: polygon(10% 0, 90% 0, 100% 100%, 0 100%);
 }
 
 .light .tapeFoot {
-  background: #b7a1ea;
+  background: #c3acf0;
 }
 
 .dark .tapeFoot {
-  background: #2c2350;
+  background: #15102e;
 }
 
 .window {
   position: relative;
   z-index: 10;
   overflow: hidden;
-  border-radius: 20px;
+  border-radius: 16px;
 }
 
 .light .window {
-  border: 1px solid rgba(107, 79, 196, 0.14);
-  background: rgba(255, 253, 252, 0.95);
-  filter: drop-shadow(0 14px 44px rgba(47, 42, 68, 0.12));
+  border: 1px solid rgba(116, 72, 214, 0.16);
+  background: rgba(255, 253, 254, 0.96);
+  filter: drop-shadow(0 16px 40px rgba(42, 35, 66, 0.12));
 }
 
 .dark .window {
-  border: 1px solid rgba(187, 166, 255, 0.1);
-  background: #15122a;
-  filter: drop-shadow(0 0 55px rgba(159, 240, 212, 0.06)) drop-shadow(0 24px 75px rgba(0, 0, 0, 0.75));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #120d29;
+  filter: drop-shadow(0 0 48px rgba(255, 95, 162, 0.1)) drop-shadow(0 24px 72px rgba(0, 0, 0, 0.7));
 }
 
 .topEdge {
@@ -258,75 +313,63 @@
 }
 
 .light .topEdge {
-  background: rgba(107, 79, 196, 0.14);
+  background: rgba(116, 72, 214, 0.12);
 }
 
 .dark .topEdge {
-  background: rgba(187, 166, 255, 0.1);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .sweep {
   position: absolute;
   width: 40%;
-  background: linear-gradient(90deg, transparent, #5cc9a7, #f2c94c, #f08aa8, #a98bf0, transparent);
+  background: linear-gradient(90deg, transparent, #3fc8f0, #a77bff, #ff5fa2, #ffb35c, transparent);
   inset-block: 0;
 }
 
 .header {
   display: grid;
   align-items: center;
-  padding: 12px 16px 11px;
-  grid-gap: 12px;
-  grid-template-columns: 60px 1fr 60px;
+  padding: 12px 16px;
+  grid-gap: 16px;
+  grid-template-columns: 64px 1fr 64px;
 }
 
 .light .header {
-  border-bottom: 1px solid rgba(107, 79, 196, 0.12);
-  background: rgba(248, 244, 253, 0.92);
+  border-bottom: 1px solid rgba(116, 72, 214, 0.1);
+  background: rgba(247, 242, 253, 0.92);
 }
 
 .dark .header {
-  border-bottom: 1px solid rgba(187, 166, 255, 0.08);
-  background: #1c1836;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: #19122f;
 }
 
 .dots {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
 }
 
 .dot {
-  position: relative;
-  width: 13px;
-  height: 13px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-}
-
-.dot::after {
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.55);
-  content: "";
 }
 
 .dot:nth-child(1) {
-  background: radial-gradient(circle at 35% 35%, #ffd0de, #e0628a);
-  filter: drop-shadow(0 1px 4px rgba(224, 98, 138, 0.4));
+  border: 1px solid rgba(196, 40, 86, 0.35);
+  background: #ff5f73;
 }
 
 .dot:nth-child(2) {
-  background: radial-gradient(circle at 35% 35%, #fff0b8, #e0a92a);
-  filter: drop-shadow(0 1px 4px rgba(224, 169, 42, 0.4));
+  border: 1px solid rgba(190, 120, 20, 0.35);
+  background: #ffbd3e;
 }
 
 .dot:nth-child(3) {
-  background: radial-gradient(circle at 35% 35%, #c8f5e4, #2fa883);
-  filter: drop-shadow(0 1px 4px rgba(47, 168, 131, 0.4));
+  border: 1px solid rgba(30, 140, 70, 0.35);
+  background: #34c86a;
 }
 
 .fileName {
@@ -337,8 +380,8 @@
   justify-content: center;
   font-family: var(--code-font, "Geist Mono", "Courier New", monospace);
   font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  font-weight: 500;
+  letter-spacing: 0.04em;
   line-height: 12px;
 
   > input {
@@ -364,9 +407,9 @@
 }
 
 .light .fileName {
-  color: #2f2a44;
+  color: #5f587e;
 }
 
 .dark .fileName {
-  color: #bba6ff;
+  color: #b9b0dc;
 }
