@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-import { motion } from "motion/react";
 
 type PreviewFrameProps = {
   frame: HTMLCanvasElement;
@@ -18,12 +17,6 @@ export default function PreviewFrame({ frame }: PreviewFrameProps) {
   }, [frame]);
 
   return (
-    <motion.canvas
-      ref={canvasRef}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.2, ease: "easeOut" }}
-      className="absolute inset-0 size-full"
-    />
+    <canvas ref={canvasRef} className="absolute inset-0 size-full" />
   );
 }

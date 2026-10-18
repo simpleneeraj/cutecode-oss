@@ -27,8 +27,6 @@ export type EncodeOptions = {
 
 export type ClipFrame = CapturedFrame & { palette: HTMLCanvasElement | null };
 
-const PROGRESS_INTERVAL_MS = 150;
-
 export function throwIfAborted(signal: AbortSignal) {
   if (signal.aborted) throw signal.reason ?? new DOMException("Export canceled", "AbortError");
 }
@@ -77,12 +75,10 @@ function copyCanvas(source: HTMLCanvasElement) {
 }
 
 function createProgressReporter(onProgress: EncodeOptions["onProgress"]) {
-  let reportedAt = -Infinity;
+  let hasPreview = false;
   return (progress: number, canvas: HTMLCanvasElement) => {
-    const now = performance.now();
-    const isPreviewDue = now - reportedAt >= PROGRESS_INTERVAL_MS || progress >= 1;
-    if (isPreviewDue) reportedAt = now;
-    onProgress(progress, isPreviewDue ? copyCanvas(canvas) : null);
+    onProgress(progress, hasPreview ? null : copyCanvas(canvas));
+    hasPreview = true;
   };
 }
 

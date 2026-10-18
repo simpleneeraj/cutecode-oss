@@ -1,10 +1,8 @@
 import { cn } from "@/utils/cn";
 import { Spinner } from "@/components/ui/spinner";
 import PreviewFrame from "./preview-frame";
-import useFramePair from "./use-frame-pair";
 
 const WIDE_RATIO = 1.3;
-
 
 type ExportPreviewProps = {
   frame: HTMLCanvasElement | null;
@@ -12,8 +10,6 @@ type ExportPreviewProps = {
 };
 
 export default function ExportPreview({ frame, aspectRatio }: ExportPreviewProps) {
-  const { id, current, previous } = useFramePair(frame);
-
   return (
     <div className="flex h-70 items-center justify-center rounded-xl bg-muted p-4">
       <div
@@ -23,9 +19,8 @@ export default function ExportPreview({ frame, aspectRatio }: ExportPreviewProps
         )}
         style={{ aspectRatio }}
       >
-        {previous && <PreviewFrame key={id - 1} frame={previous} />}
-        {current && <PreviewFrame key={id} frame={current} />}
-        {!current && (
+        {frame && <PreviewFrame frame={frame} />}
+        {!frame && (
           <div className="flex size-full items-center justify-center">
             <Spinner className="size-5 text-muted-foreground" aria-hidden="true" />
           </div>
