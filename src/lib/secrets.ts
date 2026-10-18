@@ -23,7 +23,6 @@ export function ensureRuntimeSecrets(): Promise<void> {
     .catch((error: unknown) => {
       logger.error({ err: error }, "[secrets] load failed");
       pendingLoad = undefined;
-      throw error;
     });
   return pendingLoad;
 }
