@@ -123,6 +123,7 @@ const DEFAULT_PROBE_FPS = 30;
 const BITS_PER_PIXEL = 0.2;
 const ENCODE_QUEUE_LIMIT = 4;
 const QUEUE_POLL_MS = 10;
+const QUEUE_STALL_MS = 1000;
 
 const wait = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
@@ -134,6 +135,7 @@ async function findAvcConfig({ width, height }: VideoSize, fps: number) {
       height,
       framerate: fps,
       bitrate: Math.round(width * height * fps * BITS_PER_PIXEL),
+      latencyMode: "realtime",
       avc: { format: "avc" },
     };
     const { supported } = await VideoEncoder.isConfigSupported(config);
@@ -164,7 +166,10 @@ function createAvcEncoder(source: EncodedVideoPacketSource, config: VideoEncoder
     const startedAt = performance.now();
     while (encoder.encodeQueueSize >= ENCODE_QUEUE_LIMIT) {
       throwIfFailed();
-      if (performance.now() - startedAt > ENCODER_TIMEOUT_MS) throw new Error(ENCODER_STALLED);
+      if (performance.now() - startedAt > QUEUE_STALL_MS) {
+        await withTimeout(encoder.flush(), ENCODER_TIMEOUT_MS, ENCODER_STALLED);
+        return;
+      }
       await wait(QUEUE_POLL_MS);
     }
   };
