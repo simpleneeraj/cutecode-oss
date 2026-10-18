@@ -8,7 +8,6 @@ export interface BaseFrameProps {
   onFileNameChange: (name: string) => void;
   selectedLanguage: { name?: string; value?: string } | null;
   windowWidth: number | null;
-  code: string;
   exportSize: number | null;
   themeId?: string;
   children?: React.ReactNode;

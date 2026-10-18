@@ -72,6 +72,7 @@
 }
 
 .fileName {
+  font-family: var(--code-font);
   position: relative;
   display: flex;
   height: 16px;
@@ -120,7 +121,13 @@
 /* All Themes */
 
 .bitmap {
-  --frame-background: rgba(255, 255, 255, 0.95);
+  --frame-background: linear-gradient(180deg, rgba(247, 239, 239, 0.94), rgba(254, 237, 238, 0.95));
+  --frame-highlight-border: rgba(234, 213, 213, 0.75);
+  --frame-shadow-border: rgba(157, 37, 41, 0.18);
+  --frame-control-color: rgba(214, 56, 56, 0.3);
+  --frame-title-color: #685b5b;
+  --frame-title-placeholder-color: #b83737;
+  --frame-ambient: rgba(241, 57, 63, 0.3);
 
   &.withBackground {
     background-color: black;
@@ -131,12 +138,24 @@
   }
 
   &.darkMode {
-    --frame-background: rgba(0, 0, 0, 0.88);
+    --frame-background: linear-gradient(180deg, rgba(30, 15, 18, 0.92), rgba(56, 19, 22, 0.94));
+    --frame-highlight-border: rgba(201, 150, 150, 0.14);
+    --frame-shadow-border: rgba(60, 14, 16, 0.85);
+    --frame-control-color: rgba(235, 111, 111, 0.36);
+    --frame-title-color: #fefdfd;
+    --frame-title-placeholder-color: #996b6d;
+    --frame-ambient: rgba(193, 46, 50, 0.42);
   }
 }
 
 .noir {
-  --frame-background: rgba(255, 255, 255, 0.95);
+  --frame-background: linear-gradient(180deg, rgba(250, 250, 250, 0.94), rgba(234, 234, 234, 0.95));
+  --frame-highlight-border: rgba(241, 241, 241, 0.75);
+  --frame-shadow-border: rgba(16, 16, 16, 0.18);
+  --frame-control-color: rgba(102, 102, 102, 0.3);
+  --frame-title-color: #111111;
+  --frame-title-placeholder-color: #878787;
+  --frame-ambient: rgba(24, 24, 24, 0.3);
 
   &.withBackground {
     background-image: url("/editor/assets/distortion.png") !important;
@@ -145,11 +164,24 @@
   }
 
   &.darkMode {
-    --frame-background: rgba(0, 0, 0, 0.9);
+    --frame-background: linear-gradient(180deg, rgba(35, 35, 38, 0.92), rgba(13, 13, 14, 0.94));
+    --frame-highlight-border: rgba(220, 220, 220, 0.14);
+    --frame-shadow-border: rgba(6, 6, 6, 0.85);
+    --frame-control-color: rgba(167, 167, 167, 0.36);
+    --frame-title-color: #ffffff;
+    --frame-title-placeholder-color: #666666;
+    --frame-ambient: rgba(19, 19, 19, 0.42);
   }
 }
 
 .ice {
+  --frame-background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(244, 252, 253, 0.95));
+  --frame-highlight-border: rgba(255, 255, 255, 0.75);
+  --frame-shadow-border: rgba(83, 144, 152, 0.18);
+  --frame-control-color: rgba(0, 176, 233, 0.3);
+  --frame-title-color: #1c1b29;
+  --frame-title-placeholder-color: #81909d;
+  --frame-ambient: rgba(83, 144, 152, 0.3);
   --background: #f6f6f6;
   --dot-color: rgba(0, 0, 0, 0.12);
 
@@ -167,11 +199,432 @@
     box-shadow:
       0 0 0 1px var(--frame-highlight-border),
       0 0 0 1.5px var(--frame-shadow-border),
-      0 4px 6px rgba(0, 0, 0, 0.05);
+      0 4px 6px rgba(0, 0, 0, 0.04),
+      0 12px 24px -8px var(--frame-ambient);
   }
 
   &.darkMode {
+    --frame-background: linear-gradient(180deg, rgba(45, 45, 48, 0.92), rgba(34, 52, 56, 0.94));
+    --frame-highlight-border: rgba(255, 255, 255, 0.14);
+    --frame-shadow-border: rgba(32, 56, 58, 0.85);
+    --frame-control-color: rgba(146, 222, 246, 0.36);
+    --frame-title-color: #ffffff;
+    --frame-title-placeholder-color: #707c81;
+    --frame-ambient: rgba(102, 178, 187, 0.42);
     --background: #0e0e0e;
     --dot-color: rgba(255, 255, 255, 0.09);
   }
 }
+
+.dusk {
+  --frame-background: linear-gradient(180deg, rgba(246, 244, 252, 0.94), rgba(235, 234, 236, 0.95));
+  --frame-highlight-border: rgba(231, 226, 248, 0.75);
+  --frame-shadow-border: rgba(20, 18, 28, 0.18);
+  --frame-control-color: rgba(194, 37, 127, 0.3);
+  --frame-title-color: #2e2a3d;
+  --frame-title-placeholder-color: #7a7f9a;
+  --frame-ambient: rgba(30, 27, 43, 0.3);
+
+  &.darkMode {
+    --frame-background: linear-gradient(180deg, rgba(28, 24, 43, 0.92), rgba(14, 13, 18, 0.94));
+    --frame-highlight-border: rgba(195, 182, 237, 0.14);
+    --frame-shadow-border: rgba(8, 7, 11, 0.85);
+    --frame-control-color: rgba(255, 125, 196, 0.36);
+    --frame-title-color: #f4f2fa;
+    --frame-title-placeholder-color: #7480ae;
+    --frame-ambient: rgba(24, 22, 34, 0.42);
+  }
+}
+
+.fjord {
+  --frame-background: linear-gradient(180deg, rgba(247, 250, 252, 0.94), rgba(236, 237, 238, 0.95));
+  --frame-highlight-border: rgba(235, 241, 246, 0.75);
+  --frame-shadow-border: rgba(28, 32, 42, 0.18);
+  --frame-control-color: rgba(74, 110, 156, 0.3);
+  --frame-title-color: #2f3747;
+  --frame-title-placeholder-color: #7d8799;
+  --frame-ambient: rgba(43, 50, 64, 0.3);
+
+  &.darkMode {
+    --frame-background: linear-gradient(180deg, rgba(31, 35, 42, 0.92), rgba(17, 18, 22, 0.94));
+    --frame-highlight-border: rgba(205, 221, 233, 0.14);
+    --frame-shadow-border: rgba(11, 12, 16, 0.85);
+    --frame-control-color: rgba(131, 163, 200, 0.36);
+    --frame-title-color: #e3e8f0;
+    --frame-title-placeholder-color: #6b778c;
+    --frame-ambient: rgba(34, 40, 51, 0.42);
+  }
+}
+
+.latte {
+  --frame-background: linear-gradient(180deg, rgba(254, 252, 253, 0.94), rgba(250, 250, 254, 0.95));
+  --frame-highlight-border: rgba(253, 248, 250, 0.75);
+  --frame-shadow-border: rgba(131, 126, 157, 0.18);
+  --frame-control-color: rgba(130, 64, 224, 0.3);
+  --frame-title-color: #47465c;
+  --frame-title-placeholder-color: #8e8ca3;
+  --frame-ambient: rgba(131, 126, 157, 0.3);
+
+  &.darkMode {
+    --frame-background: linear-gradient(180deg, rgba(44, 40, 44, 0.92), rgba(48, 47, 58, 0.94));
+    --frame-highlight-border: rgba(250, 237, 243, 0.14);
+    --frame-shadow-border: rgba(50, 48, 60, 0.85);
+    --frame-control-color: rgba(201, 162, 245, 0.36);
+    --frame-title-color: #d8daf2;
+    --frame-title-placeholder-color: #7d7f99;
+    --frame-ambient: rgba(161, 155, 194, 0.42);
+  }
+}
+
+.neon-city {
+  --frame-background: linear-gradient(180deg, rgba(244, 243, 252, 0.94), rgba(234, 234, 235, 0.95));
+  --frame-highlight-border: rgba(225, 223, 248, 0.75);
+  --frame-shadow-border: rgba(14, 16, 25, 0.18);
+  --frame-control-color: rgba(122, 63, 209, 0.3);
+  --frame-title-color: #343b58;
+  --frame-title-placeholder-color: #7f86a8;
+  --frame-ambient: rgba(21, 24, 38, 0.3);
+
+  &.darkMode {
+    --frame-background: linear-gradient(180deg, rgba(24, 22, 43, 0.92), rgba(12, 13, 17, 0.94));
+    --frame-highlight-border: rgba(181, 176, 238, 0.14);
+    --frame-shadow-border: rgba(5, 6, 10, 0.85);
+    --frame-control-color: rgba(184, 156, 250, 0.36);
+    --frame-title-color: #c3cbf0;
+    --frame-title-placeholder-color: #5a6390;
+    --frame-ambient: rgba(17, 19, 30, 0.42);
+  }
+}
+
+.ember {
+  --frame-background: linear-gradient(180deg, rgba(252, 247, 241, 0.94), rgba(236, 235, 235, 0.95));
+  --frame-highlight-border: rgba(248, 234, 220, 0.75);
+  --frame-shadow-border: rgba(27, 23, 21, 0.18);
+  --frame-control-color: rgba(181, 40, 31, 0.3);
+  --frame-title-color: #3d352c;
+  --frame-title-placeholder-color: #8f8270;
+  --frame-ambient: rgba(42, 36, 32, 0.3);
+
+  &.darkMode {
+    --frame-background: linear-gradient(180deg, rgba(40, 30, 22, 0.92), rgba(16, 15, 16, 0.94));
+    --frame-highlight-border: rgba(238, 202, 167, 0.14);
+    --frame-shadow-border: rgba(10, 9, 8, 0.85);
+    --frame-control-color: rgba(242, 96, 78, 0.36);
+    --frame-title-color: #eadbb8;
+    --frame-title-placeholder-color: #94897a;
+    --frame-ambient: rgba(34, 29, 26, 0.42);
+  }
+}
+
+.carbon-night {
+  --frame-background: linear-gradient(180deg, rgba(243, 244, 246, 0.94), rgba(235, 235, 236, 0.95));
+  --frame-highlight-border: rgba(223, 227, 231, 0.75);
+  --frame-shadow-border: rgba(20, 23, 27, 0.18);
+  --frame-control-color: rgba(164, 60, 181, 0.3);
+  --frame-title-color: #383b42;
+  --frame-title-placeholder-color: #888b92;
+  --frame-ambient: rgba(31, 35, 41, 0.3);
+
+  &.darkMode {
+    --frame-background: linear-gradient(180deg, rgba(22, 25, 30, 0.92), rgba(14, 15, 18, 0.94));
+    --frame-highlight-border: rgba(176, 185, 194, 0.14);
+    --frame-shadow-border: rgba(8, 9, 10, 0.85);
+    --frame-control-color: rgba(199, 134, 224, 0.36);
+    --frame-title-color: #b9c0cc;
+    --frame-title-placeholder-color: #626a78;
+    --frame-ambient: rgba(25, 28, 33, 0.42);
+  }
+}
+
+.petal {
+  --frame-background: linear-gradient(180deg, rgba(253, 250, 251, 0.94), rgba(235, 235, 237, 0.95));
+  --frame-highlight-border: rgba(251, 242, 244, 0.75);
+  --frame-shadow-border: rgba(23, 21, 35, 0.18);
+  --frame-control-color: rgba(45, 107, 138, 0.3);
+  --frame-title-color: #544e6e;
+  --frame-title-placeholder-color: #89849b;
+  --frame-ambient: rgba(35, 33, 54, 0.3);
+
+  &.darkMode {
+    --frame-background: linear-gradient(180deg, rgba(42, 36, 40, 0.92), rgba(15, 15, 20, 0.94));
+    --frame-highlight-border: rgba(245, 224, 227, 0.14);
+    --frame-shadow-border: rgba(9, 8, 14, 0.85);
+    --frame-control-color: rgba(79, 160, 190, 0.36);
+    --frame-title-color: #e2def4;
+    --frame-title-placeholder-color: #6f6a88;
+    --frame-ambient: rgba(28, 26, 43, 0.42);
+  }
+}
+
+.paper {
+  --frame-background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(252, 252, 253, 0.95));
+  --frame-highlight-border: rgba(255, 255, 255, 0.75);
+  --frame-shadow-border: rgba(143, 148, 152, 0.18);
+  --frame-control-color: rgba(200, 40, 58, 0.3);
+  --frame-title-color: #1f2328;
+  --frame-title-placeholder-color: #6a737d;
+  --frame-ambient: rgba(143, 148, 152, 0.3);
+
+  &.darkMode {
+    --frame-background: linear-gradient(180deg, rgba(45, 45, 48, 0.92), rgba(52, 53, 56, 0.94));
+    --frame-highlight-border: rgba(255, 255, 255, 0.14);
+    --frame-shadow-border: rgba(55, 57, 58, 0.85);
+    --frame-control-color: rgba(245, 122, 130, 0.36);
+    --frame-title-color: #e4e8ee;
+    --frame-title-placeholder-color: #8a939e;
+    --frame-ambient: rgba(176, 182, 187, 0.42);
+  }
+}
+
+.sand {
+  --frame-background: linear-gradient(180deg, rgba(254, 252, 250, 0.94), rgba(248, 244, 240, 0.95));
+  --frame-highlight-border: rgba(252, 247, 242, 0.75);
+  --frame-shadow-border: rgba(114, 88, 56, 0.18);
+  --frame-control-color: rgba(144, 105, 55, 0.3);
+  --frame-title-color: #262217;
+  --frame-title-placeholder-color: #9d8f7d;
+  --frame-ambient: rgba(175, 136, 86, 0.3);
+
+  &.darkMode {
+    --frame-background: linear-gradient(180deg, rgba(43, 40, 38, 0.92), rgba(43, 35, 27, 0.94));
+    --frame-highlight-border: rgba(247, 236, 222, 0.14);
+    --frame-shadow-border: rgba(44, 34, 22, 0.85);
+    --frame-control-color: rgba(211, 180, 140, 0.36);
+    --frame-title-color: #ffffff;
+    --frame-title-placeholder-color: #837e77;
+    --frame-ambient: rgba(140, 109, 69, 0.42);
+  }
+}
+
+.forest {
+  --frame-background: linear-gradient(180deg, rgba(243, 244, 243, 0.94), rgba(235, 237, 235, 0.95));
+  --frame-highlight-border: rgba(224, 228, 224, 0.75);
+  --frame-shadow-border: rgba(21, 32, 23, 0.18);
+  --frame-control-color: rgba(106, 132, 88, 0.3);
+  --frame-title-color: #262217;
+  --frame-title-placeholder-color: #818c83;
+  --frame-ambient: rgba(33, 50, 35, 0.3);
+
+  &.darkMode {
+    --frame-background: linear-gradient(180deg, rgba(23, 26, 26, 0.92), rgba(15, 18, 17, 0.94));
+    --frame-highlight-border: rgba(176, 187, 178, 0.14);
+    --frame-shadow-border: rgba(8, 12, 9, 0.85);
+    --frame-control-color: rgba(170, 180, 163, 0.36);
+    --frame-title-color: #ffffff;
+    --frame-title-placeholder-color: #5c645d;
+    --frame-ambient: rgba(26, 40, 28, 0.42);
+  }
+}
+
+.mono {
+  --frame-background: linear-gradient(180deg, rgba(241, 241, 241, 0.94), rgba(234, 234, 234, 0.95));
+  --frame-highlight-border: rgba(218, 218, 218, 0.75);
+  --frame-shadow-border: rgba(16, 16, 16, 0.18);
+  --frame-control-color: rgba(102, 102, 102, 0.3);
+  --frame-title-color: #111111;
+  --frame-title-placeholder-color: #878787;
+  --frame-ambient: rgba(24, 24, 24, 0.3);
+
+  &.darkMode {
+    --frame-background: linear-gradient(180deg, rgba(19, 19, 21, 0.92), rgba(13, 13, 14, 0.94));
+    --frame-highlight-border: rgba(163, 163, 163, 0.14);
+    --frame-shadow-border: rgba(6, 6, 6, 0.85);
+    --frame-control-color: rgba(167, 167, 167, 0.36);
+    --frame-title-color: #ffffff;
+    --frame-title-placeholder-color: #666666;
+    --frame-ambient: rgba(19, 19, 19, 0.42);
+  }
+}
+
+.breeze {
+  --frame-background: linear-gradient(180deg, rgba(252, 240, 248, 0.94), rgba(242, 238, 253, 0.95));
+  --frame-highlight-border: rgba(246, 218, 236, 0.75);
+  --frame-shadow-border: rgba(69, 40, 153, 0.18);
+  --frame-control-color: rgba(73, 110, 184, 0.3);
+  --frame-title-color: #434447;
+  --frame-title-placeholder-color: #8c828b;
+  --frame-ambient: rgba(106, 61, 236, 0.3);
+
+  &.darkMode {
+    --frame-background: linear-gradient(180deg, rgba(39, 18, 35, 0.92), rgba(29, 20, 57, 0.94));
+    --frame-highlight-border: rgba(233, 161, 209, 0.14);
+    --frame-shadow-border: rgba(26, 15, 59, 0.85);
+    --frame-control-color: rgba(101, 153, 255, 0.36);
+    --frame-title-color: #ffffff;
+    --frame-title-placeholder-color: #8a757d;
+    --frame-ambient: rgba(85, 49, 189, 0.42);
+  }
+}
+
+.candy {
+  --frame-background: linear-gradient(180deg, rgba(249, 247, 255, 0.94), rgba(253, 249, 254, 0.95));
+  --frame-highlight-border: rgba(239, 235, 254, 0.75);
+  --frame-shadow-border: rgba(151, 124, 161, 0.18);
+  --frame-control-color: rgba(220, 21, 94, 0.3);
+  --frame-title-color: #434447;
+  --frame-title-placeholder-color: #8d949b;
+  --frame-ambient: rgba(151, 124, 161, 0.3);
+
+  &.darkMode {
+    --frame-background: linear-gradient(180deg, rgba(34, 31, 47, 0.92), rgba(55, 46, 59, 0.94));
+    --frame-highlight-border: rgba(214, 204, 253, 0.14);
+    --frame-shadow-border: rgba(58, 48, 62, 0.85);
+    --frame-control-color: rgba(255, 101, 156, 0.36);
+    --frame-title-color: #ffffff;
+    --frame-title-placeholder-color: #807796;
+    --frame-ambient: rgba(186, 153, 198, 0.42);
+  }
+}
+
+.crimson {
+  --frame-background: linear-gradient(180deg, rgba(255, 244, 244, 0.94), rgba(242, 237, 237, 0.95));
+  --frame-highlight-border: rgba(255, 227, 227, 0.75);
+  --frame-shadow-border: rgba(75, 34, 34, 0.18);
+  --frame-control-color: rgba(190, 59, 59, 0.3);
+  --frame-title-color: #685b5b;
+  --frame-title-placeholder-color: #978a8a;
+  --frame-ambient: rgba(115, 52, 52, 0.3);
+
+  &.darkMode {
+    --frame-background: linear-gradient(180deg, rgba(45, 25, 28, 0.92), rgba(31, 18, 20, 0.94));
+    --frame-highlight-border: rgba(255, 185, 185, 0.14);
+    --frame-shadow-border: rgba(29, 13, 13, 0.85);
+    --frame-control-color: rgba(235, 111, 111, 0.36);
+    --frame-title-color: #fefdfd;
+    --frame-title-placeholder-color: #895e60;
+    --frame-ambient: rgba(92, 42, 42, 0.42);
+  }
+}
+
+.falcon {
+  --frame-background: linear-gradient(180deg, rgba(250, 253, 254, 0.94), rgba(237, 237, 240, 0.95));
+  --frame-highlight-border: rgba(243, 250, 252, 0.75);
+  --frame-shadow-border: rgba(35, 35, 55, 0.18);
+  --frame-control-color: rgba(92, 130, 125, 0.3);
+  --frame-title-color: #464c65;
+  --frame-title-placeholder-color: #848a91;
+  --frame-ambient: rgba(54, 54, 84, 0.3);
+
+  &.darkMode {
+    --frame-background: linear-gradient(180deg, rgba(37, 42, 45, 0.92), rgba(19, 19, 26, 0.94));
+    --frame-highlight-border: rgba(225, 242, 246, 0.14);
+    --frame-shadow-border: rgba(14, 14, 21, 0.85);
+    --frame-control-color: rgba(154, 182, 178, 0.36);
+    --frame-title-color: #ffffff;
+    --frame-title-placeholder-color: #6d7e88;
+    --frame-ambient: rgba(43, 43, 67, 0.42);
+  }
+}
+
+.meadow {
+  --frame-background: linear-gradient(180deg, rgba(243, 252, 248, 0.94), rgba(246, 244, 236, 0.95));
+  --frame-highlight-border: rgba(225, 247, 237, 0.75);
+  --frame-shadow-border: rgba(104, 88, 29, 0.18);
+  --frame-control-color: rgba(4, 150, 73, 0.3);
+  --frame-title-color: #54594d;
+  --frame-title-placeholder-color: #72806e;
+  --frame-ambient: rgba(160, 135, 45, 0.3);
+
+  &.darkMode {
+    --frame-background: linear-gradient(180deg, rgba(24, 40, 35, 0.92), rgba(40, 35, 19, 0.94));
+    --frame-highlight-border: rgba(180, 236, 209, 0.14);
+    --frame-shadow-border: rgba(40, 34, 11, 0.85);
+    --frame-control-color: rgba(109, 215, 159, 0.36);
+    --frame-title-color: #ffffff;
+    --frame-title-placeholder-color: #708b6c;
+    --frame-ambient: rgba(128, 108, 36, 0.42);
+  }
+}
+
+.midnight {
+  --frame-background: linear-gradient(180deg, rgba(242, 251, 251, 0.94), rgba(235, 235, 237, 0.95));
+  --frame-highlight-border: rgba(223, 245, 245, 0.75);
+  --frame-shadow-border: rgba(21, 21, 33, 0.18);
+  --frame-control-color: rgba(88, 118, 120, 0.3);
+  --frame-title-color: #434447;
+  --frame-title-placeholder-color: #78808c;
+  --frame-ambient: rgba(32, 32, 51, 0.3);
+
+  &.darkMode {
+    --frame-background: linear-gradient(180deg, rgba(22, 38, 41, 0.92), rgba(14, 14, 20, 0.94));
+    --frame-highlight-border: rgba(174, 230, 230, 0.14);
+    --frame-shadow-border: rgba(8, 8, 13, 0.85);
+    --frame-control-color: rgba(125, 169, 171, 0.36);
+    --frame-title-color: #ffffff;
+    --frame-title-placeholder-color: #60616a;
+    --frame-ambient: rgba(26, 26, 41, 0.42);
+  }
+}
+
+.raindrop {
+  --frame-background: linear-gradient(180deg, rgba(247, 251, 255, 0.94), rgba(235, 240, 247, 0.95));
+  --frame-highlight-border: rgba(235, 245, 254, 0.75);
+  --frame-shadow-border: rgba(18, 55, 110, 0.18);
+  --frame-control-color: rgba(0, 141, 172, 0.3);
+  --frame-title-color: #575e64;
+  --frame-title-placeholder-color: #6e7780;
+  --frame-ambient: rgba(28, 85, 170, 0.3);
+
+  &.darkMode {
+    --frame-background: linear-gradient(180deg, rgba(31, 38, 47, 0.92), rgba(14, 25, 44, 0.94));
+    --frame-highlight-border: rgba(204, 230, 253, 0.14);
+    --frame-shadow-border: rgba(7, 21, 42, 0.85);
+    --frame-control-color: rgba(46, 217, 255, 0.36);
+    --frame-title-color: #e4f2ff;
+    --frame-title-placeholder-color: #6c808b;
+    --frame-ambient: rgba(22, 68, 136, 0.42);
+  }
+}
+
+.sunset {
+  --frame-background: linear-gradient(180deg, rgba(255, 252, 245, 0.94), rgba(255, 243, 236, 0.95));
+  --frame-highlight-border: rgba(255, 246, 230, 0.75);
+  --frame-shadow-border: rgba(166, 79, 31, 0.18);
+  --frame-control-color: rgba(161, 100, 44, 0.3);
+  --frame-title-color: #616257;
+  --frame-title-placeholder-color: #7a7055;
+  --frame-ambient: rgba(255, 122, 47, 0.3);
+
+  &.darkMode {
+    --frame-background: linear-gradient(180deg, rgba(45, 39, 30, 0.92), rgba(59, 32, 19, 0.94));
+    --frame-highlight-border: rgba(255, 233, 192, 0.14);
+    --frame-shadow-border: rgba(64, 30, 12, 0.85);
+    --frame-control-color: rgba(255, 175, 101, 0.36);
+    --frame-title-color: #ffffff;
+    --frame-title-placeholder-color: #878572;
+    --frame-ambient: rgba(204, 98, 38, 0.42);
+  }
+}
+
+:is(
+  .bitmap,
+  .noir,
+  .dusk,
+  .fjord,
+  .latte,
+  .neon-city,
+  .ember,
+  .carbon-night,
+  .petal,
+  .paper,
+  .sand,
+  .forest,
+  .mono,
+  .breeze,
+  .candy,
+  .crimson,
+  .falcon,
+  .meadow,
+  .midnight,
+  .raindrop,
+  .sunset
+)
+  .withShadow {
+    box-shadow:
+      0 0 0 1px var(--frame-highlight-border),
+      0 0 0 1.5px var(--frame-shadow-border),
+      0 1px 2px rgba(0, 0, 0, 0.06),
+      0 8px 16px -6px var(--frame-ambient),
+      0 24px 48px -16px var(--frame-ambient),
+      0 64px 100px -32px var(--frame-ambient);
+  }

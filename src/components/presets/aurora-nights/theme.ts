@@ -8,11 +8,8 @@ export const auroraNights: Theme = {
     from: "#050d0e",
     to: "#0a1628",
   },
-  icon: {
-    type: IconType.ICONIFY,
-    source: "fluent-emoji:sparkles",
-  },
-  group: "Aesthetic",
+  icon: { type: IconType.IMAGE, source: "/editor/assets/aurora-nights/glyph.svg" },
+  group: "Night",
   font: "fira-code",
   tags: [BadgeVariant.NEW, BadgeVariant.PREMIUM],
   syntax: {

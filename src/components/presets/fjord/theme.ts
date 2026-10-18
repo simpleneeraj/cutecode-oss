@@ -1,0 +1,53 @@
+import { Theme, BadgeVariant } from "@/typings/editor";
+import { convertToShikiTheme } from "../themes/shared";
+
+export const fjord: Theme = {
+  id: "fjord",
+  name: "Fjord",
+  background: {
+    from: "#8FB3CF",
+    to: "#2B3240",
+  },
+  group: "Classic",
+  tags: [BadgeVariant.NEW],
+  syntax: {
+    light: convertToShikiTheme({
+      foreground: "#2F3747",
+      constant: "#8A5A86",
+      string: "#4F7A3A",
+      comment: "#7D8799",
+      keyword: "#4A6E9C",
+      parameter: "#3C7F8C",
+      function: "#2F7891",
+      stringExpression: "#4F7A3A",
+      punctuation: "#4A6E9C",
+      link: "#2F7891",
+      number: "#8A5A86",
+      property: "#3C7F8C",
+      highlight: "rgba(74,110,156,0.1)",
+      highlightBorder: "#4A6E9C",
+      highlightHover: "rgba(74,110,156,0.05)",
+      diffInserted: "#4F7A3A",
+      diffDeleted: "#B2474F",
+    }),
+    dark: convertToShikiTheme({
+      foreground: "#E3E8F0",
+      constant: "#B795B1",
+      string: "#A6C78E",
+      comment: "#6B778C",
+      keyword: "#83A3C8",
+      parameter: "#93C9C6",
+      function: "#8DC2D4",
+      stringExpression: "#A6C78E",
+      punctuation: "#83A3C8",
+      link: "#8DC2D4",
+      number: "#B795B1",
+      property: "#93C9C6",
+      highlight: "rgba(131,163,200,0.14)",
+      highlightBorder: "#83A3C8",
+      highlightHover: "rgba(131,163,200,0.09)",
+      diffInserted: "#A6C78E",
+      diffDeleted: "#C9707A",
+    }),
+  },
+};

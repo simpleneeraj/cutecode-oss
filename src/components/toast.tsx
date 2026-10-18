@@ -1,51 +1,62 @@
 "use client";
-import { Toaster as Sonner, toast } from "sonner";
 
-type ToasterProps = React.ComponentProps<typeof Sonner>;
+import { ToastProvider, toastManager, type ToastPosition } from "@/components/ui/toast";
 
-const Toaster = ({ ...props }: ToasterProps) => {
-  return (
-    <Sonner
-      theme="dark"
-      className="toaster group"
-      position="top-center"
-      gap={8}
-      toastOptions={{
-        classNames: {
-          toast: [
-            "group toast",
-            "!bg-[#1a1a1a] !border-[#2e2e2e]",
-            "!text-[#e8e8e8] !text-[13px] !font-medium",
-            "!rounded-xl !shadow-xl",
-            "!py-3 !px-4",
-          ].join(" "),
-          title: "!font-medium !text-[#e8e8e8]",
-          description: "!text-[#888] !text-xs !mt-0.5",
-          icon: "!text-[#a0a0a0]",
-          actionButton: [
-            "!bg-[#ffffff10] !text-[#e8e8e8]",
-            "!text-xs !font-medium !rounded-lg",
-            "!px-3 !py-1.5 hover:!bg-[#ffffff18]",
-          ].join(" "),
-          cancelButton: [
-            "!bg-transparent !text-[#666]",
-            "!text-xs hover:!text-[#999]",
-          ].join(" "),
-          success: "!border-[#1a3a2a] [&>[data-icon]]:!text-emerald-400",
-          error: "!border-[#3a1a1a] [&>[data-icon]]:!text-red-400",
-          warning: "!border-[#3a2e1a] [&>[data-icon]]:!text-amber-400",
-          info: "!border-[#1a2a3a] [&>[data-icon]]:!text-blue-400",
-          loading: "[&>[data-icon]]:!text-[#888]",
-          closeButton: [
-            "!bg-[#222] !border-[#333] !text-[#888]",
-            "hover:!bg-[#2a2a2a] hover:!text-[#ccc]",
-            "!rounded-lg",
-          ].join(" "),
-        },
-      }}
-      {...props}
-    />
-  );
+const DEFAULT_TIMEOUT = 2000;
+
+type ToastOptions = { id?: string; description?: string; duration?: number };
+
+function addTyped(type: string, title: string, opts?: ToastOptions) {
+  return toastManager.add({
+    title,
+    description: opts?.description,
+    type,
+    id: opts?.id,
+    timeout: opts?.duration ?? DEFAULT_TIMEOUT,
+  });
+}
+
+export const toast = {
+  loading(title: string, opts?: ToastOptions) {
+    return toastManager.add({
+      title,
+      description: opts?.description,
+      type: "loading",
+      id: opts?.id,
+      timeout: 0,
+    });
+  },
+  success(title: string, opts?: ToastOptions) {
+    if (opts?.id) {
+      toastManager.update(opts.id, { title, description: opts.description, type: "success", timeout: opts.duration ?? DEFAULT_TIMEOUT });
+      return opts.id;
+    }
+    return addTyped("success", title, opts);
+  },
+  error(title: string, opts?: ToastOptions) {
+    if (opts?.id) {
+      toastManager.update(opts.id, { title, description: opts.description, type: "error", timeout: opts.duration ?? DEFAULT_TIMEOUT });
+      return opts.id;
+    }
+    return addTyped("error", title, opts);
+  },
+  info(title: string, opts?: ToastOptions) {
+    return addTyped("info", title, opts);
+  },
+  warning(title: string, opts?: ToastOptions) {
+    return addTyped("warning", title, opts);
+  },
+  dismiss(id?: string) {
+    toastManager.close(id);
+  },
 };
 
-export { Toaster, toast };
+type ToasterProps = {
+  position?: ToastPosition;
+};
+
+function Toaster({ position = "top-center" }: ToasterProps) {
+  return <ToastProvider position={position} />;
+}
+
+export { Toaster };

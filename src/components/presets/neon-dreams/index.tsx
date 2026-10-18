@@ -1,115 +1,86 @@
-import { motion } from "framer-motion";
+import { motion, easeInOut } from "motion/react";
 import { Icon } from "@/components/ui/icon";
-import styles from "./neon-dreams.module.css";
 import { BaseFrameProps } from "@/typings/presets";
+import { SceneFrame, useLoop } from "../scene";
+import styles from "./neon-dreams.module.css";
 
-/*
-  Neon Dreams
-  Palette: neon pink · neon cyan · electric violet · void black
-  Vibe: cyberpunk, synthwave, midnight arcade
-*/
+const SPARKS = [
+  { id: "top-left", x: 7, y: 9, size: 16, phase: 0 },
+  { id: "top-mid", x: 34, y: 5, size: 12, phase: 0.4 },
+  { id: "top-right", x: 88, y: 12, size: 18, phase: 0.2 },
+  { id: "mid-left", x: 4, y: 42, size: 12, phase: 0.7 },
+  { id: "mid-right", x: 94, y: 38, size: 12, phase: 0.55 },
+];
 
-const AMBIENT_ICONS = [
-  { icon: "fluent-emoji:dizzy",        x: 6,  y: 5,  size: 20, dur: 8  },
-  { icon: "fluent-emoji:high-voltage",  x: 88, y: 7,  size: 18, dur: 10 },
-  { icon: "fluent-emoji:sparkles",      x: 80, y: 82, size: 16, dur: 9  },
-  { icon: "fluent-emoji:dizzy",         x: 4,  y: 74, size: 18, dur: 11 },
-  { icon: "fluent-emoji:high-voltage",  x: 46, y: 2,  size: 16, dur: 12 },
-  { icon: "fluent-emoji:star",          x: 92, y: 45, size: 14, dur: 8  },
-  { icon: "fluent-emoji:sparkles",      x: 2,  y: 38, size: 16, dur: 13 },
-  { icon: "fluent-emoji:dizzy",         x: 60, y: 91, size: 14, dur: 9  },
-] as const;
+type Spark = (typeof SPARKS)[number];
 
-const PARTICLES = Array.from({ length: 20 }, (_, i) => ({
-  id: i,
-  left: `${(i * 41 + 7) % 100}%`,
-  size: 2 + ((i * 3) % 3),
-  dur: 8 + ((i * 7) % 8),
-  delay: -((i * 5) % 14),
-  color: (["#ff0090", "#00fff9", "#bf00ff", "#00bfff"] as const)[i % 4],
-}));
+function FlickeringSpark({ spark }: { spark: Spark }) {
+  const opacity = useLoop([0.2, 0.8, 0.5, 0.9, 0.2], { cycles: 2, phase: spark.phase });
+  const y = useLoop([0, -6, 0], { phase: spark.phase, ease: easeInOut });
 
-export default function NeonDreamsFrame({ padding, darkMode, transparent, children }: BaseFrameProps) {
   return (
-    <div
-      className={[styles.scene, darkMode ? styles.dark : styles.light, transparent ? styles.transparent : ""].join(" ")}
-      style={{ padding }}
-    >
-      {/* ── Neon blobs ── */}
-      <div className={styles.blobA} aria-hidden />
-      <div className={styles.blobB} aria-hidden />
-      <div className={styles.blobC} aria-hidden />
-      <div className={styles.blobD} aria-hidden />
+    <motion.span className={styles.spark} style={{ left: `${spark.x}%`, top: `${spark.y}%`, opacity, y }}>
+      <Icon icon="solar:stars-minimalistic-bold-duotone" width={spark.size} height={spark.size} />
+    </motion.span>
+  );
+}
 
-      {/* ── Rising neon particles ── */}
-      <div className={styles.particleLayer} aria-hidden>
-        {PARTICLES.map((p) => (
-          <motion.div
-            key={p.id}
-            style={{
-              position: "absolute",
-              bottom: 0,
-              left: p.left,
-              width: p.size,
-              height: p.size,
-              borderRadius: "50%",
-              background: p.color,
-              boxShadow: `0 0 8px ${p.color}, 0 0 16px ${p.color}`,
-            }}
-            animate={{ y: [0, -360], opacity: [0, 1, 0.5, 0] }}
-            transition={{ duration: p.dur, delay: p.delay, repeat: Infinity, ease: "linear" }}
-          />
-        ))}
-      </div>
+function NeonSun() {
+  const scale = useLoop([1, 1.05, 1], { cycles: 2, ease: easeInOut });
+  const glow = useLoop([0.6, 1, 0.6], { cycles: 2, ease: easeInOut });
 
-      {/* ── Floating icons ── */}
-      <div className={styles.ambientLayer} aria-hidden>
-        {AMBIENT_ICONS.map((a, i) => (
-          <motion.span
-            key={i}
-            className={styles.ambientIcon}
-            style={{ left: `${a.x}%`, top: `${a.y}%` }}
-            animate={{ y: [0, -12, 0], rotate: [0, i % 2 === 0 ? 10 : -10, 0] }}
-            transition={{ duration: a.dur, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <Icon icon={a.icon} width={a.size} height={a.size} />
-          </motion.span>
-        ))}
-      </div>
-
-      {/* ── Window ── */}
-      <motion.div
-        className={styles.window}
-        initial={{ opacity: 0, y: 20, scale: 0.97 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <div className={styles.topEdge} aria-hidden>
-          <motion.div
-            className={styles.topEdgeSweep}
-            animate={{ x: ["-100%", "300%"] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "linear", repeatDelay: 1 }}
-          />
-        </div>
-
-        <div className={styles.header}>
-          <div className={styles.dots}>
-            <span className={`${styles.dot} ${styles.dotA}`} />
-            <span className={`${styles.dot} ${styles.dotB}`} />
-            <span className={`${styles.dot} ${styles.dotC}`} />
-          </div>
-          <div className={styles.headerCenter}>
-            <Icon icon="fluent-emoji:dizzy" width={18} height={18} />
-            <span className={styles.headerLabel}>neon-dreams</span>
-          </div>
-          <div className={styles.headerRight}>
-            <Icon icon="fluent-emoji:high-voltage" width={16} height={16} />
-          </div>
-        </div>
-
-        <div className={styles.headerRule} aria-hidden />
-        <div className={styles.editor}>{children}</div>
-      </motion.div>
+  return (
+    <div className={styles.sunWrap}>
+      <motion.div className={styles.sunGlow} style={{ opacity: glow, scale }} />
+      <div className={styles.sun} />
     </div>
   );
+}
+
+function GridFloor() {
+  const y = useLoop([0, 40], { cycles: 3 });
+
+  return (
+    <div className={styles.floor}>
+      <div className={styles.plane}>
+        <motion.div className={styles.grid} style={{ y }} />
+      </div>
+    </div>
+  );
+}
+
+function NeonDreamsScene() {
+  const driftX = useLoop([0, 30, 0], { ease: easeInOut });
+  const driftY = useLoop([0, -20, 0], { ease: easeInOut, phase: 0.25 });
+
+  return (
+    <div className={styles.layer} aria-hidden>
+      <motion.div className={styles.blobA} style={{ x: driftX, y: driftY }} />
+      <motion.div className={styles.blobB} style={{ x: driftY, y: driftX }} />
+      <NeonSun />
+      <GridFloor />
+      <div className={styles.horizon} />
+      {SPARKS.map((spark) => (
+        <FlickeringSpark key={spark.id} spark={spark} />
+      ))}
+      <div className={styles.scanlines} />
+    </div>
+  );
+}
+
+function TopEdgeSweep() {
+  const x = useLoop(["-100%", "300%", "300%"]);
+
+  return (
+    <div className={styles.topEdge} aria-hidden>
+      <motion.div className={styles.sweep} style={{ x }} />
+    </div>
+  );
+}
+
+const background = <NeonDreamsScene />;
+const accent = <TopEdgeSweep />;
+
+export default function NeonDreamsFrame(props: BaseFrameProps) {
+  return <SceneFrame {...props} themeStyles={styles} background={background} accent={accent} />;
 }

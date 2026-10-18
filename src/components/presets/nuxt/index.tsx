@@ -1,19 +1,12 @@
-import ThemeWrapper from "../ThemeWrapper";
 import { BaseFrameProps } from "@/typings/presets";
+import { SceneFrame } from "../scene";
+import NuxtScene from "./nuxt-scene";
+import SummitEdge from "./summit-edge";
 import styles from "./nuxt.module.css";
 
-const NuxtFrame = ({ padding, darkMode, transparent, children }: BaseFrameProps) => {
-  return (
-    <ThemeWrapper themeStyles={styles} padding={padding} darkMode={darkMode} transparent={transparent}>
-      <img src="/stars.svg" alt="stars" className={styles.stars} />
-      <div className={styles.window}>
-        <span data-frameborder />
-        <span data-frameborder />
-        <span data-frameborder />
-        {children}
-      </div>
-    </ThemeWrapper>
-  );
-};
+const background = <NuxtScene />;
+const accent = <SummitEdge />;
 
-export default NuxtFrame;
+export default function NuxtFrame(props: BaseFrameProps) {
+  return <SceneFrame {...props} themeStyles={styles} background={background} accent={accent} />;
+}

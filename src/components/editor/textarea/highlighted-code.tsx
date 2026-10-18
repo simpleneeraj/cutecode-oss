@@ -11,7 +11,7 @@ import {
   elementHighlightedLinesAtom,
 } from "@/store/editor/editor";
 import { useEditorContext } from "@/store/editor/context/editor";
-import { themes } from "@/components/presets/themes";
+import { isLanguageLoaded, resolveShikiLanguage, resolveShikiTheme } from "./shiki-options";
 
 type PropTypes = {
   selectedLanguage: Language | null;
@@ -33,19 +33,7 @@ const HighlightedCode: React.FC<PropTypes> = ({ selectedLanguage, code, previewD
   const darkMode = previewData ? (previewData.properties?.darkMode ?? true) : jotaiDarkMode;
   const themeId = previewData ? previewData.properties?.theme || "default" : jotaiThemeId;
 
-  // Route to the correct Shiki theme name:
-  //  - "tailwind" → tailwind-light / tailwind-dark (custom JSON themes)
-  //  - group === "Shiki" → use the theme id directly (native Shiki bundled theme)
-  //  - everything else → "cutecode-theme" (CSS variables driven by custom themes)
-  const isShikiBuiltin = themes[themeId]?.group === "Shiki";
-  const themeName =
-    themeId === "tailwind"
-      ? darkMode
-        ? "tailwind-dark"
-        : "tailwind-light"
-      : isShikiBuiltin
-        ? themeId
-        : "cutecode-theme";
+  const themeName = resolveShikiTheme(themeId, darkMode);
 
   useEffect(() => {
     const generateHighlightedHtml = async () => {
@@ -53,22 +41,14 @@ const HighlightedCode: React.FC<PropTypes> = ({ selectedLanguage, code, previewD
         return code?.replace(/[\u00A0-\u9999<>\&]/g, (i) => `&#${i.charCodeAt(0)};`);
       }
 
-      const loadedLanguages = highlighter.getLoadedLanguages() || [];
-      const hasLoadedLanguage = loadedLanguages.includes(selectedLanguage.name.toLowerCase());
-
-      if (!hasLoadedLanguage && selectedLanguage.src) {
+      if (!isLanguageLoaded(highlighter, selectedLanguage)) {
         setIsLoadingLanguage(true);
         await highlighter.loadLanguage(selectedLanguage.src);
         setIsLoadingLanguage(false);
       }
 
-      let lang = selectedLanguage.name.toLowerCase();
-      if (lang === "typescript") {
-        lang = "tsx";
-      }
-
       return highlighter.codeToHtml(code, {
-        lang: lang,
+        lang: resolveShikiLanguage(selectedLanguage),
         theme: themeName,
         transformers: [
           {

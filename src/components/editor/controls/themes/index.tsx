@@ -15,10 +15,11 @@ import {
   ComboboxCollection,
   ComboboxInput,
 } from "@/components/ui/combobox";
-import { AltArrowDown, Magnifer, Fire, Crown } from "@solar-icons/react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ArrowDown01Icon, Search01Icon, Fire02Icon, CrownIcon } from "@hugeicons/core-free-icons";
 import { Theme, IconType, BadgeVariant } from "@/typings/editor";
-import { Field, FieldLabel } from "@/components/ui/field";
 import { elementThemeAtom, updateSlideElementAtom } from "@/store/editor/editor";
+import { motion } from "motion/react";
 import { cn } from "@/utils/cn";
 import { useSetAtom } from "jotai";
 import View from "@/components/view";
@@ -29,6 +30,7 @@ import { usePremiumAccess } from "@/hooks/use-premium-access";
 import { groupThemes } from "@/components/presets/themes/shared";
 import { AccessLevel } from "@/typings/enums";
 import { trackEditor } from "@/lib/analytics";
+import { dockPopup, dockTrigger } from "../dock-styles";
 
 interface ThemeIconProps {
   theme: Theme;
@@ -47,7 +49,15 @@ function ThemeIcon({ theme, className }: ThemeIconProps) {
     );
   }
   if (theme.icon.type === IconType.IMAGE) {
-    return <img src={theme.icon.source} alt={`${theme.name} icon`} className={className} />;
+    return (
+      <img
+        src={theme.icon.source}
+        alt={`${theme.name} icon`}
+        loading="lazy"
+        decoding="async"
+        className={cn("shrink-0", className)}
+      />
+    );
   }
   return <Icon icon={theme.icon.source} className={className} />;
 }
@@ -62,13 +72,13 @@ function Badges({ tags, access }: { tags?: Theme["tags"]; access: AccessLevel })
       )}
       {tags?.includes(BadgeVariant.POPULAR) && (
         <Badge className="text-xs" size="sm" variant="error">
-          <Fire weight="BoldDuotone" className="size-3" aria-hidden="true" />
+          <HugeiconsIcon icon={Fire02Icon} className="size-3" aria-hidden="true" />
           {BadgeVariant.POPULAR}
         </Badge>
       )}
       {tags?.includes(BadgeVariant.PREMIUM) && (
         <Badge size="sm" variant={access === AccessLevel.ALLOWED ? "outline" : "warning"} title={BadgeVariant.PREMIUM}>
-          <Crown weight="BoldDuotone" className="size-3" aria-hidden="true" />
+          <HugeiconsIcon icon={CrownIcon} className="size-3" aria-hidden="true" />
         </Badge>
       )}
     </>
@@ -88,18 +98,14 @@ const ThemeControl: React.FC = () => {
   const onValueChange = (theme: Theme | null) => {
     if (!theme) return;
     const isPremium = theme.tags?.includes(BadgeVariant.PREMIUM) ?? false;
-    const access = checkAccess(isPremium);
+    const access = checkAccess("premiumThemes", isPremium);
     withAccess(access, () => {
       update({ properties: { theme: theme.id } });
       trackEditor.themeChanged(theme.id, isPremium);
     });
   };
   return (
-    <Field>
-      <FieldLabel>
-        <span className="text-muted-foreground text-xs">Theme</span>
-      </FieldLabel>
-      <Combobox<Theme>
+    <Combobox<Theme>
         items={groupedThemes}
         value={currentTheme}
         onValueChange={onValueChange}
@@ -107,26 +113,32 @@ const ThemeControl: React.FC = () => {
         isItemEqualToValue={(item, selected) => item.id === selected.id}
       >
         <ComboboxTrigger
-          render={<Button className="min-w-14 justify-between font-normal" variant="outline" />}
-          className="max-w-sm"
+          aria-label="Theme"
+          render={
+            <Button
+              variant="ghost"
+              className={dockTrigger({ shape: "label", className: "max-w-44 justify-between" })}
+              render={<motion.button whileTap={{ scale: 0.96 }} />}
+            />
+          }
         >
           <ComboboxValue>
             {(theme) => (
-              <div className="flex items-center gap-2">
-                <ThemeIcon theme={theme} className="size-3.5" />
-                {/* {theme.name} */}
-              </div>
+              <span className="flex min-w-0 items-center gap-2">
+                <ThemeIcon theme={theme} className="size-4.5" />
+                <span className="hidden truncate sm:inline">{theme.name}</span>
+              </span>
             )}
           </ComboboxValue>
-          <AltArrowDown weight="LineDuotone" className="-me-1!" aria-hidden="true" />
+          <HugeiconsIcon icon={ArrowDown01Icon} className="size-3.5 text-muted-foreground" aria-hidden="true" />
         </ComboboxTrigger>
-        <ComboboxPopup aria-label="Select theme">
-          <div className="border-t p-2">
+        <ComboboxPopup side="top" align="center" sideOffset={8} className={dockPopup()} aria-label="Select theme">
+          <div className="border-b p-2">
             <ComboboxInput
               className="rounded-md before:rounded-[calc(var(--radius-md)-1px)]"
               placeholder="Search themes..."
               showTrigger={false}
-              startAddon={<Magnifer weight="LineDuotone" aria-hidden="true" />}
+              startAddon={<HugeiconsIcon icon={Search01Icon} className="size-4" aria-hidden="true" />}
             />
           </div>
           <ComboboxEmpty>No themes found.</ComboboxEmpty>
@@ -141,9 +153,9 @@ const ThemeControl: React.FC = () => {
                       return (
                         <ComboboxItem key={theme.id} value={theme}>
                           <View className="flex flex-row items-center gap-2 text-start">
-                            <ThemeIcon theme={theme} className="size-3.5" />
+                            <ThemeIcon theme={theme} className="size-5" />
                             {theme.name}
-                            <Badges tags={theme?.tags} access={checkAccess(isPremium)} />
+                            <Badges tags={theme?.tags} access={checkAccess("premiumThemes", isPremium)} />
                           </View>
                         </ComboboxItem>
                       );
@@ -156,7 +168,6 @@ const ThemeControl: React.FC = () => {
           </ComboboxList>
         </ComboboxPopup>
       </Combobox>
-    </Field>
   );
 };
 

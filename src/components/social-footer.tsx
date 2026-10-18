@@ -23,11 +23,11 @@ export function SocialFooter({ referral = "ray-so" }: { referral?: string }) {
   return (
     <div className="flex items-center gap-2 justify-between">
       <div className="flex flex-wrap items-center gap-4">
-        <a href={`https://raycast.com/#ref=ray-so-${referral}`} className="flex items-center gap-1.5 text-gray-12 group">
+        <a href={`https://raycast.com/#ref=ray-so-${referral}`} className="flex items-center gap-1.5 text-foreground group">
           <RaycastLogoNegIcon className="w-4 h-4" />
           <span className="text-[13px] font-medium group-hover:underline">Forked from Raycast</span>
         </a>
-        <Link href="/terms" className="text-[13px] font-medium text-gray-11 hover:underline">
+        <Link href="/terms" className="text-[13px] font-medium text-muted-foreground hover:underline">
           Terms & Conditions
         </Link>
       </div>
@@ -38,7 +38,7 @@ export function SocialFooter({ referral = "ray-so" }: { referral?: string }) {
             href={link.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-gray-9 hover:text-gray-11 transition-colors"
+            className="text-muted-foreground/70 hover:text-muted-foreground transition-colors"
           >
             <link.icon className="w-4 h-4" />
           </a>

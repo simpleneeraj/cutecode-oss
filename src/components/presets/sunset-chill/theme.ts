@@ -8,11 +8,8 @@ export const sunsetChill: Theme = {
     from: "#1E1233",
     to: "#251640",
   },
-  icon: {
-    type: IconType.ICONIFY,
-    source: "fluent-emoji-flat:sun-with-face",
-  },
-  group: "Aesthetic",
+  icon: { type: IconType.IMAGE, source: "/editor/assets/sunset-chill/glyph.svg" },
+  group: "Cozy",
   font: "fira-code",
   tags: [BadgeVariant.PREMIUM],
   syntax: {

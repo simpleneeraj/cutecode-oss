@@ -1,114 +1,97 @@
-import { motion } from "framer-motion";
+import { motion, easeInOut } from "motion/react";
 import { Icon } from "@/components/ui/icon";
-import styles from "./velvet-night.module.css";
 import { BaseFrameProps } from "@/typings/presets";
+import { SceneFrame, useLoop } from "../scene";
+import styles from "./velvet-night.module.css";
 
-/*
-  Velvet Night
-  Palette: deep indigo · royal violet · soft lavender
-  Vibe: luxury dark, velvet curtain, midnight opulence
-*/
-
-const AMBIENT_ICONS = [
-  { icon: "fluent-emoji:purple-heart",  x: 6,  y: 5,  size: 20, dur: 10 },
-  { icon: "fluent-emoji:crescent-moon", x: 87, y: 7,  size: 18, dur: 12 },
-  { icon: "fluent-emoji:sparkles",      x: 79, y: 81, size: 16, dur: 9  },
-  { icon: "fluent-emoji:purple-heart",  x: 4,  y: 73, size: 18, dur: 11 },
-  { icon: "fluent-emoji:crescent-moon", x: 45, y: 3,  size: 14, dur: 13 },
-  { icon: "fluent-emoji:sparkles",      x: 91, y: 45, size: 14, dur: 8  },
-  { icon: "fluent-emoji:star",          x: 2,  y: 38, size: 16, dur: 14 },
-  { icon: "fluent-emoji:purple-heart",  x: 60, y: 91, size: 14, dur: 9  },
-] as const;
-
-const PARTICLES = Array.from({ length: 16 }, (_, i) => ({
-  id: i,
-  left: `${(i * 43 + 11) % 100}%`,
-  size: 2 + ((i * 4) % 3),
-  dur: 12 + ((i * 7) % 10),
-  delay: -((i * 9) % 18),
-  color: (["#a78bfa", "#7c3aed", "#c4b5fd", "#ddd6fe"] as const)[i % 4],
+const STARS = Array.from({ length: 24 }, (_, index) => ({
+  id: `star-${index}`,
+  left: `${(index * 37 + 13) % 100}%`,
+  top: `${(index * 53 + 7) % 100}%`,
+  size: 1.5 + (index % 3),
+  cycles: 1 + (index % 3),
+  phase: ((index * 11) % 24) / 24,
 }));
 
-export default function VelvetNightFrame({ padding, darkMode, transparent, children }: BaseFrameProps) {
+const FLOATERS = [
+  { id: "stars-left", icon: "solar:stars-minimalistic-bold-duotone", x: 6, y: 10, size: 18 },
+  { id: "stars-top", icon: "solar:stars-bold-duotone", x: 48, y: 4, size: 14 },
+  { id: "stars-right", icon: "solar:stars-minimalistic-bold-duotone", x: 92, y: 52, size: 14 },
+  { id: "stars-bottom", icon: "solar:stars-bold-duotone", x: 12, y: 86, size: 16 },
+];
+
+type Star = (typeof STARS)[number];
+type Floater = (typeof FLOATERS)[number];
+
+function TwinklingStar({ star }: { star: Star }) {
+  const opacity = useLoop([0.15, 0.9, 0.15], { cycles: star.cycles, phase: star.phase, ease: easeInOut });
+
   return (
-    <div
-      className={[styles.scene, darkMode ? styles.dark : styles.light, transparent ? styles.transparent : ""].join(" ")}
-      style={{ padding }}
-    >
-      {/* ── Velvet orbs ── */}
-      <div className={styles.blobA} aria-hidden />
-      <div className={styles.blobB} aria-hidden />
-      <div className={styles.blobC} aria-hidden />
+    <motion.span
+      className={styles.star}
+      style={{ left: star.left, top: star.top, width: star.size, height: star.size, opacity }}
+    />
+  );
+}
 
-      {/* ── Rising violet particles ── */}
-      <div className={styles.particleLayer} aria-hidden>
-        {PARTICLES.map((p) => (
-          <motion.div
-            key={p.id}
-            style={{
-              position: "absolute",
-              bottom: 0,
-              left: p.left,
-              width: p.size,
-              height: p.size,
-              borderRadius: "50%",
-              background: p.color,
-              boxShadow: `0 0 6px ${p.color}`,
-            }}
-            animate={{ y: [0, -340], opacity: [0, 0.8, 0.4, 0] }}
-            transition={{ duration: p.dur, delay: p.delay, repeat: Infinity, ease: "linear" }}
-          />
-        ))}
-      </div>
+function FloatingIcon({ floater, index }: { floater: Floater; index: number }) {
+  const phase = index / FLOATERS.length;
+  const y = useLoop([0, -8, 0], { phase, ease: easeInOut });
+  const opacity = useLoop([0.25, 0.5, 0.25], { phase, ease: easeInOut });
 
-      {/* ── Floating icons ── */}
-      <div className={styles.ambientLayer} aria-hidden>
-        {AMBIENT_ICONS.map((a, i) => (
-          <motion.span
-            key={i}
-            className={styles.ambientIcon}
-            style={{ left: `${a.x}%`, top: `${a.y}%` }}
-            animate={{ y: [0, -10, 0], rotate: [0, i % 2 === 0 ? 6 : -6, 0] }}
-            transition={{ duration: a.dur, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <Icon icon={a.icon} width={a.size} height={a.size} />
-          </motion.span>
-        ))}
-      </div>
+  return (
+    <motion.span className={styles.floater} style={{ left: `${floater.x}%`, top: `${floater.y}%`, y, opacity }}>
+      <Icon icon={floater.icon} width={floater.size} height={floater.size} />
+    </motion.span>
+  );
+}
 
-      {/* ── Window ── */}
-      <motion.div
-        className={styles.window}
-        initial={{ opacity: 0, y: 20, scale: 0.97 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <div className={styles.topEdge} aria-hidden>
-          <motion.div
-            className={styles.topEdgeSweep}
-            animate={{ x: ["-100%", "300%"] }}
-            transition={{ duration: 5, repeat: Infinity, ease: "linear", repeatDelay: 2 }}
-          />
-        </div>
+function Moon() {
+  const y = useLoop([0, -10, 0], { ease: easeInOut });
+  const glow = useLoop([0.75, 1, 0.75], { cycles: 2, ease: easeInOut });
 
-        <div className={styles.header}>
-          <div className={styles.dots}>
-            <span className={`${styles.dot} ${styles.dotA}`} />
-            <span className={`${styles.dot} ${styles.dotB}`} />
-            <span className={`${styles.dot} ${styles.dotC}`} />
-          </div>
-          <div className={styles.headerCenter}>
-            <Icon icon="fluent-emoji:purple-heart" width={18} height={18} />
-            <span className={styles.headerLabel}>velvet-night</span>
-          </div>
-          <div className={styles.headerRight}>
-            <Icon icon="fluent-emoji:crescent-moon" width={16} height={16} />
-          </div>
-        </div>
+  return (
+    <motion.div className={styles.moon} style={{ y }}>
+      <motion.div className={styles.moonHalo} style={{ opacity: glow }} />
+      <div className={styles.moonDisc} />
+    </motion.div>
+  );
+}
 
-        <div className={styles.headerRule} aria-hidden />
-        <div className={styles.editor}>{children}</div>
-      </motion.div>
+function VelvetNightScene() {
+  const foldX = useLoop([0, 180]);
+  const driftX = useLoop([0, 30, 0], { ease: easeInOut });
+  const driftY = useLoop([0, -20, 0], { ease: easeInOut, phase: 0.25 });
+
+  return (
+    <div className={styles.layer} aria-hidden>
+      <motion.div className={styles.folds} style={{ x: foldX }} />
+      <motion.div className={styles.blobA} style={{ x: driftX, y: driftY }} />
+      <motion.div className={styles.blobB} style={{ x: driftY, y: driftX }} />
+      {STARS.map((star) => (
+        <TwinklingStar key={star.id} star={star} />
+      ))}
+      <Moon />
+      {FLOATERS.map((floater, index) => (
+        <FloatingIcon key={floater.id} floater={floater} index={index} />
+      ))}
     </div>
   );
+}
+
+function TopEdgeSweep() {
+  const x = useLoop(["-100%", "300%", "300%"]);
+
+  return (
+    <div className={styles.topEdge} aria-hidden>
+      <motion.div className={styles.sweep} style={{ x }} />
+    </div>
+  );
+}
+
+const background = <VelvetNightScene />;
+const accent = <TopEdgeSweep />;
+
+export default function VelvetNightFrame(props: BaseFrameProps) {
+  return <SceneFrame {...props} themeStyles={styles} background={background} accent={accent} />;
 }

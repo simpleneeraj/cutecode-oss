@@ -8,10 +8,7 @@ export const strawberryMilk: Theme = {
     from: "#ffe4ec",
     to: "#fff0f3",
   },
-  icon: {
-    type: IconType.ICONIFY,
-    source: "fluent-emoji:strawberry",
-  },
+  icon: { type: IconType.IMAGE, source: "/editor/assets/strawberry-milk/glyph.svg" },
   group: "Romantic",
   font: "fira-code",
   tags: [BadgeVariant.NEW, BadgeVariant.PREMIUM],

@@ -62,7 +62,7 @@ export default function SuccessDialog({
           </motion.div>
 
           <motion.div
-            className="space-y-1"
+            className="flex flex-col gap-1"
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25, duration: 0.3 }}

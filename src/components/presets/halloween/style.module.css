@@ -1,0 +1,335 @@
+.scene {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  isolation: isolate;
+}
+
+.dark {
+  background:
+    radial-gradient(ellipse at 50% 120%, rgba(234, 88, 12, 0.28) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 0%, #2d1b4e 0%, #170d2b 50%, #0b0616 100%);
+}
+
+.light {
+  background:
+    radial-gradient(ellipse at 50% 120%, rgba(253, 186, 116, 0.55) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 0%, #fbf8ff 0%, #f1e8fc 50%, #e4d4f6 100%);
+}
+
+.transparent {
+  background: transparent;
+}
+
+.layer {
+  position: absolute;
+  overflow: hidden;
+  inset: 0;
+  pointer-events: none;
+  container-type: size;
+}
+
+.emberBlob {
+  position: absolute;
+  bottom: -110px;
+  left: -60px;
+  width: 340px;
+  height: 260px;
+  border-radius: 50%;
+  filter: blur(80px);
+  will-change: transform;
+}
+
+.light .emberBlob {
+  background: #fdba74;
+  opacity: 0.5;
+}
+
+.dark .emberBlob {
+  background: #c2410c;
+  opacity: 0.22;
+}
+
+.stars {
+  position: absolute;
+  inset: 0;
+}
+
+.light .stars {
+  opacity: 0.35;
+}
+
+.star {
+  position: absolute;
+  border-radius: 50%;
+  will-change: opacity;
+}
+
+.light .star {
+  background: #7c3aed;
+}
+
+.dark .star {
+  background: #f5f3ff;
+  box-shadow: 0 0 4px rgba(237, 233, 254, 0.8);
+}
+
+.moon {
+  position: absolute;
+  top: 7%;
+  right: 7%;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+.moon::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  margin: -74px 0 0 -74px;
+  content: "";
+}
+
+.light .moon {
+  background: radial-gradient(circle at 38% 36%, #fffaf0 0%, #fde4c4 70%, #f6c99a 100%);
+  box-shadow: inset -6px -4px 0 rgba(234, 88, 12, 0.08);
+}
+
+.light .moon::after {
+  background: radial-gradient(circle, rgba(253, 186, 116, 0.35) 0%, transparent 60%);
+}
+
+.dark .moon {
+  background: radial-gradient(circle at 38% 36%, #fffbeb 0%, #f3e3b5 65%, #d9c28a 100%);
+  box-shadow: inset -6px -4px 0 rgba(120, 90, 40, 0.18);
+}
+
+.dark .moon::after {
+  background: radial-gradient(circle, rgba(243, 227, 181, 0.22) 0%, rgba(167, 139, 250, 0.08) 40%, transparent 60%);
+}
+
+.bat {
+  position: absolute;
+  left: 0;
+  will-change: transform;
+}
+
+.light .bat {
+  fill: #3b2160;
+  opacity: 0.55;
+}
+
+.dark .bat {
+  fill: #05020b;
+  opacity: 0.9;
+}
+
+.fog {
+  position: absolute;
+  width: 60%;
+  height: 90px;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+.light .fog {
+  background: radial-gradient(ellipse, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0) 70%);
+}
+
+.dark .fog {
+  background: radial-gradient(ellipse, rgba(196, 181, 253, 0.16) 0%, rgba(196, 181, 253, 0) 70%);
+}
+
+.candle {
+  position: absolute;
+  bottom: 0;
+  width: 13px;
+  border-radius: 3px 3px 0 0;
+  margin-left: -6.5px;
+}
+
+.light .candle {
+  background: linear-gradient(90deg, #f3e8d6, #fffaf0 45%, #e2d2b8);
+}
+
+.dark .candle {
+  background: linear-gradient(90deg, #6b5a4a, #c9b79e 45%, #57483b);
+}
+
+.candleGlow {
+  position: absolute;
+  bottom: calc(100% - 30px);
+  left: 50%;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin-left: -60px;
+  background: radial-gradient(circle, rgba(251, 146, 60, 0.42) 0%, rgba(251, 146, 60, 0.1) 40%, transparent 70%);
+  will-change: opacity;
+}
+
+.flame {
+  position: absolute;
+  bottom: calc(100% + 2px);
+  left: 50%;
+  width: 8px;
+  height: 15px;
+  border-radius: 50% 50% 50% 50% / 65% 65% 35% 35%;
+  margin-left: -4px;
+  background: radial-gradient(ellipse at 50% 75%, #fffbeb 0%, #fde047 35%, #fb923c 70%, rgba(234, 88, 12, 0.4) 100%);
+  transform-origin: 50% 100%;
+  will-change: transform;
+}
+
+.window {
+  position: relative;
+  z-index: 10;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+.light .window {
+  background: rgba(253, 250, 255, 0.95);
+  box-shadow:
+    0 0 0 1px rgba(124, 58, 237, 0.12),
+    0 14px 44px rgba(46, 26, 71, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.98);
+}
+
+.dark .window {
+  background: #120b1f;
+  box-shadow:
+    0 0 0 1px rgba(196, 181, 253, 0.1),
+    0 0 55px rgba(234, 88, 12, 0.08),
+    0 24px 75px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 rgba(237, 228, 251, 0.05);
+}
+
+.topEdge {
+  position: absolute;
+  z-index: 20;
+  top: 0;
+  right: 0;
+  left: 0;
+  overflow: hidden;
+  height: 2px;
+}
+
+.light .topEdge {
+  background: rgba(234, 88, 12, 0.18);
+}
+
+.dark .topEdge {
+  background: rgba(251, 146, 60, 0.12);
+}
+
+.sweep {
+  position: absolute;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, #7c3aed, #fb923c, #fde047, transparent);
+  inset-block: 0;
+}
+
+.header {
+  display: grid;
+  align-items: center;
+  padding: 12px 16px 11px;
+  grid-gap: 12px;
+  grid-template-columns: 60px 1fr 60px;
+}
+
+.light .header {
+  border-bottom: 1px solid rgba(124, 58, 237, 0.1);
+  background: rgba(248, 243, 255, 0.92);
+}
+
+.dark .header {
+  border-bottom: 1px solid rgba(196, 181, 253, 0.08);
+  background: #1a1029;
+}
+
+.dots {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.dot {
+  position: relative;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+}
+
+.dot::after {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  content: "";
+}
+
+.dot:nth-child(1) {
+  background: radial-gradient(circle at 35% 35%, #fdba74, #c2410c);
+  box-shadow: 0 1px 4px rgba(194, 65, 12, 0.45);
+}
+
+.dot:nth-child(2) {
+  background: radial-gradient(circle at 35% 35%, #fde68a, #d97706);
+  box-shadow: 0 1px 4px rgba(217, 119, 6, 0.45);
+}
+
+.dot:nth-child(3) {
+  background: radial-gradient(circle at 35% 35%, #c4b5fd, #6d28d9);
+  box-shadow: 0 1px 4px rgba(109, 40, 217, 0.45);
+}
+
+.fileName {
+  position: relative;
+  display: flex;
+  height: 16px;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--code-font, "Geist Mono", "Courier New", monospace);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 12px;
+
+  > input {
+    position: absolute;
+    width: 100%;
+    border: none;
+    margin: 0;
+    background-color: transparent;
+    color: inherit;
+    font: inherit;
+    inset: 0;
+    letter-spacing: inherit;
+    text-align: center;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  > input:focus + span {
+    display: none;
+  }
+}
+
+.light .fileName {
+  color: #5b21b6;
+}
+
+.dark .fileName {
+  color: #fdba74;
+}

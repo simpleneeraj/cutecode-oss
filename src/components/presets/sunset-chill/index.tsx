@@ -1,90 +1,103 @@
-import { motion } from "framer-motion";
+import { motion, easeInOut } from "motion/react";
 import { Icon } from "@/components/ui/icon";
-import styles from "./style.module.css";
 import { BaseFrameProps } from "@/typings/presets";
+import { SceneFrame, useLoop } from "../scene";
+import styles from "./style.module.css";
 
-/* ─────────────────────────────────────────────────────────────
-   Sunset Chill Frame
-   Palette  → dusk purple × glowing orange × deep pink
-   Vibe     → golden hour, lo-fi beats, warm evening breezes
-───────────────────────────────────────────────────────────── */
+const FLOATERS = [
+  { icon: "solar:sunset-bold-duotone", x: 6, y: 8, size: 22 },
+  { icon: "solar:stars-minimalistic-bold-duotone", x: 90, y: 10, size: 14 },
+  { icon: "solar:stars-bold-duotone", x: 84, y: 46, size: 16 },
+  { icon: "solar:leaf-bold-duotone", x: 4, y: 58, size: 15 },
+];
 
-/* ── Floating fireflies / embers ── */
-const PARTICLES = Array.from({ length: 18 }, (_, i) => ({
-  id: i,
-  left: `${(i * 37 + 13) % 100}%`,
-  size: 3 + ((i * 5) % 4),
-  duration: 8 + ((i * 7) % 6),
-  delay: -((i * 11) % 12),
-  color: (["#FFA62B", "#FF8A5B", "#FFE28A"] as const)[i % 3],
+const CLOUDS = [
+  { className: styles.cloudA, distance: 28 },
+  { className: styles.cloudB, distance: -22 },
+  { className: styles.cloudC, distance: 18 },
+];
+
+const EMBERS = Array.from({ length: 16 }, (_, index) => ({
+  left: `${(index * 37 + 13) % 100}%`,
+  size: 3 + ((index * 5) % 3),
+  cycles: 1 + (index % 2),
+  phase: ((index * 5) % 16) / 16,
+  drift: index % 2 === 0 ? 14 : -14,
 }));
 
-export default function SunsetChillFrame({ padding, darkMode, transparent, children }: BaseFrameProps) {
+type Floater = (typeof FLOATERS)[number];
+type Cloud = (typeof CLOUDS)[number];
+type Ember = (typeof EMBERS)[number];
+
+function FloatingIcon({ floater, index }: { floater: Floater; index: number }) {
+  const phase = index / FLOATERS.length;
+  const y = useLoop([0, -9, 0], { phase, ease: easeInOut });
+  const rotate = useLoop([0, index % 2 === 0 ? 7 : -7, 0], { phase, ease: easeInOut });
+
   return (
-    <div
-      className={[styles.scene, darkMode ? styles.dark : styles.light, transparent ? styles.transparent : ""].join(
-        " ",
-      )}
-      style={{ padding }}
-    >
-      {/* ── Atmospheric blobs ── */}
-      <div className={styles.blobPurple} aria-hidden />
-      <div className={styles.blobPink} aria-hidden />
-      <div className={styles.blobOrange} aria-hidden />
+    <motion.span className={styles.floater} style={{ left: `${floater.x}%`, top: `${floater.y}%`, y, rotate }}>
+      <Icon icon={floater.icon} width={floater.size} height={floater.size} />
+    </motion.span>
+  );
+}
 
-      {/* ── Glowing fireflies ── */}
-      <div className={styles.particleLayer} aria-hidden>
-        {PARTICLES.map((p) => (
-          <div
-            key={p.id}
-            className={styles.particle}
-            style={{
-              left: p.left,
-              width: p.size,
-              height: p.size,
-              color: p.color,
-              backgroundColor: "currentcolor",
-              animationDuration: `${p.duration}s`,
-              animationDelay: `${p.delay}s`,
-            }}
-          />
-        ))}
-      </div>
+function DriftingCloud({ cloud, index }: { cloud: Cloud; index: number }) {
+  const x = useLoop([0, cloud.distance, 0], { phase: index / CLOUDS.length, ease: easeInOut });
 
-      {/* ── Main window ── */}
-      <motion.div
-        className={styles.window}
-        initial={{ opacity: 0, y: 24, scale: 0.97 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-      >
-        {/* ── Header ── */}
-        <div className={styles.header}>
-          {/* Traffic-light dots */}
-          <div className={styles.dots}>
-            <span className={`${styles.dot} ${styles.dotA}`} />
-            <span className={`${styles.dot} ${styles.dotB}`} />
-            <span className={`${styles.dot} ${styles.dotC}`} />
-          </div>
+  return <motion.div className={cloud.className} style={{ x }} />;
+}
 
-          {/* Center wordmark */}
-          <div className={styles.headerCenter}>
-            <Icon icon="fluent-emoji:sunset" width={18} height={18} />
-            <span className={styles.headerLabel}>sunset-chill</span>
-          </div>
+function RisingEmber({ ember }: { ember: Ember }) {
+  const options = { cycles: ember.cycles, phase: ember.phase };
+  const y = useLoop([0, -320], options);
+  const x = useLoop([0, ember.drift, 0], { ...options, ease: easeInOut });
+  const opacity = useLoop([0, 0.9, 0.5, 0], options);
 
-          {/* Right accent */}
-          <div className={styles.headerRight}>
-            <Icon icon="fluent-emoji:sparkles" width={16} height={16} />
-          </div>
-        </div>
+  return (
+    <motion.span
+      className={styles.ember}
+      style={{ left: ember.left, width: ember.size, height: ember.size, x, y, opacity }}
+    />
+  );
+}
 
-        {/* Divider rule */}
-        <div className={styles.headerRule} aria-hidden />
+function SunsetChillScene() {
+  const sunY = useLoop([0, 10, 0], { ease: easeInOut });
+  const glowScale = useLoop([1, 1.1, 1], { ease: easeInOut });
+  const hillX = useLoop([0, -16, 0], { ease: easeInOut });
 
-        {/* ── Code editor ── */}
-        <div className={styles.editor}>{children}</div>
-      </motion.div>
+  return (
+    <div className={styles.layer} aria-hidden>
+      <motion.div className={styles.glow} style={{ scale: glowScale }} />
+      <motion.div className={styles.sun} style={{ y: sunY }} />
+      {CLOUDS.map((cloud, index) => (
+        <DriftingCloud key={index} cloud={cloud} index={index} />
+      ))}
+      <motion.div className={styles.hillBack} style={{ x: hillX }} />
+      <div className={styles.hillFront} />
+      {EMBERS.map((ember, index) => (
+        <RisingEmber key={index} ember={ember} />
+      ))}
+      {FLOATERS.map((floater, index) => (
+        <FloatingIcon key={index} floater={floater} index={index} />
+      ))}
     </div>
   );
+}
+
+function TopEdgeSweep() {
+  const x = useLoop(["-100%", "300%", "300%"]);
+
+  return (
+    <div className={styles.topEdge} aria-hidden>
+      <motion.div className={styles.sweep} style={{ x }} />
+    </div>
+  );
+}
+
+const background = <SunsetChillScene />;
+const accent = <TopEdgeSweep />;
+
+export default function SunsetChillFrame(props: BaseFrameProps) {
+  return <SceneFrame {...props} themeStyles={styles} background={background} accent={accent} />;
 }

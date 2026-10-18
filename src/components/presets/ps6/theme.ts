@@ -8,22 +8,19 @@ export const ps6: Theme = {
     from: "#0e0e18",
     to: "#13131f",
   },
-  icon: {
-    type: IconType.ICONIFY,
-    source: "simple-icons:playstation",
-  },
+  icon: { type: IconType.IMAGE, source: "/editor/assets/ps6/glyph.svg" },
   tags: [BadgeVariant.NEW, BadgeVariant.PREMIUM],
-  group: "Gaming",
+  group: "Retro",
   font: "fira-code",
   syntax: {
     light: convertToShikiTheme({
       foreground: "#1a1a3a",
-      constant: "#208060", // triangle teal
-      string: "#906020", // square amber
+      constant: "#208060",
+      string: "#906020",
       comment: "#9098c0",
-      keyword: "#4050a0", // cross blue-violet
+      keyword: "#4050a0",
       parameter: "#208060",
-      function: "#a03050", // circle pink-red
+      function: "#a03050",
       stringExpression: "#906020",
       punctuation: "#8090c0",
       link: "#a03050",
@@ -37,12 +34,12 @@ export const ps6: Theme = {
     }),
     dark: convertToShikiTheme({
       foreground: "#c8d0f8",
-      constant: "#78e8b8", // triangle teal
-      string: "#f0a030", // square amber
+      constant: "#78e8b8",
+      string: "#f0a030",
       comment: "#30305a",
-      keyword: "#7898f0", // cross blue-violet
+      keyword: "#7898f0",
       parameter: "#78e8b8",
-      function: "#f07898", // circle pink-red
+      function: "#f07898",
       stringExpression: "#f0a030",
       punctuation: "#40406a",
       link: "#f07898",

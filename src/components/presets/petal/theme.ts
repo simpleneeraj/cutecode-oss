@@ -1,0 +1,53 @@
+import { Theme, BadgeVariant } from "@/typings/editor";
+import { convertToShikiTheme } from "../themes/shared";
+
+export const petal: Theme = {
+  id: "petal",
+  name: "Petal",
+  background: {
+    from: "#E8B9C0",
+    to: "#232136",
+  },
+  group: "Classic",
+  tags: [BadgeVariant.NEW],
+  syntax: {
+    light: convertToShikiTheme({
+      foreground: "#544E6E",
+      constant: "#B4637A",
+      string: "#C78A2E",
+      comment: "#9590A8",
+      keyword: "#2D6B8A",
+      parameter: "#8668A8",
+      function: "#C2577A",
+      stringExpression: "#C78A2E",
+      punctuation: "#7E7895",
+      link: "#4A8A92",
+      number: "#B4637A",
+      property: "#4A8A92",
+      highlight: "rgba(45,107,138,0.1)",
+      highlightBorder: "#2D6B8A",
+      highlightHover: "rgba(45,107,138,0.05)",
+      diffInserted: "#4A8A92",
+      diffDeleted: "#B4637A",
+    }),
+    dark: convertToShikiTheme({
+      foreground: "#E2DEF4",
+      constant: "#EBA4B0",
+      string: "#F4C67E",
+      comment: "#6F6A88",
+      keyword: "#4FA0BE",
+      parameter: "#C6A9EB",
+      function: "#ED8DA6",
+      stringExpression: "#F4C67E",
+      punctuation: "#908AAA",
+      link: "#9CCFD6",
+      number: "#EBA4B0",
+      property: "#9CCFD6",
+      highlight: "rgba(79,160,190,0.14)",
+      highlightBorder: "#4FA0BE",
+      highlightHover: "rgba(79,160,190,0.09)",
+      diffInserted: "#9CCFD6",
+      diffDeleted: "#ED8DA6",
+    }),
+  },
+};

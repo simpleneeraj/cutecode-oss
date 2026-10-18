@@ -8,10 +8,7 @@ export const valentine: Theme = {
     from: "#120608",
     to: "#1c0a0f",
   },
-  icon: {
-    type: IconType.ICONIFY,
-    source: "noto:revolving-hearts",
-  },
+  icon: { type: IconType.IMAGE, source: "/editor/assets/valentine/glyph.svg" },
   group: "Romantic",
   font: "fira-code",
   tags: [BadgeVariant.PREMIUM],

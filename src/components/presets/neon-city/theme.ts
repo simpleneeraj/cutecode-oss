@@ -1,0 +1,53 @@
+import { Theme, BadgeVariant } from "@/typings/editor";
+import { convertToShikiTheme } from "../themes/shared";
+
+export const neonCity: Theme = {
+  id: "neon-city",
+  name: "Neon City",
+  background: {
+    from: "#5B4FD9",
+    to: "#151826",
+  },
+  group: "Classic",
+  tags: [BadgeVariant.NEW],
+  syntax: {
+    light: convertToShikiTheme({
+      foreground: "#343B58",
+      constant: "#9254D1",
+      string: "#4A7A1F",
+      comment: "#7F86A8",
+      keyword: "#7A3FD1",
+      parameter: "#A55E14",
+      function: "#2C5FC9",
+      stringExpression: "#4A7A1F",
+      punctuation: "#0F7C8F",
+      link: "#0F7C8F",
+      number: "#B5501C",
+      property: "#2C6E8F",
+      highlight: "rgba(122,63,209,0.1)",
+      highlightBorder: "#7A3FD1",
+      highlightHover: "rgba(122,63,209,0.05)",
+      diffInserted: "#4A7A1F",
+      diffDeleted: "#C9355A",
+    }),
+    dark: convertToShikiTheme({
+      foreground: "#C3CBF0",
+      constant: "#FF9E66",
+      string: "#A3D977",
+      comment: "#5A6390",
+      keyword: "#B89CFA",
+      parameter: "#E5B272",
+      function: "#7DA9FC",
+      stringExpression: "#A3D977",
+      punctuation: "#8AD6F0",
+      link: "#8AD6F0",
+      number: "#FF9E66",
+      property: "#79DDD0",
+      highlight: "rgba(184,156,250,0.14)",
+      highlightBorder: "#B89CFA",
+      highlightHover: "rgba(184,156,250,0.09)",
+      diffInserted: "#A3D977",
+      diffDeleted: "#F7728A",
+    }),
+  },
+};

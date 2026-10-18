@@ -1,0 +1,333 @@
+.scene {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  isolation: isolate;
+}
+
+.dark {
+  background:
+    radial-gradient(ellipse at 50% 115%, rgba(245, 158, 11, 0.24) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 0%, #26206a 0%, #16124a 50%, #0b0a26 100%);
+}
+
+.light {
+  background:
+    radial-gradient(ellipse at 50% 115%, rgba(251, 191, 36, 0.4) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 0%, #fffcf5 0%, #fff3e0 50%, #fde4c4 100%);
+}
+
+.transparent {
+  background: transparent;
+}
+
+.layer {
+  position: absolute;
+  overflow: hidden;
+  inset: 0;
+  pointer-events: none;
+  container-type: size;
+}
+
+.glow {
+  position: absolute;
+  bottom: -200px;
+  left: 50%;
+  width: 520px;
+  height: 340px;
+  border-radius: 50%;
+  margin-left: -260px;
+  will-change: transform;
+}
+
+.light .glow {
+  background: radial-gradient(ellipse, rgba(251, 191, 36, 0.4) 0%, rgba(249, 115, 22, 0.1) 45%, transparent 70%);
+}
+
+.dark .glow {
+  background: radial-gradient(ellipse, rgba(251, 191, 36, 0.28) 0%, rgba(234, 88, 12, 0.08) 45%, transparent 70%);
+}
+
+.rangoliTop,
+.rangoliBottom {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  will-change: transform;
+}
+
+.rangoliTop {
+  top: -90px;
+  right: -80px;
+}
+
+.rangoliBottom {
+  bottom: -100px;
+  left: -90px;
+}
+
+.light .rangoliTop,
+.light .rangoliBottom {
+  opacity: 0.32;
+}
+
+.dark .rangoliTop,
+.dark .rangoliBottom {
+  opacity: 0.38;
+}
+
+.rangoliRing {
+  fill: none;
+  stroke: #f59e0b;
+  stroke-dasharray: 1 3;
+  stroke-linecap: round;
+  stroke-width: 1.4;
+}
+
+.petalOuter {
+  fill: #db2777;
+}
+
+.petalInner {
+  fill: #f59e0b;
+}
+
+.rangoliDot {
+  fill: #14b8a6;
+}
+
+.rangoliCore {
+  fill: #14b8a6;
+}
+
+.rangoliHeart {
+  fill: #fde68a;
+}
+
+.twinkle {
+  position: absolute;
+}
+
+.light .twinkle {
+  fill: #d97706;
+}
+
+.dark .twinkle {
+  fill: #fde68a;
+}
+
+.spark {
+  position: absolute;
+  bottom: 6%;
+  border-radius: 50%;
+  background: #fcd34d;
+  box-shadow: 0 0 6px rgba(251, 191, 36, 0.85);
+  will-change: transform;
+}
+
+.light .spark {
+  background: #f59e0b;
+  box-shadow: 0 0 5px rgba(217, 119, 6, 0.6);
+}
+
+.diya {
+  position: absolute;
+  bottom: 8px;
+  width: 40px;
+  height: 18px;
+  margin-left: -20px;
+}
+
+.diyaGlow {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  margin-left: -65px;
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.45) 0%, rgba(249, 115, 22, 0.12) 40%, transparent 70%);
+  will-change: opacity;
+}
+
+.flame {
+  position: absolute;
+  bottom: 13px;
+  left: 50%;
+  width: 8px;
+  height: 15px;
+  border-radius: 50% 50% 50% 50% / 65% 65% 35% 35%;
+  margin-left: -4px;
+  background: radial-gradient(ellipse at 50% 75%, #fffbeb 0%, #fde047 35%, #fb923c 70%, rgba(234, 88, 12, 0.4) 100%);
+  transform-origin: 50% 100%;
+  will-change: transform;
+}
+
+.bowl {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+}
+
+.light .bowl {
+  fill: #c2410c;
+}
+
+.dark .bowl {
+  fill: #9a3412;
+}
+
+.rim {
+  fill: none;
+  stroke: #fbbf24;
+  stroke-linecap: round;
+  stroke-width: 1.4;
+}
+
+.window {
+  position: relative;
+  z-index: 10;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+.light .window {
+  background: rgba(255, 252, 245, 0.95);
+  box-shadow:
+    0 0 0 1px rgba(217, 119, 6, 0.14),
+    0 14px 44px rgba(42, 33, 96, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.98);
+}
+
+.dark .window {
+  background: #0d0b2a;
+  box-shadow:
+    0 0 0 1px rgba(251, 191, 36, 0.12),
+    0 0 55px rgba(245, 158, 11, 0.1),
+    0 24px 75px rgba(0, 0, 0, 0.75),
+    inset 0 1px 0 rgba(253, 230, 138, 0.06);
+}
+
+.topEdge {
+  position: absolute;
+  z-index: 20;
+  top: 0;
+  right: 0;
+  left: 0;
+  overflow: hidden;
+  height: 2px;
+}
+
+.light .topEdge {
+  background: rgba(245, 158, 11, 0.25);
+}
+
+.dark .topEdge {
+  background: rgba(251, 191, 36, 0.14);
+}
+
+.sweep {
+  position: absolute;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, #db2777, #f59e0b, #fde68a, transparent);
+  inset-block: 0;
+}
+
+.header {
+  display: grid;
+  align-items: center;
+  padding: 12px 16px 11px;
+  grid-gap: 12px;
+  grid-template-columns: 60px 1fr 60px;
+}
+
+.light .header {
+  border-bottom: 1px solid rgba(217, 119, 6, 0.14);
+  background: rgba(255, 247, 232, 0.92);
+}
+
+.dark .header {
+  border-bottom: 1px solid rgba(251, 191, 36, 0.1);
+  background: #14113a;
+}
+
+.dots {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.dot {
+  position: relative;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+}
+
+.dot::after {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  content: "";
+}
+
+.dot:nth-child(1) {
+  background: radial-gradient(circle at 35% 35%, #f9a8d4, #be185d);
+  box-shadow: 0 1px 4px rgba(190, 24, 93, 0.45);
+}
+
+.dot:nth-child(2) {
+  background: radial-gradient(circle at 35% 35%, #fde68a, #d97706);
+  box-shadow: 0 1px 4px rgba(217, 119, 6, 0.45);
+}
+
+.dot:nth-child(3) {
+  background: radial-gradient(circle at 35% 35%, #99f6e4, #0f766e);
+  box-shadow: 0 1px 4px rgba(15, 118, 110, 0.45);
+}
+
+.fileName {
+  position: relative;
+  display: flex;
+  height: 16px;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--code-font, "Geist Mono", "Courier New", monospace);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 12px;
+
+  > input {
+    position: absolute;
+    width: 100%;
+    border: none;
+    margin: 0;
+    background-color: transparent;
+    color: inherit;
+    font: inherit;
+    inset: 0;
+    letter-spacing: inherit;
+    text-align: center;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  > input:focus + span {
+    display: none;
+  }
+}
+
+.light .fileName {
+  color: #b45309;
+}
+
+.dark .fileName {
+  color: #fcd34d;
+}

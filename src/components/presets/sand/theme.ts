@@ -1,4 +1,4 @@
-import { Theme, IconType } from "@/typings/editor";
+import { Theme } from "@/typings/editor";
 import { convertToShikiTheme } from "../themes/shared";
 
 export const sand: Theme = {
@@ -8,7 +8,7 @@ export const sand: Theme = {
     from: "#EED5B6",
     to: "#AF8856",
   },
-  group: "Defaults",
+  group: "Classic",
   syntax: {
     light: convertToShikiTheme({
       foreground: "#262217",

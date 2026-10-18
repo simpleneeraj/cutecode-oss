@@ -8,7 +8,7 @@ export const love: Theme = {
     from: "#0f0a14",
     to: "#17101f",
   },
-  icon: { type: IconType.ICONIFY, source: "streamline-stickies-color:love" },
+  icon: { type: IconType.IMAGE, source: "/editor/assets/love/glyph.svg" },
   group: "Romantic",
   font: "fira-code",
   tags: [BadgeVariant.PREMIUM],

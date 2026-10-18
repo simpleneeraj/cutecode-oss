@@ -8,11 +8,8 @@ export const velvetNight: Theme = {
     from: "#1a0a2e",
     to: "#0d0518",
   },
-  icon: {
-    type: IconType.ICONIFY,
-    source: "fluent-emoji:purple-heart",
-  },
-  group: "Aesthetic",
+  icon: { type: IconType.IMAGE, source: "/editor/assets/velvet-night/glyph.svg" },
+  group: "Night",
   font: "geist-mono",
   tags: [BadgeVariant.NEW, BadgeVariant.PREMIUM],
   syntax: {

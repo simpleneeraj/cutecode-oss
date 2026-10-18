@@ -1,13 +1,24 @@
 import Presets from "../presets";
 import { cn } from "@/utils/cn";
-import React, { useContext } from "react";
+import React, { useContext, useLayoutEffect, useRef, useState } from "react";
 import { useAtomValue } from "jotai";
 import ToolbarParticle from "./Toolbar";
 import ResizableFrame from "./ResizableFrame";
 import styles from "@/styles/editor/Frame.module.css";
 import { EditorContext } from "@/store/editor/context/editor";
-import { motion, AnimatePresence, Variants } from "framer-motion";
-import { currentElementAtom, currentSlideAtom } from "@/store/editor/editor";
+import { motion, AnimatePresence, Variants, useMotionValue } from "motion/react";
+import Watermark from "./Watermark";
+import SafeZones from "./SafeZones";
+import CanvasViewport from "./CanvasViewport";
+import fonts from "@/fonts/editor/fonts";
+import {
+  CanvasSize,
+  canvasSizeAtom,
+  currentSlideAtom,
+  elementDarkModeAtom,
+  elementFontFamilyAtom,
+  elementThemeAtom,
+} from "@/store/editor/editor";
 
 const toolbarVariants: Variants = {
   hidden: { opacity: 0, y: -8 },
@@ -21,34 +32,72 @@ const toolbarVariants: Variants = {
 const frameInnerVariants: Variants = {
   hidden: {
     opacity: 0,
-    filter: "blur(8px)",
+    scale: 0.985,
   },
   visible: {
     opacity: 1,
-    filter: "blur(0px)",
+    scale: 1,
     transition: { duration: 0.35, ease: [0.25, 0.1, 0.25, 1] },
   },
 };
 
+const FIT_GUTTER = 32;
+
+function useFitScale() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [content, setContent] = useState<HTMLDivElement | null>(null);
+  const scale = useMotionValue(1);
+
+  useLayoutEffect(() => {
+    const container = containerRef.current;
+    if (!container || !content) return;
+    const fit = () => scale.set(Math.min(1, (container.clientWidth - FIT_GUTTER) / content.offsetWidth));
+    const observer = new ResizeObserver(fit);
+    observer.observe(container);
+    observer.observe(content);
+    return () => observer.disconnect();
+  }, [content, scale]);
+
+  return { containerRef, contentRef: setContent, scale };
+}
+
 const Frame = () => {
   const { frameRefs } = useContext(EditorContext);
 
-  const elementState = useAtomValue(currentElementAtom);
-  const themeId = elementState?.properties?.theme!;
-  const darkMode = (elementState?.properties?.darkMode as boolean) ?? false;
+  const themeId = useAtomValue(elementThemeAtom);
+  const darkMode = useAtomValue(elementDarkModeAtom);
 
   const slide = useAtomValue(currentSlideAtom);
+  const canvasSize = useAtomValue(canvasSizeAtom);
+  const fontFamily = useAtomValue(elementFontFamilyAtom);
+
+  const codeFont = fonts.find((font) => font.name === fontFamily);
+  const frameStyle: Record<string, string> = codeFont ? { "--code-font": `var(${codeFont.variable})` } : {};
+  const isAutoSize = canvasSize === CanvasSize.Auto;
+  const { containerRef, contentRef, scale } = useFitScale();
 
   const refCallback = React.useCallback(
     (el: HTMLDivElement) => {
       if (!slide) return;
       frameRefs.current.set(slide.id, el);
     },
-    [slide],
+    [slide, frameRefs],
+  );
+
+  const canvas = (
+    <div id="frame" className={styles.outerFrame} data-canvas-size={canvasSize} style={frameStyle} ref={refCallback}>
+      <Presets id={themeId} />
+      {canvasSize === CanvasSize.Portrait && <SafeZones />}
+      <Watermark />
+    </div>
   );
 
   return (
-    <div className={cn(styles.frameContainer, "pb-36 sm:py-24 sm:pb-24")} data-theme={darkMode ? "dark" : "light"}>
+    <div
+      ref={containerRef}
+      className={cn(styles.frameContainer, "my-auto shrink-0 py-4 sm:py-8")}
+      data-theme={darkMode ? "dark" : "light"}
+    >
       <AnimatePresence mode="wait">
         {slide && (
           <motion.div
@@ -62,11 +111,13 @@ const Frame = () => {
               <ToolbarParticle />
             </motion.div>
             <motion.div variants={frameInnerVariants}>
-              <ResizableFrame>
-                <div id="frame" className={styles.outerFrame} ref={refCallback}>
-                  <Presets id={themeId} />
-                </div>
-              </ResizableFrame>
+              {isAutoSize ? (
+                <motion.div ref={contentRef} className="origin-top" style={{ scale }}>
+                  <ResizableFrame>{canvas}</ResizableFrame>
+                </motion.div>
+              ) : (
+                <CanvasViewport size={canvasSize}>{canvas}</CanvasViewport>
+              )}
             </motion.div>
           </motion.div>
         )}

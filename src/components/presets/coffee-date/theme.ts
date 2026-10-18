@@ -8,11 +8,8 @@ export const coffeeDate: Theme = {
     from: "#1e130c",
     to: "#2a1b16",
   },
-  icon: {
-    type: IconType.ICONIFY,
-    source: "catppuccin:coffeescript",
-  },
-  group: "Aesthetic",
+  icon: { type: IconType.IMAGE, source: "/editor/assets/coffee-date/glyph.svg" },
+  group: "Cozy",
   font: "fira-code",
   tags: [BadgeVariant.PREMIUM],
   syntax: {

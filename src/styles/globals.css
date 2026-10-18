@@ -9,46 +9,6 @@
    ============================================================ */
 
 @theme {
-  /* Font family */
-  --font-family-sans:
-    var(--font-geist-sans), "Geist", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-family-mono:
-    var(--font-geist-mono), "Geist Mono", "Cascadia Code", ui-monospace, monospace;
-
-  /* Custom colors — values are defined as hsl() using CSS vars resolved at runtime */
-  --color-background: hsl(var(--background));
-  --color-panel: hsl(var(--panel));
-  --color-brand: hsl(var(--brand));
-  --color-purple: hsl(var(--purple));
-  --color-blue: hsl(var(--blue));
-
-  --color-gray-1: hsl(var(--gray-1));
-  --color-gray-2: hsl(var(--gray-2));
-  --color-gray-3: hsl(var(--gray-3));
-  --color-gray-4: hsl(var(--gray-4));
-  --color-gray-5: hsl(var(--gray-5));
-  --color-gray-6: hsl(var(--gray-6));
-  --color-gray-7: hsl(var(--gray-7));
-  --color-gray-8: hsl(var(--gray-8));
-  --color-gray-9: hsl(var(--gray-9));
-  --color-gray-10: hsl(var(--gray-10));
-  --color-gray-11: hsl(var(--gray-11));
-  --color-gray-12: hsl(var(--gray-12));
-
-  --color-gray-a1: var(--gray-a1);
-  --color-gray-a2: var(--gray-a2);
-  --color-gray-a3: var(--gray-a3);
-  --color-gray-a4: var(--gray-a4);
-  --color-gray-a5: var(--gray-a5);
-  --color-gray-a6: var(--gray-a6);
-  --color-gray-a7: var(--gray-a7);
-  --color-gray-a8: var(--gray-a8);
-  --color-gray-a9: var(--gray-a9);
-  --color-gray-a10: var(--gray-a10);
-  --color-gray-a11: var(--gray-a11);
-  --color-gray-a12: var(--gray-a12);
-
   /* Custom spacing */
   --spacing-scrollbar-offset: calc(16px + var(--removed-body-scroll-bar-size, 0px));
 
@@ -144,92 +104,67 @@
 
 @layer base {
   :root {
-    /* Warm espresso night — Goodreads "reading at night" base */
-    --background: 30 25% 6%;
-    --panel: 30 20% 10%;
+    --background: hsl(41 30% 93%);
+    --foreground: hsl(28 48% 14%);
+    --card: hsl(40 33% 97%);
+    --card-foreground: hsl(28 48% 14%);
+    --popover: hsl(40 33% 97%);
+    --popover-foreground: hsl(28 48% 14%);
+    --primary: hsl(28 48% 16%);
+    --primary-foreground: hsl(41 33% 96%);
+    --secondary: --alpha(var(--color-black) / 4%);
+    --secondary-foreground: var(--color-neutral-800);
+    --muted: --alpha(var(--color-black) / 4%);
+    --muted-foreground: color-mix(in srgb, var(--color-neutral-500) 90%, var(--color-black));
+    --accent: --alpha(var(--color-black) / 4%);
+    --accent-foreground: var(--color-neutral-800);
+    --destructive: var(--color-red-500);
+    --destructive-foreground: var(--color-red-700);
+    --border: --alpha(var(--color-black) / 8%);
+    --input: --alpha(var(--color-black) / 10%);
+    --ring: var(--color-neutral-400);
+    --chart-1: oklch(0.646 0.222 41.116);
+    --chart-2: oklch(0.6 0.118 184.704);
+    --chart-3: oklch(0.398 0.07 227.392);
+    --chart-4: oklch(0.828 0.189 84.429);
+    --chart-5: oklch(0.769 0.188 70.08);
+    --sidebar: oklch(0.985 0 0);
+    --sidebar-foreground: oklch(0.145 0 0);
+    --sidebar-primary: oklch(0.205 0 0);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.97 0 0);
+    --sidebar-accent-foreground: oklch(0.205 0 0);
+    --sidebar-border: oklch(0.922 0 0);
+    --sidebar-ring: oklch(0.708 0 0);
+    --info: var(--color-blue-500);
+    --info-foreground: var(--color-blue-700);
+    --success: var(--color-emerald-500);
+    --success-foreground: var(--color-emerald-700);
+    --warning: var(--color-amber-500);
+    --warning-foreground: var(--color-amber-700);
     --white: 0 0% 100%;
     --black: 0 0% 0%;
-    /* Brand accent — Goodreads green (brightened for dark surfaces) */
-    --brand: 145 42% 58%;
-    --brand-dim: 145 38% 46%;
-    --brand-subtle: 150 24% 15%;
-    --accent-gold: 38 90% 60%;
-    --purple: 255.6 99.2% 75.9%;
-    --blue: 201.4 99.4% 66.8%;
-    /* Warm-tinted gray scale — barely off neutral */
-    --gray-1: 20 5% 5%;
-    --gray-2: 20 4% 9%;
-    --gray-3: 20 4% 13%;
-    --gray-4: 20 3% 16%;
-    --gray-5: 20 3% 19%;
-    --gray-6: 20 3% 23%;
-    --gray-7: 20 3% 28%;
-    --gray-8: 20 2% 38%;
-    --gray-9: 20 2% 43%;
-    --gray-10: 20 2% 48%;
-    --gray-11: 20 2% 71%;
-    --gray-12: 20 5% 93%;
-    --gray-a1: hsla(0, 0%, 0%, 0);
-    --gray-a2: hsla(0, 0%, 100%, 0.0353);
-    --gray-a3: hsla(0, 0%, 100%, 0.0706);
-    --gray-a4: hsla(0, 0%, 100%, 0.1059);
-    --gray-a5: hsla(0, 0%, 100%, 0.1333);
-    --gray-a6: hsla(0, 0%, 100%, 0.1725);
-    --gray-a7: hsla(0, 0%, 100%, 0.2314);
-    --gray-a8: hsla(0, 0%, 100%, 0.3333);
-    --gray-a9: hsla(0, 0%, 100%, 0.3922);
-    --gray-a10: hsla(0, 0%, 100%, 0.4471);
-    --gray-a11: hsla(0, 0%, 100%, 0.6863);
-    --gray-a12: hsla(0, 0%, 100%, 0.9294);
+    --frame-background: rgba(255, 255, 255, 0.75);
+    --frame-control-color: rgba(0, 0, 0, 0.2);
+    --frame-title-placeholder-color: rgba(0, 0, 0, 0.3);
+    --frame-title-color: rgba(0, 0, 0, 0.6);
+    --frame-shadow-border: rgba(0, 0, 0, 0.1);
+    --frame-highlight-border: rgba(255, 255, 255, 0.75);
+    --ray-highlight-hover: rgba(0, 0, 0, 0.05);
+    --ray-highlight: rgba(0, 0, 0, 0.1);
+    --ray-highlight-border: transparent;
+    --line-number: rgba(0, 0, 0, 0.2);
+    --radius: 0.625rem;
   }
 
   .themes-body {
-    background-image: radial-gradient(43.48% 62.9% at 50% 31.28%, hsl(0 0% 100% / 0.2) 0, hsl(0 0% 100% / 0) 100%);
+    background-image: radial-gradient(43.48% 62.9% at 50% 31.28%, hsl(0, 0%, 0%, 0.2) 0, transparent 100%);
   }
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
-  }
-}
-
-.light {
-  /* Parchment — Goodreads library paper */
-  --background: 41 30% 93%;
-  --panel: 41 22% 89%;
-  --brand: 147 44% 41%;
-  --brand-dim: 147 42% 32%;
-  --brand-subtle: 145 40% 88%;
-  --accent-gold: 38 85% 50%;
-  /* Warm-tinted gray scale for light mode */
-  --gray-1: 32 20% 93%;
-  --gray-2: 32 15% 90%;
-  --gray-3: 32 12% 87%;
-  --gray-4: 32 10% 83%;
-  --gray-5: 32 8% 80%;
-  --gray-6: 32 6% 76%;
-  --gray-7: 32 5% 72%;
-  --gray-8: 32 4% 64%;
-  --gray-9: 32 4% 47%;
-  --gray-10: 32 4% 43%;
-  --gray-11: 32 5% 31%;
-  --gray-12: 32 8% 13%;
-  --gray-a1: hsla(0, 0%, 0%, 0.0118);
-  --gray-a2: hsla(0, 0%, 0%, 0.0235);
-  --gray-a3: hsla(0, 0%, 0%, 0.0588);
-  --gray-a4: hsla(0, 0%, 0%, 0.0902);
-  --gray-a5: hsla(0, 0%, 0%, 0.1216);
-  --gray-a6: hsla(0, 0%, 0%, 0.149);
-  --gray-a7: hsla(0, 0%, 0%, 0.1922);
-  --gray-a8: hsla(0, 0%, 0%, 0.2667);
-  --gray-a9: hsla(0, 0%, 0%, 0.4471);
-  --gray-a10: hsla(0, 0%, 0%, 0.4863);
-  --gray-a11: hsla(0, 0%, 0%, 0.6078);
-  --gray-a12: hsla(0, 0%, 0%, 0.8745);
-
-  .themes-body {
-    background-image: radial-gradient(43.48% 62.9% at 50% 31.28%, hsl(0, 0%, 0%, 0.2) 0, transparent 100%);
   }
 }
 
@@ -243,6 +178,11 @@
 
 @utility layout-scroll {
   @apply flex flex-1 flex-col min-h-0 overflow-auto;
+}
+
+@utility dot-grid {
+  background-image: radial-gradient(circle, --alpha(var(--color-foreground) / 10%) 1px, transparent 1px);
+  background-size: 24px 24px;
 }
 
 a {
@@ -322,69 +262,6 @@ select {
 
 .flicker {
   animation: flicker 2000ms linear infinite;
-}
-
-/* ============================================================
-   Code Images Legacy Variables
-   ============================================================ */
-
-:root {
-  --panel-background: #191919;
-  --panel-border: 1px solid rgba(255, 255, 255, 0.2);
-  --panel-text-color: rgba(255, 255, 255, 0.4);
-  --panel-dropdown-border: rgba(255, 255, 255, 0.1);
-  --panel-padding-selected: #fff;
-
-  --frame-background: rgba(255, 255, 255, 0.75);
-  --frame-control-color: rgba(0, 0, 0, 0.2);
-  --frame-title-placeholder-color: rgba(0, 0, 0, 0.3);
-  --frame-title-color: rgba(0, 0, 0, 0.6);
-  --frame-shadow-border: rgba(0, 0, 0, 0.1);
-  --frame-highlight-border: rgba(255, 255, 255, 0.75);
-  --ray-highlight-hover: rgba(0, 0, 0, 0.05);
-  --ray-highlight: rgba(0, 0, 0, 0.1);
-  --ray-highlight-border: transparent;
-  --line-number: rgba(0, 0, 0, 0.2);
-  --radius: 0.625rem;
-  /* Goodreads light: parchment surfaces, espresso ink, brown chrome */
-  --background: hsl(41 30% 95%);
-  --foreground: hsl(28 48% 14%);
-  --card: hsl(40 33% 97%);
-  --card-foreground: hsl(28 48% 14%);
-  --popover: hsl(40 33% 97%);
-  --popover-foreground: hsl(28 48% 14%);
-  --primary: hsl(28 48% 16%);
-  --primary-foreground: hsl(41 33% 96%);
-  --secondary: --alpha(var(--color-black) / 4%);
-  --secondary-foreground: var(--color-neutral-800);
-  --muted: --alpha(var(--color-black) / 4%);
-  --muted-foreground: color-mix(in srgb, var(--color-neutral-500) 90%, var(--color-black));
-  --accent: --alpha(var(--color-black) / 4%);
-  --accent-foreground: var(--color-neutral-800);
-  --destructive: var(--color-red-500);
-  --border: --alpha(var(--color-black) / 8%);
-  --input: --alpha(var(--color-black) / 10%);
-  --ring: var(--color-neutral-400);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-  --destructive-foreground: var(--color-red-700);
-  --info: var(--color-blue-500);
-  --info-foreground: var(--color-blue-700);
-  --success: var(--color-emerald-500);
-  --success-foreground: var(--color-emerald-700);
-  --warning: var(--color-amber-500);
-  --warning-foreground: var(--color-amber-700);
 }
 
 [data-theme="dark"] {
@@ -582,6 +459,11 @@ select {
 }
 
 @theme inline {
+  --font-sans:
+    var(--font-geist-sans), "Geist", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
+  --font-mono: var(--font-geist-mono), "Geist Mono", "Cascadia Code", ui-monospace, monospace;
+  --font-heading: var(--font-bricolage), "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
   --animate-skeleton: skeleton 2s -1s infinite linear;
   --color-warning-foreground: var(--warning-foreground);
   --color-warning: var(--warning);
@@ -636,7 +518,6 @@ select {
 }
 
 .dark {
-  /* Goodreads night: warm espresso surfaces, warm parchment ink + chrome */
   --background: hsl(30 26% 7%);
   --foreground: hsl(40 28% 90%);
   --card: color-mix(in srgb, var(--background) 96%, var(--color-white));
@@ -677,17 +558,7 @@ select {
   --warning-foreground: var(--color-amber-400);
 }
 
-.app-code {
-  display: grid;
-  width: 100%;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-  grid-template-areas:
-    "top"
-    "content"
-    "footer";
-  grid-template-columns: 1fr;
-  grid-template-rows: 15px auto 110px;
-  isolation: isolate;
+.dark .themes-body {
+  background-image: radial-gradient(43.48% 62.9% at 50% 31.28%, hsl(0 0% 100% / 0.2) 0, hsl(0 0% 100% / 0) 100%);
 }
+

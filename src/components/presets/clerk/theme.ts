@@ -5,8 +5,8 @@ export const clerk: Theme = {
   id: "clerk",
   name: "Clerk",
   background: {
-    from: "#000000",
-    to: "#000000",
+    from: "#131316",
+    to: "#131316",
   },
   icon: { type: IconType.IMAGE, source: "/editor/assets/clerk/logo.svg" },
   partner: true,
@@ -31,7 +31,7 @@ export const clerk: Theme = {
       highlightHover: "#00aee306",
       highlightBorder: "#00000000",
       diffInserted: "#22c543",
-      diffDeleted: "#FF605E",
+      diffDeleted: "#ef4444",
     }),
     dark: convertToShikiTheme({
       foreground: "#ffffff",
@@ -50,7 +50,7 @@ export const clerk: Theme = {
       highlightHover: "#5de3ff0d",
       highlightBorder: "#00000000",
       diffInserted: "#86ef9b",
-      diffDeleted: "#E17271",
+      diffDeleted: "#f87171",
     }),
   },
 };

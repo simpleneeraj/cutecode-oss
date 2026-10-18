@@ -1,7 +1,7 @@
 import { cn } from "@/utils/cn";
 
 /**
- * Monochrome CuteCode mark — a code-chevron on a solid foreground square.
+ * Monochrome Cool Snippets mark — a code-chevron on a solid foreground square.
  * Matches the browser favicon (src/app/icon.tsx). Pass a size via className
  * on the box, e.g. `size-7`.
  */

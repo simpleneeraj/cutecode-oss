@@ -9,21 +9,15 @@ function BlackHoleLoader() {
       {circles.map((_, i) => (
         <motion.div
           key={i}
-          className="absolute w-12 h-12 rounded-full"
+          className="absolute w-12 h-12 rounded-full shadow-2xl shadow-foreground/50"
           initial={{
             scale: 2,
             opacity: 0,
-            boxShadow: "0px 0px 50px rgba(255,255,255,0.5)",
           }}
           animate={{
             scale: [2, 1, 0.1],
             y: [0, -5, 5],
             opacity: [0, 1, 0],
-            boxShadow: [
-              "0px 0px 50px rgba(255,255,255,0.5)",
-              "0px 8px 20px rgba(255,255,255,0.5)",
-              "0px 10px 20px rgba(255,255,255,0)",
-            ],
           }}
           transition={{
             duration: 3,

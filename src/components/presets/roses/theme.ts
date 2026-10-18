@@ -9,10 +9,7 @@ export const roses: Theme = {
     to: "#0e0305",
   },
   group: "Romantic",
-  icon: {
-    type: IconType.ICONIFY,
-    source: "emojione:rosette",
-  },
+  icon: { type: IconType.IMAGE, source: "/editor/assets/roses/glyph.svg" },
   tags: [BadgeVariant.PREMIUM],
   syntax: {
     light: convertToShikiTheme({

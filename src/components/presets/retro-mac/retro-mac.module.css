@@ -1,0 +1,248 @@
+.scene {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  isolation: isolate;
+}
+
+.dark {
+  background: radial-gradient(ellipse at 50% 30%, #3a2c1e 0%, #241a10 55%, #15100b 100%);
+}
+
+.light {
+  background: radial-gradient(ellipse at 50% 30%, #f6e8d2 0%, #e8d2b0 55%, #d6b98e 100%);
+}
+
+.transparent {
+  background: transparent;
+}
+
+.layer {
+  position: absolute;
+  overflow: hidden;
+  inset: 0;
+  pointer-events: none;
+  container-type: size;
+}
+
+.pattern {
+  position: absolute;
+  background-size: 8px 8px;
+  inset: -32px;
+  will-change: transform;
+}
+
+.light .pattern {
+  background-image: radial-gradient(rgba(90, 55, 20, 0.16) 1px, transparent 1.5px);
+}
+
+.dark .pattern {
+  background-image: radial-gradient(rgba(212, 174, 128, 0.1) 1px, transparent 1.5px);
+}
+
+.glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 460px;
+  height: 300px;
+  margin-top: -150px;
+  margin-left: -230px;
+  border-radius: 50%;
+  filter: blur(70px);
+  will-change: transform;
+}
+
+.light .glow {
+  background: rgba(255, 246, 228, 0.8);
+}
+
+.dark .glow {
+  background: rgba(196, 144, 90, 0.16);
+}
+
+.scanline {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 70px;
+  will-change: transform;
+}
+
+.light .scanline {
+  background: linear-gradient(180deg, transparent, rgba(255, 250, 240, 0.35), transparent);
+}
+
+.dark .scanline {
+  background: linear-gradient(180deg, transparent, rgba(212, 174, 128, 0.06), transparent);
+}
+
+.pixel {
+  position: absolute;
+}
+
+.light .pixel {
+  background: #a86030;
+  box-shadow: 0 0 0 1px rgba(255, 246, 228, 0.6);
+}
+
+.dark .pixel {
+  background: #e8b070;
+  box-shadow: 0 0 6px rgba(232, 176, 112, 0.6);
+}
+
+.badge {
+  position: absolute;
+  display: flex;
+  line-height: 0;
+}
+
+.light .badge {
+  color: #8a5a30;
+  opacity: 0.45;
+}
+
+.dark .badge {
+  color: #c4905a;
+  opacity: 0.35;
+}
+
+.window {
+  position: relative;
+  z-index: 10;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.light .window {
+  background: #f3e3c8;
+  box-shadow:
+    0 0 0 1.5px #8a6a44,
+    4px 4px 0 rgba(90, 55, 20, 0.35),
+    0 18px 50px rgba(90, 55, 20, 0.25);
+}
+
+.dark .window {
+  background: #2a1e12;
+  box-shadow:
+    0 0 0 1.5px #0f0a05,
+    4px 4px 0 rgba(0, 0, 0, 0.5),
+    0 24px 70px rgba(0, 0, 0, 0.7);
+}
+
+.rainbow {
+  position: relative;
+  overflow: hidden;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    #61bb46 0 16.66%,
+    #fdb827 16.66% 33.33%,
+    #f5821f 33.33% 50%,
+    #e03a3e 50% 66.66%,
+    #963d97 66.66% 83.33%,
+    #009ddc 83.33% 100%
+  );
+}
+
+.dark .rainbow {
+  opacity: 0.75;
+}
+
+.shine {
+  position: absolute;
+  width: 30%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
+  inset-block: 0;
+}
+
+.header {
+  display: grid;
+  align-items: center;
+  padding: 9px 14px;
+  grid-gap: 12px;
+  grid-template-columns: 60px 1fr 60px;
+}
+
+.light .header {
+  border-bottom: 1.5px solid #8a6a44;
+  background: repeating-linear-gradient(180deg, rgba(90, 55, 20, 0.22) 0 1px, transparent 1px 3px), #ead5b2;
+}
+
+.dark .header {
+  border-bottom: 1.5px solid #0f0a05;
+  background: repeating-linear-gradient(180deg, rgba(212, 174, 128, 0.12) 0 1px, transparent 1px 3px), #33251a;
+}
+
+.dots {
+  display: flex;
+  align-items: center;
+}
+
+.dot {
+  width: 13px;
+  height: 13px;
+}
+
+.light .dot {
+  border: 1.5px solid #5a3a1a;
+  background: #f3e3c8;
+  box-shadow: inset 1px 1px 0 #fff8ea;
+}
+
+.dark .dot {
+  border: 1.5px solid #0f0a05;
+  background: #2a1e12;
+  box-shadow: inset 1px 1px 0 rgba(212, 174, 128, 0.2);
+}
+
+.dot:nth-child(n + 2) {
+  display: none;
+}
+
+.fileName {
+  position: relative;
+  display: flex;
+  width: 180px;
+  height: 18px;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  font-family: var(--code-font, "SF Pro Text", -apple-system, BlinkMacSystemFont, sans-serif);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 12px;
+
+  > input {
+    position: absolute;
+    width: 100%;
+    border: none;
+    margin: 0;
+    background-color: transparent;
+    color: inherit;
+    font: inherit;
+    inset: 0;
+    letter-spacing: inherit;
+    text-align: center;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  > input:focus + span {
+    display: none;
+  }
+}
+
+.light .fileName {
+  background: #ead5b2;
+  color: #3d2810;
+}
+
+.dark .fileName {
+  background: #33251a;
+  color: #d4ae80;
+}

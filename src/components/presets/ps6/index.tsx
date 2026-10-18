@@ -1,140 +1,99 @@
-import { motion } from "framer-motion";
+import { motion, easeInOut } from "motion/react";
 import { Icon } from "@/components/ui/icon";
 import { BaseFrameProps } from "@/typings/presets";
+import { SceneFrame, useLoop } from "../scene";
 import styles from "./ps6.module.css";
 
-const AMBIENT = [
-  { icon: "solar:triangle-bold", x: 8, y: 8, size: 16, dur: 9, delay: 0, color: "#78e8b8" },
-  { icon: "solar:circle-bold", x: 88, y: 6, size: 15, dur: 11, delay: -3, color: "#f07898" },
-  { icon: "solar:square-bold", x: 5, y: 72, size: 14, dur: 10, delay: -5, color: "#f0a030" },
-  { icon: "ph:x-square-fill", x: 90, y: 70, size: 14, dur: 12, delay: -2, color: "#7898f0" },
-  { icon: "solar:triangle-bold", x: 48, y: 3, size: 12, dur: 8, delay: -7, color: "#78e8b8" },
-  { icon: "solar:circle-bold", x: 78, y: 42, size: 13, dur: 9, delay: -4, color: "#f07898" },
-  { icon: "solar:square-bold", x: 2, y: 40, size: 12, dur: 11, delay: -1, color: "#f0a030" },
-  { icon: "ph:x-square-fill", x: 55, y: 90, size: 13, dur: 10, delay: -6, color: "#7898f0" },
-] as const;
+const CONTROLLERS = [
+  { x: 7, y: 10, size: 22, tilt: 10 },
+  { x: 88, y: 64, size: 18, tilt: -10 },
+];
 
-const PARTICLES = Array.from({ length: 16 }, (_, i) => ({
-  id: i,
-  left: `${(i * 47 + 11) % 100}%`,
-  size: 1.5 + ((i * 5) % 18) / 10,
-  dur: 10 + ((i * 9) % 12),
-  delay: -((i * 6) % 15),
-  color: (["#78e8b8", "#f07898", "#f0a030", "#7898f0"] as const)[i % 4],
+const PIXELS = Array.from({ length: 14 }, (_, index) => ({
+  left: `${(index * 43 + 7) % 96}%`,
+  top: `${(index * 29 + 11) % 60}%`,
+  size: 5 + ((index * 3) % 3) * 2,
+  color: ["#7ce7ff", "#ff7ac6", "#b69cff", "#ffd36e"][index % 4],
+  cycles: 1 + (index % 3),
+  phase: ((index * 7) % 14) / 14,
 }));
 
-export default function PS6Frame({ padding, darkMode, transparent, children }: BaseFrameProps) {
+type Controller = (typeof CONTROLLERS)[number];
+type Pixel = (typeof PIXELS)[number];
+
+function FloatingController({ controller, index }: { controller: Controller; index: number }) {
+  const phase = index / CONTROLLERS.length;
+  const y = useLoop([0, -10, 0], { phase, ease: easeInOut });
+  const rotate = useLoop([0, controller.tilt, 0], { phase, ease: easeInOut });
+
   return (
-    <div
-      className={[styles.scene, darkMode ? styles.dark : styles.light, transparent ? styles.transparent : ""].join(
-        " ",
-      )}
-      style={{ padding }}
-    >
-      {/* Blobs */}
-      <div className={styles.blobBlue} aria-hidden />
-      <div className={styles.blobPurple} aria-hidden />
-      <div className={styles.blobTeal} aria-hidden />
+    <motion.span className={styles.controller} style={{ left: `${controller.x}%`, top: `${controller.y}%`, y, rotate }}>
+      <Icon icon="solar:gamepad-bold-duotone" width={controller.size} height={controller.size} />
+    </motion.span>
+  );
+}
 
-      {/* Particles */}
-      <div className={styles.particleLayer} aria-hidden>
-        {PARTICLES.map((p) => (
-          <div
-            key={p.id}
-            className={styles.particle}
-            style={{
-              left: p.left,
-              width: p.size,
-              height: p.size,
-              background: p.color,
-              animationDuration: `${p.dur}s`,
-              animationDelay: `${p.delay}s`,
-            }}
-          />
-        ))}
-      </div>
+function BlinkingPixel({ pixel }: { pixel: Pixel }) {
+  const options = { cycles: pixel.cycles, phase: pixel.phase };
+  const opacity = useLoop([0.15, 0.9, 0.15], options);
+  const y = useLoop([0, -8, 0], { ...options, ease: easeInOut });
 
-      {/* Ambient icons */}
-      <div className={styles.ambientLayer} aria-hidden>
-        {AMBIENT.map((a, i) => (
-          <motion.span
-            key={i}
-            className={styles.ambientIcon}
-            style={{ left: `${a.x}%`, top: `${a.y}%`, color: a.color }}
-            animate={{ y: [0, -12, 0], rotate: [0, i % 2 === 0 ? 15 : -15, 0] }}
-            transition={{ duration: a.dur, repeat: Infinity, ease: "easeInOut", delay: a.delay }}
-          >
-            <Icon icon={a.icon} width={a.size} height={a.size} />
-          </motion.span>
-        ))}
-      </div>
+  return (
+    <motion.span
+      className={styles.pixel}
+      style={{
+        left: pixel.left,
+        top: pixel.top,
+        width: pixel.size,
+        height: pixel.size,
+        background: pixel.color,
+        color: pixel.color,
+        y,
+        opacity,
+      }}
+    />
+  );
+}
 
-      {/* Window */}
-      <motion.div
-        className={styles.window}
-        initial={{ opacity: 0, y: 20, scale: 0.97 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <div className={styles.shimmerEdge} aria-hidden />
+function RetroConsoleScene() {
+  const gridY = useLoop([0, 48], { cycles: 2 });
+  const sunScale = useLoop([1, 1.06, 1], { ease: easeInOut });
+  const scanY = useLoop(["-10cqh", "110cqh"]);
 
-        {/* Header */}
-        <div className={styles.header}>
-          {/* PS symbols — triangle, circle, square */}
-          <div className={styles.symbols}>
-            {(
-              [
-                { icon: "ph:triangle", cls: styles.symTriangle, color: "#78e8b8" },
-                { icon: "ph:circle", cls: styles.symCircle, color: "#f07898" },
-                { icon: "ph:square", cls: styles.symSquare, color: "#f0a030" },
-              ] as const
-            ).map(({ icon, cls, color }) => (
-              <motion.span
-                key={icon}
-                className={`${styles.sym} ${cls}`}
-                whileHover={{ scale: 1.25, filter: `drop-shadow(0 0 5px ${color})` }}
-                transition={{ duration: 0.15 }}
-              >
-                <Icon icon={icon} width={14} height={14} color={color} />
-              </motion.span>
-            ))}
-          </div>
-
-          {/* Center */}
-          <div className={styles.headerCenter}>
-            <Icon icon="simple-icons:playstation" width={16} height={16} className={styles.psLogo} />
-            <span className={styles.headerLabel}>ps6.config.ts</span>
-          </div>
-
-          {/* Right */}
-          <div className={styles.headerRight}>
-            <Icon icon="solar:gamepad-bold" width={16} height={16} />
-          </div>
+  return (
+    <div className={styles.layer} aria-hidden>
+      <motion.div className={styles.sun} style={{ scale: sunScale }} />
+      <div className={styles.horizon} />
+      <div className={styles.floor}>
+        <div className={styles.grid}>
+          <motion.div className={styles.gridLines} style={{ y: gridY }} />
         </div>
-
-        <div className={styles.headerRule} aria-hidden />
-
-        {/* Editor */}
-        <div className={styles.editor}>{children}</div>
-
-        {/* Status bar */}
-        <div className={styles.statusBar}>
-          <div className={styles.statusLeft}>
-            <span className={styles.pill}>
-              <Icon icon="vscode-icons:file-type-typescript-official" width={11} height={11} />
-              TypeScript
-            </span>
-            <span className={`${styles.pill} ${styles.pillPs}`}>
-              <Icon icon="simple-icons:playstation" width={10} height={10} />
-              PS6
-            </span>
-          </div>
-          <div className={styles.statusRight}>
-            <Icon icon="solar:gamepad-bold" width={10} height={10} style={{ opacity: 0.4 }} />
-            <span>UTF-8</span>
-          </div>
-        </div>
-      </motion.div>
+      </div>
+      {PIXELS.map((pixel, index) => (
+        <BlinkingPixel key={index} pixel={pixel} />
+      ))}
+      {CONTROLLERS.map((controller, index) => (
+        <FloatingController key={index} controller={controller} index={index} />
+      ))}
+      <div className={styles.scanlines} />
+      <motion.div className={styles.scanBar} style={{ y: scanY }} />
     </div>
   );
+}
+
+function TopEdgeSweep() {
+  const x = useLoop(["-100%", "300%", "300%"]);
+
+  return (
+    <div className={styles.topEdge} aria-hidden>
+      <motion.div className={styles.sweep} style={{ x }} />
+    </div>
+  );
+}
+
+const background = <RetroConsoleScene />;
+const accent = <TopEdgeSweep />;
+
+export default function RetroConsoleFrame(props: BaseFrameProps) {
+  return <SceneFrame {...props} themeStyles={styles} background={background} accent={accent} />;
 }

@@ -1,144 +1,335 @@
-.frame {
-  background: #0c0c0c;
+.scene {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  isolation: isolate;
 }
 
-.frameLightMode {
-  background: #f5f5f5;
+.dark {
+  background: radial-gradient(ellipse at 50% 50%, #1c1009 0%, #0c0c0c 60%, #080808 100%);
+}
 
-  .window {
-    border-color: #e5e5e5;
-    background: #ffffff;
-  }
+.light {
+  background: radial-gradient(ellipse at 50% 50%, #fff1e6 0%, #f8f7f5 60%, #f1efec 100%);
+}
 
-  .header {
-    border-color: #e5e5e5;
-    background: #fafafa;
-  }
+.transparent {
+  background: transparent;
+}
 
-  .fileName {
-    color: oklch(14.5% 0 0);
-  }
+.layer {
+  position: absolute;
+  overflow: hidden;
+  inset: 0;
+  pointer-events: none;
+}
 
-  .language {
-    color: oklch(70.8% 0 0);
-  }
+.grid {
+  position: absolute;
+  background-size: 28px 28px;
+  inset: 0;
+  mask-image: radial-gradient(ellipse at 50% 50%, black 0%, transparent 75%);
+}
 
-  .gridlinesHorizontal,
-  .gridlinesVertical {
-    &:before,
-    &:after {
-      background: #e5e5e5;
-    }
+.dark .grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+}
+
+.light .grid {
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+}
+
+.coreGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 640px;
+  height: 420px;
+  margin-top: -210px;
+  margin-left: -320px;
+  border-radius: 50%;
+}
+
+.dark .coreGlow {
+  background: radial-gradient(ellipse, rgba(243, 128, 32, 0.22) 0%, rgba(243, 128, 32, 0.06) 45%, transparent 70%);
+}
+
+.light .coreGlow {
+  background: radial-gradient(ellipse, rgba(243, 128, 32, 0.16) 0%, rgba(250, 173, 63, 0.06) 45%, transparent 70%);
+}
+
+.railHorizontal,
+.railVertical {
+  position: absolute;
+}
+
+.railHorizontal {
+  right: 0;
+  left: 0;
+  height: 1px;
+}
+
+.railVertical {
+  top: 0;
+  bottom: 0;
+  width: 1px;
+}
+
+.dark .railHorizontal {
+  background: linear-gradient(90deg, transparent, rgba(243, 128, 32, 0.2) 15%, rgba(243, 128, 32, 0.2) 85%, transparent);
+}
+
+.dark .railVertical {
+  background: linear-gradient(180deg, transparent, rgba(243, 128, 32, 0.2) 10%, rgba(243, 128, 32, 0.2) 90%, transparent);
+}
+
+.light .railHorizontal {
+  background: linear-gradient(90deg, transparent, rgba(196, 80, 10, 0.16) 15%, rgba(196, 80, 10, 0.16) 85%, transparent);
+}
+
+.light .railVertical {
+  background: linear-gradient(180deg, transparent, rgba(196, 80, 10, 0.16) 10%, rgba(196, 80, 10, 0.16) 90%, transparent);
+}
+
+.laneHorizontal,
+.laneVertical {
+  position: absolute;
+}
+
+.laneHorizontal {
+  right: 0;
+  left: 0;
+  height: 0;
+}
+
+.laneVertical {
+  top: 0;
+  bottom: 0;
+  width: 0;
+}
+
+.track {
+  position: absolute;
+  display: block;
+  inset: 0;
+}
+
+.pulse {
+  position: absolute;
+  display: block;
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(243, 128, 32, 0.6);
+}
+
+.laneHorizontal .pulse {
+  top: -1px;
+  left: 0;
+  width: 44px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #f38020 75%, #ffe0c2);
+  transform: translateX(-100%);
+
+  &.isReversed {
+    background: linear-gradient(270deg, transparent, #f38020 75%, #ffe0c2);
+    transform: none;
   }
+}
+
+.laneVertical .pulse {
+  top: 0;
+  left: -1px;
+  width: 2px;
+  height: 44px;
+  background: linear-gradient(180deg, transparent, #f38020 75%, #ffe0c2);
+  transform: translateY(-100%);
+
+  &.isReversed {
+    background: linear-gradient(0deg, transparent, #f38020 75%, #ffe0c2);
+    transform: none;
+  }
+}
+
+.light .laneHorizontal .pulse {
+  background: linear-gradient(90deg, transparent, #faad3f 50%, #f38020);
+
+  &.isReversed {
+    background: linear-gradient(270deg, transparent, #faad3f 50%, #f38020);
+  }
+}
+
+.light .laneVertical .pulse {
+  background: linear-gradient(180deg, transparent, #faad3f 50%, #f38020);
+
+  &.isReversed {
+    background: linear-gradient(0deg, transparent, #faad3f 50%, #f38020);
+  }
+}
+
+.node {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border: 1.5px solid #f38020;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.dark .node {
+  background: #1a0f08;
+  box-shadow: 0 0 12px rgba(243, 128, 32, 0.6);
+}
+
+.light .node {
+  background: #ffffff;
+  box-shadow: 0 0 10px rgba(243, 128, 32, 0.35);
+}
+
+.ripple {
+  position: absolute;
+  display: block;
+  border: 1px solid rgba(243, 128, 32, 0.7);
+  inset: -4px;
 }
 
 .window {
   position: relative;
-  border: none;
-  border-radius: 0;
-  background: #0c0c0c;
+  z-index: 10;
+  overflow: hidden;
+  border-radius: 10px;
 }
 
-.gridlinesHorizontal {
-  &:before,
-  &:after {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: -150px;
-    width: 1200px;
-    height: 1px;
-    background: #262626;
-    content: "";
-  }
+.dark .window {
+  --line-number: rgba(232, 232, 232, 0.25);
 
-  &:after {
-    top: auto;
-    bottom: 0;
-  }
+  background: #0f0f0f;
+  box-shadow:
+    0 0 0 1px #262626,
+    0 0 60px rgba(243, 128, 32, 0.08),
+    0 24px 72px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
-.gridlinesVertical {
-  &:before,
-  &:after {
-    position: absolute;
-    top: -150px;
-    bottom: 0;
-    left: 0;
-    width: 1px;
-    height: calc(100% + 300px);
-    background: #262626;
-    content: "";
-  }
+.light .window {
+  --line-number: rgba(82, 16, 0, 0.3);
 
-  &:after {
-    right: 0;
-    left: auto;
-  }
+  background: #ffffff;
+  box-shadow:
+    0 0 0 1px #e5e5e5,
+    0 14px 44px rgba(196, 80, 10, 0.1),
+    0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.topEdge {
+  position: absolute;
+  z-index: 20;
+  top: 0;
+  right: 0;
+  left: 0;
+  overflow: hidden;
+  height: 2px;
+}
+
+.dark .topEdge {
+  background: rgba(243, 128, 32, 0.12);
+}
+
+.light .topEdge {
+  background: rgba(243, 128, 32, 0.14);
+}
+
+.sweep {
+  position: absolute;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, #f38020, #ffd2a8, #faad3f, transparent);
+  inset-block: 0;
 }
 
 .header {
-  display: flex;
-  width: 100%;
-  height: 40px;
+  display: grid;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 16px;
+  padding: 12px 16px 11px;
+  grid-gap: 12px;
+  grid-template-columns: 60px 1fr 60px;
+}
+
+.dark .header {
   border-bottom: 1px solid #262626;
-  background: #0f0f0f;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  gap: 12px;
+  background: #141414;
+}
+
+.light .header {
+  border-bottom: 1px solid #e5e5e5;
+  background: #fafafa;
+}
+
+.dots {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 3px;
+}
+
+.dot:nth-child(1) {
+  background: #f38020;
+}
+
+.dot:nth-child(2) {
+  background: #faad3f;
+}
+
+.dark .dot:nth-child(3) {
+  background: #404040;
+}
+
+.light .dot:nth-child(3) {
+  background: #d4d4d4;
 }
 
 .fileName {
   position: relative;
-  display: grid;
-  height: 40px;
+  display: flex;
+  height: 16px;
   align-items: center;
-  color: #ededed;
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 14px;
-  line-height: 40px;
-  vertical-align: top;
+  justify-content: center;
+  font-family: var(--code-font, "IBM Plex Mono", monospace);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  line-height: 12px;
 
-  input,
-  & > span,
-  &:after {
-    position: static;
-    z-index: 2;
-    width: auto;
-    min-width: 1em;
-    padding: 0;
+  > input {
+    position: absolute;
+    width: 100%;
     border: none;
     margin: 0;
-    appearance: none;
-    background: none;
-    font: inherit;
-    grid-area: 1 / 2;
-    resize: none;
-    text-align: left;
-  }
-
-  & > span {
-    position: relative;
-    z-index: 1;
-  }
-
-  input {
+    background-color: transparent;
     color: inherit;
+    font: inherit;
+    inset: 0;
+    letter-spacing: inherit;
+    text-align: center;
+
+    &:focus {
+      outline: none;
+    }
   }
 
-  &:after {
-    content: attr(data-value) " ";
-    visibility: hidden;
+  > input:focus + span {
+    display: none;
   }
 }
 
-.language {
-  height: 40px;
-  color: #737373;
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 14px;
-  line-height: 40px;
+.dark .fileName {
+  color: #ededed;
+}
+
+.light .fileName {
+  color: #262626;
 }

@@ -1,4 +1,4 @@
-import { Theme, IconType } from "@/typings/editor";
+import { Theme } from "@/typings/editor";
 import { convertToShikiTheme } from "../themes/shared";
 
 export const candy: Theme = {
@@ -8,7 +8,7 @@ export const candy: Theme = {
     from: "#A58EFB",
     to: "#E9BFF8",
   },
-  group: "Defaults",
+  group: "Classic",
   syntax: {
     light: convertToShikiTheme({
       foreground: "#434447",
@@ -23,6 +23,9 @@ export const candy: Theme = {
       link: "#d15a8b",
       number: "#676DFF",
       property: "#2286A6",
+      highlight: "rgba(220,21,94,0.1)",
+      highlightBorder: "#DC155E",
+      highlightHover: "rgba(220,21,94,0.05)",
       diffInserted: "#009033",
       diffDeleted: "#FF605E",
     }),
@@ -39,6 +42,9 @@ export const candy: Theme = {
       link: "#FF659C",
       number: "#7A7FFD",
       property: "#1AC8FF",
+      highlight: "rgba(255,101,156,0.14)",
+      highlightBorder: "#FF659C",
+      highlightHover: "rgba(255,101,156,0.09)",
       diffInserted: "#73DFA5",
       diffDeleted: "#FF605E",
     }),

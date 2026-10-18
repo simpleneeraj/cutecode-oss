@@ -34,7 +34,7 @@ export function isExportSize(value: ExportSize | unknown): value is ExportSize {
 /*
  * Selected export pixel ratio — persisted to localStorage.
  */
-export const exportSizeAtom = atomWithStorage<number>(StoreKey.EXPORT_SIZE, EXPORT_SIZE_OPTIONS[1].value);
+export const exportSizeAtom = atomWithStorage<number>(StoreKey.EXPORT_SIZE, EXPORT_SIZE_OPTIONS[0].value);
 
 /*
  * Writable compat atom for the active element's code content.

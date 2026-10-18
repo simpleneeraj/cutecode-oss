@@ -8,11 +8,8 @@ export const goldenHour: Theme = {
     from: "#fff8f0",
     to: "#fef3e2",
   },
-  icon: {
-    type: IconType.ICONIFY,
-    source: "fluent-emoji:sun-with-face",
-  },
-  group: "Aesthetic",
+  icon: { type: IconType.IMAGE, source: "/editor/assets/golden-hour/glyph.svg" },
+  group: "Cozy",
   font: "geist-mono",
   tags: [BadgeVariant.NEW],
   syntax: {

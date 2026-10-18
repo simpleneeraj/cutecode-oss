@@ -13,7 +13,8 @@ import { SocialFooter } from "@/components/social-footer";
 import useHotkeys from "@/utils/useHotkeys";
 import { useCallback, useState } from "react";
 import usePngClipboardSupported from "../util/usePngClipboardSupported";
-import { InfoSquare } from "@solar-icons/react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { InformationSquareIcon } from "@hugeicons/core-free-icons";
 
 function InfoDialog() {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,7 +26,7 @@ function InfoDialog() {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen} modal>
       <DialogTrigger render={<Button variant={"outline"} className="hidden md:flex gap-2" />}>
-        <InfoSquare weight="LineDuotone" aria-hidden="true" />
+        <HugeiconsIcon icon={InformationSquareIcon} className="size-4" aria-hidden="true" />
       </DialogTrigger>
       <DialogPopup className={"max-w-3xl"}>
         <DialogHeader>
@@ -34,7 +35,7 @@ function InfoDialog() {
 
         <DialogPanel>
           <div className="flex gap-8">
-            <div className="flex flex-col gap-3 flex-1 text-[13px] text-gray-11 leading-relaxed">
+            <div className="flex flex-col gap-3 flex-1 text-[13px] text-muted-foreground leading-relaxed">
               <p>Code Images by Raycast is a tool to create beautiful screenshots of your code.</p>
               <p>
                 Pick a theme from a range of syntax colors and backgrounds, the language of your code and choose between
@@ -66,7 +67,7 @@ function InfoDialog() {
               </p>
             </div>
 
-            <div className="w-px h-full bg-gray-a3" />
+            <div className="w-px h-full bg-border" />
 
             <div className="flex-1 flex flex-col gap-2">
               <h2 className="font-medium -mt-[3px]">Shortcuts</h2>

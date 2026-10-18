@@ -8,7 +8,7 @@ export const firecrawl: Theme = {
     from: "#000",
     to: "#000",
   },
-  group: "AI",
+  group: "Brands",
   icon: { type: IconType.IMAGE, source: "/editor/assets/firecrawl/logo.svg" },
   font: "geist-mono",
   partner: true,

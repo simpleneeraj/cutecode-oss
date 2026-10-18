@@ -1,145 +1,260 @@
-/* ── Roses Frame ── */
-
-/* Full outer frame background: deep velvet burgundy */
-.frame {
-  background: radial-gradient(ellipse at 30% 20%, #3d0d18 0%, #1a0608 55%, #0e0305 100%);
+.scene {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  isolation: isolate;
 }
 
-.frameLightMode {
-  background: radial-gradient(ellipse at 30% 20%, #fff1f3 0%, #fce4e9 55%, #f5d0d8 100%);
+.dark {
+  background: radial-gradient(ellipse at 30% 15%, #4a1020 0%, #22070e 55%, #110306 100%);
 }
 
-.noBackground {
-  background: none;
-
-  [data-grid="true"],
-  [data-dot="true"] {
-    display: none;
-  }
+.light {
+  background: radial-gradient(ellipse at 30% 15%, #fff6f7 0%, #fde6ea 55%, #f7d3db 100%);
 }
 
-/* ── Scattered botanical icons layer ── */
-.iconsLayer {
+.transparent {
+  background: transparent;
+}
+
+.layer {
   position: absolute;
+  overflow: hidden;
   inset: 0;
   pointer-events: none;
-  overflow: hidden;
+  container-type: size;
 }
 
-.scatteredIcon {
+.bloomA,
+.bloomB {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  will-change: transform;
+}
+
+.bloomA {
+  top: -110px;
+  left: -60px;
+  width: 340px;
+  height: 340px;
+}
+
+.bloomB {
+  right: -80px;
+  bottom: -90px;
+  width: 300px;
+  height: 300px;
+}
+
+.light .bloomA {
+  background: #f9a8bb;
+  opacity: 0.55;
+}
+
+.light .bloomB {
+  background: #fbc4b4;
+  opacity: 0.5;
+}
+
+.dark .bloomA {
+  background: #be123c;
+  opacity: 0.28;
+}
+
+.dark .bloomB {
+  background: #9f1239;
+  opacity: 0.2;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+}
+
+.light .vignette {
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(190, 70, 100, 0.08) 100%);
+}
+
+.dark .vignette {
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.45) 100%);
+}
+
+.petal {
+  position: absolute;
+  border-radius: 80% 0 80% 0;
+}
+
+.light .petal {
+  background: linear-gradient(135deg, #fecdd6 0%, #f17891 60%, #d9465f 100%);
+  box-shadow: 0 2px 6px rgba(190, 18, 60, 0.18);
+}
+
+.dark .petal {
+  background: linear-gradient(135deg, #fb7185 0%, #be123c 60%, #7f1d1d 100%);
+  box-shadow: 0 0 8px rgba(244, 63, 94, 0.35);
+}
+
+.leaf {
   position: absolute;
   display: flex;
-  align-items: center;
-  justify-content: center;
   line-height: 0;
 }
 
-/* ── Editor window card ── */
+.light .leaf {
+  color: #9f6b5a;
+  opacity: 0.35;
+}
+
+.dark .leaf {
+  color: #be4b62;
+  opacity: 0.3;
+}
+
 .window {
   position: relative;
-  border-radius: 20px;
+  z-index: 10;
   overflow: hidden;
-  transition: all 200ms ease;
+  border-radius: 20px;
 }
 
-.darkWindow {
-  /* background & blur handled by SvgBlurBackdrop — no backdrop-filter */
+.light .window {
+  background: rgba(255, 250, 251, 0.95);
   box-shadow:
-    0 0 0 1px rgba(180, 30, 60, 0.30),
-    0 0 0 2px rgba(70, 8, 22, 0.55),
-    0 8px 40px rgba(0, 0, 0, 0.60),
-    0 2px 10px rgba(180, 30, 60, 0.12),
-    inset 0 1px 0 rgba(255, 100, 130, 0.06);
+    0 0 0 1px rgba(192, 48, 74, 0.14),
+    0 14px 44px rgba(159, 18, 57, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.98);
 }
 
-.lightWindow {
-  /* background & blur handled by SvgBlurBackdrop — no backdrop-filter */
+.dark .window {
+  background: #16060a;
   box-shadow:
-    0 0 0 1px rgba(200, 80, 110, 0.22),
-    0 0 0 2px rgba(220, 130, 150, 0.12),
-    0 8px 36px rgba(120, 20, 40, 0.12),
-    0 2px 8px rgba(180, 50, 70, 0.06),
-    inset 0 1px 0 rgba(255, 220, 230, 0.6);
+    0 0 0 1px rgba(255, 110, 136, 0.14),
+    0 0 60px rgba(190, 18, 60, 0.12),
+    0 24px 75px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 rgba(255, 180, 195, 0.06);
 }
 
-/* ── Header bar ── */
+.topEdge {
+  position: absolute;
+  z-index: 20;
+  top: 0;
+  right: 0;
+  left: 0;
+  overflow: hidden;
+  height: 2px;
+}
+
+.light .topEdge {
+  background: rgba(241, 120, 145, 0.25);
+}
+
+.dark .topEdge {
+  background: rgba(244, 63, 94, 0.14);
+}
+
+.sweep {
+  position: absolute;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, #e0a089, #fecdd6, #f17891, transparent);
+  inset-block: 0;
+}
+
 .header {
-  position: relative;
   display: grid;
-  grid-template-columns: 60px 1fr 60px;
   align-items: center;
-  padding: 10px 14px 9px;
-  border-bottom: 1px solid rgba(180, 30, 60, 0.12);
+  padding: 12px 16px 11px;
+  grid-gap: 12px;
+  grid-template-columns: 60px 1fr 60px;
 }
 
-/* Left: Window control dots */
+.light .header {
+  border-bottom: 1px solid rgba(192, 48, 74, 0.12);
+  background: rgba(255, 241, 244, 0.9);
+}
+
+.dark .header {
+  border-bottom: 1px solid rgba(255, 110, 136, 0.1);
+  background: #210a10;
+}
+
 .dots {
   display: flex;
-  gap: 6px;
   align-items: center;
+  gap: 7px;
 }
 
 .dot {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
   width: 13px;
   height: 13px;
   border-radius: 50%;
 }
 
-.dotRed {
-  background: #c0304a;
-  box-shadow: 0 0 7px rgba(192, 48, 74, 0.65);
+.dot::after {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  content: "";
 }
 
-.dotPink {
-  background: #e0708a;
-  box-shadow: 0 0 7px rgba(224, 112, 138, 0.45);
+.dot:nth-child(1) {
+  background: radial-gradient(circle at 35% 35%, #fda4af, #be123c);
+  box-shadow: 0 1px 4px rgba(190, 18, 60, 0.45);
 }
 
-.dotRose {
-  background: #f2aab8;
-  box-shadow: 0 0 7px rgba(242, 170, 184, 0.30);
+.dot:nth-child(2) {
+  background: radial-gradient(circle at 35% 35%, #fecdd3, #e11d48);
+  box-shadow: 0 1px 4px rgba(225, 29, 72, 0.4);
 }
 
-/* Center: flower + label */
-.headerCenter {
+.dot:nth-child(3) {
+  background: radial-gradient(circle at 35% 35%, #f5d0c5, #c2786a);
+  box-shadow: 0 1px 4px rgba(194, 120, 106, 0.45);
+}
+
+.fileName {
+  position: relative;
   display: flex;
+  height: 16px;
   align-items: center;
   justify-content: center;
-  gap: 5px;
-}
-
-.headerFlower {
-  flex-shrink: 0;
-  opacity: 0.85;
-}
-
-.headerLabel {
-  font-family: "Georgia", "Times New Roman", serif;
-  font-size: 11px;
+  font-family: var(--code-font, "Geist Mono", "Courier New", monospace);
+  font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  line-height: 12px;
 
-  .darkWindow & {
-    color: rgba(240, 160, 176, 0.70);
+  > input {
+    position: absolute;
+    width: 100%;
+    border: none;
+    margin: 0;
+    background-color: transparent;
+    color: inherit;
+    font: inherit;
+    inset: 0;
+    letter-spacing: inherit;
+    text-align: center;
+
+    &:focus {
+      outline: none;
+    }
   }
 
-  .lightWindow & {
-    color: rgba(140, 40, 65, 0.60);
+  > input:focus + span {
+    display: none;
   }
 }
 
-/* Right: sparkle accent — right-aligned */
-.headerRight {
-  display: flex;
-  justify-content: flex-end;
-  opacity: 0.65;
+.light .fileName {
+  color: #b3374e;
 }
 
-/* ── Editor area ── */
-.editor {
-  position: relative;
+.dark .fileName {
+  color: #fda4af;
 }

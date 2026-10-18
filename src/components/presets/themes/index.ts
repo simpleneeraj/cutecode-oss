@@ -45,6 +45,29 @@ import { velvetNight } from "../velvet-night/theme";
 import { peachyMood } from "../peachy-mood/theme";
 import { neonDreams } from "../neon-dreams/theme";
 import { goldenHour } from "../golden-hour/theme";
+import { dusk } from "../dusk/theme";
+import { fjord } from "../fjord/theme";
+import { latte } from "../latte/theme";
+import { neonCity } from "../neon-city/theme";
+import { ember } from "../ember/theme";
+import { carbonNight } from "../carbon-night/theme";
+import { petal } from "../petal/theme";
+import { paper } from "../paper/theme";
+import { christmas } from "../christmas/theme";
+import { halloween } from "../halloween/theme";
+import { diwali } from "../diwali/theme";
+import { newYear } from "../new-year/theme";
+import { lunarNewYear } from "../lunar-new-year/theme";
+import { holi } from "../holi/theme";
+import { winterFrost } from "../winter-frost/theme";
+import { vhs } from "../vhs/theme";
+import { polaroid } from "../polaroid/theme";
+import { typewriter } from "../typewriter/theme";
+import { groovy70s } from "../groovy-70s/theme";
+import { lofiRain } from "../lofi-rain/theme";
+import { lofiRooftop } from "../lofi-rooftop/theme";
+import { vinyl } from "../vinyl/theme";
+import { cassette } from "../cassette/theme";
 
 export const themes: { [index: string]: Theme } = {
   vercel,
@@ -93,6 +116,29 @@ export const themes: { [index: string]: Theme } = {
   "peachy-mood": peachyMood,
   "neon-dreams": neonDreams,
   "golden-hour": goldenHour,
+  dusk,
+  fjord,
+  latte,
+  "neon-city": neonCity,
+  ember,
+  "carbon-night": carbonNight,
+  petal,
+  paper,
+  christmas,
+  halloween,
+  diwali,
+  "new-year": newYear,
+  "lunar-new-year": lunarNewYear,
+  holi,
+  "winter-frost": winterFrost,
+  vhs,
+  polaroid,
+  typewriter,
+  "groovy-70s": groovy70s,
+  "lofi-rain": lofiRain,
+  "lofi-rooftop": lofiRooftop,
+  vinyl,
+  cassette,
   // All 66 Shiki bundled themes — syntax rendered natively by Shiki
   // ...shikiThemes,
 };

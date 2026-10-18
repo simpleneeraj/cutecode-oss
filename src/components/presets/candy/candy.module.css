@@ -168,7 +168,7 @@
 }
 
 .headerLabel {
-  font-family: "Nunito", "Quicksand", system-ui, sans-serif;
+  font-family: var(--code-font, "Nunito", "Quicksand", system-ui, sans-serif);
   font-size: 13px;
   font-weight: 900;
   letter-spacing: 0.1em;

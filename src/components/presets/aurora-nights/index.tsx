@@ -1,124 +1,118 @@
-import { motion } from "framer-motion";
+import { motion, easeInOut } from "motion/react";
 import { Icon } from "@/components/ui/icon";
-import styles from "./aurora-nights.module.css";
 import { BaseFrameProps } from "@/typings/presets";
+import { SceneFrame, useLoop } from "../scene";
+import styles from "./aurora-nights.module.css";
 
-/*
-  Aurora Nights
-  Palette: deep teal-black · aurora green · teal · violet
-  Vibe: northern lights, arctic midnight
-*/
+const RIBBONS = [
+  { className: styles.ribbonGreen, distance: 60 },
+  { className: styles.ribbonTeal, distance: -48 },
+  { className: styles.ribbonViolet, distance: 40 },
+];
 
-const AMBIENT_ICONS = [
-  { icon: "fluent-emoji:sparkles",  x: 6,  y: 5,  size: 20, dur: 8  },
-  { icon: "fluent-emoji:star",      x: 88, y: 8,  size: 16, dur: 11 },
-  { icon: "fluent-emoji:snowflake", x: 78, y: 80, size: 18, dur: 9  },
-  { icon: "fluent-emoji:star",      x: 4,  y: 72, size: 14, dur: 13 },
-  { icon: "fluent-emoji:sparkles",  x: 44, y: 3,  size: 16, dur: 10 },
-  { icon: "fluent-emoji:snowflake", x: 92, y: 46, size: 14, dur: 9  },
-  { icon: "fluent-emoji:star",      x: 2,  y: 36, size: 16, dur: 12 },
-  { icon: "fluent-emoji:sparkles",  x: 58, y: 92, size: 14, dur: 8  },
-] as const;
-
-const PARTICLES = Array.from({ length: 18 }, (_, i) => ({
-  id: i,
-  left: `${(i * 41 + 7) % 100}%`,
-  size: 2 + ((i * 5) % 3),
-  dur: 10 + ((i * 9) % 10),
-  delay: -((i * 7) % 16),
-  color: (["#00ff88", "#00d4d4", "#7c3aed", "#38bdf8"] as const)[i % 4],
+const STARS = Array.from({ length: 22 }, (_, index) => ({
+  left: `${(index * 37 + 5) % 100}%`,
+  top: `${(index * 23 + 3) % 48}%`,
+  size: 1 + (index % 2),
+  cycles: 1 + (index % 3),
+  phase: ((index * 5) % 22) / 22,
 }));
 
-export default function AuroraNightsFrame({ padding, darkMode, transparent, children }: BaseFrameProps) {
+const FLAKES = Array.from({ length: 16 }, (_, index) => ({
+  left: `${(index * 41 + 9) % 100}%`,
+  size: 2 + ((index * 3) % 3),
+  sway: index % 2 === 0 ? 10 : -10,
+  phase: ((index * 7) % 16) / 16,
+}));
+
+const FLOATERS = [
+  { icon: "solar:moon-stars-bold-duotone", x: 88, y: 9, size: 22 },
+  { icon: "solar:stars-bold-duotone", x: 6, y: 14, size: 16 },
+  { icon: "solar:stars-minimalistic-bold-duotone", x: 70, y: 30, size: 12 },
+];
+
+type Floater = (typeof FLOATERS)[number];
+type Ribbon = (typeof RIBBONS)[number];
+type Star = (typeof STARS)[number];
+type Flake = (typeof FLAKES)[number];
+
+function AuroraRibbon({ ribbon, index }: { ribbon: Ribbon; index: number }) {
+  const phase = index / RIBBONS.length;
+  const x = useLoop([0, ribbon.distance, 0], { phase, ease: easeInOut });
+  const scaleY = useLoop([1, 1.25, 1], { phase, cycles: 2, ease: easeInOut });
+  const opacity = useLoop([0.55, 0.95, 0.55], { phase, ease: easeInOut });
+
+  return <motion.div className={ribbon.className} style={{ x, scaleY, opacity }} />;
+}
+
+function TwinklingStar({ star }: { star: Star }) {
+  const opacity = useLoop([0.2, 1, 0.2], { cycles: star.cycles, phase: star.phase, ease: easeInOut });
+
   return (
-    <div
-      className={[styles.scene, darkMode ? styles.dark : styles.light, transparent ? styles.transparent : ""].join(" ")}
-      style={{ padding }}
-    >
-      {/* ── Aurora streaks ── */}
-      {[
-        { cls: styles.aurora1, dur: 14, x: [-50, 40]  },
-        { cls: styles.aurora2, dur: 18, x: [30, -40]  },
-        { cls: styles.aurora3, dur: 22, x: [-20, 45]  },
-      ].map((a, i) => (
-        <motion.div
-          key={i}
-          className={a.cls}
-          animate={{ x: a.x, scaleY: [1, 1.15, 1] }}
-          transition={{ duration: a.dur, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
-        />
+    <motion.span
+      className={styles.star}
+      style={{ left: star.left, top: star.top, width: star.size, height: star.size, opacity }}
+    />
+  );
+}
+
+function FallingFlake({ flake }: { flake: Flake }) {
+  const y = useLoop([0, 380], { phase: flake.phase });
+  const x = useLoop([0, flake.sway, 0, -flake.sway, 0], { phase: flake.phase, cycles: 2 });
+  const opacity = useLoop([0, 0.85, 0.85, 0], { phase: flake.phase });
+
+  return (
+    <motion.span
+      className={styles.flake}
+      style={{ left: flake.left, width: flake.size, height: flake.size, x, y, opacity }}
+    />
+  );
+}
+
+function FloatingIcon({ floater, index }: { floater: Floater; index: number }) {
+  const y = useLoop([0, -8, 0], { phase: index / FLOATERS.length, ease: easeInOut });
+
+  return (
+    <motion.span className={styles.floater} style={{ left: `${floater.x}%`, top: `${floater.y}%`, y }}>
+      <Icon icon={floater.icon} width={floater.size} height={floater.size} />
+    </motion.span>
+  );
+}
+
+function AuroraNightsScene() {
+  return (
+    <div className={styles.layer} aria-hidden>
+      {RIBBONS.map((ribbon, index) => (
+        <AuroraRibbon key={index} ribbon={ribbon} index={index} />
       ))}
-
-      {/* ── Rising glow particles ── */}
-      <div className={styles.particleLayer} aria-hidden>
-        {PARTICLES.map((p) => (
-          <motion.div
-            key={p.id}
-            style={{
-              position: "absolute",
-              bottom: 0,
-              left: p.left,
-              width: p.size,
-              height: p.size,
-              borderRadius: "50%",
-              background: p.color,
-              boxShadow: `0 0 6px ${p.color}`,
-            }}
-            animate={{ y: [0, -350], opacity: [0, 0.9, 0.4, 0] }}
-            transition={{ duration: p.dur, delay: p.delay, repeat: Infinity, ease: "linear" }}
-          />
-        ))}
-      </div>
-
-      {/* ── Floating icons ── */}
-      <div className={styles.ambientLayer} aria-hidden>
-        {AMBIENT_ICONS.map((a, i) => (
-          <motion.span
-            key={i}
-            className={styles.ambientIcon}
-            style={{ left: `${a.x}%`, top: `${a.y}%` }}
-            animate={{ y: [0, -12, 0], rotate: [0, i % 2 === 0 ? 8 : -8, 0] }}
-            transition={{ duration: a.dur, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <Icon icon={a.icon} width={a.size} height={a.size} />
-          </motion.span>
-        ))}
-      </div>
-
-      {/* ── Window ── */}
-      <motion.div
-        className={styles.window}
-        initial={{ opacity: 0, y: 20, scale: 0.97 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      >
-        {/* Sweeping top edge */}
-        <div className={styles.topEdge} aria-hidden>
-          <motion.div
-            className={styles.topEdgeSweep}
-            animate={{ x: ["-100%", "300%"] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "linear", repeatDelay: 1 }}
-          />
-        </div>
-
-        <div className={styles.header}>
-          <div className={styles.dots}>
-            <span className={`${styles.dot} ${styles.dotA}`} />
-            <span className={`${styles.dot} ${styles.dotB}`} />
-            <span className={`${styles.dot} ${styles.dotC}`} />
-          </div>
-          <div className={styles.headerCenter}>
-            <Icon icon="fluent-emoji:sparkles" width={18} height={18} />
-            <span className={styles.headerLabel}>aurora-nights</span>
-          </div>
-          <div className={styles.headerRight}>
-            <Icon icon="fluent-emoji:snowflake" width={16} height={16} />
-          </div>
-        </div>
-
-        <div className={styles.headerRule} aria-hidden />
-        <div className={styles.editor}>{children}</div>
-      </motion.div>
+      {STARS.map((star, index) => (
+        <TwinklingStar key={index} star={star} />
+      ))}
+      {FLOATERS.map((floater, index) => (
+        <FloatingIcon key={index} floater={floater} index={index} />
+      ))}
+      <div className={styles.ridgeBack} />
+      <div className={styles.ridgeFront} />
+      {FLAKES.map((flake, index) => (
+        <FallingFlake key={index} flake={flake} />
+      ))}
     </div>
   );
+}
+
+function TopEdgeSweep() {
+  const x = useLoop(["-100%", "300%", "300%"]);
+
+  return (
+    <div className={styles.topEdge} aria-hidden>
+      <motion.div className={styles.sweep} style={{ x }} />
+    </div>
+  );
+}
+
+const background = <AuroraNightsScene />;
+const accent = <TopEdgeSweep />;
+
+export default function AuroraNightsFrame(props: BaseFrameProps) {
+  return <SceneFrame {...props} themeStyles={styles} background={background} accent={accent} />;
 }

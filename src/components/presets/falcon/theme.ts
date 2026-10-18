@@ -1,4 +1,4 @@
-import { Theme, IconType } from "@/typings/editor";
+import { Theme } from "@/typings/editor";
 import { convertToShikiTheme } from "../themes/shared";
 
 export const falcon: Theme = {
@@ -8,7 +8,7 @@ export const falcon: Theme = {
     from: "#BDE3EC",
     to: "#363654",
   },
-  group: "Defaults",
+  group: "Classic",
   syntax: {
     light: convertToShikiTheme({
       foreground: "#464C65",
@@ -23,6 +23,9 @@ export const falcon: Theme = {
       link: "#5C827D",
       number: "#AE6A65",
       property: "#839AA7",
+      highlight: "rgba(92,130,125,0.1)",
+      highlightBorder: "#5C827D",
+      highlightHover: "rgba(92,130,125,0.05)",
       diffInserted: "#5C827D",
       diffDeleted: "#AE6A65",
     }),
@@ -39,6 +42,9 @@ export const falcon: Theme = {
       link: "#9AB6B2",
       number: "#BD9C9C",
       property: "#799DB1",
+      highlight: "rgba(154,182,178,0.14)",
+      highlightBorder: "#9AB6B2",
+      highlightHover: "rgba(154,182,178,0.09)",
       diffInserted: "#9AB6B2",
       diffDeleted: "#BD9C9C",
     }),

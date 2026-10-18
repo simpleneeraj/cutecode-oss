@@ -48,6 +48,8 @@ export function groupThemes(object: { [index: string]: Theme }) {
       font: theme.font,
     });
   }
-  const order: Array<ThemeGroup["value"]> = ["System", "Brands", "AI", "Gaming", "Aesthetic", "Romantic", "Defaults"];
-  return order.map((value) => ({ items: groups[value] ?? [], value }));
+  const order: Array<ThemeGroup["value"]> = ["Seasonal", "Cozy", "Night", "Romantic", "Retro", "Vintage", "Lofi", "Classic", "Brands"];
+  return order
+    .filter((value) => (groups[value]?.length ?? 0) > 0)
+    .map((value) => ({ items: groups[value] ?? [], value }));
 }

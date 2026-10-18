@@ -1,0 +1,328 @@
+.scene {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  isolation: isolate;
+}
+
+.dark {
+  background: radial-gradient(ellipse at 15% 0%, #3a2618 0%, #22160e 50%, #140c07 100%);
+}
+
+.light {
+  background: radial-gradient(ellipse at 15% 0%, #fbf4ea 0%, #f1e3cf 50%, #e3cfb4 100%);
+}
+
+.transparent {
+  background: transparent;
+}
+
+.layer {
+  position: absolute;
+  overflow: hidden;
+  inset: 0;
+  pointer-events: none;
+}
+
+.lamp {
+  position: absolute;
+  top: -180px;
+  left: -140px;
+  width: 460px;
+  height: 400px;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+.light .lamp {
+  background: radial-gradient(ellipse, rgba(253, 214, 150, 0.6) 0%, rgba(240, 180, 110, 0.16) 45%, transparent 70%);
+}
+
+.dark .lamp {
+  background: radial-gradient(ellipse, rgba(240, 168, 90, 0.3) 0%, rgba(196, 122, 58, 0.08) 45%, transparent 70%);
+}
+
+.beam {
+  position: absolute;
+  top: -20%;
+  left: 10%;
+  width: 34%;
+  height: 140%;
+  transform: rotate(-24deg);
+  transform-origin: top left;
+}
+
+.light .beam {
+  background: linear-gradient(180deg, rgba(255, 236, 200, 0.55), transparent 80%);
+}
+
+.dark .beam {
+  background: linear-gradient(180deg, rgba(240, 194, 122, 0.08), transparent 80%);
+}
+
+.mote {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+.light .mote {
+  background: #c99a5b;
+}
+
+.dark .mote {
+  background: #f6d9b8;
+  box-shadow: 0 0 4px rgba(246, 217, 184, 0.7);
+}
+
+.turntable {
+  position: absolute;
+  right: -140px;
+  bottom: -150px;
+  width: 440px;
+  height: 440px;
+}
+
+.record {
+  position: absolute;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, transparent 36%, rgba(0, 0, 0, 0.35) 37%, transparent 38%),
+    repeating-radial-gradient(circle, #1a1410 0, #1a1410 2px, #241c16 2px, #241c16 4px);
+  box-shadow: 0 18px 50px rgba(40, 24, 12, 0.35);
+  inset: 0;
+  will-change: transform;
+}
+
+.label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 34%;
+  height: 34%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, #1a1410 0 5%, transparent 5.5%),
+    radial-gradient(circle, transparent 0 60%, rgba(255, 255, 255, 0.18) 61% 63%, transparent 64%),
+    radial-gradient(circle at 40% 35%, #e9805f, #b8482f);
+  transform: translate(-50%, -50%);
+}
+
+.labelMark {
+  position: absolute;
+  top: 16%;
+  left: 50%;
+  width: 22%;
+  height: 4px;
+  border-radius: 2px;
+  margin-left: -11%;
+  background: #f6dcb8;
+  opacity: 0.85;
+}
+
+.sheen {
+  position: absolute;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 30deg,
+    transparent 0deg,
+    rgba(255, 255, 255, 0.1) 20deg,
+    transparent 50deg,
+    transparent 180deg,
+    rgba(255, 255, 255, 0.07) 205deg,
+    transparent 235deg
+  );
+  inset: 0;
+  mask-image: radial-gradient(circle, transparent 17%, black 18%);
+}
+
+.tonearm {
+  position: absolute;
+  top: -40px;
+  left: 190px;
+  width: 120px;
+  height: 160px;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 5;
+}
+
+.light .tonearm {
+  stroke: #b7a68e;
+}
+
+.light .tonearm circle,
+.light .tonearm rect {
+  fill: #8e7d6a;
+}
+
+.dark .tonearm {
+  stroke: #a08b76;
+}
+
+.dark .tonearm circle,
+.dark .tonearm rect {
+  fill: #5c4a3a;
+}
+
+.note {
+  position: absolute;
+  will-change: transform;
+}
+
+.light .note {
+  fill: #a4442b;
+}
+
+.dark .note {
+  fill: #f0c27a;
+}
+
+.window {
+  position: relative;
+  z-index: 10;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+.light .window {
+  background: rgba(255, 251, 245, 0.95);
+  box-shadow:
+    0 0 0 1px rgba(107, 86, 68, 0.14),
+    0 14px 44px rgba(59, 42, 30, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.98);
+}
+
+.dark .window {
+  background: #1a120b;
+  box-shadow:
+    0 0 0 1px rgba(240, 194, 122, 0.1),
+    0 0 55px rgba(240, 168, 90, 0.07),
+    0 24px 75px rgba(0, 0, 0, 0.75),
+    inset 0 1px 0 rgba(246, 217, 184, 0.05);
+}
+
+.topEdge {
+  position: absolute;
+  z-index: 20;
+  top: 0;
+  right: 0;
+  left: 0;
+  overflow: hidden;
+  height: 2px;
+}
+
+.light .topEdge {
+  background: rgba(164, 68, 43, 0.14);
+}
+
+.dark .topEdge {
+  background: rgba(240, 194, 122, 0.1);
+}
+
+.sweep {
+  position: absolute;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, #b8482f, #f0c27a, #e9805f, transparent);
+  inset-block: 0;
+}
+
+.header {
+  display: grid;
+  align-items: center;
+  padding: 12px 16px 11px;
+  grid-gap: 12px;
+  grid-template-columns: 60px 1fr 60px;
+}
+
+.light .header {
+  border-bottom: 1px solid rgba(107, 86, 68, 0.12);
+  background: rgba(250, 243, 233, 0.92);
+}
+
+.dark .header {
+  border-bottom: 1px solid rgba(240, 194, 122, 0.08);
+  background: #22170f;
+}
+
+.dots {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.dot {
+  position: relative;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+}
+
+.dot::after {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  content: "";
+}
+
+.dot:nth-child(1) {
+  background: radial-gradient(circle at 35% 35%, #f7b9a2, #b8482f);
+  box-shadow: 0 1px 4px rgba(184, 72, 47, 0.4);
+}
+
+.dot:nth-child(2) {
+  background: radial-gradient(circle at 35% 35%, #f8dcae, #c47a3a);
+  box-shadow: 0 1px 4px rgba(196, 122, 58, 0.4);
+}
+
+.dot:nth-child(3) {
+  background: radial-gradient(circle at 35% 35%, #c9ddb0, #56703a);
+  box-shadow: 0 1px 4px rgba(86, 112, 58, 0.4);
+}
+
+.fileName {
+  position: relative;
+  display: flex;
+  height: 16px;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--code-font, "Geist Mono", "Courier New", monospace);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 12px;
+
+  > input {
+    position: absolute;
+    width: 100%;
+    border: none;
+    margin: 0;
+    background-color: transparent;
+    color: inherit;
+    font: inherit;
+    inset: 0;
+    letter-spacing: inherit;
+    text-align: center;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  > input:focus + span {
+    display: none;
+  }
+}
+
+.light .fileName {
+  color: #3b2a1e;
+}
+
+.dark .fileName {
+  color: #f0c27a;
+}

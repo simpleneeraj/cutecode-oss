@@ -1,22 +1,13 @@
 import { cn } from "@/utils/cn";
-import localFont from "next/font/local";
-import { Kablammo, Nothing_You_Could_Do, Delius, Cabin_Sketch, Fraunces } from "next/font/google";
+import { Kablammo, Nothing_You_Could_Do, Delius, Cabin_Sketch, Bricolage_Grotesque } from "next/font/google";
 
 /* ------------------------------- */
 /* App Fonts                       */
 /* ------------------------------- */
 
-const fontSans = localFont({
-  display: "swap",
-  src: "./CalSansUI[MODE,wght].woff2",
-  variable: "--font-sans",
-});
-
-// Heading: Fraunces — premium variable serif with optical sizing. Real weights,
-// so heading `font-semibold`/`font-bold` stay crisp (no faux-bold).
-const fontHeading = Fraunces({
+const fontHeading = Bricolage_Grotesque({
   subsets: ["latin"],
-  variable: "--font-heading",
+  variable: "--font-bricolage",
   display: "swap",
   axes: ["opsz"],
 });
@@ -39,6 +30,5 @@ export default cn(
   nothingYouCouldDo.variable,
   delius.variable,
   cabinSketch.variable,
-  fontSans.variable,
   fontHeading.variable,
 );

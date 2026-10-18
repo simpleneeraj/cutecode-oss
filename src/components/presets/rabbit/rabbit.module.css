@@ -1,0 +1,274 @@
+.scene {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  isolation: isolate;
+}
+
+.dark {
+  --orange: #ff5f1f;
+  --matrix-dot: rgba(255, 255, 255, 0.07);
+  --glow: rgba(255, 95, 31, 0.28);
+  --shell: #161616;
+  --shell-edge: #262626;
+  --key-line: rgba(255, 255, 255, 0.18);
+  background: radial-gradient(ellipse at 80% 100%, #1f0d04 0%, #0a0a0a 50%, #000 100%);
+}
+
+.light {
+  --orange: #ff5a12;
+  --matrix-dot: rgba(0, 0, 0, 0.09);
+  --glow: rgba(255, 112, 46, 0.3);
+  --shell: #ededed;
+  --shell-edge: #dcdcdc;
+  --key-line: rgba(0, 0, 0, 0.2);
+  background: radial-gradient(ellipse at 80% 100%, #ffe6d6 0%, #f7f5f2 50%, #efedea 100%);
+}
+
+.transparent {
+  background: transparent;
+}
+
+.layer {
+  position: absolute;
+  overflow: hidden;
+  inset: 0;
+  pointer-events: none;
+}
+
+.dotMatrix {
+  position: absolute;
+  background-image: radial-gradient(circle, var(--matrix-dot) 1.2px, transparent 1.6px);
+  background-size: 12px 12px;
+  inset: 0;
+  mask-image: radial-gradient(ellipse at 50% 50%, black 30%, transparent 85%);
+}
+
+.glow {
+  position: absolute;
+  right: -160px;
+  bottom: -180px;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--glow) 0%, transparent 65%);
+}
+
+.dial {
+  position: absolute;
+  right: -150px;
+  bottom: -150px;
+  width: 340px;
+  height: 340px;
+  border-radius: 50%;
+  background: repeating-conic-gradient(from 0deg, var(--orange) 0deg 3deg, #e04a0e 3deg 6deg);
+  box-shadow:
+    0 0 0 6px var(--shell),
+    0 0 0 7px var(--shell-edge),
+    0 20px 60px rgba(255, 95, 31, 0.25);
+}
+
+.dialCap {
+  position: absolute;
+  right: -40px;
+  bottom: -40px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ff8a54, var(--orange) 60%, #d9450c);
+  box-shadow:
+    0 0 0 2px rgba(0, 0, 0, 0.15),
+    inset 0 2px 4px rgba(255, 255, 255, 0.35);
+}
+
+.eye {
+  position: absolute;
+  top: -40px;
+  right: 18%;
+  display: flex;
+  width: 132px;
+  height: 132px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--shell);
+  box-shadow:
+    0 0 0 1px var(--shell-edge),
+    0 12px 32px rgba(0, 0, 0, 0.25);
+}
+
+.iris {
+  position: absolute;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, #0b0b0b, #2a2a2a 25%, #0b0b0b 50%, #333 75%, #0b0b0b);
+  box-shadow: inset 0 0 0 3px #050505;
+}
+
+.pupil {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ff9a6a 0%, var(--orange) 35%, #6b1f00 100%);
+  box-shadow: 0 0 18px rgba(255, 95, 31, 0.6);
+}
+
+.signals {
+  position: absolute;
+  bottom: 22px;
+  left: 28px;
+  display: flex;
+  gap: 6px;
+}
+
+.signalDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--orange);
+  box-shadow: 0 0 8px rgba(255, 95, 31, 0.7);
+}
+
+.key {
+  position: absolute;
+  border: 1.5px solid var(--key-line);
+  border-radius: 28%;
+}
+
+.keyFilled {
+  border-color: transparent;
+  background: linear-gradient(160deg, #ff8a54, var(--orange));
+  box-shadow: 0 4px 12px rgba(255, 95, 31, 0.35);
+}
+
+.window {
+  position: relative;
+  z-index: 10;
+  overflow: hidden;
+  border-radius: 18px;
+}
+
+.dark .window {
+  background: #0b0b0b;
+  box-shadow:
+    0 0 0 1px #242424,
+    0 0 0 5px #111,
+    0 0 0 6px #1f1f1f,
+    0 28px 70px rgba(0, 0, 0, 0.75),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.light .window {
+  background: #fff;
+  box-shadow:
+    0 0 0 1px #e2e2e2,
+    0 0 0 5px #f2f2f2,
+    0 0 0 6px #e4e4e4,
+    0 20px 50px rgba(120, 50, 10, 0.12);
+}
+
+.topEdge {
+  position: absolute;
+  z-index: 20;
+  top: 0;
+  right: 0;
+  left: 0;
+  overflow: hidden;
+  height: 2px;
+}
+
+.sweep {
+  position: absolute;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, var(--orange), #ffb38f, var(--orange), transparent);
+  inset-block: 0;
+}
+
+.header {
+  display: grid;
+  align-items: center;
+  padding: 12px 16px 11px;
+  grid-gap: 12px;
+  grid-template-columns: 60px 1fr 60px;
+}
+
+.dark .header {
+  border-bottom: 1px solid #1c1c1c;
+  background: #101010;
+}
+
+.light .header {
+  border-bottom: 1px solid #ededed;
+  background: #fafafa;
+}
+
+.dots {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.dot:nth-child(1) {
+  background: radial-gradient(circle at 35% 35%, #ff9a6a, var(--orange));
+  box-shadow: 0 0 6px rgba(255, 95, 31, 0.5);
+}
+
+.dark .dot:nth-child(n + 2) {
+  background: #262626;
+  box-shadow: inset 0 0 0 1px #333;
+}
+
+.light .dot:nth-child(n + 2) {
+  background: #e8e8e8;
+  box-shadow: inset 0 0 0 1px #d6d6d6;
+}
+
+.fileName {
+  position: relative;
+  display: flex;
+  height: 16px;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--code-font, "Geist Mono", monospace);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 12px;
+
+  > input {
+    position: absolute;
+    width: 100%;
+    border: none;
+    margin: 0;
+    background-color: transparent;
+    color: inherit;
+    font: inherit;
+    inset: 0;
+    letter-spacing: inherit;
+    text-align: center;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  > input:focus + span {
+    display: none;
+  }
+}
+
+.dark .fileName {
+  color: #d4d4d4;
+}
+
+.light .fileName {
+  color: #3a3a3a;
+}

@@ -1,7 +1,8 @@
 "use client";
 
 import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
-import { XIcon } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Cancel01Icon } from "@hugeicons/core-free-icons";
 import { cn } from "@/utils/cn";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -77,7 +78,7 @@ function DialogPopup({
               render={<Button size="icon" variant="ghost" />}
               {...closeProps}
             >
-              <XIcon />
+              <HugeiconsIcon icon={Cancel01Icon} />
             </DialogPrimitive.Close>
           )}
         </DialogPrimitive.Popup>

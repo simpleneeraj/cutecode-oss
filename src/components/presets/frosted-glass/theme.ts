@@ -8,11 +8,8 @@ export const frostedGlass: Theme = {
     from: "#f0f4ff",
     to: "#faf0ff",
   },
-  icon: {
-    type: IconType.ICONIFY,
-    source: "fluent-emoji:snowflake",
-  },
-  group: "Aesthetic",
+  icon: { type: IconType.IMAGE, source: "/editor/assets/frosted-glass/glyph.svg" },
+  group: "Cozy",
   font: "geist-mono",
   tags: [BadgeVariant.NEW, BadgeVariant.PREMIUM],
   syntax: {

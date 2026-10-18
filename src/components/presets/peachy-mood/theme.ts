@@ -8,11 +8,8 @@ export const peachyMood: Theme = {
     from: "#fff3ee",
     to: "#ffe5d0",
   },
-  icon: {
-    type: IconType.ICONIFY,
-    source: "fluent-emoji:peach",
-  },
-  group: "Aesthetic",
+  icon: { type: IconType.IMAGE, source: "/editor/assets/peachy-mood/glyph.svg" },
+  group: "Cozy",
   font: "fira-code",
   tags: [BadgeVariant.NEW],
   syntax: {

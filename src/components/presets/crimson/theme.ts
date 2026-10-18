@@ -1,4 +1,4 @@
-import { Theme, IconType } from "@/typings/editor";
+import { Theme } from "@/typings/editor";
 import { convertToShikiTheme } from "../themes/shared";
 
 export const crimson: Theme = {
@@ -8,7 +8,7 @@ export const crimson: Theme = {
     from: "#FF6363",
     to: "#733434",
   },
-  group: "Defaults",
+  group: "Classic",
   syntax: {
     light: convertToShikiTheme({
       foreground: "#685B5B",
@@ -23,6 +23,9 @@ export const crimson: Theme = {
       link: "#BE3B3B",
       number: "#C94F0A",
       property: "#D15510",
+      highlight: "rgba(190,59,59,0.1)",
+      highlightBorder: "#BE3B3B",
+      highlightHover: "rgba(190,59,59,0.05)",
       diffInserted: "#00A67D",
       diffDeleted: "#BE3B3B",
     }),
@@ -39,6 +42,9 @@ export const crimson: Theme = {
       link: "#EB6F6F",
       number: "#FDA97A",
       property: "#D15510",
+      highlight: "rgba(235,111,111,0.14)",
+      highlightBorder: "#EB6F6F",
+      highlightHover: "rgba(235,111,111,0.09)",
       diffInserted: "#6FEB71",
       diffDeleted: "#EB6F6F",
     }),

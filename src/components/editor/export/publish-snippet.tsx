@@ -11,17 +11,17 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Field, FieldLabel } from "@/components/ui/field";
-import { Select, SelectItem, SelectPopup, SelectTrigger } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { OTPField, OTPFieldInput } from "@/components/ui/otp-field";
 import { Spinner } from "@/components/ui/spinner";
-import { Share, CloseCircle } from "@solar-icons/react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Share01Icon, CancelCircleIcon } from "@hugeicons/core-free-icons";
 import { useAtomValue, useSetAtom } from "jotai";
 import { dispatchPublishSnippetAtom, publishSnippetAtom } from "./store";
 import { Visibility } from "./types";
 import { AnimatePresence, motion } from "motion/react";
-import { usePublish } from "@/hooks/use-publish";
+import { usePublish, usePublishQuota, type PublishQuota } from "@/hooks/use-publish";
 import {
   currentElementIdAtom,
   currentSlideIdAtom,
@@ -34,39 +34,34 @@ import { useUser } from "@/hooks/use-auth";
 import { getShareUrl } from "@/lib/share/urls";
 import React, { useState } from "react";
 import SuccessDialog from "./success-dialog";
-import { Icon } from "@/components/ui/icon";
 import { useSubscription } from "@/hooks/use-subscription";
 import { plansDialogOpenAtom } from "@/store/editor/plans";
-import { FREE_DAILY_PUBLISH_LIMIT } from "@/lib/billing/constants";
-import { cn } from "@/utils/cn";
+import { PLANS } from "@/lib/billing/plans";
+import { Plan } from "@/db/schema";
 import { trackSnippet } from "@/lib/analytics";
+import { isForbiddenError } from "@/lib/trpc-error";
+import VisibilitySelect from "./visibility-select";
+import { visibilityConfig } from "./visibility-config";
 
 const OTP_LENGTH = 6;
 const OTP_SLOTS = Array.from({ length: OTP_LENGTH }, (_, i) => `otp-slot-${i}`);
 
-const visibilityConfig = {
-  [Visibility.PUBLIC]: {
-    icon: "solar:global-bold-duotone",
-    label: "Public",
-    sub: "Anyone with the link can view",
-    color: "text-foreground",
-    bg: "bg-muted",
-  },
-  [Visibility.PASSCODE]: {
-    icon: "solar:lock-password-bold-duotone",
-    label: "Passcode Protected",
-    sub: "Viewers must enter a code",
-    color: "text-foreground",
-    bg: "bg-muted",
-  },
-  [Visibility.PRIVATE]: {
-    icon: "solar:shield-keyhole-minimalistic-bold-duotone",
-    label: "Private",
-    sub: "Only visible to you",
-    color: "text-muted-foreground",
-    bg: "bg-muted",
-  },
-};
+function formatResetTime(iso: string) {
+  return new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" }).format(new Date(iso));
+}
+
+function describeQuota({ dailyLimit, dailyRemaining, dailyResetsAt, liveLimit, liveRemaining }: PublishQuota) {
+  const daily = dailyLimit === null ? "" : `${dailyRemaining} of ${dailyLimit} publishes left today`;
+  const live = liveLimit === null ? "" : `${liveRemaining} of ${liveLimit} live snippets left`;
+  const reset = dailyRemaining === 0 && dailyResetsAt ? `Next publish at ${formatResetTime(dailyResetsAt)}` : "";
+  return [[daily, live].filter(Boolean).join(", "), reset].filter(Boolean).join(". ");
+}
+
+function upgradeHint(plan: Plan) {
+  if (plan === Plan.FREE) return `Pro raises this to ${PLANS.PRO.dailyPublishes} a day with no live limit.`;
+  if (plan === Plan.PRO) return `Premium raises this to ${PLANS.PREMIUM.dailyPublishes} a day.`;
+  return null;
+}
 
 const PublishSnippet: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -85,7 +80,9 @@ const PublishSnippet: React.FC = () => {
 
   const { isSignedIn, isLoaded } = useUser();
   const { publish } = usePublish();
-  const { isPro } = useSubscription();
+  const { can, plan, isFree } = useSubscription();
+  const { data: quota, mutate: refreshQuota } = usePublishQuota(!!isSignedIn);
+  const activePlan = isFree ? Plan.FREE : plan;
   const setPlansOpen = useSetAtom(plansDialogOpenAtom);
 
   const onTriggerClick = () => {
@@ -93,6 +90,9 @@ const PublishSnippet: React.FC = () => {
     if (!isSignedIn) {
       setPlansOpen(true);
       return;
+    }
+    if (visibilityConfig[visibility].isPremium && !can("privateShares")) {
+      dispatch({ visibility: Visibility.PUBLIC });
     }
     trackSnippet.publishDialogOpened();
     setOpen(true);
@@ -133,8 +133,14 @@ const PublishSnippet: React.FC = () => {
       await navigator.clipboard.writeText(url).catch(() => {});
       trackSnippet.published(visibility, Boolean(description?.trim()));
     } catch (err: unknown) {
-      const message = (err as Error)?.message ?? "";
-      if (message.includes("Daily publish limit")) {
+      const message = err instanceof Error ? err.message : "";
+      if (isForbiddenError(err)) {
+        refreshQuota();
+        setOpen(false);
+        setPlansOpen(true);
+        toast.error(message || "This option needs Premium.");
+      } else if (message.includes("Daily publish limit")) {
+        refreshQuota();
         setOpen(false);
         setPlansOpen(true);
         toast.error(message);
@@ -148,37 +154,33 @@ const PublishSnippet: React.FC = () => {
 
   const isPublishDisabled = isPending || (visibility === Visibility.PASSCODE && passcode.length < OTP_LENGTH);
 
-  const currentVisibility = visibilityConfig[visibility];
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      {/* Trigger */}
-      <DialogTrigger
-        render={<Button variant="ghost" className="justify-between w-full text-sm" />}
-        onClick={onTriggerClick}
-      >
-        <span className="flex items-center gap-2">
-          <Share weight="BoldDuotone" className="size-4" aria-hidden="true" />
+      <div className="flex items-center justify-between gap-2">
+        <DialogTrigger render={<Button variant="ghost" size="xs" />} onClick={onTriggerClick}>
+          <HugeiconsIcon icon={Share01Icon} aria-hidden="true" />
           Publish snippet
-        </span>
-        {!isPro && isSignedIn && (
-          <span className="text-xs text-muted-foreground">{FREE_DAILY_PUBLISH_LIMIT}/day</span>
+        </DialogTrigger>
+        {quota?.dailyLimit != null && isSignedIn && (
+          <span className="px-1 text-muted-foreground text-xs tabular-nums">
+            {quota.dailyRemaining}/{quota.dailyLimit} today
+          </span>
         )}
-      </DialogTrigger>
+      </div>
 
       <DialogPopup className="sm:max-w-md overflow-hidden rounded-2xl p-0">
         <DialogHeader className="relative px-5 pt-5 pb-4">
           <DialogTitle className="flex items-center gap-2.5 text-base">
             <span className="flex size-8 items-center justify-center rounded-xl bg-foreground text-background">
-              <Share weight="BoldDuotone" className="size-4" aria-hidden="true" />
+              <HugeiconsIcon icon={Share01Icon} className="size-4" aria-hidden="true" />
             </span>
             Publish Snippet
           </DialogTitle>
           <DialogDescription className="mt-1 text-xs text-muted-foreground">
             Share your snippet publicly, protect it with a passcode, or keep it private.
-            {!isPro && (
+            {quota?.dailyLimit != null && (
               <span className="mt-1 block text-muted-foreground">
-                Free plan: {FREE_DAILY_PUBLISH_LIMIT} new publishes/day. Upgrade to Pro for unlimited.
+                {describeQuota(quota)}. {upgradeHint(activePlan)}
               </span>
             )}
           </DialogDescription>
@@ -187,7 +189,7 @@ const PublishSnippet: React.FC = () => {
         <DialogPanel className="flex flex-col gap-4 px-5">
           {/* Title */}
           <Field>
-            <FieldLabel className="text-xs text-muted-foreground">Title</FieldLabel>
+            <FieldLabel className="text-muted-foreground text-xs">Title</FieldLabel>
             <Input
               placeholder={fileName || "Untitled Snippet"}
               value={title}
@@ -198,7 +200,7 @@ const PublishSnippet: React.FC = () => {
 
           {/* Description */}
           <Field>
-            <FieldLabel className="text-xs text-muted-foreground">Description</FieldLabel>
+            <FieldLabel className="text-muted-foreground text-xs">Description</FieldLabel>
             <Textarea
               placeholder="What does this snippet do? Any usage notes…"
               value={description}
@@ -210,7 +212,7 @@ const PublishSnippet: React.FC = () => {
 
           {/* Tags */}
           <Field>
-            <FieldLabel className="text-xs text-muted-foreground">Tags</FieldLabel>
+            <FieldLabel className="text-muted-foreground text-xs">Tags</FieldLabel>
             <div className="flex flex-col gap-2">
               <div className="flex flex-wrap gap-2">
                 {tags.map((tag) => (
@@ -224,7 +226,7 @@ const PublishSnippet: React.FC = () => {
                       onClick={() => dispatch({ tags: tags.filter((t) => t !== tag) })}
                       className="hover:text-destructive focus:outline-none"
                     >
-                      <CloseCircle weight="LineDuotone" className="size-3" aria-hidden="true" />
+                      <HugeiconsIcon icon={CancelCircleIcon} className="size-3" aria-hidden="true" />
                     </button>
                   </span>
                 ))}
@@ -248,32 +250,8 @@ const PublishSnippet: React.FC = () => {
 
           {/* Visibility */}
           <Field>
-            <FieldLabel className="text-xs text-muted-foreground">Visibility</FieldLabel>
-            <Select value={visibility} onValueChange={(v) => v && dispatch({ visibility: v as Visibility })}>
-              <SelectTrigger>
-                <span className="flex items-center gap-2">
-                  <span className={cn("flex size-5 items-center justify-center rounded-md", currentVisibility.bg)}>
-                    <Icon icon={currentVisibility.icon} className={cn("size-3", currentVisibility.color)} />
-                  </span>
-                  {currentVisibility.label}
-                </span>
-              </SelectTrigger>
-              <SelectPopup>
-                {Object.entries(visibilityConfig).map(([value, config]) => (
-                  <SelectItem key={value} value={value}>
-                    <span className="flex items-center gap-2.5">
-                      <span className={cn("flex size-6 shrink-0 items-center justify-center rounded-md", config.bg)}>
-                        <Icon icon={config.icon} className={cn("size-3.5", config.color)} />
-                      </span>
-                      <span className="flex flex-col">
-                        <span className="text-sm font-medium leading-none">{config.label}</span>
-                        <span className="text-xs text-muted-foreground mt-0.5">{config.sub}</span>
-                      </span>
-                    </span>
-                  </SelectItem>
-                ))}
-              </SelectPopup>
-            </Select>
+            <FieldLabel className="text-muted-foreground text-xs">Visibility</FieldLabel>
+            <VisibilitySelect />
           </Field>
 
           {/* Passcode field */}
@@ -288,7 +266,7 @@ const PublishSnippet: React.FC = () => {
                 style={{ overflow: "hidden" }}
               >
                 <Field className="items-center rounded-xl border border-border bg-muted/50 p-6">
-                  <FieldLabel className="text-xs text-muted-foreground">Set a 6-digit passcode</FieldLabel>
+                  <FieldLabel className="text-muted-foreground text-xs">Set a 6-digit passcode</FieldLabel>
                   <OTPField
                     size="lg"
                     value={passcode}

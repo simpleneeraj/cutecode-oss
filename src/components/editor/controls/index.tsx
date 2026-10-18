@@ -1,34 +1,59 @@
 "use client";
 
-import React from "react";
-import View from "@/components/view";
+import { motion } from "motion/react";
+import { useAtomValue } from "jotai";
+import { tv } from "tailwind-variants";
+import { SquareSquareIcon } from "@hugeicons/core-free-icons";
+import { Separator } from "@/components/ui/separator";
+import { elementPaddingAtom } from "@/store/editor/editor";
+import { usePlanStyleGuard } from "@/hooks/use-plan-style-guard";
 import ThemeControl from "./themes";
 import PaddingControl from "./padding";
 import LanguageControl from "./language";
 import OptionsControl from "./options";
 import FontFaceControl from "./font-face";
-import SliderControl from "./slide-control";
-import { Card, CardPanel } from "@/components/ui/card";
+import CanvasSizePopover from "./canvas-size/canvas-size-popover";
+import DockPopover from "./dock-popover";
+import TypingPopover from "./typing-popover";
 
-const Controls: React.FC = () => {
+const entrance = { type: "spring", stiffness: 380, damping: 32, delay: 0.1 } as const;
+
+const dock = tv({
+  slots: {
+    root: "relative z-10 flex shrink-0 flex-col items-center gap-2 pt-2 sm:px-3 sm:pb-4",
+    bar: [
+      "scrollbar-hide w-full overflow-x-auto overscroll-x-contain border-t bg-background/70 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl",
+      "sm:w-auto sm:max-w-full sm:rounded-2xl sm:border sm:border-border/60 sm:bg-popover/90 sm:pb-0 sm:shadow-lg",
+    ],
+    track: "flex h-14 w-max min-w-full items-center justify-evenly gap-1 px-2 sm:h-auto sm:min-w-0 sm:justify-start sm:p-1.5",
+    divider: "mx-1 h-5 w-px bg-border",
+  },
+});
+
+const { root, bar, track, divider } = dock();
+
+export default function Controls() {
+  const padding = useAtomValue(elementPaddingAtom);
+  usePlanStyleGuard();
+
   return (
-    <div className="flex flex-col gap-2 fixed bottom-4 left-1/2 -translate-x-1/2 w-[calc(100vw-2rem)] sm:w-auto">
-      <View className="flex items-center justify-center">
-        <SliderControl />
-      </View>
-      <div className="relative">
-        <Card className="w-full bg-card/75 backdrop-blur-3xl relative">
-          <CardPanel className="flex flex-row gap-3 p-3 overflow-x-auto">
-            <ThemeControl />
+    <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={entrance} className={root()}>
+      <div role="group" aria-label="Editor controls" className={bar()}>
+        <div className={track()}>
+          <ThemeControl />
+          <FontFaceControl />
+          <Separator orientation="vertical" className={divider()} />
+          <LanguageControl />
+          <Separator orientation="vertical" className={divider()} />
+          <DockPopover label="Padding" icon={SquareSquareIcon} caption={String(padding).replace("px", "")}>
             <PaddingControl />
-            <LanguageControl />
-            <FontFaceControl />
-            <OptionsControl />
-          </CardPanel>
-        </Card>
+          </DockPopover>
+          <CanvasSizePopover />
+          <Separator orientation="vertical" className={divider()} />
+          <TypingPopover />
+          <OptionsControl />
+        </div>
       </div>
-    </div>
+    </motion.div>
   );
-};
-
-export default Controls;
+}

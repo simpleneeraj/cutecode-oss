@@ -1,0 +1,53 @@
+import { Theme, BadgeVariant } from "@/typings/editor";
+import { convertToShikiTheme } from "../themes/shared";
+
+export const carbonNight: Theme = {
+  id: "carbon-night",
+  name: "Carbon Night",
+  background: {
+    from: "#4F6378",
+    to: "#1F2329",
+  },
+  group: "Classic",
+  tags: [BadgeVariant.NEW],
+  syntax: {
+    light: convertToShikiTheme({
+      foreground: "#383B42",
+      constant: "#9A6100",
+      string: "#4C8A3E",
+      comment: "#9B9EA6",
+      keyword: "#A43CB5",
+      parameter: "#C2453A",
+      function: "#3A6FD9",
+      stringExpression: "#4C8A3E",
+      punctuation: "#5A5D66",
+      link: "#0E85A3",
+      number: "#9A6100",
+      property: "#C2453A",
+      highlight: "rgba(164,60,181,0.1)",
+      highlightBorder: "#A43CB5",
+      highlightHover: "rgba(164,60,181,0.05)",
+      diffInserted: "#4C8A3E",
+      diffDeleted: "#D04A3E",
+    }),
+    dark: convertToShikiTheme({
+      foreground: "#B9C0CC",
+      constant: "#D9A066",
+      string: "#9CC57A",
+      comment: "#626A78",
+      keyword: "#C786E0",
+      parameter: "#E5787F",
+      function: "#66AEF2",
+      stringExpression: "#9CC57A",
+      punctuation: "#A0A7B4",
+      link: "#5CBFCC",
+      number: "#D9A066",
+      property: "#E5787F",
+      highlight: "rgba(199,134,224,0.14)",
+      highlightBorder: "#C786E0",
+      highlightHover: "rgba(199,134,224,0.09)",
+      diffInserted: "#9CC57A",
+      diffDeleted: "#E5787F",
+    }),
+  },
+};

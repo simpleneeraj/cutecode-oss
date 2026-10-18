@@ -1,124 +1,82 @@
+import { motion, easeInOut } from "motion/react";
 import { Icon } from "@/components/ui/icon";
 import { BaseFrameProps } from "@/typings/presets";
+import { SceneFrame, useLoop } from "../scene";
+import styles from "./retro-mac.module.css";
 
-const RetroMacFrame = ({
-  padding,
-  darkMode,
-  transparent,
-  fileName,
-  themeBackground,
-  backgroundImage,
-  onFileNameChange,
-  children,
-}: BaseFrameProps) => {
-  const cardBg = darkMode ? "#2A1E12" : "#D4AE80";
-  const cardBorder = darkMode ? "#1A110A" : "#B8956A";
-  const titleBarBorder = darkMode ? "rgba(255,255,255,0.07)" : "rgba(90,55,20,0.25)";
-  const appleColor = darkMode ? "#C4905A" : "#2C1A0C";
-  const titleColor = darkMode ? "#C4A070" : "#4A3018";
-  const heartColor = darkMode ? "#C07840" : "#A86030";
+const PIXELS = Array.from({ length: 14 }, (_, index) => ({
+  id: `pixel-${index}`,
+  x: (index * 47 + 5) % 96,
+  y: (index * 31 + 7) % 92,
+  size: 4 + (index % 3) * 2,
+  phase: ((index * 5) % 14) / 14,
+}));
+
+const BADGES = [
+  { id: "heart-top-left", icon: "solar:heart-bold", x: 7, y: 11, size: 18 },
+  { id: "star-top-right", icon: "solar:stars-minimalistic-bold", x: 89, y: 9, size: 16 },
+  { id: "moon-bottom-right", icon: "solar:moon-stars-bold", x: 86, y: 84, size: 18 },
+  { id: "code-bottom-left", icon: "solar:code-square-bold", x: 9, y: 86, size: 17 },
+];
+
+type Pixel = (typeof PIXELS)[number];
+type Badge = (typeof BADGES)[number];
+
+function BlinkingPixel({ pixel }: { pixel: Pixel }) {
+  const opacity = useLoop([0, 0, 1, 1, 0, 0], { cycles: 2, phase: pixel.phase });
 
   return (
-    <div
-      className="relative transition-[padding] duration-200"
-      style={{
-        padding,
-        backgroundImage: !transparent ? themeBackground : undefined,
-        backgroundSize: backgroundImage ? "cover" : undefined,
-        backgroundPosition: backgroundImage ? "center" : undefined,
-      }}
-    >
-      {/* Transparent checker pattern */}
-      {transparent && (
-        <div
-          data-ignore-in-export
-          className="absolute inset-0 -z-10"
-          style={{
-            backgroundImage: `
-              linear-gradient(45deg, #1d1d1d 25%, transparent 0),
-              linear-gradient(-45deg, #1d1d1d 25%, transparent 0),
-              linear-gradient(45deg, transparent 75%, #1d1d1d 0),
-              linear-gradient(-45deg, transparent 75%, #1d1d1d 0)
-            `,
-            backgroundSize: "20px 20px",
-            backgroundPosition: "0 0, 0 10px, 10px -10px, -10px 0",
-          }}
-        />
-      )}
+    <motion.span
+      className={styles.pixel}
+      style={{ left: `${pixel.x}%`, top: `${pixel.y}%`, width: pixel.size, height: pixel.size, opacity }}
+    />
+  );
+}
 
-      {/* The single parchment card */}
-      <div
-        className="relative flex min-h-[100px] flex-col overflow-hidden rounded-[10px]"
-        style={{
-          backgroundColor: cardBg,
-          boxShadow: !transparent
-            ? `0 0 0 1.5px ${cardBorder}, 0 20px 60px rgba(0,0,0,0.5), 0 8px 20px rgba(0,0,0,0.35)`
-            : `0 0 0 1.5px ${cardBorder}`,
-        }}
-      >
-        {/* Subtle paper grain overlay */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 z-10 rounded-[10px]"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E")`,
-          }}
-        />
+function BobbingBadge({ badge, index }: { badge: Badge; index: number }) {
+  const y = useLoop([0, 0, -6, -6, 0, 0], { cycles: 2, phase: index / BADGES.length });
 
-        {/* Title bar — Apple left, title center */}
-        <div
-          className="relative z-20 flex h-[38px] items-center px-4"
-          style={{ borderBottom: `1px solid ${titleBarBorder}` }}
-        >
-          {/* Apple logo — top left */}
-          <div className="flex items-center">
-            <Icon icon="mingcute:apple-fill" style={{ fill: appleColor }} className="size-5" />
-          </div>
+  return (
+    <motion.span className={styles.badge} style={{ left: `${badge.x}%`, top: `${badge.y}%`, y }}>
+      <Icon icon={badge.icon} width={badge.size} height={badge.size} />
+    </motion.span>
+  );
+}
 
-          {/* Filename — center */}
-          <div className="relative flex flex-1 items-center justify-center">
-            <input
-              type="text"
-              value={fileName}
-              onChange={(e) => onFileNameChange(e.target.value)}
-              spellCheck={false}
-              tabIndex={-1}
-              className="border-none bg-transparent text-center text-[12.5px] font-semibold tracking-[0.15px] outline-none"
-              style={{
-                color: titleColor,
-                fontFamily: "'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif",
-              }}
-            />
-            {fileName.length === 0 && (
-              <span
-                data-ignore-in-export
-                className="pointer-events-none absolute text-[12.5px] font-semibold tracking-[0.15px] opacity-60"
-                style={{
-                  color: titleColor,
-                  fontFamily: "'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif",
-                }}
-              >
-                Dream.swift
-              </span>
-            )}
-          </div>
+function RetroMacScene() {
+  const patternX = useLoop([0, 16], { cycles: 2 });
+  const patternY = useLoop([0, 16], { cycles: 2 });
+  const scanY = useLoop(["-10cqh", "110cqh"]);
+  const glowScale = useLoop([1, 1.08, 1], { ease: easeInOut });
 
-          {/* Right spacer */}
-          <div className="w-[60px]" />
-        </div>
-
-        {/* Code area */}
-        <div className="relative z-20 flex-1 pb-8">
-          {children}
-
-          {/* Pixel heart — bottom right like image 2 */}
-          <div className="absolute bottom-4 right-4" style={{ color: heartColor }}>
-            <Icon icon="pixelarticons:heart" />
-          </div>
-        </div>
-      </div>
+  return (
+    <div className={styles.layer} aria-hidden>
+      <motion.div className={styles.pattern} style={{ x: patternX, y: patternY }} />
+      <motion.div className={styles.glow} style={{ scale: glowScale }} />
+      <motion.div className={styles.scanline} style={{ y: scanY }} />
+      {PIXELS.map((pixel) => (
+        <BlinkingPixel key={pixel.id} pixel={pixel} />
+      ))}
+      {BADGES.map((badge, index) => (
+        <BobbingBadge key={badge.id} badge={badge} index={index} />
+      ))}
     </div>
   );
-};
+}
 
-export default RetroMacFrame;
+function RainbowStripe() {
+  const x = useLoop(["-100%", "300%", "300%"]);
+
+  return (
+    <div className={styles.rainbow} aria-hidden>
+      <motion.div className={styles.shine} style={{ x }} />
+    </div>
+  );
+}
+
+const background = <RetroMacScene />;
+const accent = <RainbowStripe />;
+
+export default function RetroMacFrame(props: BaseFrameProps) {
+  return <SceneFrame {...props} themeStyles={styles} background={background} accent={accent} />;
+}

@@ -1,4 +1,4 @@
-import { Theme, IconType } from "@/typings/editor";
+import { Theme } from "@/typings/editor";
 import { convertToShikiTheme } from "../themes/shared";
 
 export const meadow: Theme = {
@@ -8,7 +8,7 @@ export const meadow: Theme = {
     from: "#59D499",
     to: "#A0872D",
   },
-  group: "Defaults",
+  group: "Classic",
   syntax: {
     light: convertToShikiTheme({
       foreground: "#54594D",
@@ -23,6 +23,9 @@ export const meadow: Theme = {
       link: "#049649",
       number: "#2C8801",
       property: "#B6781B",
+      highlight: "rgba(4,150,73,0.1)",
+      highlightBorder: "#049649",
+      highlightHover: "rgba(4,150,73,0.05)",
       diffInserted: "#049649",
       diffDeleted: "#B6781B",
     }),
@@ -39,6 +42,9 @@ export const meadow: Theme = {
       link: "#6DD79F",
       number: "#46B114",
       property: "#E4B165",
+      highlight: "rgba(109,215,159,0.14)",
+      highlightBorder: "#6DD79F",
+      highlightHover: "rgba(109,215,159,0.09)",
       diffInserted: "#B3D767",
       diffDeleted: "#E4B165",
     }),

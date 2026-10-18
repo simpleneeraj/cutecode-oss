@@ -8,11 +8,8 @@ export const starryNight: Theme = {
     from: "#060818",
     to: "#0d1b3e",
   },
-  icon: {
-    type: IconType.ICONIFY,
-    source: "fluent-emoji:star",
-  },
-  group: "Aesthetic",
+  icon: { type: IconType.IMAGE, source: "/editor/assets/starry-night/glyph.svg" },
+  group: "Night",
   font: "jetbrains-mono",
   tags: [BadgeVariant.NEW, BadgeVariant.PREMIUM],
   syntax: {

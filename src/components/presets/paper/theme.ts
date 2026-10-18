@@ -1,0 +1,53 @@
+import { Theme, BadgeVariant } from "@/typings/editor";
+import { convertToShikiTheme } from "../themes/shared";
+
+export const paper: Theme = {
+  id: "paper",
+  name: "Paper",
+  background: {
+    from: "#FFFFFF",
+    to: "#DCE3EA",
+  },
+  group: "Classic",
+  tags: [BadgeVariant.NEW],
+  syntax: {
+    light: convertToShikiTheme({
+      foreground: "#1F2328",
+      constant: "#0A55B8",
+      string: "#0B3A73",
+      comment: "#6A737D",
+      keyword: "#C8283A",
+      parameter: "#A64C0E",
+      function: "#7034C4",
+      stringExpression: "#0B3A73",
+      punctuation: "#1F2328",
+      link: "#0A55B8",
+      number: "#0A55B8",
+      property: "#0A55B8",
+      highlight: "rgba(200,40,58,0.1)",
+      highlightBorder: "#C8283A",
+      highlightHover: "rgba(200,40,58,0.05)",
+      diffInserted: "#196B2F",
+      diffDeleted: "#B31D28",
+    }),
+    dark: convertToShikiTheme({
+      foreground: "#E4E8EE",
+      constant: "#7DB8FA",
+      string: "#A8CFFA",
+      comment: "#8A939E",
+      keyword: "#F57A82",
+      parameter: "#F5A660",
+      function: "#CDA6F7",
+      stringExpression: "#A8CFFA",
+      punctuation: "#E4E8EE",
+      link: "#7DB8FA",
+      number: "#7DB8FA",
+      property: "#7DB8FA",
+      highlight: "rgba(245,122,130,0.14)",
+      highlightBorder: "#F57A82",
+      highlightHover: "rgba(245,122,130,0.09)",
+      diffInserted: "#6FD685",
+      diffDeleted: "#F57A82",
+    }),
+  },
+};

@@ -1,5 +1,10 @@
 import { atom } from "jotai";
-import { currentElementAtom } from "./selection";
+import {
+  elementDarkModeAtom,
+  elementFileNameAtom,
+  elementPaddingAtom,
+  elementTransparentAtom,
+} from "./selectors";
 import { themeBackgroundAtom } from "./theme";
 import { selectedLanguageAtom } from "./language";
 import { windowWidthAtom, exportSizeAtom } from "./ui";
@@ -14,29 +19,14 @@ import { backgroundImageAtom } from "./slides";
  *   const frame = useAtomValue(presetsAtom);
  *   const updateElement = useSetAtom(updateSlideElementAtom); // write-only, stays separate
  */
-export const presetsAtom = atom((get) => {
-  const el = get(currentElementAtom);
-
-  return {
-    // Element-derived
-    padding: el?.style?.padding ?? "16px",
-    darkMode: el?.properties?.darkMode ?? false,
-    transparent: el?.properties?.transparent ?? false,
-    fileName: el?.header?.properties?.title?.text ?? "",
-    code: el?.content as string,
-
-    // Theme slice
-    themeBackground: get(themeBackgroundAtom),
-
-    // Background image (overrides theme gradient when set)
-    backgroundImage: get(backgroundImageAtom),
-
-    // Language slice
-    selectedLanguage: get(selectedLanguageAtom) ?? null,
-
-    // UI slice
-    windowWidth: get(windowWidthAtom),
-    exportSize: get(exportSizeAtom),
-
-  };
-});
+export const presetsAtom = atom((get) => ({
+  padding: get(elementPaddingAtom),
+  darkMode: get(elementDarkModeAtom),
+  transparent: get(elementTransparentAtom),
+  fileName: get(elementFileNameAtom),
+  themeBackground: get(themeBackgroundAtom),
+  backgroundImage: get(backgroundImageAtom),
+  selectedLanguage: get(selectedLanguageAtom) ?? null,
+  windowWidth: get(windowWidthAtom),
+  exportSize: get(exportSizeAtom),
+}));

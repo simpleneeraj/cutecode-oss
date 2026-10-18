@@ -1,4 +1,4 @@
-import { Theme, IconType } from "@/typings/editor";
+import { Theme } from "@/typings/editor";
 import { convertToShikiTheme } from "../themes/shared";
 
 export const noir: Theme = {
@@ -8,7 +8,7 @@ export const noir: Theme = {
     from: "#B1B1B1",
     to: "#181818",
   },
-  group: "Defaults",
+  group: "Classic",
   syntax: {
     light: convertToShikiTheme({
       foreground: "#111111",
@@ -23,6 +23,9 @@ export const noir: Theme = {
       link: "#666666",
       number: "#111111",
       property: "#666666",
+      highlight: "rgba(102,102,102,0.1)",
+      highlightBorder: "#666666",
+      highlightHover: "rgba(102,102,102,0.05)",
       diffInserted: "#666666",
       diffDeleted: "#666666",
     }),
@@ -39,6 +42,9 @@ export const noir: Theme = {
       link: "#a7a7a7",
       number: "#ffffff",
       property: "#a7a7a7",
+      highlight: "rgba(167,167,167,0.14)",
+      highlightBorder: "#a7a7a7",
+      highlightHover: "rgba(167,167,167,0.09)",
       diffInserted: "#a7a7a7",
       diffDeleted: "#a7a7a7",
     }),

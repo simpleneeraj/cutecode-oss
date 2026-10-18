@@ -1,4 +1,4 @@
-import { Theme, IconType } from "@/typings/editor";
+import { Theme } from "@/typings/editor";
 import { convertToShikiTheme } from "../themes/shared";
 
 export const midnight: Theme = {
@@ -8,7 +8,7 @@ export const midnight: Theme = {
     from: "#4CC8C8",
     to: "#202033",
   },
-  group: "Defaults",
+  group: "Classic",
   syntax: {
     light: convertToShikiTheme({
       foreground: "#434447",
@@ -23,6 +23,9 @@ export const midnight: Theme = {
       link: "#5A797A",
       number: "#2D8264",
       property: "#766599",
+      highlight: "rgba(88,118,120,0.1)",
+      highlightBorder: "#587678",
+      highlightHover: "rgba(88,118,120,0.05)",
       diffInserted: "#2D8264",
       diffDeleted: "#766599",
     }),
@@ -39,6 +42,9 @@ export const midnight: Theme = {
       link: "#7DA9AB",
       number: "#75D2B1",
       property: "#9681C2",
+      highlight: "rgba(125,169,171,0.14)",
+      highlightBorder: "#7DA9AB",
+      highlightHover: "rgba(125,169,171,0.09)",
       diffInserted: "#75D2B1",
       diffDeleted: "#9681C2",
     }),

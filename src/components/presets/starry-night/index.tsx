@@ -1,100 +1,113 @@
-import { motion } from "framer-motion";
+import { motion, easeInOut } from "motion/react";
 import { Icon } from "@/components/ui/icon";
-import styles from "./starry-night.module.css";
 import { BaseFrameProps } from "@/typings/presets";
+import { SceneFrame, useLoop } from "../scene";
+import styles from "./starry-night.module.css";
 
-/*
-  Starry Night
-  Palette: deep navy · cosmic blue · gold · nebula violet
-  Vibe: infinite cosmos, deep-space wonder
-*/
-
-const STARS = Array.from({ length: 55 }, (_, i) => ({
-  id: i,
-  left: `${(i * 37 + 13) % 100}%`,
-  top: `${(i * 29 + 7) % 100}%`,
-  size: 1 + ((i * 3) % 3),
-  dur: 2 + ((i * 7) % 5),
-  delay: -((i * 11) % 8),
-  color: (["#e8f4fd", "#fbbf24", "#a78bfa", "#60a5fa"] as const)[i % 4],
+const STARS = Array.from({ length: 40 }, (_, index) => ({
+  left: `${(index * 37 + 13) % 100}%`,
+  top: `${(index * 29 + 7) % 100}%`,
+  size: 1 + ((index * 3) % 3),
+  cycles: 1 + (index % 3),
+  phase: ((index * 11) % 40) / 40,
 }));
 
-export default function StarryNightFrame({ padding, darkMode, transparent, children }: BaseFrameProps) {
+const SHOOTING_STARS = [
+  { top: "12%", left: "8%", phase: 0 },
+  { top: "34%", left: "46%", phase: 0.5 },
+];
+
+const CONSTELLATION = [
+  [8, 34],
+  [26, 22],
+  [44, 30],
+  [58, 12],
+  [78, 20],
+];
+
+const CONSTELLATION_PATH = CONSTELLATION.map(([x, y], index) => `${index === 0 ? "M" : "L"}${x} ${y}`).join(" ");
+
+type Star = (typeof STARS)[number];
+type ShootingStar = (typeof SHOOTING_STARS)[number];
+
+function TwinklingStar({ star }: { star: Star }) {
+  const options = { cycles: star.cycles, phase: star.phase, ease: easeInOut };
+  const opacity = useLoop([0.15, 1, 0.15], options);
+  const scale = useLoop([0.8, 1.25, 0.8], options);
+
   return (
-    <div
-      className={[styles.scene, darkMode ? styles.dark : styles.light, transparent ? styles.transparent : ""].join(" ")}
-      style={{ padding }}
-    >
-      {/* ── Nebula blobs ── */}
-      <div className={styles.blobA} aria-hidden />
-      <div className={styles.blobB} aria-hidden />
-      <div className={styles.blobC} aria-hidden />
+    <motion.span
+      className={styles.star}
+      style={{ left: star.left, top: star.top, width: star.size, height: star.size, opacity, scale }}
+    />
+  );
+}
 
-      {/* ── Twinkling stars ── */}
-      <div className={styles.starLayer} aria-hidden>
-        {STARS.map((s) => (
-          <motion.div
-            key={s.id}
-            style={{
-              position: "absolute",
-              left: s.left,
-              top: s.top,
-              width: s.size,
-              height: s.size,
-              borderRadius: "50%",
-              background: s.color,
-              boxShadow: `0 0 ${s.size * 2}px ${s.color}`,
-            }}
-            animate={{ opacity: [0.1, 1, 0.1], scale: [0.8, 1.2, 0.8] }}
-            transition={{ duration: s.dur, delay: s.delay, repeat: Infinity, ease: "easeInOut" }}
-          />
-        ))}
-      </div>
+function Meteor({ meteor }: { meteor: ShootingStar }) {
+  const x = useLoop([0, 130, 260, 260, 260, 260, 0], { phase: meteor.phase });
+  const opacity = useLoop([0, 1, 0, 0, 0, 0, 0], { phase: meteor.phase });
 
-      {/* ── Shooting star ── */}
-      <div className={styles.shootingLayer} aria-hidden>
-        <motion.div
-          className={styles.shootingStar}
-          initial={{ x: -80, opacity: 0 }}
-          animate={{ x: [-80, 900], opacity: [0, 1, 1, 0] }}
-          transition={{ duration: 1.8, repeat: Infinity, repeatDelay: 8, ease: "easeIn" }}
-        />
-      </div>
+  return <motion.div className={styles.meteor} style={{ top: meteor.top, left: meteor.left, x, opacity }} />;
+}
 
-      {/* ── Window ── */}
-      <motion.div
-        className={styles.window}
-        initial={{ opacity: 0, y: 20, scale: 0.97 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      >
-        {/* Sweeping top edge */}
-        <div className={styles.topEdge} aria-hidden>
-          <motion.div
-            className={styles.topEdgeSweep}
-            animate={{ x: ["-100%", "300%"] }}
-            transition={{ duration: 5, repeat: Infinity, ease: "linear", repeatDelay: 2 }}
-          />
-        </div>
+function Constellation() {
+  const pathLength = useLoop([0, 1, 1, 0], { ease: easeInOut });
 
-        <div className={styles.header}>
-          <div className={styles.dots}>
-            <span className={`${styles.dot} ${styles.dotA}`} />
-            <span className={`${styles.dot} ${styles.dotB}`} />
-            <span className={`${styles.dot} ${styles.dotC}`} />
-          </div>
-          <div className={styles.headerCenter}>
-            <Icon icon="fluent-emoji:star" width={18} height={18} />
-            <span className={styles.headerLabel}>starry-night</span>
-          </div>
-          <div className={styles.headerRight}>
-            <Icon icon="fluent-emoji:sparkles" width={16} height={16} />
-          </div>
-        </div>
+  return (
+    <svg className={styles.constellation} viewBox="0 0 86 40" fill="none">
+      <motion.path d={CONSTELLATION_PATH} style={{ pathLength }} />
+      {CONSTELLATION.map(([x, y]) => (
+        <circle key={`${x}-${y}`} cx={x} cy={y} r={1.6} />
+      ))}
+    </svg>
+  );
+}
 
-        <div className={styles.headerRule} aria-hidden />
-        <div className={styles.editor}>{children}</div>
-      </motion.div>
+function Moon() {
+  const y = useLoop([0, -6, 0], { ease: easeInOut });
+  const glowScale = useLoop([1, 1.12, 1], { ease: easeInOut });
+
+  return (
+    <motion.div className={styles.moon} style={{ y }}>
+      <motion.span className={styles.moonGlow} style={{ scale: glowScale }} />
+      <Icon icon="solar:moon-stars-bold-duotone" className="size-6.5" />
+    </motion.div>
+  );
+}
+
+function StarryNightScene() {
+  const driftX = useLoop([0, 30, 0], { ease: easeInOut });
+  const driftY = useLoop([0, -20, 0], { ease: easeInOut, phase: 0.25 });
+
+  return (
+    <div className={styles.layer} aria-hidden>
+      <motion.div className={styles.nebulaA} style={{ x: driftX, y: driftY }} />
+      <motion.div className={styles.nebulaB} style={{ x: driftY, y: driftX }} />
+      {STARS.map((star, index) => (
+        <TwinklingStar key={index} star={star} />
+      ))}
+      {SHOOTING_STARS.map((meteor, index) => (
+        <Meteor key={index} meteor={meteor} />
+      ))}
+      <Constellation />
+      <Moon />
     </div>
   );
+}
+
+function TopEdgeSweep() {
+  const x = useLoop(["-100%", "300%", "300%"]);
+
+  return (
+    <div className={styles.topEdge} aria-hidden>
+      <motion.div className={styles.sweep} style={{ x }} />
+    </div>
+  );
+}
+
+const background = <StarryNightScene />;
+const accent = <TopEdgeSweep />;
+
+export default function StarryNightFrame(props: BaseFrameProps) {
+  return <SceneFrame {...props} themeStyles={styles} background={background} accent={accent} />;
 }

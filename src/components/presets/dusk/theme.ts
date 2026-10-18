@@ -1,0 +1,53 @@
+import { Theme, BadgeVariant } from "@/typings/editor";
+import { convertToShikiTheme } from "../themes/shared";
+
+export const dusk: Theme = {
+  id: "dusk",
+  name: "Dusk",
+  background: {
+    from: "#7A5CD6",
+    to: "#1E1B2B",
+  },
+  group: "Classic",
+  tags: [BadgeVariant.NEW],
+  syntax: {
+    light: convertToShikiTheme({
+      foreground: "#2E2A3D",
+      constant: "#6A3FC9",
+      string: "#7C7A0E",
+      comment: "#7A7F9A",
+      keyword: "#C2257F",
+      parameter: "#B35A12",
+      function: "#13844A",
+      stringExpression: "#7C7A0E",
+      punctuation: "#C2257F",
+      link: "#127C93",
+      number: "#6A3FC9",
+      property: "#127C93",
+      highlight: "rgba(194,37,127,0.1)",
+      highlightBorder: "#C2257F",
+      highlightHover: "rgba(194,37,127,0.05)",
+      diffInserted: "#13844A",
+      diffDeleted: "#D6334A",
+    }),
+    dark: convertToShikiTheme({
+      foreground: "#F4F2FA",
+      constant: "#BFA0FF",
+      string: "#EEF290",
+      comment: "#7480AE",
+      keyword: "#FF7DC4",
+      parameter: "#FFB877",
+      function: "#5FF29C",
+      stringExpression: "#EEF290",
+      punctuation: "#FF7DC4",
+      link: "#88E3F5",
+      number: "#BFA0FF",
+      property: "#88E3F5",
+      highlight: "rgba(255,125,196,0.14)",
+      highlightBorder: "#FF7DC4",
+      highlightHover: "rgba(255,125,196,0.09)",
+      diffInserted: "#5FF29C",
+      diffDeleted: "#FF6670",
+    }),
+  },
+};

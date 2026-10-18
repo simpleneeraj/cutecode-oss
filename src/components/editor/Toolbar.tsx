@@ -1,10 +1,9 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { AltArrowLeft, AltArrowRight, Copy, AddSquare, TrashBinTrash } from "@solar-icons/react";
-import { Toolbar, ToolbarButton, ToolbarGroup } from "@/components/ui/toolbar";
-import { Tooltip, TooltipPopup, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useAtomValue, useSetAtom } from "jotai";
+import { ArrowLeft01Icon, ArrowRight01Icon, Copy01Icon, AddSquareIcon, Delete02Icon } from "@hugeicons/core-free-icons";
+import { Toolbar, ToolbarGroup, ToolbarSeparator } from "@/components/ui/toolbar";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import {
   createSlideAtom,
   currentSlideIdAtom,
@@ -13,201 +12,62 @@ import {
   selectSlideAtom,
   slidesAtom,
 } from "@/store/editor/editor";
-import { Separator } from "../ui/separator";
 import useHotkeys from "@/utils/useHotkeys";
-import { Kbd, KbdGroup } from "../ui/kbd";
-import View from "../view";
+import ToolbarAction from "./toolbar-action";
 
 export default function ToolbarParticle() {
   const slides = useAtomValue(slidesAtom);
-
+  const slideId = useAtomValue(currentSlideIdAtom);
   const createSlide = useSetAtom(createSlideAtom);
   const duplicateSlide = useSetAtom(duplicateSlideAtom);
   const deleteSlide = useSetAtom(deleteSlideAtom);
-
   const selectSlide = useSetAtom(selectSlideAtom);
-  const slideId = useAtomValue(currentSlideIdAtom);
 
-  const currentIndex = slides.findIndex((s) => s.id === slideId);
+  const currentIndex = slides.findIndex((slide) => slide.id === slideId);
+  const isFirst = currentIndex === 0;
+  const isLast = currentIndex === slides.length - 1;
+  const canDelete = slides.length > 1;
 
-  const onCreateSlide = () => {
-    createSlide({
-      id: crypto.randomUUID(),
-      name: "New Slide",
-      background: {},
-    });
+  const addSlide = () => {
+    createSlide({ id: crypto.randomUUID(), name: "New Slide", background: {} });
   };
 
   const previousSlide = () => {
-    if (currentIndex > 0) {
-      selectSlide(slides[currentIndex - 1].id);
-    }
+    if (!isFirst) selectSlide(slides[currentIndex - 1].id);
   };
 
   const nextSlide = () => {
-    if (currentIndex < slides.length - 1) {
-      selectSlide(slides[currentIndex + 1].id);
-    }
+    if (!isLast) selectSlide(slides[currentIndex + 1].id);
   };
 
-  /**
-   * Hotkeys
-   */
+  const removeSlide = () => {
+    if (canDelete) deleteSlide();
+  };
 
   useHotkeys("shift+left", previousSlide);
   useHotkeys("shift+right", nextSlide);
-
-  useHotkeys("a", onCreateSlide);
-
-  useHotkeys("d", duplicateSlide);
-
-  useHotkeys("shift+backspace", () => {
-    if (slides.length > 1) {
-      deleteSlide();
-    }
-  });
+  useHotkeys("a", addSlide);
+  useHotkeys("shift+d", duplicateSlide);
+  useHotkeys("shift+backspace", removeSlide);
 
   return (
     <TooltipProvider>
-      <Toolbar>
+      <Toolbar className="rounded-full bg-card/80 px-1.5 shadow-sm/5 backdrop-blur-xl">
         <ToolbarGroup>
-          {/* Previous Slide */}
-          <Tooltip>
-            <TooltipTrigger
-              render={
-                <ToolbarButton
-                  aria-label="Previous slide"
-                  render={
-                    <Button size="icon-sm" variant="ghost" onClick={previousSlide} disabled={currentIndex === 0} />
-                  }
-                >
-                  <AltArrowLeft weight="Linear" className="text-accent-foreground" aria-hidden="true" />
-                </ToolbarButton>
-              }
-            />
-
-            <TooltipPopup sideOffset={8}>
-              <View className="flex items-center gap-2">
-                Previous Slide
-                <KbdGroup>
-                  <Kbd>Shift</Kbd>
-                  <Kbd>←</Kbd>
-                </KbdGroup>
-              </View>
-            </TooltipPopup>
-          </Tooltip>
-
-          <Separator orientation="vertical" />
-
-          {/* Add Slide */}
-          <Tooltip>
-            <TooltipTrigger
-              render={
-                <ToolbarButton
-                  aria-label="Add slide"
-                  render={<Button size="icon-sm" variant="ghost" onClick={onCreateSlide} />}
-                >
-                  <AddSquare weight="Linear" className="text-accent-foreground" aria-hidden="true" />
-                </ToolbarButton>
-              }
-            />
-
-            <TooltipPopup sideOffset={8}>
-              <View className="flex items-center gap-2">
-                Add Slide
-                <KbdGroup>
-                  <Kbd>A</Kbd>
-                </KbdGroup>
-              </View>
-            </TooltipPopup>
-          </Tooltip>
-
-          {/* Duplicate Slide */}
-          <Tooltip>
-            <TooltipTrigger
-              render={
-                <ToolbarButton
-                  aria-label="Duplicate slide"
-                  render={<Button size="icon-sm" variant="ghost" onClick={duplicateSlide} />}
-                >
-                  <Copy weight="Linear" className="text-accent-foreground" aria-hidden="true" />
-                </ToolbarButton>
-              }
-            />
-
-            <TooltipPopup sideOffset={8}>
-              <View className="flex items-center gap-2">
-                Duplicate Slide
-                <KbdGroup>
-                  <Kbd>D</Kbd>
-                </KbdGroup>
-              </View>
-            </TooltipPopup>
-          </Tooltip>
-
-          {slides.length > 1 && (
-            <>
-              <Separator orientation="vertical" />
-
-              {/* Delete Slide */}
-              <Tooltip>
-                <TooltipTrigger
-                  render={
-                    <ToolbarButton
-                      aria-label="Delete slide"
-                      render={
-                        <Button size="icon-sm" variant="ghost" className="text-destructive" onClick={deleteSlide} />
-                      }
-                    >
-                      <TrashBinTrash weight="Linear" aria-hidden="true" />
-                    </ToolbarButton>
-                  }
-                />
-
-                <TooltipPopup sideOffset={8}>
-                  <View className="flex items-center gap-2">
-                    Delete Slide
-                    <KbdGroup>
-                      <Kbd>Delete</Kbd>
-                    </KbdGroup>
-                  </View>
-                </TooltipPopup>
-              </Tooltip>
-            </>
+          <ToolbarAction label="Previous slide" icon={ArrowLeft01Icon} keys={["Shift", "←"]} onClick={previousSlide} disabled={isFirst} />
+          {canDelete && (
+            <span className="px-1 text-xs text-muted-foreground tabular-nums select-none" aria-live="polite">
+              {currentIndex + 1}/{slides.length}
+            </span>
           )}
-
-          <Separator orientation="vertical" />
-
-          {/* Next Slide */}
-          <Tooltip>
-            <TooltipTrigger
-              render={
-                <ToolbarButton
-                  aria-label="Next slide"
-                  render={
-                    <Button
-                      size="icon-sm"
-                      variant="ghost"
-                      onClick={nextSlide}
-                      disabled={currentIndex === slides.length - 1}
-                    />
-                  }
-                >
-                  <AltArrowRight weight="Linear" className="text-accent-foreground" aria-hidden="true" />
-                </ToolbarButton>
-              }
-            />
-
-            <TooltipPopup sideOffset={8}>
-              <View className="flex items-center gap-2">
-                Next Slide
-                <KbdGroup>
-                  <Kbd>Shift</Kbd>
-                  <Kbd>→</Kbd>
-                </KbdGroup>
-              </View>
-            </TooltipPopup>
-          </Tooltip>
+          <ToolbarSeparator orientation="vertical" />
+          <ToolbarAction label="Add slide" icon={AddSquareIcon} keys={["A"]} onClick={addSlide} />
+          <ToolbarAction label="Duplicate slide" icon={Copy01Icon} keys={["⇧", "D"]} onClick={duplicateSlide} />
+          {canDelete && (
+            <ToolbarAction label="Delete slide" icon={Delete02Icon} keys={["Shift", "⌫"]} onClick={removeSlide} isDestructive />
+          )}
+          <ToolbarSeparator orientation="vertical" />
+          <ToolbarAction label="Next slide" icon={ArrowRight01Icon} keys={["Shift", "→"]} onClick={nextSlide} disabled={isLast} />
         </ToolbarGroup>
       </Toolbar>
     </TooltipProvider>

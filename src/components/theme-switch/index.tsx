@@ -3,7 +3,8 @@
 import { useTheme } from "next-themes";
 import { useId, useState } from "react";
 import { Button } from "../ui/button";
-import { Layers } from "@solar-icons/react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { LayersIcon } from "@hugeicons/core-free-icons";
 
 export default function ThemeSwitch() {
   const { theme, setTheme } = useTheme();
@@ -22,7 +23,7 @@ export default function ThemeSwitch() {
 
   return (
     <Button className="relative size-8" onClick={smartToggle} size="icon" title="Toggle theme" variant="outline">
-      <Layers weight="BoldDuotone" className="-rotate-45 size-4" aria-hidden="true" />
+      <HugeiconsIcon icon={LayersIcon} className="-rotate-45 size-4" aria-hidden="true" />
       <span className="sr-only">Toggle theme</span>
     </Button>
   );

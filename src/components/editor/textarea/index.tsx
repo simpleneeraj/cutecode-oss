@@ -11,6 +11,7 @@ import styles from "@/styles/editor/Editor.module.css";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import useHotkeys from "../../../utils/useHotkeys";
 import HighlightedCode from "./highlighted-code";
+import EditorCode from "./editor-code";
 
 import { LANGUAGES } from "../util/languages";
 import { themes } from "../../presets/themes";
@@ -279,6 +280,7 @@ function JotaiEditor() {
   const updateSlideElement = useSetAtom(updateSlideElementAtom);
 
   const [isHighlightingLines, setIsHighlightingLines] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [showLineNumbers] = useAtom(themeLineNumbersAtom);
   const numberOfLines = (code?.match(/\n/g) || []).length;
   const language = selectedLanguage?.name ?? "";
@@ -399,6 +401,7 @@ function JotaiEditor() {
   );
 
   const handleFocus = useCallback<FocusEventHandler>(() => {
+    setIsEditing(true);
     if (isCodeExample && textareaRef.current) {
       const textarea = textareaRef.current;
       setTimeout(() => textarea.select(), 1);
@@ -472,9 +475,10 @@ function JotaiEditor() {
         onChange={onChangeEditor}
         onKeyDown={handleKeyDown}
         onFocus={handleFocus}
+        onBlur={() => setIsEditing(false)}
         data-enable-grammarly="false"
       />
-      <HighlightedCode code={code} selectedLanguage={selectedLanguage!} />
+      <EditorCode code={code} language={selectedLanguage ?? null} isEditing={isEditing} />
     </div>
   );
 }

@@ -8,11 +8,8 @@ export const neonDreams: Theme = {
     from: "#0d0014",
     to: "#080008",
   },
-  icon: {
-    type: IconType.ICONIFY,
-    source: "fluent-emoji:dizzy",
-  },
-  group: "Aesthetic",
+  icon: { type: IconType.IMAGE, source: "/editor/assets/neon-dreams/glyph.svg" },
+  group: "Night",
   font: "fira-code",
   tags: [BadgeVariant.NEW, BadgeVariant.PREMIUM],
   syntax: {

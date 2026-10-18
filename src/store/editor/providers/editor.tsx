@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useState } from "react";
 import { createStore, Provider } from "jotai";
 
 type Props = {
@@ -8,6 +8,6 @@ type Props = {
 };
 
 export default function EditorProvider({ children }: Props) {
-  const store = useRef(createStore()).current;
+  const [store] = useState(createStore);
   return <Provider store={store}>{children}</Provider>;
 }

@@ -1,0 +1,279 @@
+.scene {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  isolation: isolate;
+}
+
+.dark {
+  background: radial-gradient(ellipse at 50% 30%, #3d2614 0%, #2a1a0e 55%, #1a0f08 100%);
+}
+
+.light {
+  background: radial-gradient(ellipse at 50% 30%, #fff6e6 0%, #fbecd2 55%, #f3d9ae 100%);
+}
+
+.transparent {
+  background: transparent;
+}
+
+.layer {
+  position: absolute;
+  overflow: hidden;
+  inset: 0;
+  pointer-events: none;
+  container-type: size;
+}
+
+.sunburst {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1400px;
+  height: 1400px;
+  border-radius: 50%;
+  margin: -760px 0 0 -700px;
+  mask-image: radial-gradient(circle, #000 0%, rgba(0, 0, 0, 0.6) 30%, transparent 60%);
+  will-change: transform;
+}
+
+.light .sunburst {
+  background: repeating-conic-gradient(rgba(232, 119, 46, 0.12) 0deg 7.5deg, transparent 7.5deg 15deg);
+}
+
+.dark .sunburst {
+  background: repeating-conic-gradient(rgba(245, 196, 81, 0.07) 0deg 7.5deg, transparent 7.5deg 15deg);
+}
+
+.sun {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  margin: -240px 0 0 -180px;
+  will-change: transform;
+}
+
+.light .sun {
+  background: radial-gradient(circle, rgba(245, 180, 60, 0.55) 0%, rgba(232, 119, 46, 0.18) 45%, transparent 70%);
+}
+
+.dark .sun {
+  background: radial-gradient(circle, rgba(245, 160, 50, 0.3) 0%, rgba(194, 80, 42, 0.1) 45%, transparent 70%);
+}
+
+.wave {
+  position: absolute;
+  left: -15%;
+  width: 130%;
+  will-change: transform;
+}
+
+.mustard {
+  bottom: 84px;
+  height: 90px;
+}
+
+.orange {
+  bottom: 56px;
+  height: 90px;
+}
+
+.rust {
+  bottom: 28px;
+  height: 90px;
+}
+
+.brown {
+  bottom: -6px;
+  height: 90px;
+}
+
+.crestOrange,
+.crestMustard {
+  height: 80px;
+  scale: 1 -1;
+}
+
+.crestOrange {
+  top: -8px;
+}
+
+.crestMustard {
+  top: 16px;
+}
+
+.light .mustard,
+.light .crestMustard {
+  fill: #e0a526;
+}
+
+.light .orange,
+.light .crestOrange {
+  fill: #e8772e;
+}
+
+.light .rust {
+  fill: #c2502a;
+}
+
+.light .brown {
+  fill: #7a4a2a;
+}
+
+.light .crestMustard {
+  opacity: 0.55;
+}
+
+.dark .mustard,
+.dark .crestMustard {
+  fill: #b7841c;
+}
+
+.dark .orange,
+.dark .crestOrange {
+  fill: #c4611f;
+}
+
+.dark .rust {
+  fill: #9a3d1e;
+}
+
+.dark .brown {
+  fill: #4e2d18;
+}
+
+.dark .wave {
+  opacity: 0.85;
+}
+
+.dark .crestMustard {
+  opacity: 0.45;
+}
+
+.window {
+  position: relative;
+  z-index: 10;
+  overflow: hidden;
+  border-radius: 22px;
+}
+
+.light .window {
+  background: #fffaf0;
+  box-shadow:
+    0 0 0 1px rgba(122, 74, 42, 0.14),
+    0 0 0 5px rgba(224, 165, 38, 0.22),
+    0 16px 44px rgba(122, 74, 42, 0.2);
+}
+
+.dark .window {
+  background: #1f140c;
+  box-shadow:
+    0 0 0 1px rgba(245, 196, 81, 0.14),
+    0 0 0 5px rgba(196, 97, 31, 0.18),
+    0 24px 70px rgba(0, 0, 0, 0.7);
+}
+
+.topEdge {
+  position: absolute;
+  z-index: 20;
+  top: 0;
+  right: 0;
+  left: 0;
+  overflow: hidden;
+  height: 4px;
+  background: linear-gradient(180deg, #e0a526 0 25%, #e8772e 25% 50%, #c2502a 50% 75%, #7a4a2a 75% 100%);
+}
+
+.sweep {
+  position: absolute;
+  width: 30%;
+  background: linear-gradient(90deg, transparent, rgba(255, 246, 230, 0.55), transparent);
+  inset-block: 0;
+}
+
+.header {
+  display: grid;
+  align-items: center;
+  padding: 14px 16px 11px;
+  grid-gap: 12px;
+  grid-template-columns: 60px 1fr 60px;
+}
+
+.light .header {
+  border-bottom: 1px solid rgba(122, 74, 42, 0.12);
+  background: #fdf1dc;
+}
+
+.dark .header {
+  border-bottom: 1px solid rgba(245, 196, 81, 0.1);
+  background: #2a1b10;
+}
+
+.dots {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.dot:nth-child(1) {
+  background: #c2502a;
+}
+
+.dot:nth-child(2) {
+  background: #e8772e;
+}
+
+.dot:nth-child(3) {
+  background: #e0a526;
+}
+
+.fileName {
+  position: relative;
+  display: flex;
+  height: 16px;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--code-font, "Geist Mono", "Courier New", monospace);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 12px;
+
+  > input {
+    position: absolute;
+    width: 100%;
+    border: none;
+    margin: 0;
+    background-color: transparent;
+    color: inherit;
+    font: inherit;
+    inset: 0;
+    letter-spacing: inherit;
+    text-align: center;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  > input:focus + span {
+    display: none;
+  }
+}
+
+.light .fileName {
+  color: #5a3518;
+}
+
+.dark .fileName {
+  color: #f2dcb8;
+}

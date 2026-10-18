@@ -16,6 +16,8 @@ export enum StoreKey {
   /* UI preferences */
   FRAME_WIDTH = "frame_width",
   EXPORT_SIZE = "size",
+  CANVAS_SIZE = "canvas_size",
+  VIDEO_LENGTH = "video_length",
 
   /* Themes */
   UNLOCKED_THEMES = "unlockedThemes",

@@ -1,0 +1,53 @@
+import { Theme, BadgeVariant } from "@/typings/editor";
+import { convertToShikiTheme } from "../themes/shared";
+
+export const ember: Theme = {
+  id: "ember",
+  name: "Ember",
+  background: {
+    from: "#D9893B",
+    to: "#2A2420",
+  },
+  group: "Classic",
+  tags: [BadgeVariant.NEW],
+  syntax: {
+    light: convertToShikiTheme({
+      foreground: "#3D352C",
+      constant: "#8C3F7D",
+      string: "#6E7A12",
+      comment: "#8F8270",
+      keyword: "#B5281F",
+      parameter: "#3E7A5A",
+      function: "#7A6512",
+      stringExpression: "#6E7A12",
+      punctuation: "#A8501A",
+      link: "#2F6C7A",
+      number: "#8C3F7D",
+      property: "#2F6C7A",
+      highlight: "rgba(181,40,31,0.1)",
+      highlightBorder: "#B5281F",
+      highlightHover: "rgba(181,40,31,0.05)",
+      diffInserted: "#6E7A12",
+      diffDeleted: "#B5281F",
+    }),
+    dark: convertToShikiTheme({
+      foreground: "#EADBB8",
+      constant: "#D69AB8",
+      string: "#BDC23A",
+      comment: "#94897A",
+      keyword: "#F2604E",
+      parameter: "#90C291",
+      function: "#F0C044",
+      stringExpression: "#BDC23A",
+      punctuation: "#F2903A",
+      link: "#86B5A5",
+      number: "#D69AB8",
+      property: "#86B5A5",
+      highlight: "rgba(242,96,78,0.14)",
+      highlightBorder: "#F2604E",
+      highlightHover: "rgba(242,96,78,0.09)",
+      diffInserted: "#BDC23A",
+      diffDeleted: "#F2604E",
+    }),
+  },
+};

@@ -8,11 +8,8 @@ export const retroMac: Theme = {
     from: "#2C2117",
     to: "#15100B",
   },
-  group: "Aesthetic",
-  icon: {
-    type: IconType.ICONIFY,
-    source: "emojione-v1:old-personal-computer",
-  },
+  group: "Retro",
+  icon: { type: IconType.IMAGE, source: "/editor/assets/retro-mac/glyph.svg" },
   tags: [BadgeVariant.PREMIUM],
   font: "fira-code",
   syntax: {

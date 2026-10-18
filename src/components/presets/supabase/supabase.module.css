@@ -1,0 +1,244 @@
+.scene {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  isolation: isolate;
+}
+
+.dark {
+  --emerald: #3ecf8e;
+  --grid-dot: rgba(255, 255, 255, 0.08);
+  --rail: rgba(62, 207, 142, 0.12);
+  --bloom: rgba(62, 207, 142, 0.22);
+  --node-fill: #121212;
+  background: radial-gradient(ellipse at 50% 100%, #0f2a1d 0%, #141414 45%, #0f0f0f 100%);
+}
+
+.light {
+  --emerald: #00a35c;
+  --grid-dot: rgba(0, 0, 0, 0.1);
+  --rail: rgba(0, 154, 85, 0.16);
+  --bloom: rgba(62, 207, 142, 0.28);
+  --node-fill: #fcfcfc;
+  background: radial-gradient(ellipse at 50% 100%, #e3f7ec 0%, #fcfcfc 50%, #f6f6f6 100%);
+}
+
+.transparent {
+  background: transparent;
+}
+
+.layer {
+  position: absolute;
+  overflow: hidden;
+  inset: 0;
+  pointer-events: none;
+}
+
+.dotGrid {
+  position: absolute;
+  background-image: radial-gradient(circle, var(--grid-dot) 1px, transparent 1.5px);
+  background-position: center;
+  background-size: 22px 22px;
+  inset: 0;
+  mask-image: radial-gradient(ellipse at 50% 50%, black 35%, transparent 85%);
+}
+
+.bloom {
+  position: absolute;
+  bottom: -260px;
+  left: 50%;
+  width: 720px;
+  height: 420px;
+  margin-left: -360px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, var(--bloom) 0%, transparent 70%);
+}
+
+.rail {
+  position: absolute;
+  right: 0;
+  left: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--rail) 12%, var(--rail) 88%, transparent);
+}
+
+.railVertical {
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  height: auto;
+  background: linear-gradient(180deg, transparent, var(--rail) 12%, var(--rail) 88%, transparent);
+}
+
+.runner {
+  position: absolute;
+  top: 0;
+  left: -72px;
+  width: calc(100% + 72px);
+  height: 1px;
+}
+
+.railVertical .runner {
+  top: -72px;
+  left: 0;
+  width: 1px;
+  height: calc(100% + 72px);
+}
+
+.packet {
+  position: absolute;
+  top: -0.5px;
+  left: 0;
+  width: 72px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, var(--emerald));
+  box-shadow: 0 0 10px rgba(62, 207, 142, 0.45);
+}
+
+.railVertical .packet {
+  top: 0;
+  left: -0.5px;
+  width: 2px;
+  height: 72px;
+  background: linear-gradient(180deg, transparent, var(--emerald));
+}
+
+.node {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border: 1.5px solid var(--emerald);
+  margin: -3.5px 0 0 -3.5px;
+  background: var(--node-fill);
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(62, 207, 142, 0.5);
+}
+
+.window {
+  --line-number: rgba(255, 255, 255, 0.22);
+  position: relative;
+  z-index: 10;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.dark .window {
+  background: #171717;
+  box-shadow:
+    0 0 0 1px #2e2e2e,
+    0 0 70px rgba(62, 207, 142, 0.07),
+    0 24px 64px rgba(0, 0, 0, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.light .window {
+  --line-number: rgba(0, 0, 0, 0.25);
+  background: #fff;
+  box-shadow:
+    0 0 0 1px #dfdfdf,
+    0 2px 4px rgba(0, 0, 0, 0.03),
+    0 18px 44px rgba(0, 110, 60, 0.1);
+}
+
+.topEdge {
+  position: absolute;
+  z-index: 20;
+  top: 0;
+  right: 0;
+  left: 0;
+  overflow: hidden;
+  height: 1px;
+}
+
+.sweep {
+  position: absolute;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, var(--emerald), transparent);
+  inset-block: 0;
+}
+
+.header {
+  display: grid;
+  align-items: center;
+  padding: 12px 16px 11px;
+  grid-gap: 12px;
+  grid-template-columns: 60px 1fr 60px;
+}
+
+.dark .header {
+  border-bottom: 1px solid #292929;
+  background: #1c1c1c;
+}
+
+.light .header {
+  border-bottom: 1px solid #e6e6e6;
+  background: #f8f8f8;
+}
+
+.dots {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+
+.dot:nth-child(1) {
+  background: var(--emerald);
+  box-shadow: 0 0 6px rgba(62, 207, 142, 0.5);
+}
+
+.dark .dot:nth-child(n + 2) {
+  background: #2e2e2e;
+}
+
+.light .dot:nth-child(n + 2) {
+  background: #e2e2e2;
+}
+
+.fileName {
+  position: relative;
+  display: flex;
+  height: 16px;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--code-font, "JetBrains Mono", monospace);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 12px;
+
+  > input {
+    position: absolute;
+    width: 100%;
+    border: none;
+    margin: 0;
+    background-color: transparent;
+    color: inherit;
+    font: inherit;
+    inset: 0;
+    letter-spacing: inherit;
+    text-align: center;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  > input:focus + span {
+    display: none;
+  }
+}
+
+.dark .fileName {
+  color: #ededed;
+}
+
+.light .fileName {
+  color: #171717;
+}

@@ -1,0 +1,53 @@
+import { Theme, BadgeVariant } from "@/typings/editor";
+import { convertToShikiTheme } from "../themes/shared";
+
+export const latte: Theme = {
+  id: "latte",
+  name: "Latte",
+  background: {
+    from: "#F4D8E4",
+    to: "#C9C2F2",
+  },
+  group: "Classic",
+  tags: [BadgeVariant.NEW],
+  syntax: {
+    light: convertToShikiTheme({
+      foreground: "#47465C",
+      constant: "#C2582A",
+      string: "#3F8A33",
+      comment: "#8E8CA3",
+      keyword: "#8240E0",
+      parameter: "#D1415E",
+      function: "#2565D8",
+      stringExpression: "#3F8A33",
+      punctuation: "#7B7A92",
+      link: "#1C88A0",
+      number: "#C2582A",
+      property: "#1C88A0",
+      highlight: "rgba(130,64,224,0.1)",
+      highlightBorder: "#8240E0",
+      highlightHover: "rgba(130,64,224,0.05)",
+      diffInserted: "#3F8A33",
+      diffDeleted: "#D1415E",
+    }),
+    dark: convertToShikiTheme({
+      foreground: "#D8DAF2",
+      constant: "#F7B48C",
+      string: "#A9DD9D",
+      comment: "#7D7F99",
+      keyword: "#C9A2F5",
+      parameter: "#F29BAE",
+      function: "#8DB2F7",
+      stringExpression: "#A9DD9D",
+      punctuation: "#A3A6C2",
+      link: "#8CD6E3",
+      number: "#F7B48C",
+      property: "#8CD6E3",
+      highlight: "rgba(201,162,245,0.14)",
+      highlightBorder: "#C9A2F5",
+      highlightHover: "rgba(201,162,245,0.09)",
+      diffInserted: "#A9DD9D",
+      diffDeleted: "#F29BAE",
+    }),
+  },
+};

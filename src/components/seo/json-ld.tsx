@@ -1,14 +1,9 @@
-/**
- * JSON-LD Structured Data — WebApplication Schema
- * Drop this into your root layout or any page as a Server Component.
- * Helps Google understand what CuteCode does and surfaces rich results.
- */
 export default function JsonLd() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    name: "CuteCode",
-    url: "https://www.cutecode.app",
+    name: "Cool Snippets",
+    url: "https://coolsnippets.fun",
     description:
       "Create beautiful code screenshots in seconds. Pick a theme, export HD images, share instantly. Best alternative to ray.so and Carbon for developers.",
     applicationCategory: "DeveloperApplication",
@@ -22,14 +17,21 @@ export default function JsonLd() {
         price: "0",
         priceCurrency: "USD",
         name: "Free Plan",
-        description: "Get started for free with core code screenshot features. No credit card required.",
+        description: "Core code screenshot features and 3 publishes a day with up to 25 live snippets. No credit card required.",
       },
       {
         "@type": "Offer",
         price: "5",
         priceCurrency: "USD",
         name: "Pro Plan",
-        description: "Unlimited HD exports, premium themes, custom fonts, and watermark-free images.",
+        description: "Premium themes and fonts, 3x image export, no watermark and 30 publishes a day. $48 billed yearly.",
+      },
+      {
+        "@type": "Offer",
+        price: "12",
+        priceCurrency: "USD",
+        name: "Premium Plan",
+        description: "Everything in Pro plus 4x and 6x export, HD video exports, private shares, per-snippet analytics and 100 publishes a day. $120 billed yearly.",
       },
     ],
     featureList: [
@@ -41,11 +43,11 @@ export default function JsonLd() {
       "Dark and light mode support",
       "Embed snippets anywhere",
     ],
-    screenshot: "https://www.cutecode.app/og-image.png",
+    screenshot: "https://coolsnippets.fun/og-image.png",
     author: {
       "@type": "Organization",
-      name: "CuteCode",
-      url: "https://www.cutecode.app",
+      name: "Cool Snippets",
+      url: "https://coolsnippets.fun",
     },
   };
 

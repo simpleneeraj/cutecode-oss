@@ -12,17 +12,18 @@ import FollowButton from "@/components/follow-button";
 import { Badge } from "@/components/ui/badge";
 import View from "./view";
 import { Tabs, TabsList, TabsPanel, TabsTab } from "./ui/tabs";
-import { Plan } from "@/generated/prisma/enums";
+import { Plan } from "@/db/schema";
+import { avatarUrl } from "@/lib/avatar";
 
 function UserRow({ user, currentUserId }: { user: FollowUser; currentUserId?: string }) {
-  const avatarUrl = user.name ? `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user.name)}` : undefined;
+  const avatarSrc = user.name ? avatarUrl(user.name) : undefined;
 
   const handle = user.name?.replace(/\s+/g, "").toLowerCase() || "user";
 
   return (
     <div className="flex items-center gap-3 py-3 border-b border-border/50 last:border-0">
       <Avatar className="size-10 shrink-0">
-        <AvatarImage src={avatarUrl} />
+        <AvatarImage src={avatarSrc} />
         <AvatarFallback className="text-sm font-medium">{user.name?.[0]?.toUpperCase() || "U"}</AvatarFallback>
       </Avatar>
 

@@ -1,115 +1,84 @@
-import { motion } from "framer-motion";
+import { motion, easeInOut } from "motion/react";
 import { Icon } from "@/components/ui/icon";
-import styles from "./golden-hour.module.css";
 import { BaseFrameProps } from "@/typings/presets";
+import { SceneFrame, useLoop } from "../scene";
+import styles from "./golden-hour.module.css";
 
-/*
-  Golden Hour
-  Palette: amber · gold · warm cream · honey
-  Vibe: late afternoon sun, cozy warmth, golden magic
-*/
+const FLOATERS = [
+  { icon: "solar:sun-bold-duotone", x: 7, y: 9, size: 22 },
+  { icon: "solar:stars-bold-duotone", x: 88, y: 8, size: 18 },
+  { icon: "solar:leaf-bold-duotone", x: 82, y: 84, size: 18 },
+  { icon: "solar:stars-minimalistic-bold-duotone", x: 4, y: 52, size: 14 },
+  { icon: "solar:leaf-bold-duotone", x: 20, y: 88, size: 15 },
+  { icon: "solar:stars-bold-duotone", x: 55, y: 92, size: 14 },
+];
 
-const AMBIENT_ICONS = [
-  { icon: "fluent-emoji:sun-with-face", x: 6,  y: 5,  size: 22, dur: 10 },
-  { icon: "fluent-emoji:sparkles",      x: 87, y: 7,  size: 18, dur: 12 },
-  { icon: "fluent-emoji:maple-leaf",    x: 80, y: 82, size: 18, dur: 9  },
-  { icon: "fluent-emoji:sun-with-face", x: 4,  y: 74, size: 20, dur: 11 },
-  { icon: "fluent-emoji:sparkles",      x: 46, y: 2,  size: 16, dur: 13 },
-  { icon: "fluent-emoji:maple-leaf",    x: 92, y: 45, size: 16, dur: 8  },
-  { icon: "fluent-emoji:star",          x: 2,  y: 38, size: 14, dur: 14 },
-  { icon: "fluent-emoji:sparkles",      x: 60, y: 91, size: 16, dur: 9  },
-  { icon: "fluent-emoji:maple-leaf",    x: 22, y: 88, size: 15, dur: 11 },
-] as const;
-
-const PARTICLES = Array.from({ length: 18 }, (_, i) => ({
-  id: i,
-  left: `${(i * 41 + 9) % 100}%`,
-  size: 3 + ((i * 4) % 3),
-  dur: 11 + ((i * 9) % 9),
-  delay: -((i * 7) % 16),
-  color: (["#fcd34d", "#f59e0b", "#fde68a", "#fbbf24"] as const)[i % 4],
+const MOTES = Array.from({ length: 18 }, (_, index) => ({
+  left: `${(index * 41 + 9) % 100}%`,
+  size: 3 + ((index * 4) % 3),
+  cycles: 1 + (index % 2),
+  phase: ((index * 7) % 18) / 18,
 }));
 
-export default function GoldenHourFrame({ padding, darkMode, transparent, children }: BaseFrameProps) {
+type Floater = (typeof FLOATERS)[number];
+type Mote = (typeof MOTES)[number];
+
+function FloatingIcon({ floater, index }: { floater: Floater; index: number }) {
+  const phase = index / FLOATERS.length;
+  const y = useLoop([0, -10, 0], { phase, ease: easeInOut });
+  const rotate = useLoop([0, index % 2 === 0 ? 8 : -8, 0], { phase, ease: easeInOut });
+
   return (
-    <div
-      className={[styles.scene, darkMode ? styles.dark : styles.light, transparent ? styles.transparent : ""].join(" ")}
-      style={{ padding }}
-    >
-      {/* ── Golden blobs ── */}
-      <div className={styles.blobA} aria-hidden />
-      <div className={styles.blobB} aria-hidden />
-      <div className={styles.blobC} aria-hidden />
+    <motion.span className={styles.floater} style={{ left: `${floater.x}%`, top: `${floater.y}%`, y, rotate }}>
+      <Icon icon={floater.icon} width={floater.size} height={floater.size} />
+    </motion.span>
+  );
+}
 
-      {/* ── Rising golden particles ── */}
-      <div className={styles.particleLayer} aria-hidden>
-        {PARTICLES.map((p) => (
-          <motion.div
-            key={p.id}
-            style={{
-              position: "absolute",
-              bottom: 0,
-              left: p.left,
-              width: p.size,
-              height: p.size,
-              borderRadius: "50%",
-              background: p.color,
-              boxShadow: `0 0 4px ${p.color}`,
-            }}
-            animate={{ y: [0, -330], opacity: [0, 0.75, 0.35, 0] }}
-            transition={{ duration: p.dur, delay: p.delay, repeat: Infinity, ease: "linear" }}
-          />
-        ))}
-      </div>
+function RisingMote({ mote }: { mote: Mote }) {
+  const y = useLoop([0, -340], { cycles: mote.cycles, phase: mote.phase });
+  const opacity = useLoop([0, 0.8, 0.4, 0], { cycles: mote.cycles, phase: mote.phase });
 
-      {/* ── Floating icons ── */}
-      <div className={styles.ambientLayer} aria-hidden>
-        {AMBIENT_ICONS.map((a, i) => (
-          <motion.span
-            key={i}
-            className={styles.ambientIcon}
-            style={{ left: `${a.x}%`, top: `${a.y}%` }}
-            animate={{ y: [0, -10, 0], rotate: [0, i % 2 === 0 ? 8 : -8, 0] }}
-            transition={{ duration: a.dur, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <Icon icon={a.icon} width={a.size} height={a.size} />
-          </motion.span>
-        ))}
-      </div>
+  return (
+    <motion.span className={styles.mote} style={{ left: mote.left, width: mote.size, height: mote.size, y, opacity }} />
+  );
+}
 
-      {/* ── Window ── */}
-      <motion.div
-        className={styles.window}
-        initial={{ opacity: 0, y: 20, scale: 0.97 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <div className={styles.topEdge} aria-hidden>
-          <motion.div
-            className={styles.topEdgeSweep}
-            animate={{ x: ["-100%", "300%"] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "linear", repeatDelay: 2 }}
-          />
-        </div>
+function GoldenHourScene() {
+  const rotate = useLoop([0, 360]);
+  const glowScale = useLoop([1, 1.08, 1], { ease: easeInOut });
+  const driftX = useLoop([0, 24, 0], { ease: easeInOut });
+  const driftY = useLoop([0, -18, 0], { ease: easeInOut, phase: 0.25 });
 
-        <div className={styles.header}>
-          <div className={styles.dots}>
-            <span className={`${styles.dot} ${styles.dotA}`} />
-            <span className={`${styles.dot} ${styles.dotB}`} />
-            <span className={`${styles.dot} ${styles.dotC}`} />
-          </div>
-          <div className={styles.headerCenter}>
-            <Icon icon="fluent-emoji:sun-with-face" width={18} height={18} />
-            <span className={styles.headerLabel}>golden-hour</span>
-          </div>
-          <div className={styles.headerRight}>
-            <Icon icon="fluent-emoji:sparkles" width={16} height={16} />
-          </div>
-        </div>
-
-        <div className={styles.headerRule} aria-hidden />
-        <div className={styles.editor}>{children}</div>
-      </motion.div>
+  return (
+    <div className={styles.layer} aria-hidden>
+      <motion.div className={styles.rays} style={{ rotate }} />
+      <motion.div className={styles.sun} style={{ scale: glowScale }} />
+      <motion.div className={styles.blobA} style={{ x: driftX, y: driftY }} />
+      <motion.div className={styles.blobB} style={{ x: driftY, y: driftX }} />
+      {MOTES.map((mote, index) => (
+        <RisingMote key={index} mote={mote} />
+      ))}
+      {FLOATERS.map((floater, index) => (
+        <FloatingIcon key={index} floater={floater} index={index} />
+      ))}
     </div>
   );
+}
+
+function TopEdgeSweep() {
+  const x = useLoop(["-100%", "300%", "300%"]);
+
+  return (
+    <div className={styles.topEdge} aria-hidden>
+      <motion.div className={styles.sweep} style={{ x }} />
+    </div>
+  );
+}
+
+const background = <GoldenHourScene />;
+const accent = <TopEdgeSweep />;
+
+export default function GoldenHourFrame(props: BaseFrameProps) {
+  return <SceneFrame {...props} themeStyles={styles} background={background} accent={accent} />;
 }

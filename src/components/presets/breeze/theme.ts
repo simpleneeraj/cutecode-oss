@@ -1,4 +1,4 @@
-import { Theme, IconType } from "@/typings/editor";
+import { Theme } from "@/typings/editor";
 import { convertToShikiTheme } from "../themes/shared";
 
 export const breeze: Theme = {
@@ -8,7 +8,7 @@ export const breeze: Theme = {
     from: "#CF2F98",
     to: "#6A3DEC",
   },
-  group: "Defaults",
+  group: "Classic",
   syntax: {
     light: convertToShikiTheme({
       foreground: "#434447",
@@ -23,6 +23,9 @@ export const breeze: Theme = {
       link: "#625B6B",
       number: "#24805E",
       property: "#0B7880",
+      highlight: "rgba(73,110,184,0.1)",
+      highlightBorder: "#496EB8",
+      highlightHover: "rgba(73,110,184,0.05)",
       diffInserted: "#00A67D",
       diffDeleted: "#C44170",
     }),
@@ -39,6 +42,9 @@ export const breeze: Theme = {
       link: "#ECFEEF",
       number: "#55E7B2",
       property: "#49E8F2",
+      highlight: "rgba(101,153,255,0.14)",
+      highlightBorder: "#6599FF",
+      highlightHover: "rgba(101,153,255,0.09)",
       diffInserted: "#00A67D",
       diffDeleted: "#F8518D",
     }),

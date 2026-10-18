@@ -1,132 +1,225 @@
-.frame {
-  --bg: #0a2540;
-  --stripe: hsla(213.69, 52%, 97.828%);
-  --border: #0f395e;
-  --gridline: rgba(255, 255, 255, 0.1);
-  --window: #0c2e4e;
-  --line-number: #55718d;
-
+.scene {
   position: relative;
-  height: 100%;
-  background-color: var(--bg);
+  overflow: hidden;
+  border-radius: 24px;
+  isolation: isolate;
 }
 
-.background {
-  position: relative;
+.dark {
+  background: radial-gradient(ellipse at 70% 0%, #133d68 0%, #0a2540 55%, #061a2f 100%);
 }
 
-.backgroundGridlineContainer {
-  position: relative;
-  width: var(--window-width);
-  height: 100%;
-  margin: 0 auto;
+.light {
+  background: linear-gradient(180deg, #ffffff 0%, #f6f9fc 100%);
 }
 
-.backgroundGridline {
+.transparent {
+  background: transparent;
+}
+
+.layer {
   position: absolute;
-  z-index: 1;
-  width: 1px;
-  height: 100%;
-  border-left: 1px dashed var(--gridline);
-  content: "";
+  overflow: hidden;
+  inset: 0;
   pointer-events: none;
-
-  &:nth-child(1) {
-    left: 0;
-    border-style: solid;
-  }
-  &:nth-child(2) {
-    left: 25%;
-  }
-  &:nth-child(3) {
-    left: 50%;
-  }
-  &:nth-child(4) {
-    left: 75%;
-  }
-  &:nth-child(5) {
-    left: calc(100% - 1px);
-    border-style: solid;
-  }
 }
 
-.background {
+.columns {
   position: absolute;
-  z-index: 0;
+  background-position: 12.5% 0;
+  background-size: 25% 100%;
+  inset: 0;
+  mask-image: repeating-linear-gradient(180deg, black 0 4px, transparent 4px 9px);
+}
+
+.dark .columns {
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+}
+
+.light .columns {
+  background-image: linear-gradient(90deg, rgba(66, 71, 112, 0.1) 1px, transparent 1px);
+}
+
+.glow {
+  position: absolute;
+  top: -180px;
+  right: -120px;
+  width: 520px;
+  height: 420px;
+  border-radius: 50%;
+}
+
+.dark .glow {
+  background: radial-gradient(ellipse, rgba(99, 91, 255, 0.35) 0%, rgba(99, 91, 255, 0.08) 45%, transparent 70%);
+}
+
+.light .glow {
+  background: radial-gradient(ellipse, rgba(99, 91, 255, 0.16) 0%, rgba(0, 212, 255, 0.05) 45%, transparent 70%);
+}
+
+.band {
+  position: absolute;
+  top: 46%;
+  left: -30%;
+  width: 160%;
+  height: 72%;
+  transform: rotate(-11deg);
+}
+
+.ribbon {
+  position: absolute;
+  left: 0;
+  width: 200%;
+  background-repeat: repeat-x;
+  background-size: 20% 100%;
+  will-change: transform;
+}
+
+.dark .ribbon {
+  opacity: 0.92;
+}
+
+.light .ribbon {
+  opacity: 0.85;
+}
+
+.toneCyan {
+  background-image: linear-gradient(90deg, #00d4ff, #635bff 35%, #a960ee 65%, #00d4ff);
+}
+
+.toneBlush {
+  background-image: linear-gradient(90deg, #ff80b5, #ffcb57 40%, #ff6b8b 70%, #ff80b5);
+}
+
+.toneViolet {
+  background-image: linear-gradient(90deg, #7a73ff, #11efe3 35%, #635bff 70%, #7a73ff);
+}
+
+.toneEmber {
+  background-image: linear-gradient(90deg, #a960ee, #ff5996 35%, #ffcb57 70%, #a960ee);
+}
+
+.toneSky {
+  background-image: linear-gradient(90deg, #90e0ff, #635bff 40%, #ff80b5 75%, #90e0ff);
+}
+
+.sheen {
+  position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  pointer-events: none;
+  width: 20%;
+  height: 90%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28), transparent);
 }
 
 .window {
   position: relative;
-  z-index: 1;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--window);
+  z-index: 10;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #0b2a4a;
+  --line-number: #55718d;
+}
+
+.dark .window {
   box-shadow:
-    rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
-    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
-
-  &.isSafari {
-    box-shadow: none;
-  }
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 50px 100px -20px rgba(50, 50, 93, 0.35),
+    0 30px 60px -30px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
-.stripe {
+.light .window {
+  box-shadow:
+    0 0 0 1px rgba(10, 37, 64, 0.12),
+    0 50px 100px -20px rgba(50, 50, 93, 0.25),
+    0 30px 60px -30px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.topEdge {
   position: absolute;
-  z-index: 0;
-  top: 60%;
+  z-index: 20;
+  top: 0;
+  right: 0;
   left: 0;
-  width: 100%;
-  height: 40%;
-  background: var(--stripe);
-  transform: skewY(-6deg);
-  transform-origin: 100% 0;
-
-  --gridline: rgba(66, 71, 112, 0.15);
+  overflow: hidden;
+  height: 2px;
+  background: rgba(99, 91, 255, 0.18);
 }
 
-.set {
+.sweep {
   position: absolute;
-  z-index: 1;
-  top: auto;
-  bottom: 65px;
-  left: calc(var(--window-width) * 0.75 - 50px);
-  width: 500px; /* at least half the frame width */
-  height: 50px;
-  transform-origin: 100% 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, #00d4ff, #635bff, #ff80b5, transparent);
+  inset-block: 0;
+}
 
-  &.isSmall {
-    top: -49px;
-    bottom: auto;
+.header {
+  display: grid;
+  align-items: center;
+  padding: 12px 16px 11px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: #0d3157;
+  grid-gap: 12px;
+  grid-template-columns: 60px 1fr 60px;
+}
+
+.dots {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.dot:nth-child(1) {
+  background: #635bff;
+}
+
+.dot:nth-child(2) {
+  background: #00d4ff;
+}
+
+.dot:nth-child(3) {
+  background: #ff80b5;
+}
+
+.fileName {
+  position: relative;
+  display: flex;
+  height: 16px;
+  align-items: center;
+  justify-content: center;
+  color: #adbdcc;
+  font-family: var(--code-font, "Source Code Pro", monospace);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  line-height: 12px;
+
+  > input {
+    position: absolute;
+    width: 100%;
+    border: none;
+    margin: 0;
+    background-color: transparent;
+    color: inherit;
+    font: inherit;
+    inset: 0;
+    letter-spacing: inherit;
+    text-align: center;
+
+    &:focus {
+      outline: none;
+    }
   }
-}
 
-.layer1 {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: rgb(17, 239, 227);
-}
-
-.layer2 {
-  position: absolute;
-  /* right: 0px; */
-  width: 100%;
-  height: 32px;
-  background: rgb(153, 102, 255);
-  transform: translate(50px, 50px);
-}
-
-.intersection {
-  position: absolute;
-  /* right: 0px; */
-  width: 100%;
-  height: 18px;
-  background: hsla(221.1, 99.822%, 44.876%);
-  transform: translate(50px, 32px);
+  > input:focus + span {
+    display: none;
+  }
 }

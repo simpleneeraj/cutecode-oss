@@ -1,4 +1,4 @@
-import { Theme, IconType } from "@/typings/editor";
+import { Theme } from "@/typings/editor";
 import { convertToShikiTheme } from "../themes/shared";
 
 export const raindrop: Theme = {
@@ -8,7 +8,7 @@ export const raindrop: Theme = {
     from: "#8EC7FB",
     to: "#1C55AA",
   },
-  group: "Defaults",
+  group: "Classic",
   syntax: {
     light: convertToShikiTheme({
       foreground: "#687077",
@@ -23,6 +23,9 @@ export const raindrop: Theme = {
       link: "#008DAC",
       number: "#7459E1",
       property: "#007BA1",
+      highlight: "rgba(0,141,172,0.1)",
+      highlightBorder: "#008DAC",
+      highlightHover: "rgba(0,141,172,0.05)",
       diffInserted: "#008DAC",
       diffDeleted: "#7459E1",
     }),
@@ -39,6 +42,9 @@ export const raindrop: Theme = {
       link: "#2ED9FF",
       number: "#9984EE",
       property: "#008BB7",
+      highlight: "rgba(46,217,255,0.14)",
+      highlightBorder: "#2ED9FF",
+      highlightHover: "rgba(46,217,255,0.09)",
       diffInserted: "#2ED9FF",
       diffDeleted: "#9984EE",
     }),

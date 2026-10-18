@@ -1,11 +1,9 @@
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
+
+const subscribe = () => () => {};
+const getSnapshot = () => Boolean(window.navigator && window.navigator.clipboard && typeof ClipboardItem === "function");
+const getServerSnapshot = () => false;
 
 export default function usePngClipboardSupported() {
-  const [supported, setSupported] = useState(false);
-
-  useEffect(() => {
-    setSupported(window.navigator && window.navigator.clipboard && typeof ClipboardItem === "function");
-  }, []);
-
-  return supported;
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }

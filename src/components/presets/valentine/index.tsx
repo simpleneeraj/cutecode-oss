@@ -1,223 +1,93 @@
-import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, easeInOut } from "motion/react";
 import { Icon } from "@/components/ui/icon";
 import { BaseFrameProps } from "@/typings/presets";
+import { SceneFrame, useLoop } from "../scene";
 import styles from "./valentine.module.css";
 
-/* ─────────────────────────────────────────
-   Ambient icons — Valentine's set
-───────────────────────────────────────── */
-const AMBIENT_ICONS = [
-  { icon: "noto:heart-suit", x: 6, y: 7, size: 20, dur: 8, delay: 0 },
-  { icon: "noto:bouquet", x: 87, y: 6, size: 22, dur: 10, delay: -3 },
-  { icon: "noto:love-letter", x: 4, y: 68, size: 20, dur: 9, delay: -5 },
-  { icon: "noto:rose", x: 90, y: 70, size: 20, dur: 11, delay: -2 },
-  { icon: "noto:ribbon", x: 46, y: 3, size: 18, dur: 12, delay: -7 },
-  { icon: "noto:cherry-blossom", x: 78, y: 40, size: 16, dur: 8, delay: -4 },
-  { icon: "noto:sparkling-heart", x: 2, y: 38, size: 17, dur: 10, delay: -1 },
-  { icon: "noto:beating-heart", x: 55, y: 90, size: 18, dur: 9, delay: -6 },
-  { icon: "noto:two-hearts", x: 20, y: 85, size: 16, dur: 13, delay: -2.5 },
-  { icon: "noto:heart-with-arrow", x: 82, y: 22, size: 17, dur: 10, delay: -8 },
-  { icon: "noto:candy", x: 38, y: 94, size: 15, dur: 8, delay: -4.5 },
-  { icon: "noto:wrapped-gift", x: 14, y: 18, size: 16, dur: 14, delay: -1.5 },
+const KEEPSAKES = [
+  { id: "letter-top-left", icon: "solar:letter-bold-duotone", x: 6, y: 9, size: 24, tilt: -10 },
+  { id: "gift-top-right", icon: "solar:gift-bold-duotone", x: 88, y: 8, size: 20, tilt: 8 },
+  { id: "heart-right", icon: "solar:heart-angle-bold-duotone", x: 91, y: 52, size: 18, tilt: 12 },
+  { id: "letter-bottom-right", icon: "solar:letter-bold-duotone", x: 84, y: 84, size: 20, tilt: 14 },
+  { id: "heart-left", icon: "solar:heart-shine-bold-duotone", x: 4, y: 56, size: 18, tilt: -12 },
+  { id: "stars-bottom-left", icon: "solar:stars-bold-duotone", x: 14, y: 88, size: 16, tilt: 0 },
 ];
 
-/* Petals / hearts particles */
-const PARTICLES = Array.from({ length: 26 }, (_, i) => ({
-  id: i,
-  left: `${(i * 37 + 13) % 100}%`,
-  size: 3 + ((i * 6) % 18) / 10,
-  duration: 8 + ((i * 9) % 12),
-  delay: -((i * 6) % 16),
-  hue: i % 3 === 0 ? "#ff6b9d" : i % 3 === 1 ? "#ff4d6d" : "#ffb3c6",
+const CONFETTI = Array.from({ length: 20 }, (_, index) => ({
+  id: `confetti-${index}`,
+  left: `${(index * 29 + 11) % 100}%`,
+  size: 6 + ((index * 3) % 6),
+  sway: index % 2 === 0 ? 16 : -16,
+  spin: index % 2 === 0 ? 180 : -180,
+  cycles: 1 + (index % 2),
+  phase: ((index * 7) % 20) / 20,
 }));
 
-/* Envelope open/close state */
-const EnvelopeIcon = ({ open }: { open: boolean }) => (
-  <AnimatePresence mode="wait">
-    <motion.span
-      key={open ? "open" : "closed"}
-      initial={{ scale: 0.8, opacity: 0, rotateX: -90 }}
-      animate={{ scale: 1, opacity: 1, rotateX: 0 }}
-      exit={{ scale: 0.8, opacity: 0, rotateX: 90 }}
-      transition={{ duration: 0.3, ease: "easeOut" }}
-      style={{ display: "flex" }}
-    >
-      <Icon icon={open ? "noto:envelope-with-arrow" : "noto:love-letter"} width={22} height={22} />
-    </motion.span>
-  </AnimatePresence>
-);
+type Keepsake = (typeof KEEPSAKES)[number];
+type Confetti = (typeof CONFETTI)[number];
 
-export default function ValentineFrame({ padding, darkMode, transparent, children }: BaseFrameProps) {
-  const [envelopeOpen, setEnvelopeOpen] = useState(false);
-  const [pulse, setPulse] = useState(false);
-  const [stamp, setStamp] = useState(false);
-
-  useEffect(() => {
-    /* Heartbeat */
-    const hb = setInterval(() => {
-      setPulse(true);
-      setTimeout(() => setPulse(false), 350);
-    }, 1800);
-
-    /* Envelope toggle */
-    const ev = setInterval(() => {
-      setEnvelopeOpen((v) => !v);
-    }, 3200);
-
-    /* Stamp appears */
-    const st = setTimeout(() => setStamp(true), 900);
-
-    return () => {
-      clearInterval(hb);
-      clearInterval(ev);
-      clearTimeout(st);
-    };
-  }, []);
+function FloatingKeepsake({ keepsake, index }: { keepsake: Keepsake; index: number }) {
+  const phase = index / KEEPSAKES.length;
+  const y = useLoop([0, -12, 0], { phase, ease: easeInOut });
+  const rotate = useLoop([keepsake.tilt, -keepsake.tilt, keepsake.tilt], { phase, ease: easeInOut });
 
   return (
-    <div
-      className={[styles.scene, darkMode ? styles.dark : styles.light, transparent ? styles.transparent : ""].join(
-        " ",
-      )}
-      style={{ padding }}
+    <motion.span
+      className={styles.keepsake}
+      style={{ left: `${keepsake.x}%`, top: `${keepsake.y}%`, y, rotate }}
     >
-      {/* Background blobs */}
-      <div className={styles.blobA} aria-hidden />
-      <div className={styles.blobB} aria-hidden />
-      <div className={styles.blobC} aria-hidden />
+      <Icon icon={keepsake.icon} width={keepsake.size} height={keepsake.size} />
+    </motion.span>
+  );
+}
 
-      {/* Lace border pattern */}
-      <div className={styles.laceBorder} aria-hidden />
+function FallingConfetti({ confetti }: { confetti: Confetti }) {
+  const options = { cycles: confetti.cycles, phase: confetti.phase };
+  const y = useLoop(["-6cqh", "106cqh"], options);
+  const x = useLoop([0, confetti.sway, 0, -confetti.sway, 0], { ...options, ease: easeInOut });
+  const rotate = useLoop([0, confetti.spin], options);
+  const opacity = useLoop([0, 0.85, 0.85, 0], options);
 
-      {/* Particles */}
-      <div className={styles.particleLayer} aria-hidden>
-        {PARTICLES.map((p) => (
-          <div
-            key={p.id}
-            className={styles.particle}
-            style={{
-              left: p.left,
-              width: p.size,
-              height: p.size,
-              animationDuration: `${p.duration}s`,
-              animationDelay: `${p.delay}s`,
-              background: p.hue,
-            }}
-          />
-        ))}
-      </div>
+  return (
+    <motion.span className={styles.confetti} style={{ left: confetti.left, top: 0, x, y, rotate, opacity }}>
+      <Icon icon="solar:heart-bold" width={confetti.size} height={confetti.size} />
+    </motion.span>
+  );
+}
 
-      {/* Ambient icons */}
-      <div className={styles.ambientLayer} aria-hidden>
-        {AMBIENT_ICONS.map((a, i) => (
-          <motion.span
-            key={i}
-            className={styles.ambientIcon}
-            style={{ left: `${a.x}%`, top: `${a.y}%` }}
-            animate={{
-              y: [0, -16, 0],
-              rotate: [0, i % 2 === 0 ? 12 : -12, 0],
-              scale: [1, 1.08, 1],
-            }}
-            transition={{
-              duration: a.dur,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: a.delay,
-            }}
-          >
-            <Icon icon={a.icon} width={a.size} height={a.size} />
-          </motion.span>
-        ))}
-      </div>
+function ValentineScene() {
+  const driftX = useLoop([0, 22, 0], { ease: easeInOut });
+  const driftY = useLoop([0, -18, 0], { ease: easeInOut, phase: 0.25 });
+  const laceOpacity = useLoop([0.5, 0.85, 0.5], { ease: easeInOut });
 
-      {/* Window */}
-      <motion.div
-        className={styles.window}
-        initial={{ opacity: 0, y: 28, scale: 0.96 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
-      >
-        {/* Top shimmer */}
-        <div className={styles.shimmerEdge} aria-hidden />
-
-        {/* ── HEADER ── */}
-        <div className={styles.header}>
-          {/* Left — envelope */}
-          <div className={styles.headerLeft}>
-            <motion.div
-              className={styles.envelopeWrap}
-              whileHover={{ scale: 1.1, rotate: -5 }}
-              onClick={() => setEnvelopeOpen((v) => !v)}
-            >
-              <EnvelopeIcon open={envelopeOpen} />
-            </motion.div>
-            <div className={styles.headerMeta}>
-              <span className={styles.headerTo}>
-                To: <em>You</em>
-              </span>
-              <span className={styles.headerFrom}>
-                From: <em>Always Me</em>
-              </span>
-            </div>
-          </div>
-
-          {/* Center — title + heartbeat */}
-          <div className={styles.headerCenter}>
-            <motion.div
-              animate={pulse ? { scale: 1.4 } : { scale: 1 }}
-              transition={{ duration: 0.2, ease: "easeOut" }}
-              className={styles.mainHeart}
-            >
-              <Icon icon="noto:beating-heart" width={28} height={28} />
-            </motion.div>
-            <span className={styles.headerTitle}>valentine.ts</span>
-          </div>
-
-          {/* Right — postage stamp */}
-          <div className={styles.headerRight}>
-            <AnimatePresence>
-              {stamp && (
-                <motion.div
-                  className={styles.postageStamp}
-                  initial={{ scale: 0, rotate: 15, opacity: 0 }}
-                  animate={{ scale: 1, rotate: 6, opacity: 1 }}
-                  transition={{ type: "spring", stiffness: 260, damping: 18, delay: 0.1 }}
-                >
-                  <Icon icon="noto:rose" width={20} height={20} />
-                  <span className={styles.stampLabel}>LOVE</span>
-                  <span className={styles.stampDate}>XIV · II</span>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </div>
-
-        {/* Header divider — lace-like rule */}
-        <div className={styles.laceRule} aria-hidden />
-
-        {/* ── EDITOR ── */}
-        <div className={styles.editor}>{children}</div>
-
-        {/* ── STATUS BAR ── */}
-        <div className={styles.statusBar}>
-          <div className={styles.statusLeft}>
-            <span className={styles.statusPill}>
-              <Icon icon="vscode-icons:file-type-typescript-official" width={11} height={11} />
-              TypeScript
-            </span>
-            <span className={styles.statusPillRose}>
-              <Icon icon="noto:rose" width={11} height={11} />
-              Valentine's Day
-            </span>
-          </div>
-          <div className={styles.statusRight}>
-            <Icon icon="noto:two-hearts" width={11} height={11} />
-            <span>xoxo · UTF-8</span>
-          </div>
-        </div>
-      </motion.div>
+  return (
+    <div className={styles.layer} aria-hidden>
+      <motion.div className={styles.blobA} style={{ x: driftX, y: driftY }} />
+      <motion.div className={styles.blobB} style={{ x: driftY, y: driftX }} />
+      <motion.div className={styles.lace} style={{ opacity: laceOpacity }} />
+      {KEEPSAKES.map((keepsake, index) => (
+        <FloatingKeepsake key={keepsake.id} keepsake={keepsake} index={index} />
+      ))}
+      {CONFETTI.map((confetti) => (
+        <FallingConfetti key={confetti.id} confetti={confetti} />
+      ))}
     </div>
   );
+}
+
+function RibbonEdge() {
+  const x = useLoop(["-100%", "300%", "300%"], { phase: 0.5 });
+
+  return (
+    <div className={styles.topEdge} aria-hidden>
+      <motion.div className={styles.sweep} style={{ x }} />
+    </div>
+  );
+}
+
+const background = <ValentineScene />;
+const accent = <RibbonEdge />;
+
+export default function ValentineFrame(props: BaseFrameProps) {
+  return <SceneFrame {...props} themeStyles={styles} background={background} accent={accent} />;
 }

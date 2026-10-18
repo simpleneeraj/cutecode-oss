@@ -10,12 +10,8 @@ const useAudio = (path: string): [boolean, () => void] => {
     url = `https://ray.so/${path}`;
   }
 
-  const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
+  const audio = useMemo(() => (typeof Audio === "undefined" ? null : new Audio(url)), [url]);
   const [playing, setPlaying] = useState(false);
-
-  useEffect(() => {
-    setAudio(new Audio(url));
-  }, [url]);
 
   const toggle = () => setPlaying(!playing);
 

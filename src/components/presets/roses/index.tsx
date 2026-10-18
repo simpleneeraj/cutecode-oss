@@ -1,130 +1,87 @@
-import { cn as classNames } from "@/utils/cn";
+import { motion, easeInOut } from "motion/react";
+import { Icon } from "@/components/ui/icon";
 import { BaseFrameProps } from "@/typings/presets";
+import { SceneFrame, useLoop } from "../scene";
 import styles from "./roses.module.css";
-import { HugeiconsIcon } from "@hugeicons/react";
-import sharedStyles from "../default/default.module.css";
-import { Flower, Heart, Leaf01Icon, Sparkles } from "@hugeicons/core-free-icons";
-import { BlurBackdrop } from "../BlurBackdrop";
 
-/* ── Deterministic scattered icon layout — SSR-safe (no Math.random) ── */
-const SCATTERED_ICONS = [
-  { Icon: Flower, x: 4, y: 6, size: 22, rotate: -20, opacity: 0.22 },
-  { Icon: Leaf01Icon, x: 88, y: 3, size: 18, rotate: 40, opacity: 0.18 },
-  { Icon: Flower, x: 12, y: 80, size: 20, rotate: -55, opacity: 0.16 },
-  { Icon: Leaf01Icon, x: 84, y: 78, size: 16, rotate: 65, opacity: 0.2 },
-  { Icon: Sparkles, x: 46, y: 2, size: 14, rotate: 10, opacity: 0.14 },
-  { Icon: Flower, x: 0, y: 44, size: 18, rotate: -80, opacity: 0.13 },
-  { Icon: Sparkles, x: 91, y: 38, size: 16, rotate: 30, opacity: 0.15 },
-  { Icon: Leaf01Icon, x: 68, y: 89, size: 14, rotate: -15, opacity: 0.17 },
-  { Icon: Flower, x: 28, y: 90, size: 22, rotate: 70, opacity: 0.14 },
-  { Icon: Sparkles, x: 56, y: 88, size: 12, rotate: -45, opacity: 0.12 },
-  { Icon: Leaf01Icon, x: 76, y: 55, size: 14, rotate: 120, opacity: 0.1 },
-  { Icon: Sparkles, x: 20, y: 30, size: 12, rotate: -10, opacity: 0.09 },
-] as const;
+const PETALS = Array.from({ length: 16 }, (_, index) => ({
+  id: `petal-${index}`,
+  left: `${(index * 37 + 5) % 100}%`,
+  size: 10 + ((index * 5) % 9),
+  sway: index % 2 === 0 ? 22 : -22,
+  spin: index % 2 === 0 ? 360 : -360,
+  cycles: 1 + (index % 2),
+  phase: ((index * 5) % 16) / 16,
+}));
 
-const RosesFrame = ({ padding, darkMode, transparent, children }: BaseFrameProps) => {
-  const iconColor = darkMode ? "#7a1a30" : "#d4708a";
-  const accentColor = darkMode ? "#c0304a" : "#b3374e";
-  const dimColor = darkMode ? "#6e2030" : "#c07080";
+const LEAVES = [
+  { id: "leaf-top-left", x: 6, y: 10, size: 18, tilt: -24 },
+  { id: "leaf-top-right", x: 90, y: 14, size: 16, tilt: 32 },
+  { id: "leaf-bottom-right", x: 86, y: 82, size: 20, tilt: 58 },
+  { id: "leaf-bottom-left", x: 10, y: 86, size: 15, tilt: -60 },
+];
+
+type Petal = (typeof PETALS)[number];
+type Leaf = (typeof LEAVES)[number];
+
+function FallingPetal({ petal }: { petal: Petal }) {
+  const options = { cycles: petal.cycles, phase: petal.phase };
+  const y = useLoop(["-10cqh", "115cqh"], options);
+  const x = useLoop([0, petal.sway, 0, -petal.sway, 0], { ...options, ease: easeInOut });
+  const rotate = useLoop([0, petal.spin], options);
+  const opacity = useLoop([0, 0.9, 0.9, 0], options);
 
   return (
-    <div
-      className={classNames(
-        sharedStyles.frame,
-        !transparent && styles.frame,
-        !transparent && !darkMode && styles.frameLightMode,
-        transparent && sharedStyles.noBackground,
-        transparent && styles.noBackground,
-      )}
-      style={{ padding }}
-    >
-      {transparent && <div data-ignore-in-export className={sharedStyles.transparentPattern} />}
+    <motion.span
+      className={styles.petal}
+      style={{ left: petal.left, width: petal.size, height: petal.size * 0.8, top: 0, x, y, rotate, opacity }}
+    />
+  );
+}
 
-      {/* Scattered botanical icons — only with background */}
-      {!transparent && (
-        <div className={styles.iconsLayer} aria-hidden>
-          {SCATTERED_ICONS.map(({ Icon, x, y, size, rotate, opacity }, i) => (
-            <span
-              key={i}
-              className={styles.scatteredIcon}
-              style={{
-                left: `${x}%`,
-                top: `${y}%`,
-                transform: `rotate(${rotate}deg)`,
-                opacity,
-                width: size,
-                height: size,
-              }}
-            >
-              <HugeiconsIcon icon={Icon} size={size} color={iconColor} strokeWidth={1.5} />
-            </span>
-          ))}
-        </div>
-      )}
+function SwayingLeaf({ leaf, index }: { leaf: Leaf; index: number }) {
+  const rotate = useLoop([leaf.tilt, leaf.tilt + 10, leaf.tilt], { phase: index / LEAVES.length, ease: easeInOut });
 
-      <div
-        className={classNames(styles.window, {
-          [styles.darkWindow]: darkMode,
-          [styles.lightWindow]: !darkMode,
-        })}
-      >
-        {/* SVG-based blur backdrop — replaces CSS backdrop-filter for html-to-image */}
-        <BlurBackdrop
-          backgroundImage={
-            darkMode
-              ? "radial-gradient(ellipse at 30% 20%, #3d0d18 0%, #1a0608 55%, #0e0305 100%)"
-              : "radial-gradient(ellipse at 30% 20%, #fff1f3 0%, #fce4e9 55%, #f5d0d8 100%)"
-          }
-          blurAmount={16}
-          tintColor={darkMode ? "rgba(18, 4, 8, 0.84)" : "rgba(255, 248, 250, 0.92)"}
-          tintBoxShadow={darkMode ? "inset 0 1px 0 rgba(255,100,130,0.06)" : "inset 0 1px 0 rgba(255,220,230,0.6)"}
-        />
-        {/* Header bar */}
-        <div className={styles.header}>
-          {/* Window control dots with tiny heart icons */}
-          <div className={styles.dots}>
-            <span className={classNames(styles.dot, styles.dotRed)}>
-              <HugeiconsIcon icon={Heart} size={7} color="#fff" strokeWidth={0} />
-            </span>
-            <span className={classNames(styles.dot, styles.dotPink)}>
-              <HugeiconsIcon icon={Heart} size={7} color="#fff" strokeWidth={0} />
-            </span>
-            <span className={classNames(styles.dot, styles.dotRose)}>
-              <HugeiconsIcon icon={Heart} size={7} color="#fff" strokeWidth={0} />
-            </span>
-          </div>
+  return (
+    <motion.span className={styles.leaf} style={{ left: `${leaf.x}%`, top: `${leaf.y}%`, rotate }}>
+      <Icon icon="solar:leaf-bold-duotone" width={leaf.size} height={leaf.size} />
+    </motion.span>
+  );
+}
 
-          {/* Center: mirrored flowers flanking label */}
-          <div className={styles.headerCenter}>
-            <HugeiconsIcon
-              icon={Flower}
-              size={13}
-              color={accentColor}
-              strokeWidth={1.5}
-              className={styles.headerFlower}
-            />
-            <span className={styles.headerLabel}>Roses</span>
-            <span style={{ transform: "scaleX(-1)", display: "flex" }}>
-              <HugeiconsIcon
-                icon={Flower}
-                size={13}
-                color={accentColor}
-                strokeWidth={1.5}
-                className={styles.headerFlower}
-              />
-            </span>
-          </div>
+function RosesScene() {
+  const bloomScale = useLoop([1, 1.12, 1], { ease: easeInOut });
+  const driftX = useLoop([0, 20, 0], { ease: easeInOut });
+  const driftY = useLoop([0, -16, 0], { ease: easeInOut, phase: 0.25 });
 
-          {/* Right: sparkle accent */}
-          <div className={styles.headerRight}>
-            <HugeiconsIcon icon={Sparkles} size={13} color={dimColor} strokeWidth={1.5} />
-          </div>
-        </div>
-
-        <div className={styles.editor}>{children}</div>
-      </div>
+  return (
+    <div className={styles.layer} aria-hidden>
+      <motion.div className={styles.bloomA} style={{ scale: bloomScale, x: driftX, y: driftY }} />
+      <motion.div className={styles.bloomB} style={{ x: driftY, y: driftX }} />
+      <div className={styles.vignette} />
+      {LEAVES.map((leaf, index) => (
+        <SwayingLeaf key={leaf.id} leaf={leaf} index={index} />
+      ))}
+      {PETALS.map((petal) => (
+        <FallingPetal key={petal.id} petal={petal} />
+      ))}
     </div>
   );
-};
+}
 
-export default RosesFrame;
+function RoseGoldEdge() {
+  const x = useLoop(["-100%", "300%", "300%"]);
+
+  return (
+    <div className={styles.topEdge} aria-hidden>
+      <motion.div className={styles.sweep} style={{ x }} />
+    </div>
+  );
+}
+
+const background = <RosesScene />;
+const accent = <RoseGoldEdge />;
+
+export default function RosesFrame(props: BaseFrameProps) {
+  return <SceneFrame {...props} themeStyles={styles} background={background} accent={accent} />;
+}
