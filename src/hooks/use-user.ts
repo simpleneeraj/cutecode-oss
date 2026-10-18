@@ -27,10 +27,10 @@ export type UserToggleFollowOutput = RouterOutput["user"]["toggleFollow"];
 // useUserProfile
 // ─────────────────────────────────────────────
 
-export function useUserProfile(userId: string | null | undefined, ip?: string) {
+export function useUserProfile(userId: string | null | undefined) {
   return useSWR(
-    userId ? (["user.profile", userId, ip ?? null] as const) : null,
-    () => trpc.user.profile.query({ userId: userId!, ip }),
+    userId ? (["user.profile", userId] as const) : null,
+    () => trpc.user.profile.query({ userId: userId! }),
     { revalidateOnFocus: false, dedupingInterval: 10_000 },
   );
 }
@@ -39,10 +39,10 @@ export function useUserProfile(userId: string | null | undefined, ip?: string) {
 // useUserFollowers
 // ─────────────────────────────────────────────
 
-export function useUserFollowers(userId: string | null | undefined, cursor?: string, ip?: string) {
+export function useUserFollowers(userId: string | null | undefined, cursor?: string) {
   return useSWR(
     userId ? (["user.followers", userId, cursor ?? null] as const) : null,
-    () => trpc.user.followers.query({ userId: userId!, cursor, ip }),
+    () => trpc.user.followers.query({ userId: userId!, cursor }),
     { revalidateOnFocus: false },
   );
 }
@@ -51,10 +51,10 @@ export function useUserFollowers(userId: string | null | undefined, cursor?: str
 // useUserFollowing
 // ─────────────────────────────────────────────
 
-export function useUserFollowing(userId: string | null | undefined, cursor?: string, ip?: string) {
+export function useUserFollowing(userId: string | null | undefined, cursor?: string) {
   return useSWR(
     userId ? (["user.following", userId, cursor ?? null] as const) : null,
-    () => trpc.user.following.query({ userId: userId!, cursor, ip }),
+    () => trpc.user.following.query({ userId: userId!, cursor }),
     { revalidateOnFocus: false },
   );
 }

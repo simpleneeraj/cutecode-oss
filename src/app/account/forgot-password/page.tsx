@@ -2,14 +2,27 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
-import { Card } from "@/components/ui/card";
+import { authClient } from "@/lib/auth-client";
+import { tv } from "tailwind-variants";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ArrowLeft01Icon, Mail01Icon } from "@hugeicons/core-free-icons";
+import { Card, CardDescription, CardFooter, CardHeader, CardPanel, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Field, FieldLabel, FieldError } from "@/components/ui/field";
 import { Spinner } from "@/components/ui/spinner";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Icon } from "@/components/ui/icon";
+
+const sentState = tv({
+  slots: {
+    root: "flex flex-col items-center gap-4 text-center",
+    badge: "flex size-12 items-center justify-center rounded-full bg-muted text-foreground",
+    copy: "flex flex-col gap-1.5",
+    title: "text-lg font-semibold leading-none",
+    body: "text-sm text-muted-foreground",
+    highlight: "font-medium text-foreground",
+  },
+});
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -23,9 +36,9 @@ export default function ForgotPasswordPage() {
     setIsLoading(true);
 
     try {
-      const supabase = createClient();
-      const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/auth/callback?next=/account/reset-password`,
+      const { error: resetError } = await authClient.requestPasswordReset({
+        email,
+        redirectTo: `${window.location.origin}/account/reset-password`,
       });
       if (resetError) {
         setError(resetError.message || "Failed to send the reset link. Please try again.");
@@ -39,31 +52,33 @@ export default function ForgotPasswordPage() {
     }
   }
 
-  return (
-    <div className="w-full">
-      <Card className="p-8 sm:p-9">
-        {step === "sent" ? (
-          <div className="flex flex-col items-center gap-5 text-center">
-            <span className="flex size-12 items-center justify-center rounded-full bg-muted text-foreground">
-              <Icon icon="solar:letter-bold" className="size-6" />
-            </span>
-            <div className="flex flex-col gap-1">
-              <h1 className="text-xl font-semibold tracking-tight text-foreground">Check your inbox</h1>
-              <p className="text-sm text-muted-foreground">
-                If an account exists for <span className="font-medium text-foreground">{email}</span>, we sent a link to
-                reset your password.
-              </p>
-            </div>
-          </div>
-        ) : (
-          <>
-            <div className="mb-7 flex flex-col gap-1 text-center">
-              <h1 className="text-xl font-semibold tracking-tight text-foreground">Reset your password</h1>
-              <p className="text-sm text-muted-foreground">Enter your email and we&apos;ll send you a reset link</p>
-            </div>
+  const sent = sentState();
 
+  return (
+    <Card className="w-full">
+      {step === "sent" ? (
+        <CardPanel className={sent.root()}>
+          <span className={sent.badge()}>
+            <HugeiconsIcon icon={Mail01Icon} className="size-6" aria-hidden="true" />
+          </span>
+          <div className={sent.copy()}>
+            <h1 className={sent.title()}>Check your inbox</h1>
+            <p className={sent.body()}>
+              If an account exists for <span className={sent.highlight()}>{email}</span>, we sent a link to reset your
+              password.
+            </p>
+          </div>
+        </CardPanel>
+      ) : (
+        <>
+          <CardHeader className="justify-items-center text-center">
+            <CardTitle render={<h1 />}>Reset your password</CardTitle>
+            <CardDescription>Enter your email and we&apos;ll send you a reset link</CardDescription>
+          </CardHeader>
+
+          <CardPanel className="flex flex-col gap-6">
             {error && (
-              <Alert variant="error" className="mb-5">
+              <Alert variant="error">
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
@@ -95,19 +110,19 @@ export default function ForgotPasswordPage() {
                 )}
               </Button>
             </form>
-          </>
-        )}
-      </Card>
+          </CardPanel>
+        </>
+      )}
 
-      <p className="mt-6 text-center text-sm text-muted-foreground">
+      <CardFooter className="justify-center border-t text-sm">
         <Link
           href="/account/sign-in"
           className="inline-flex items-center gap-1.5 font-medium text-foreground hover:underline"
         >
-          <Icon icon="solar:arrow-left-linear" className="size-3.5" />
+          <HugeiconsIcon icon={ArrowLeft01Icon} className="size-3.5" aria-hidden="true" />
           Back to sign in
         </Link>
-      </p>
-    </div>
+      </CardFooter>
+    </Card>
   );
 }

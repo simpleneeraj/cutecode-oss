@@ -1,57 +1,45 @@
+"use client";
+
 import useSWR from "swr";
-import { createClient } from "@/lib/supabase/client";
-import { toast } from "sonner";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "@/components/toast";
+import { avatarUrl } from "@/lib/avatar";
 
 export function useUser() {
-  const supabase = createClient();
-  const { data, error, isLoading } = useSWR(
-    "supabase-user",
-    async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      return user;
-    },
-    {
-      revalidateOnFocus: false,
-      dedupingInterval: 60000,
-    }
-  );
+  const { data: res, isLoading } = useSWR("auth-session", () => authClient.getSession(), {
+    revalidateOnFocus: false,
+    dedupingInterval: 60_000,
+  });
 
-  const user = data
+  const sessionData = (res as { data?: { user?: Record<string, unknown> } | null } | null)?.data ?? null;
+  const user = sessionData?.user ?? null;
+
+  const mapped = user
     ? {
-        id: data.id,
-        fullName: data.user_metadata?.full_name || data.user_metadata?.name || "User",
-        username: data.user_metadata?.username || data.email?.split("@")[0] || "user",
-        primaryEmailAddress: {
-          emailAddress: data.email || "",
-        },
+        id: user.id as string,
+        fullName: (user.name as string) || "User",
+        username: ((user.email as string) || "").split("@")[0] || "user",
+        primaryEmailAddress: { emailAddress: (user.email as string) || "" },
         imageUrl:
-          data.user_metadata?.avatar_url ||
-          `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(
-            data.user_metadata?.full_name || data.email || "user"
-          )}`,
+          (user.image as string | null) ||
+          avatarUrl((user.name as string) || (user.email as string)),
         publicMetadata: {
-          plan: data.app_metadata?.plan || "FREE",
-          role: data.app_metadata?.role || "USER",
-          subscriptionStatus: data.app_metadata?.subscriptionStatus || "active",
-          gracePeriodEnd: data.app_metadata?.gracePeriodEnd || null,
+          plan: user.plan ?? "FREE",
+          role: user.role ?? "USER",
         },
       }
     : null;
 
   return {
-    user,
-    isSignedIn: !!user,
+    user: mapped,
+    isSignedIn: !!mapped,
     isLoaded: !isLoading,
   };
 }
 
-export function useClerk() {
-  const supabase = createClient();
-
+export function useAuthActions() {
   const signOut = async () => {
-    await supabase.auth.signOut();
+    await authClient.signOut();
     window.location.href = "/";
   };
 

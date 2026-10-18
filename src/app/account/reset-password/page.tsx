@@ -3,8 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
-import { Card } from "@/components/ui/card";
+import { authClient } from "@/lib/auth-client";
+import { Card, CardDescription, CardFooter, CardHeader, CardPanel, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Field, FieldLabel, FieldError } from "@/components/ui/field";
@@ -27,8 +27,7 @@ export default function ResetPasswordPage() {
     setIsLoading(true);
 
     try {
-      const supabase = createClient();
-      const { error: updateError } = await supabase.auth.updateUser({ password });
+      const { error: updateError } = await authClient.resetPassword({ newPassword: password });
       if (updateError) {
         setError(updateError.message || "Couldn't update your password. The reset link may have expired.");
         return;
@@ -43,15 +42,15 @@ export default function ResetPasswordPage() {
   }
 
   return (
-    <div className="w-full">
-      <Card className="p-8 sm:p-9">
-        <div className="mb-7 flex flex-col gap-1 text-center">
-          <h1 className="text-xl font-semibold tracking-tight text-foreground">Set a new password</h1>
-          <p className="text-sm text-muted-foreground">Choose a new password for your account</p>
-        </div>
+    <Card className="w-full">
+      <CardHeader className="justify-items-center text-center">
+        <CardTitle render={<h1 />}>Set a new password</CardTitle>
+        <CardDescription>Choose a new password for your account</CardDescription>
+      </CardHeader>
 
+      <CardPanel className="flex flex-col gap-6">
         {error && (
-          <Alert variant="error" className="mb-5">
+          <Alert variant="error">
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         )}
@@ -85,13 +84,13 @@ export default function ResetPasswordPage() {
             )}
           </Button>
         </form>
-      </Card>
+      </CardPanel>
 
-      <p className="mt-6 text-center text-sm text-muted-foreground">
+      <CardFooter className="justify-center border-t text-sm">
         <Link href="/account/sign-in" className="font-medium text-foreground hover:underline">
           Back to sign in
         </Link>
-      </p>
-    </div>
+      </CardFooter>
+    </Card>
   );
 }

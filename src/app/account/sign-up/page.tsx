@@ -3,20 +3,35 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
-import { Card } from "@/components/ui/card";
+import { mutate } from "swr";
+import { authClient } from "@/lib/auth-client";
+import { tv } from "tailwind-variants";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Mail01Icon } from "@hugeicons/core-free-icons";
+import { Card, CardDescription, CardFooter, CardHeader, CardPanel, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Field, FieldLabel, FieldError, FieldDescription } from "@/components/ui/field";
 import { Spinner } from "@/components/ui/spinner";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Icon } from "@/components/ui/icon";
+import { safeRedirectPath } from "@/utils/safe-redirect";
 import { SocialAuthButtons } from "../components/social-auth-buttons";
+
+const sentState = tv({
+  slots: {
+    root: "flex flex-col items-center gap-4 text-center",
+    badge: "flex size-12 items-center justify-center rounded-full bg-muted text-foreground",
+    copy: "flex flex-col gap-1.5",
+    title: "text-lg font-semibold leading-none",
+    body: "text-sm text-muted-foreground",
+    highlight: "font-medium text-foreground",
+  },
+});
 
 export default function SignUpPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectedFrom = searchParams.get("redirectedFrom") || "/";
+  const redirectedFrom = safeRedirectPath(searchParams.get("redirectedFrom"));
 
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -37,15 +52,11 @@ export default function SignUpPage() {
     setIsLoading(true);
 
     try {
-      const supabase = createClient();
-      const username = email.split("@")[0];
-      const { data, error: signUpError } = await supabase.auth.signUp({
+      const { data, error: signUpError } = await authClient.signUp.email({
         email,
         password,
-        options: {
-          data: { full_name: fullName.trim(), name: fullName.trim(), username },
-          emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(redirectedFrom)}`,
-        },
+        name: fullName.trim(),
+        callbackURL: redirectedFrom,
       });
 
       if (signUpError) {
@@ -53,8 +64,8 @@ export default function SignUpPage() {
         return;
       }
 
-      // Session present → confirmations disabled, sign straight in.
-      if (data.session) {
+      if (data?.token) {
+        await mutate("auth-session");
         router.push(redirectedFrom);
         router.refresh();
       } else {
@@ -71,8 +82,7 @@ export default function SignUpPage() {
     setError(null);
     setResendSuccess(false);
     try {
-      const supabase = createClient();
-      const { error: resendError } = await supabase.auth.resend({ type: "signup", email });
+      const { error: resendError } = await authClient.sendVerificationEmail({ email });
       if (resendError) setError(resendError.message || "Failed to resend the email.");
       else setResendSuccess(true);
     } catch (err) {
@@ -80,52 +90,50 @@ export default function SignUpPage() {
     }
   }
 
+  const sent = sentState();
+
   return (
-    <div className="w-full">
-      <Card className="p-8 sm:p-9">
-        {step === "sent" ? (
-          <div className="flex flex-col items-center gap-5 text-center">
-            <span className="flex size-12 items-center justify-center rounded-full bg-muted text-foreground">
-              <Icon icon="solar:letter-bold" className="size-6" />
-            </span>
-            <div className="flex flex-col gap-1">
-              <h1 className="text-xl font-semibold tracking-tight text-foreground">Check your inbox</h1>
-              <p className="text-sm text-muted-foreground">
-                We sent a confirmation link to <span className="font-medium text-foreground">{email}</span>. Click it to
-                finish creating your account.
-              </p>
-            </div>
-
-            {error && (
-              <Alert variant="error">
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
-            {resendSuccess && (
-              <Alert variant="success">
-                <AlertDescription>Confirmation email resent.</AlertDescription>
-              </Alert>
-            )}
-
-            <button
-              type="button"
-              onClick={handleResend}
-              className="cursor-pointer text-sm font-medium text-muted-foreground hover:text-foreground"
-            >
-              Didn&apos;t get it? Resend email
-            </button>
+    <Card className="w-full">
+      {step === "sent" ? (
+        <CardPanel className={sent.root()}>
+          <span className={sent.badge()}>
+            <HugeiconsIcon icon={Mail01Icon} className="size-6" aria-hidden="true" />
+          </span>
+          <div className={sent.copy()}>
+            <h1 className={sent.title()}>Check your inbox</h1>
+            <p className={sent.body()}>
+              We sent a confirmation link to <span className={sent.highlight()}>{email}</span>. Click it to finish
+              creating your account.
+            </p>
           </div>
-        ) : (
-          <>
-            <div className="mb-7 flex flex-col gap-1 text-center">
-              <h1 className="text-xl font-semibold tracking-tight text-foreground">Create your account</h1>
-              <p className="text-sm text-muted-foreground">Start creating beautiful code screenshots</p>
-            </div>
 
+          {error && (
+            <Alert variant="error">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
+          {resendSuccess && (
+            <Alert variant="success">
+              <AlertDescription>Confirmation email resent.</AlertDescription>
+            </Alert>
+          )}
+
+          <Button type="button" variant="link" onClick={handleResend}>
+            Didn&apos;t get it? Resend email
+          </Button>
+        </CardPanel>
+      ) : (
+        <>
+          <CardHeader className="justify-items-center text-center">
+            <CardTitle render={<h1 />}>Create your account</CardTitle>
+            <CardDescription>Start creating beautiful code screenshots</CardDescription>
+          </CardHeader>
+
+          <CardPanel className="flex flex-col gap-6">
             <SocialAuthButtons disabled={isLoading} redirectedFrom={redirectedFrom} onError={(m) => setError(m || null)} />
 
             {error && (
-              <Alert variant="error" className="mb-5">
+              <Alert variant="error">
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
@@ -187,16 +195,16 @@ export default function SignUpPage() {
                 )}
               </Button>
             </form>
-          </>
-        )}
-      </Card>
+          </CardPanel>
+        </>
+      )}
 
-      <p className="mt-6 text-center text-sm text-muted-foreground">
-        Already have an account?{" "}
+      <CardFooter className="justify-center gap-1 border-t text-sm text-muted-foreground">
+        Already have an account?
         <Link href="/account/sign-in" className="font-medium text-foreground hover:underline">
           Sign in
         </Link>
-      </p>
-    </div>
+      </CardFooter>
+    </Card>
   );
 }

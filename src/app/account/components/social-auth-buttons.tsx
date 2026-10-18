@@ -4,9 +4,18 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { Separator } from "@/components/ui/separator";
-import { createClient } from "@/lib/supabase/client";
+import { authClient } from "@/lib/auth-client";
+import { tv } from "tailwind-variants";
 
 type Provider = "github" | "google";
+
+const divider = tv({
+  slots: {
+    root: "flex items-center gap-3",
+    line: "flex-1",
+    label: "text-xs font-medium uppercase tracking-widest text-muted-foreground",
+  },
+});
 
 function GitHubIcon() {
   return (
@@ -27,10 +36,6 @@ function GoogleIcon() {
   );
 }
 
-/**
- * GitHub + Google OAuth buttons for the auth screens.
- * Redirects through /auth/callback, preserving redirectedFrom.
- */
 export function SocialAuthButtons({
   disabled,
   redirectedFrom = "/",
@@ -46,17 +51,14 @@ export function SocialAuthButtons({
     setLoading(provider);
     onError?.("");
     try {
-      const supabase = createClient();
-      const callback = `${window.location.origin}/auth/callback?redirectedFrom=${encodeURIComponent(redirectedFrom)}`;
-      const { error } = await supabase.auth.signInWithOAuth({
+      const { error } = await authClient.signIn.social({
         provider,
-        options: { redirectTo: callback },
+        callbackURL: redirectedFrom,
       });
       if (error) {
         onError?.(error.message || `Failed to continue with ${provider}.`);
         setLoading(null);
       }
-      // On success the browser is redirected by Supabase; keep the spinner.
     } catch (err) {
       onError?.(err instanceof Error ? err.message : `Failed to continue with ${provider}.`);
       setLoading(null);
@@ -64,36 +66,39 @@ export function SocialAuthButtons({
   }
 
   const isDisabled = disabled || loading !== null;
+  const { root, line, label } = divider();
 
   return (
-    <div className="flex flex-col gap-2.5">
-      <Button
-        variant="outline"
-        size="lg"
-        className="w-full"
-        disabled={isDisabled}
-        aria-label="Continue with GitHub"
-        onClick={() => signInWith("github")}
-      >
-        {loading === "github" ? <Spinner /> : <GitHubIcon />}
-        Continue with GitHub
-      </Button>
-      <Button
-        variant="outline"
-        size="lg"
-        className="w-full"
-        disabled={isDisabled}
-        aria-label="Continue with Google"
-        onClick={() => signInWith("google")}
-      >
-        {loading === "google" ? <Spinner /> : <GoogleIcon />}
-        Continue with Google
-      </Button>
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-2">
+        <Button
+          variant="outline"
+          size="lg"
+          className="w-full"
+          disabled={isDisabled}
+          aria-label="Continue with GitHub"
+          onClick={() => signInWith("github")}
+        >
+          {loading === "github" ? <Spinner /> : <GitHubIcon />}
+          Continue with GitHub
+        </Button>
+        <Button
+          variant="outline"
+          size="lg"
+          className="w-full"
+          disabled={isDisabled}
+          aria-label="Continue with Google"
+          onClick={() => signInWith("google")}
+        >
+          {loading === "google" ? <Spinner /> : <GoogleIcon />}
+          Continue with Google
+        </Button>
+      </div>
 
-      <div className="relative my-3 flex items-center gap-3">
-        <Separator className="flex-1" />
-        <span className="text-xs font-medium uppercase tracking-widest text-muted-foreground/60">or</span>
-        <Separator className="flex-1" />
+      <div className={root()}>
+        <Separator className={line()} />
+        <span className={label()}>or</span>
+        <Separator className={line()} />
       </div>
     </div>
   );
