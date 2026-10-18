@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogFooter,
   DialogHeader,
   DialogPanel,
   DialogPopup,
@@ -9,7 +8,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Shortcut } from "@/components/ui/kbd";
-import { SocialFooter } from "@/components/social-footer";
 import useHotkeys from "@/utils/useHotkeys";
 import { useCallback, useState } from "react";
 import usePngClipboardSupported from "../util/usePngClipboardSupported";
@@ -92,11 +90,6 @@ function InfoDialog() {
             </div>
           </div>
         </DialogPanel>
-        <DialogFooter>
-          <div className="flex-1">
-            <SocialFooter referral="code-image" />
-          </div>
-        </DialogFooter>
       </DialogPopup>
     </Dialog>
   );
