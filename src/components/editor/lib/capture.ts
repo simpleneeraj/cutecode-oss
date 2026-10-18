@@ -99,14 +99,15 @@ async function createLayeredRenderer(setup: LayeredSetup): Promise<Renderer> {
   return { mode, render };
 }
 
-const FULL_CAPTURE_TIMEOUT_MS = 30_000;
+const FRAME_TIMEOUT_MS = 30_000;
+
+function withFrameTimeout({ mode, render }: Renderer): Renderer {
+  return { mode, render: () => withTimeout(render(), FRAME_TIMEOUT_MS, `A video frame didn't render (${mode})`) };
+}
 
 function createFullRenderer(scene: ClipScene, canvasOptions: CanvasOptions): Renderer {
   const options = { ...canvasOptions, filter: imageFilter };
-  const render = async () => {
-    const canvas = await withTimeout(toCanvas(scene.node, options), FULL_CAPTURE_TIMEOUT_MS, "A video frame didn't render");
-    return { canvas, isRepeat: false };
-  };
+  const render = async () => ({ canvas: await toCanvas(scene.node, options), isRepeat: false });
   return { mode: CaptureMode.Full, render };
 }
 
@@ -142,12 +143,12 @@ export async function prepareRenderer(scene: ClipScene, referenceTimeMs: number)
   const canvasOptions = { pixelRatio: scene.pixelRatio, fontEmbedCSS };
   await toCanvas(scene.node, { ...canvasOptions, filter: imageFilter });
   const layers = findLayers(scene.node);
-  if (!layers) return { renderer: createFullRenderer(scene, canvasOptions), palette: null };
+  if (!layers) return { renderer: withFrameTimeout(createFullRenderer(scene, canvasOptions)), palette: null };
 
   scene.setTime(referenceTimeMs);
   await settle();
   const match = await findMatchingRenderer(scene, layers, canvasOptions);
-  if (!match) return { renderer: createFullRenderer(scene, canvasOptions), palette: null };
+  if (!match) return { renderer: withFrameTimeout(createFullRenderer(scene, canvasOptions)), palette: null };
   const palette = scene.isScene ? null : match.reference;
-  return { renderer: match.renderer, palette };
+  return { renderer: withFrameTimeout(match.renderer), palette };
 }

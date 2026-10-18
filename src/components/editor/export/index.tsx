@@ -27,7 +27,7 @@ import download from "../util/download";
 import usePngClipboardSupported from "../util/usePngClipboardSupported";
 import { toPng, toSvg, toBlob } from "../lib/image";
 import { withFrozenScene, type VideoSize } from "../lib/animation";
-import { VideoContainer, encodeGif, encodeVideo, pickVideoEncoder, type VideoEncoderChoice } from "../lib/encoders";
+import { VideoEncoderChoice, encodeGif, encodeVideo, pickVideoEncoder } from "../lib/encoders";
 import ExportProgress from "./export-progress";
 import ExportPanel from "./panel";
 import { dockPopup } from "../controls/dock-styles";
@@ -37,11 +37,6 @@ import useExportScale from "./panel/use-export-scale";
 import useVideoClips from "./use-video-clips";
 
 const GIF_FORMAT: VideoFormatOption = { value: VideoFormat.Gif, label: "GIF", extension: "gif", fps: 20, pixelRatio: 1 };
-
-const VIDEO_LABELS = {
-  [VideoContainer.Mp4]: "MP4",
-  [VideoContainer.Webm]: "WebM",
-};
 
 const VIDEO_FPS = 24;
 const PORTRAIT_VIDEO_FPS = 30;
@@ -57,8 +52,8 @@ function getVideoFormats(encoder: VideoEncoderChoice | null | undefined, canvasS
   if (!encoder) return [GIF_FORMAT];
   const video = {
     value: VideoFormat.Video,
-    label: VIDEO_LABELS[encoder.container],
-    extension: encoder.container,
+    label: "MP4",
+    extension: "mp4",
     fps: canvasSize === CanvasSize.Portrait ? PORTRAIT_VIDEO_FPS : VIDEO_FPS,
     pixelRatio: VIDEO_PIXEL_RATIO,
   };
@@ -159,8 +154,16 @@ const ExportButton: React.FC = () => {
     setAnimatedExport((current) => current && { ...current, ...patch });
   };
 
+  const getEncoderSize = (): VideoSize | null => {
+    const fixedSize = getVideoSize(canvasSize);
+    const frame = slideId ? frameRefs.current.get(slideId) : null;
+    if (fixedSize || !frame) return fixedSize;
+    const pixelRatio = checkAccess("hdVideo") === AccessLevel.ALLOWED ? VIDEO_PIXEL_RATIO : 1;
+    return { width: Math.ceil(frame.offsetWidth * pixelRatio), height: Math.ceil(frame.offsetHeight * pixelRatio) };
+  };
+
   const detectVideoEncoder = (isOpen: boolean) => {
-    if (isOpen) pickVideoEncoder(getVideoSize(canvasSize)).then(setVideoEncoder);
+    if (isOpen) pickVideoEncoder(getEncoderSize()).then(setVideoEncoder);
   };
 
   const encodeClips = (format: VideoFormat, ...args: Parameters<typeof encodeGif>) => {

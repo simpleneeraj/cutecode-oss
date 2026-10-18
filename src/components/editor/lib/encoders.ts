@@ -5,49 +5,36 @@ import {
   Mp4OutputFormat,
   Output,
   QUALITY_HIGH,
-  WebMOutputFormat,
   canEncodeVideo,
-  getFirstEncodableVideoCodec,
-  type VideoCodec,
 } from "mediabunny";
 import { captureFrames, type ClipFrame, type EncodeOptions, type VideoClip, type VideoSize } from "./animation";
+import { isSafari } from "./image";
 import { getContext } from "./layers";
 import { encodeRecording } from "./recorder";
-import { createExportStats, reportExportStats, type ExportStats } from "./timing";
+import { createExportStats, reportExportStats, withTimeout, type ExportStats } from "./timing";
 
-export enum VideoContainer {
-  Mp4 = "mp4",
-  Webm = "webm",
+export enum VideoEncoderChoice {
+  WebCodecs = "webcodecs",
+  Recorder = "recorder",
 }
-
-export type VideoEncoderChoice =
-  | { kind: "webcodecs"; codec: VideoCodec; container: VideoContainer }
-  | { kind: "recorder"; mimeType: string; container: VideoContainer };
 
 type GifPalette = ReturnType<typeof quantize>;
 
 type PendingGifFrame = { index: Uint8Array; palette: GifPalette; width: number; height: number; delay: number };
 
-const RECORDER_TYPES = [
-  { mimeType: "video/mp4", container: VideoContainer.Mp4 },
-  { mimeType: "video/webm", container: VideoContainer.Webm },
-];
+const MP4_MIME_TYPE = "video/mp4";
 
 const readPixels = (canvas: HTMLCanvasElement) => getContext(canvas).getImageData(0, 0, canvas.width, canvas.height).data;
 
-async function pickWebCodecs(size: VideoSize | null): Promise<VideoEncoderChoice | null> {
-  if (typeof VideoEncoder === "undefined") return null;
-  const options = size ?? undefined;
-  if (await canEncodeVideo("avc", options)) return { kind: "webcodecs", codec: "avc", container: VideoContainer.Mp4 };
-  const codec = await getFirstEncodableVideoCodec(["vp9", "vp8"], options);
-  return codec ? { kind: "webcodecs", codec, container: VideoContainer.Webm } : null;
+async function pickWebCodecs(size: VideoSize | null) {
+  if (isSafari || typeof VideoEncoder === "undefined") return null;
+  return (await canEncodeVideo("avc", size ?? undefined)) ? VideoEncoderChoice.WebCodecs : null;
 }
 
-function pickRecorder(): VideoEncoderChoice | null {
+function pickRecorder() {
   const canCapture = typeof HTMLCanvasElement !== "undefined" && "captureStream" in HTMLCanvasElement.prototype;
   if (!canCapture || typeof MediaRecorder === "undefined") return null;
-  const type = RECORDER_TYPES.find(({ mimeType }) => MediaRecorder.isTypeSupported(mimeType));
-  return type ? { kind: "recorder", ...type } : null;
+  return MediaRecorder.isTypeSupported(MP4_MIME_TYPE) ? VideoEncoderChoice.Recorder : null;
 }
 
 export async function pickVideoEncoder(size: VideoSize | null) {
@@ -129,15 +116,18 @@ async function* drawnFrames(clips: VideoClip[], options: EncodeOptions, stats: E
 
 type PendingSample = { index: number; frames: number };
 
-async function startTrack(output: Output, canvas: HTMLCanvasElement, codec: VideoCodec, fps: number) {
-  const source = new CanvasSource(canvas, { codec, quality: QUALITY_HIGH });
+const ENCODER_TIMEOUT_MS = 30_000;
+const ENCODER_STALLED = "The video encoder stopped responding";
+
+async function startTrack(output: Output, canvas: HTMLCanvasElement, fps: number) {
+  const source = new CanvasSource(canvas, { codec: "avc", quality: QUALITY_HIGH });
   output.addVideoTrack(source, { frameRate: fps });
   await output.start();
   return source;
 }
 
-async function encodeWebCodecs(clips: VideoClip[], options: EncodeOptions, codec: VideoCodec, container: VideoContainer) {
-  const format = container === VideoContainer.Mp4 ? new Mp4OutputFormat() : new WebMOutputFormat();
+async function encodeWebCodecs(clips: VideoClip[], options: EncodeOptions) {
+  const format = new Mp4OutputFormat();
   const output = new Output({ format, target: new BufferTarget() });
   const canvas = document.createElement("canvas");
   const context = getContext(canvas);
@@ -148,7 +138,7 @@ async function encodeWebCodecs(clips: VideoClip[], options: EncodeOptions, codec
   let pending: PendingSample | null = null;
   let index = 0;
   const addPending = async () => {
-    if (pending) await source?.add(pending.index / fps, pending.frames / fps);
+    if (pending && source) await withTimeout(source.add(pending.index / fps, pending.frames / fps), ENCODER_TIMEOUT_MS, ENCODER_STALLED);
     pending = null;
   };
 
@@ -156,7 +146,7 @@ async function encodeWebCodecs(clips: VideoClip[], options: EncodeOptions, codec
     for await (const frame of captureFrames(clips, options, stats)) {
       const encodeStartedAt = performance.now();
       if (!source) Object.assign(canvas, outputSize(frame.canvas, options.size));
-      source ??= await startTrack(output, canvas, codec, fps);
+      source ??= await startTrack(output, canvas, fps);
       if (!frame.isRepeat || (pending && pending.frames >= fps)) await addPending();
       if (!pending && !frame.isRepeat) drawContained(context, frame.canvas);
       pending ??= { index, frames: 0 };
@@ -166,20 +156,20 @@ async function encodeWebCodecs(clips: VideoClip[], options: EncodeOptions, codec
     }
     await addPending();
   } catch (error) {
-    if (output.state === "started") await output.cancel();
+    if (output.state === "started") output.cancel().catch(() => undefined);
     throw error;
   }
 
-  await output.finalize();
+  await withTimeout(output.finalize(), ENCODER_TIMEOUT_MS, ENCODER_STALLED);
   if (!output.target.buffer) throw new Error("Video encoding produced no data");
-  return finishExport(container, stats, startedAt, new Blob([output.target.buffer], { type: format.mimeType }));
+  return finishExport("MP4", stats, startedAt, new Blob([output.target.buffer], { type: format.mimeType }));
 }
 
 export async function encodeVideo(clips: VideoClip[], options: EncodeOptions, choice: VideoEncoderChoice) {
-  if (choice.kind === "webcodecs") return encodeWebCodecs(clips, options, choice.codec, choice.container);
+  if (choice === VideoEncoderChoice.WebCodecs) return encodeWebCodecs(clips, options);
   const canvas = Object.assign(document.createElement("canvas"), { width: 0, height: 0 });
   const stats = createExportStats();
   const startedAt = performance.now();
-  const blob = await encodeRecording(drawnFrames(clips, options, stats, canvas), canvas, options, choice.mimeType);
-  return finishExport(choice.container, stats, startedAt, blob);
+  const blob = await encodeRecording(drawnFrames(clips, options, stats, canvas), canvas, options, MP4_MIME_TYPE);
+  return finishExport("MP4", stats, startedAt, blob);
 }
