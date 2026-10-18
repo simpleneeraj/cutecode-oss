@@ -5,7 +5,7 @@ import SnippetsPageClient from "./page.client";
 export const metadata: Metadata = {
   title: "My Snippets",
   description:
-    "Save, manage, and share your code screenshots in one place. Access your CuteCode snippets anytime, from any device.",
+    "Save, manage, and share your code screenshots in one place. Access your Cool Snippets snippets anytime, from any device.",
   alternates: {
     canonical: `${BASE_URL}/snippets`,
   },

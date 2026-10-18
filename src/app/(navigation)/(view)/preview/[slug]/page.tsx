@@ -1,28 +1,23 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 import PreviewSnippetClient from "./page.client";
 import { BASE_URL } from "@/utils/common";
-import { prisma } from "@/lib/db";
-import { ShareVisibility } from "@/generated/prisma/enums";
+import { eq } from "drizzle-orm";
+import { db } from "@/db";
+import { shareLinks, ShareVisibility } from "@/db/schema";
+import { exposesShareDetails } from "@/lib/share/access";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
 async function getShareLinkMeta(slug: string) {
-  return prisma.shareLink.findUnique({
-    where: { slug },
-    select: {
-      slug: true,
-      visibility: true,
-      indexable: true,
+  return db.query.shareLinks.findFirst({
+    where: eq(shareLinks.slug, slug),
+    columns: { slug: true, visibility: true, indexable: true, expiresAt: true, maxViews: true, viewCount: true },
+    with: {
       snippet: {
-        select: {
-          title: true,
-          description: true,
-          tags: true,
-          user: { select: { name: true } },
-        },
+        columns: { title: true, description: true, tags: true },
+        with: { user: { columns: { name: true } } },
       },
     },
   });
@@ -33,21 +28,23 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const share = await getShareLinkMeta(slug);
 
   if (!share || !share.snippet) {
-    return { title: "Snippet not found | CuteCode" };
+    return { title: "Snippet not found | Cool Snippets" };
+  }
+
+  if (!exposesShareDetails(share)) {
+    return { title: "Protected snippet | Cool Snippets", robots: { index: false, follow: false } };
   }
 
   const { snippet, visibility, indexable } = share;
   const isIndexable = visibility === ShareVisibility.PUBLIC && indexable;
 
-  const title = snippet.title
-    ? `${snippet.title} — CuteCode`
-    : "Code Snippet — CuteCode";
+  const title = snippet.title ? `${snippet.title} — Cool Snippets` : "Code Snippet — Cool Snippets";
 
   const description =
     snippet.description ||
     (snippet.user?.name
-      ? `Beautiful code snippet by ${snippet.user.name}. View, copy, or remix it on CuteCode.`
-      : "View and share this code snippet created with CuteCode. Beautiful syntax highlighting, custom themes, and HD export.");
+      ? `Beautiful code snippet by ${snippet.user.name}. View, copy, or remix it on Cool Snippets.`
+      : "View and share this code snippet created with Cool Snippets. Beautiful syntax highlighting, custom themes, and HD export.");
 
   const ogImageUrl = `${BASE_URL}/preview/${slug}/opengraph-image`;
 
@@ -56,13 +53,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     description,
     keywords: snippet.tags?.length ? snippet.tags : undefined,
     alternates: { canonical: `${BASE_URL}/preview/${slug}` },
-    robots: isIndexable
-      ? { index: true, follow: true }
-      : { index: false, follow: false },
+    robots: isIndexable ? { index: true, follow: true } : { index: false, follow: false },
     openGraph: {
       type: "website",
       url: `${BASE_URL}/preview/${slug}`,
-      siteName: "CuteCode",
+      siteName: "Cool Snippets",
       title,
       description,
       images: [{ url: ogImageUrl, width: 1200, height: 630, alt: title }],

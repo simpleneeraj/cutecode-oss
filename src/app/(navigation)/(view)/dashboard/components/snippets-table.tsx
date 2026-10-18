@@ -5,6 +5,7 @@ import { Icon } from "@/components/ui/icon";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { getShareUrl } from "@/lib/share/urls";
+import { useSubscription } from "@/hooks/use-subscription";
 import { CopyLinkButton } from "./copy-link-button";
 
 export type DashboardSnippet = {
@@ -12,10 +13,10 @@ export type DashboardSnippet = {
   title: string | null;
   isPublic: boolean;
   createdAt: string;
-  views: number;
-  upvotes: number;
-  comments: number;
-  bookmarks: number;
+  views: number | null;
+  upvotes: number | null;
+  comments: number | null;
+  bookmarks: number | null;
   slug: string | null;
   visibility: string | null;
 };
@@ -25,6 +26,9 @@ function formatDate(iso: string): string {
 }
 
 export function SnippetsTable({ snippets }: { snippets: DashboardSnippet[] }) {
+  const { can } = useSubscription();
+  const hasFullAnalytics = can("fullAnalytics");
+
   return (
     <Card className="overflow-hidden p-0">
       <div className="flex items-center justify-between gap-2 border-b px-5 py-4">
@@ -42,9 +46,13 @@ export function SnippetsTable({ snippets }: { snippets: DashboardSnippet[] }) {
           <TableHeader>
             <TableRow>
               <TableHead>Title</TableHead>
-              <TableHead className="text-right">Views</TableHead>
-              <TableHead className="text-right">Upvotes</TableHead>
-              <TableHead className="text-right">Comments</TableHead>
+              {hasFullAnalytics && (
+                <>
+                  <TableHead className="text-right">Views</TableHead>
+                  <TableHead className="text-right">Upvotes</TableHead>
+                  <TableHead className="text-right">Comments</TableHead>
+                </>
+              )}
               <TableHead>Visibility</TableHead>
               <TableHead className="text-right">Created</TableHead>
               <TableHead className="w-10" />
@@ -66,9 +74,13 @@ export function SnippetsTable({ snippets }: { snippets: DashboardSnippet[] }) {
                     <span className="block truncate font-medium text-foreground">{s.title || "Untitled snippet"}</span>
                   )}
                 </TableCell>
-                <TableCell className="text-right tabular-nums text-muted-foreground">{s.views}</TableCell>
-                <TableCell className="text-right tabular-nums text-muted-foreground">{s.upvotes}</TableCell>
-                <TableCell className="text-right tabular-nums text-muted-foreground">{s.comments}</TableCell>
+                {hasFullAnalytics && (
+                  <>
+                    <TableCell className="text-right tabular-nums text-muted-foreground">{s.views}</TableCell>
+                    <TableCell className="text-right tabular-nums text-muted-foreground">{s.upvotes}</TableCell>
+                    <TableCell className="text-right tabular-nums text-muted-foreground">{s.comments}</TableCell>
+                  </>
+                )}
                 <TableCell>
                   <Badge variant={s.isPublic ? "secondary" : "outline"} className="gap-1">
                     <Icon

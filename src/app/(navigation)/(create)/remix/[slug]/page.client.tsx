@@ -1,14 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { useSetAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { editorAtom } from "@/store/editor/editor/core";
 import { currentSlideIdAtom, currentElementIdAtom } from "@/store/editor/editor/selection";
 import { useSharePreview } from "@/hooks/use-share";
 import { nanoid } from "nanoid";
 import { toast } from "@/components/toast";
-import { cn } from "@/utils/cn";
 import Frame from "@/components/editor/Frame";
 import Controls from "@/components/editor/controls";
 
@@ -18,20 +17,25 @@ export default function RemixClient({ slug }: { slug: string }) {
   const setEditor = useSetAtom(editorAtom);
   const setCurrentSlideId = useSetAtom(currentSlideIdAtom);
   const setCurrentElementId = useSetAtom(currentElementIdAtom);
-  const [hasRemixed, setHasRemixed] = useState(false);
+  const editor = useAtomValue(editorAtom);
+  const hasRemixedRef = useRef(false);
+  const hasFailedRef = useRef(false);
+  const hasFailed = !isLoading && (!!error || !data?.snippet?.presentation);
+  const presentation = data?.snippet?.presentation as any;
+  const hasRemixed = !!presentation?.slides && editor.slides === presentation.slides;
 
   useEffect(() => {
-    if (slug && !hasRemixed) {
+    if (slug && !hasRemixedRef.current) {
       if (isLoading) return;
 
-      if (error || !data?.snippet?.presentation) {
+      if (hasFailed) {
+        if (hasFailedRef.current) return;
+        hasFailedRef.current = true;
         toast.error("Could not load snippet for remixing");
         router.replace("/", { scroll: false });
-        setHasRemixed(true);
         return;
       }
 
-      const presentation = data.snippet.presentation as any;
       if (presentation.slides && presentation.elements) {
         const oldElements = presentation.elements;
         const newElements: Record<string, any> = {};
@@ -67,12 +71,12 @@ export default function RemixClient({ slug }: { slug: string }) {
         }
 
         toast.success("Snippet loaded for remixing");
-        setHasRemixed(true);
+        hasRemixedRef.current = true;
       }
     }
-  }, [slug, data, error, isLoading, setEditor, setCurrentSlideId, setCurrentElementId, router, hasRemixed]);
+  }, [slug, presentation, hasFailed, isLoading, setEditor, setCurrentSlideId, setCurrentElementId, router]);
 
-  if (!hasRemixed) {
+  if (!hasRemixed && !hasFailed) {
     return (
       <div className="h-full w-full layout-fill flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
@@ -84,8 +88,10 @@ export default function RemixClient({ slug }: { slug: string }) {
   }
 
   return (
-    <div className={cn("app-code", "layout-scroll")}>
-      <Frame />
+    <div className="layout-fill">
+      <div className="flex min-h-0 flex-1 flex-col overflow-x-hidden overflow-y-auto">
+        <Frame />
+      </div>
       <Controls />
     </div>
   );

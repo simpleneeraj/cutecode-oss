@@ -7,6 +7,9 @@ import { useSetAtom } from "jotai";
 import { Icon } from "@/components/ui/icon";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
+import { Menu, MenuItem, MenuPopup, MenuTrigger } from "@/components/ui/menu";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { MoreVerticalIcon, Tag01Icon } from "@hugeicons/core-free-icons";
 import { useUser } from "@/hooks/use-auth";
 import { useSubscription } from "@/hooks/use-subscription";
 import { plansDialogOpenAtom } from "@/store/editor/plans";
@@ -14,93 +17,103 @@ import { AnimatePresence, motion, Transition } from "motion/react";
 import ProfileDropdown from "../(view)/preview/components/profile-dropdown";
 import { trackAuth, trackUpgrade } from "@/lib/analytics";
 
-const fadeSlide = {
-  initial: { opacity: 0, filter: "blur(4px)" },
-  animate: { opacity: 1, filter: "blur(0px)" },
-  exit: { opacity: 0, filter: "blur(4px)" },
+const fadeScale = {
+  initial: { opacity: 0, scale: 0.96 },
+  animate: { opacity: 1, scale: 1 },
+  exit: { opacity: 0, scale: 0.96 },
 };
 
 const transition: Transition = { duration: 0.2, ease: "easeOut" };
 
 enum AuthState {
-  PRO = "pro",
+  PREMIUM = "premium",
   FREE = "free",
   SIGNED_OUT = "signed-out",
   LOADING_SUB = "loading-sub",
   LOADING_AUTH = "loading-auth",
 }
-/**
- * Basic flow for auth and subscription UI
- * LOADING       → Spinner
- * SIGNED_OUT    → [Sign In]
- * FREE          → [Upgrade to Pro]  [UserMenu]
- * PRO           → [UserMenu]
- */
 
 export default function AuthControls() {
   const { isSignedIn, isLoaded } = useUser();
-  const { isPro, isLoaded: subLoaded } = useSubscription();
+  const { isFree, isLoaded: subLoaded } = useSubscription();
   const setOpen = useSetAtom(plansDialogOpenAtom);
   const pathname = usePathname();
+  const signInHref = `/account/sign-in?redirectedFrom=${encodeURIComponent(pathname ?? "/")}`;
 
   const stateKey = React.useMemo(() => {
     if (!isLoaded) return AuthState.LOADING_AUTH;
     if (!isSignedIn) return AuthState.SIGNED_OUT;
     if (!subLoaded) return AuthState.LOADING_SUB;
-    if (isPro) return AuthState.PRO;
+    if (!isFree) return AuthState.PREMIUM;
     return AuthState.FREE;
-  }, [isLoaded, isSignedIn, subLoaded, isPro]);
+  }, [isLoaded, isSignedIn, subLoaded, isFree]);
 
   const content = React.useMemo(() => {
     switch (stateKey) {
       case AuthState.LOADING_AUTH:
       case AuthState.LOADING_SUB:
         return (
-          <Button variant="outline">
+          <Button variant="outline" size="icon" aria-label="Loading account">
             <Spinner />
           </Button>
         );
 
       case AuthState.SIGNED_OUT:
         return (
-          <Button
-            variant="outline"
-            onClick={() => trackAuth.signInClicked("header")}
-            render={
-              <Link href={`/account/sign-in?redirectedFrom=${encodeURIComponent(pathname ?? "/")}`} />
-            }
-          >
-            <Icon icon="solar:login-3-linear" className="size-3.5" />
-            Sign in
-          </Button>
+          <>
+            <Button variant="ghost" className="hidden sm:inline-flex" render={<Link href="/pricing" />}>
+              Pricing
+            </Button>
+            <Button
+              variant="outline"
+              aria-label="Sign in"
+              onClick={() => trackAuth.signInClicked("header")}
+              render={<Link href={signInHref} />}
+            >
+              <Icon icon="solar:login-3-linear" className="size-3.5" />
+              <span className="hidden sm:inline">Sign in</span>
+            </Button>
+            <Menu>
+              <MenuTrigger render={<Button variant="ghost" size="icon" aria-label="More" className="sm:hidden" />}>
+                <HugeiconsIcon icon={MoreVerticalIcon} aria-hidden="true" />
+              </MenuTrigger>
+              <MenuPopup align="end" sideOffset={8}>
+                <MenuItem render={<Link href="/pricing" />}>
+                  <HugeiconsIcon icon={Tag01Icon} aria-hidden="true" />
+                  Plans & pricing
+                </MenuItem>
+              </MenuPopup>
+            </Menu>
+          </>
         );
       case AuthState.FREE:
         return (
           <div className="flex items-center gap-2">
             <Button
-              variant="outline"
+              className="hidden sm:inline-flex"
+              render={<motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} />}
               onClick={() => {
                 trackUpgrade.dialogOpened("header");
                 setOpen(true);
               }}
             >
               <Icon icon="solar:crown-linear" className="size-3.5" />
-              Upgrade to Pro
+              Upgrade to Premium
             </Button>
             <ProfileDropdown />
           </div>
         );
 
-      case AuthState.PRO:
+      case AuthState.PREMIUM:
         return <ProfileDropdown />;
     }
-  }, [stateKey, setOpen]);
+  }, [stateKey, setOpen, signInHref]);
 
   return (
     <AnimatePresence mode="wait" initial={false}>
       <motion.div
         key={stateKey}
-        variants={fadeSlide}
+        variants={fadeScale}
         initial="initial"
         animate="animate"
         exit="exit"

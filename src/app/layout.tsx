@@ -4,8 +4,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { BASE_URL } from "@/utils/common";
 import { Toaster } from "@/components/toast";
 import JsonLd from "@/components/seo/json-ld";
+import RumMonitor from "@/components/rum-monitor";
 import type { Metadata, Viewport } from "next";
-import { Analytics } from "@vercel/analytics/next";
 import { TooltipProvider } from "@/components/tooltip";
 import { ThemeProvider } from "@/components/theme-switch/theme-provider";
 import { headingFontVariable } from "@/fonts/global";
@@ -22,7 +22,7 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
-const title = "CuteCode — Create beautiful images of your code";
+const title = "Cool Snippets — Create beautiful images of your code";
 const description =
   "Create beautiful code screenshots in seconds. Pick a theme, export HD images, share instantly. Best alternative to ray.so and Carbon for developers.";
 
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
     default: title,
-    template: "%s | CuteCode",
+    template: "%s | Cool Snippets",
   },
   description,
   robots: {
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: BASE_URL,
-    siteName: "CuteCode",
+    siteName: "Cool Snippets",
     title,
     description,
     images: [
@@ -69,7 +69,7 @@ export const metadata: Metadata = {
         url: `${BASE_URL}/og-image.png`,
         width: 1200,
         height: 630,
-        alt: "CuteCode — Create beautiful images of your code",
+        alt: "Cool Snippets — Create beautiful images of your code",
       },
     ],
     locale: "en_US",
@@ -82,16 +82,17 @@ export const metadata: Metadata = {
     description,
     images: [`${BASE_URL}/og-image.png`],
   },
-  applicationName: "CuteCode",
+  applicationName: "Cool Snippets",
   category: "Developer Tools",
-  creator: "CuteCode",
-  publisher: "CuteCode",
+  creator: "Cool Snippets",
+  publisher: "Cool Snippets",
 };
 
 export const viewport: Viewport = {
   themeColor: "#181818",
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -108,8 +109,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProvider>
           <TooltipProvider>
             <div className="isolate relative flex flex-col">{children}</div>
-            <Toaster position="top-center" offset={70} duration={2000} />
-            {process.env.NODE_ENV === "production" && <Analytics />}
+            <Toaster position="top-center" />
+            <RumMonitor />
           </TooltipProvider>
         </ThemeProvider>
       </body>

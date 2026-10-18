@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { CodeSquare, CheckCircle, Copy } from "@solar-icons/react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { CodeSquareIcon, CheckmarkCircleIcon, Copy01Icon } from "@hugeicons/core-free-icons";
 import { toast } from "@/components/toast";
 import { Button } from "@/components/ui/button";
 import { DialogProps } from "@radix-ui/react-dialog";
@@ -64,7 +65,7 @@ export function EmbedDialog({ slug, ...props }: EmbedDialogProps) {
         <DialogHeader className="relative px-5 pt-5 pb-4">
           <DialogTitle className="flex items-center gap-2.5 text-base">
             <span className="flex size-8 items-center justify-center rounded-xl bg-foreground text-background">
-              <CodeSquare weight="BoldDuotone" className="size-4" aria-hidden="true" />
+              <HugeiconsIcon icon={CodeSquareIcon} className="size-4" aria-hidden="true" />
             </span>
             Embed Snippet
           </DialogTitle>
@@ -101,7 +102,7 @@ export function EmbedDialog({ slug, ...props }: EmbedDialogProps) {
                         width: 1.5rem;
                         margin-right: 1.25rem;
                         text-align: right;
-                        color: hsl(var(--muted-foreground) / 0.8);
+                        color: var(--muted-foreground);
                         user-select: none;
                         font-size: 0.75rem;
                       }
@@ -124,7 +125,7 @@ export function EmbedDialog({ slug, ...props }: EmbedDialogProps) {
                             exit={{ scale: 0.5, opacity: 0 }}
                             transition={{ duration: 0.15 }}
                           >
-                            <CheckCircle weight="BoldDuotone" className="size-3.5" aria-hidden="true" />
+                            <HugeiconsIcon icon={CheckmarkCircleIcon} className="size-3.5" aria-hidden="true" />
                           </motion.span>
                         ) : (
                           <motion.span
@@ -134,7 +135,7 @@ export function EmbedDialog({ slug, ...props }: EmbedDialogProps) {
                             exit={{ scale: 0.5, opacity: 0 }}
                             transition={{ duration: 0.15 }}
                           >
-                            <Copy weight="LineDuotone" className="size-3.5" aria-hidden="true" />
+                            <HugeiconsIcon icon={Copy01Icon} className="size-3.5" aria-hidden="true" />
                           </motion.span>
                         )}
                       </AnimatePresence>

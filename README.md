@@ -1,6 +1,6 @@
 <div align="center">
-  <img src="public/og-image.png" alt="CuteCode" width="100%" />
-  <h1>CuteCode</h1>
+  <img src="public/og-image.png" alt="Cool Snippets" width="100%" />
+  <h1>Cool Snippets</h1>
   <p><strong>Create beautiful images of your code</strong></p>
   <p>Open-source ray.so alternative with 45+ themes, snippet sharing, and more.<br/>Small Tools – Big Impact ✨</p>
 
@@ -9,7 +9,7 @@
   <a href="https://github.com/simpleneeraj/cutecode/issues"><img src="https://img.shields.io/github/issues/simpleneeraj/cutecode?style=for-the-badge&color=0d1117" alt="Issues" /></a>
   <a href="https://github.com/sponsors/simpleneeraj"><img src="https://img.shields.io/badge/Sponsor-❤️-0d1117?style=for-the-badge" alt="Sponsor" /></a>
   <br />
-  <a href="https://cutecode.app"><strong>Live Demo →</strong></a> · <a href="#-getting-started">Quick Start</a> · <a href="#-contributing">Contribute</a> · <a href="https://github.com/simpleneeraj/cutecode/issues">Report Bug</a>
+  <a href="https://coolsnippets.fun"><strong>Live Demo →</strong></a> · <a href="#-getting-started">Quick Start</a> · <a href="#-contributing">Contribute</a> · <a href="https://github.com/simpleneeraj/cutecode/issues">Report Bug</a>
 </div>
 
 <br />
@@ -23,14 +23,14 @@
 - 🌓 **Dark & Light Mode** — Full theme support with system preference detection
 - 🎯 **Syntax Highlighting** — Powered by Shiki with 100+ language support
 - 📤 **Export Options** — Copy to clipboard, download as PNG, or share via URL
-- 🔐 **Authentication** — Supabase Auth (email + GitHub/Google OAuth) to save and manage your snippets
-- 💎 **Pro & Premium Plans** — Unlimited HD/4K exports, premium themes, watermark-free images
+- 🔐 **Authentication** — Better Auth (email + GitHub/Google OAuth) to save and manage your snippets
+- 💎 **Pro & Premium Plans** — Pro ($5/mo or $48/yr): premium themes and fonts, 3x export, no watermark, unlimited publishing. Premium ($12/mo or $120/yr): adds 6x export, HD video, private and passcode shares, full analytics
 - 📱 **Responsive Design** — Works beautifully on desktop and mobile
 - ⚡ **Built on Next.js 16** — React 19, App Router, Server Components, Edge-ready
 
 ## 🎨 Themes (45+)
 
-CuteCode ships with 45+ hand-crafted themes across two categories:
+Cool Snippets ships with 45+ hand-crafted themes across two categories:
 
 | Brand Themes (16) | Aesthetic Themes (28+) |
 |---|---|
@@ -76,11 +76,11 @@ CuteCode ships with 45+ hand-crafted themes across two categories:
 | **UI** | React 19, Tailwind CSS 4, Base UI (coss) |
 | **Animation** | Motion (Framer Motion) |
 | **Syntax Highlighting** | Shiki |
-| **Authentication** | Supabase Auth |
-| **Database** | PostgreSQL + Prisma ORM |
+| **Authentication** | Better Auth |
+| **Database** | PostgreSQL + Drizzle ORM |
 | **Payments** | Dodo Payments |
 | **State Management** | Jotai |
-| **Deployment** | Vercel |
+| **Deployment** | AWS Amplify Hosting ([runbook](docs/deploy-aws.md)) |
 
 ## 🚀 Getting Started
 
@@ -105,28 +105,30 @@ yarn install
 
 ### 3. Set up environment variables
 
-```bash
-cp .env.example .env.development
-```
-
-Fill in your environment variables (see [`.env.example`](.env.example) for the full list with comments):
+Create `.env.development` and fill in your environment variables:
 
 ```env
 # App
 NEXT_PUBLIC_BASE_URL="http://localhost:3000"
 
-# Supabase Auth (https://supabase.com → Project Settings → API)
-NEXT_PUBLIC_SUPABASE_URL="https://your-project.supabase.co"
-NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="sb_publishable_..."
-SUPABASE_SERVICE_ROLE_KEY="sb_secret_..."   # server only
+# Better Auth
+BETTER_AUTH_SECRET="generate-with-openssl-rand-hex-32"
+BETTER_AUTH_URL="http://localhost:3000"
+GITHUB_CLIENT_ID=""
+GITHUB_CLIENT_SECRET=""
+GOOGLE_CLIENT_ID=""
+GOOGLE_CLIENT_SECRET=""
 
 # Dodo Payments (https://dodopayments.com)
 DODO_PAYMENTS_API_KEY="your_api_key"
 DODO_PAYMENTS_WEBHOOK_KEY="whsec_..."
 DODO_PAYMENTS_RETURN_URL="http://localhost:3000/checkout/success"
 DODO_PAYMENTS_ENVIRONMENT="test_mode"
-NEXT_PUBLIC_DODO_PRODUCT_PRO="pdt_..."
-NEXT_PUBLIC_DODO_PRODUCT_PREMIUM="pdt_..."
+NEXT_PUBLIC_DODO_PRODUCT_PRO_MONTHLY="pdt_..."
+NEXT_PUBLIC_DODO_PRODUCT_PRO_YEARLY="pdt_..."
+NEXT_PUBLIC_DODO_PRODUCT_PREMIUM_MONTHLY="pdt_..."
+NEXT_PUBLIC_DODO_PRODUCT_PREMIUM_YEARLY="pdt_..."
+NEXT_PUBLIC_DODO_PRODUCT_PREMIUM="pdt_..."   # legacy Premium, grandfathered
 
 # Database (PostgreSQL)
 DATABASE_URL="postgresql://user:password@localhost:5432/cutecode"
@@ -135,9 +137,11 @@ DATABASE_URL="postgresql://user:password@localhost:5432/cutecode"
 CRON_SECRET="generate-with-openssl-rand-hex-32"
 ```
 
-> **Auth setup:** in the Supabase dashboard, enable the GitHub/Google OAuth providers,
-> add `<your-url>/auth/callback` as a redirect URL, and set the sign-up + recovery email
-> templates to include `{{ .Token }}` so the 6-digit code screens work.
+> **Auth setup:** OAuth providers are enabled when their client id and secret are set.
+> Use `<your-url>/api/auth/callback/github` and `<your-url>/api/auth/callback/google` as redirect URLs.
+>
+> **Products:** `yarn dodo:products` creates or updates the four Dodo subscription products
+> and prints the product env lines.
 
 ### 4. Set up the database
 
@@ -175,7 +179,7 @@ cutecode/
 │   ├── store/           # Jotai state atoms
 │   ├── styles/          # Global CSS & preset styles
 │   └── utils/           # Helper functions
-├── .env.example         # Environment variables template
+├── .env.development     # Environment variables
 ├── next.config.js       # Next.js configuration
 └── package.json
 ```
@@ -201,18 +205,18 @@ Contributions are welcome! Here's how to get started:
 
 ## 💖 Sponsor
 
-If CuteCode helps you create beautiful code screenshots, consider sponsoring to keep the project alive and growing:
+If Cool Snippets helps you create beautiful code screenshots, consider sponsoring to keep the project alive and growing:
 
 <a href="https://github.com/sponsors/simpleneeraj">
-  <img src="https://img.shields.io/badge/Sponsor_CuteCode-❤️-ea4aaa?style=for-the-badge&logo=github-sponsors" alt="Sponsor" />
+  <img src="https://img.shields.io/badge/Sponsor_Cool_Snippets-❤️-ea4aaa?style=for-the-badge&logo=github-sponsors" alt="Sponsor" />
 </a>
 
 ## 🙏 Acknowledgements
 
-- **Special thanks to [Raycast](https://raycast.com) and [ray.so](https://ray.so)** — CuteCode started as a fork of the incredible ray.so project. We're grateful for the foundation they built and their commitment to open source.
+- **Special thanks to [Raycast](https://raycast.com) and [ray.so](https://ray.so)** — Cool Snippets started as a fork of the incredible ray.so project. We're grateful for the foundation they built and their commitment to open source.
 - [Shiki](https://shiki.matsu.io/) — Beautiful syntax highlighting
-- [Supabase](https://supabase.com) — Authentication
-- [Vercel](https://vercel.com) — Hosting & deployment
+- [Better Auth](https://better-auth.com) — Authentication
+- [AWS](https://aws.amazon.com) — Hosting (Amplify), database (RDS), email (SES), monitoring (CloudWatch RUM)
 
 See [CREDITS.md](CREDITS.md) for the full list of technologies, libraries, and inspirations.
 
@@ -226,7 +230,7 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
   <p><strong>Small Tools – Big Impact ✨</strong></p>
   <p>Built with ❤️ by <a href="https://github.com/simpleneeraj">simpleneeraj</a></p>
   <p>
-    <a href="https://cutecode.app">Website</a> · 
+    <a href="https://coolsnippets.fun">Website</a> · 
     <a href="https://x.com/iamsimpleneeraj">Twitter</a> · 
     <a href="https://github.com/simpleneeraj/cutecode/issues">Issues</a>
   </p>

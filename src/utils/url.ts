@@ -6,7 +6,7 @@ export function getRedirectUrlWithParam(key: string, value: string, fallbackUrl 
   if (typeof window === "undefined") return fallbackUrl;
   const url = new URL(window.location.href);
   url.searchParams.set(key, value);
-  return url.toString();
+  return `${url.pathname}${url.search}${url.hash}`;
 }
 
 /**

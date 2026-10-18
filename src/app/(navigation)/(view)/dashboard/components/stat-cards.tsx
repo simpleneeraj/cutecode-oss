@@ -2,9 +2,9 @@ import { Card } from "@/components/ui/card";
 import { Icon } from "@/components/ui/icon";
 
 type Totals = {
-  views: number;
+  views: number | null;
   published: number;
-  upvotes: number;
+  upvotes: number | null;
   followers: number;
 };
 
@@ -34,7 +34,7 @@ export function StatCards({ totals, totalSnippets }: { totals: Totals; totalSnip
           </div>
           <div className="flex flex-col gap-0.5">
             <span className="text-3xl font-semibold tracking-tight text-foreground tabular-nums">
-              {formatCount(s.value)}
+              {s.value === null ? "Premium" : formatCount(s.value)}
             </span>
             <span className="text-xs text-muted-foreground">{s.sub}</span>
           </div>

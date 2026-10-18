@@ -12,7 +12,13 @@ export default function Navigations() {
     <Tabs value={pathname}>
       <TabsList>
         {siteConfig.tabs.map((tab) => (
-          <TabsTab key={tab.value} value={tab.href} nativeButton={false} render={<Link href={tab.href} />}>
+          <TabsTab
+            key={tab.value}
+            value={tab.href}
+            nativeButton={false}
+            className="h-8 px-2.5 text-sm hover:text-foreground"
+            render={<Link href={tab.href} />}
+          >
             {tab.label}
           </TabsTab>
         ))}

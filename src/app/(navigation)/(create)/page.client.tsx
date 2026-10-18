@@ -1,13 +1,14 @@
 "use client";
 
-import { cn } from "@/utils/cn";
 import Frame from "@/components/editor/Frame";
 import Controls from "@/components/editor/controls";
 
 export default function PageClient() {
   return (
-    <div className={cn("app-code", "layout-scroll")}>
-      <Frame />
+    <div className="layout-fill">
+      <div className="flex min-h-0 flex-1 flex-col overflow-x-hidden overflow-y-auto">
+        <Frame />
+      </div>
       <Controls />
     </div>
   );

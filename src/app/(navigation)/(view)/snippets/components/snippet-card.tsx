@@ -2,8 +2,9 @@
 
 import { Link } from "@/components/link";
 import { motion } from "motion/react";
-import { Like, Bookmark, Calendar, Global, EyeClosed, LockPassword, LockKeyholeMinimalistic } from "@solar-icons/react";
-import { ShareVisibility } from "@/generated/prisma/enums";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { FavouriteIcon, Bookmark01Icon, Calendar02Icon, Globe02Icon, EyeIcon, LockPasswordIcon, LockIcon } from "@hugeicons/core-free-icons";
+import { ShareVisibility } from "@/db/schema";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { cn } from "@/utils/cn";
@@ -17,13 +18,13 @@ function VisibilityIcon({ visibility }: { visibility: string }) {
   const className = "size-3.5 text-muted-foreground";
   switch (visibility) {
     case ShareVisibility.PUBLIC:
-      return <Global weight="LineDuotone" className={className} aria-hidden="true" />;
+      return <HugeiconsIcon icon={Globe02Icon} className={className} aria-hidden="true" />;
     case ShareVisibility.UNLISTED:
-      return <EyeClosed weight="LineDuotone" className={className} aria-hidden="true" />;
+      return <HugeiconsIcon icon={EyeIcon} className={className} aria-hidden="true" />;
     case ShareVisibility.PASSCODE:
-      return <LockPassword weight="LineDuotone" className={className} aria-hidden="true" />;
+      return <HugeiconsIcon icon={LockPasswordIcon} className={className} aria-hidden="true" />;
     default:
-      return <LockKeyholeMinimalistic weight="LineDuotone" className={className} aria-hidden="true" />;
+      return <HugeiconsIcon icon={LockIcon} className={className} aria-hidden="true" />;
   }
 }
 
@@ -108,16 +109,16 @@ export function SnippetCard({ snippet, index }: { snippet: Snippet; index: numbe
         <CardFooter className="flex items-center justify-between gap-2 border-t px-4 py-3 text-xs text-muted-foreground">
           <div className="flex items-center gap-3">
             <span className="flex items-center gap-1">
-              <Like weight="BoldDuotone" className="size-3.5" aria-hidden="true" />
+              <HugeiconsIcon icon={FavouriteIcon} className="size-3.5" aria-hidden="true" />
               {snippet._count.upvotes}
             </span>
             <span className="flex items-center gap-1">
-              <Bookmark weight="BoldDuotone" className="size-3.5" aria-hidden="true" />
+              <HugeiconsIcon icon={Bookmark01Icon} className="size-3.5" aria-hidden="true" />
               {snippet._count.bookmarks}
             </span>
           </div>
           <span className="flex items-center gap-1 text-muted-foreground/70">
-            <Calendar weight="LineDuotone" className="size-3.5" aria-hidden="true" />
+            <HugeiconsIcon icon={Calendar02Icon} className="size-3.5" aria-hidden="true" />
             {formatDate(snippet.createdAt)}
           </span>
         </CardFooter>

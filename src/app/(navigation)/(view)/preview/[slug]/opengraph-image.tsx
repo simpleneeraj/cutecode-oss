@@ -1,6 +1,9 @@
 import { ImageResponse } from "next/og";
-import { prisma } from "@/lib/db";
+import { eq } from "drizzle-orm";
+import { db } from "@/db";
+import { shareLinks } from "@/db/schema";
 import { BASE_URL } from "@/utils/common";
+import { exposesShareDetails } from "@/lib/share/access";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
@@ -11,21 +14,18 @@ type Props = { params: Promise<{ slug: string }> };
 export default async function SnippetOgImage({ params }: Props) {
   const { slug } = await params;
 
-  const share = await prisma.shareLink.findUnique({
-    where: { slug },
-    select: {
+  const share = await db.query.shareLinks.findFirst({
+    where: eq(shareLinks.slug, slug),
+    columns: { visibility: true, expiresAt: true, maxViews: true, viewCount: true },
+    with: {
       snippet: {
-        select: {
-          title: true,
-          description: true,
-          tags: true,
-          user: { select: { name: true } },
-        },
+        columns: { title: true, description: true, tags: true },
+        with: { user: { columns: { name: true } } },
       },
     },
   });
 
-  const snippet = share?.snippet;
+  const snippet = share && exposesShareDetails(share) ? share.snippet : null;
   const title = snippet?.title || "Code Snippet";
   const author = snippet?.user?.name || "Anonymous";
   const tags = snippet?.tags?.slice(0, 4) ?? [];
@@ -62,9 +62,9 @@ export default async function SnippetOgImage({ params }: Props) {
 
         {/* Top: logo + brand */}
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          <img src={logoUrl} alt="CuteCode" width={40} height={40} style={{ borderRadius: 10 }} />
+          <img src={logoUrl} alt="Cool Snippets" width={40} height={40} style={{ borderRadius: 10 }} />
           <span style={{ color: "#e8d5c4", fontSize: 28, fontWeight: 700, letterSpacing: "-0.5px" }}>
-            CuteCode
+            Cool Snippets
           </span>
         </div>
 
@@ -134,7 +134,7 @@ export default async function SnippetOgImage({ params }: Props) {
               letterSpacing: "-0.3px",
             }}
           >
-            Remix on CuteCode
+            Remix on Cool Snippets
           </div>
         </div>
       </div>

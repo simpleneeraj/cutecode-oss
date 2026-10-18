@@ -48,7 +48,7 @@ every project and team below. 💛
 
 - **[Dodo Payments](https://dodopayments.com)** — subscriptions & billing.
 - **[Dub](https://dub.co)** — short links.
-- **[Vercel](https://vercel.com)** — hosting, OG image generation (`@vercel/og`), analytics.
+- **[AWS](https://aws.amazon.com)** — hosting (Amplify), database (RDS), email (SES), analytics (CloudWatch RUM).
 - **[Pino](https://getpino.io)** — logging.
 
 ## Utilities

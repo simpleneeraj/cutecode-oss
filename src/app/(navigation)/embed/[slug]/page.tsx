@@ -4,7 +4,7 @@ import EmbedSnippetClient from "./page.client";
 export const metadata: Metadata = {
   title: "Embed Snippet",
   description:
-    "Embed this code snippet anywhere — blogs, docs, or websites. Beautiful syntax highlighting powered by CuteCode.",
+    "Embed this code snippet anywhere — blogs, docs, or websites. Beautiful syntax highlighting powered by Cool Snippets.",
   robots: {
     index: false,
     follow: false,

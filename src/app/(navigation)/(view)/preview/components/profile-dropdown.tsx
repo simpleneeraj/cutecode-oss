@@ -3,7 +3,7 @@
 import * as React from "react";
 import { cn } from "@/utils/cn";
 import { Link } from "@/components/link";
-import { useClerk, useUser } from "@/hooks/use-auth";
+import { useAuthActions, useUser } from "@/hooks/use-auth";
 import { useSetAtom } from "jotai";
 import {
   DropdownMenu,
@@ -11,7 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/components/ui/menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSubscription } from "@/hooks/use-subscription";
 import { resetEditorAtom } from "@/store/editor/editor/reset";
@@ -19,17 +19,17 @@ import { plansDialogOpenAtom } from "@/store/editor/plans";
 import useBilling from "@/hooks/use-billing";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Tag01Icon } from "@hugeicons/core-free-icons";
 import PremiumBadge from "./premium-badge";
-
-const productId = process.env.NEXT_PUBLIC_DODO_PRODUCT_PRO;
 
 interface ProfileDropdownProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export default function ProfileDropdown({ className, ...props }: ProfileDropdownProps) {
   const { user } = useUser();
-  const { openBilling } = useBilling();
-  const { isPro } = useSubscription();
-  const { signOut, openUserProfile } = useClerk();
+  const { openPortal } = useBilling();
+  const { plan, isFree } = useSubscription();
+  const { signOut, openUserProfile } = useAuthActions();
 
   const resetEditor = useSetAtom(resetEditorAtom);
   const setPlansOpen = useSetAtom(plansDialogOpenAtom);
@@ -55,28 +55,30 @@ export default function ProfileDropdown({ className, ...props }: ProfileDropdown
   return (
     <div className={cn("relative", className)} {...props}>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="outline"
-            size="icon"
-            type="button"
-            className={cn(
-              "relative flex items-center justify-center rounded-full p-0 outline-none",
-              isPro && "ring-2 ring-amber-500/40 ring-offset-1 ring-offset-background",
-            )}
-          >
-            <Avatar>
-              <AvatarImage src={avatar} alt={name} />
-              <AvatarFallback>{initials}</AvatarFallback>
-            </Avatar>
+        <DropdownMenuTrigger
+          render={
+            <Button
+              variant="outline"
+              size="icon"
+              type="button"
+              className={cn(
+                "relative flex size-8 items-center justify-center rounded-full p-0 outline-none",
+                !isFree && "ring-2 ring-warning/40 ring-offset-1 ring-offset-background",
+              )}
+            >
+              <Avatar className="size-full">
+                <AvatarImage src={avatar} alt={name} />
+                <AvatarFallback>{initials}</AvatarFallback>
+              </Avatar>
 
-            {isPro && (
-              <span className="absolute -bottom-0.5 -right-0.5 flex size-3.5 items-center justify-center rounded-full bg-foreground ring-2 ring-background">
-                <Icon icon="solar:crown-bold" className="size-2.5 text-background" />
-              </span>
-            )}
-          </Button>
-        </DropdownMenuTrigger>
+              {!isFree && (
+                <span className="absolute -bottom-0.5 -right-0.5 flex size-3.5 items-center justify-center rounded-full bg-foreground ring-2 ring-background">
+                  <Icon icon="solar:crown-bold" className="size-2.5 text-background" />
+                </span>
+              )}
+            </Button>
+          }
+        />
 
         <DropdownMenuContent align="end" sideOffset={8} className="flex w-64 flex-col gap-1 p-1.5">
           <div className="flex items-center gap-3 px-2 py-1.5">
@@ -90,36 +92,39 @@ export default function ProfileDropdown({ className, ...props }: ProfileDropdown
               <p className="truncate text-xs text-muted-foreground">{email}</p>
             </div>
 
-            {isPro && <PremiumBadge />}
+            {!isFree && <PremiumBadge plan={plan} />}
           </div>
 
           <DropdownMenuSeparator />
 
-          <DropdownMenuItem asChild className="cursor-pointer gap-2.5 px-2 py-2">
-            <Link href="/dashboard">
-              <Icon icon="solar:widget-2-linear" className="size-4" />
-              Dashboard
-            </Link>
+          <DropdownMenuItem render={<Link href="/dashboard" />} className="cursor-pointer gap-2.5 px-2 py-2">
+            <Icon icon="solar:widget-2-linear" className="size-4" />
+            Dashboard
           </DropdownMenuItem>
 
-          {isPro && (
-            <DropdownMenuItem className="cursor-pointer gap-2.5 px-2 py-2" onClick={() => openBilling(productId)}>
+          {!isFree && (
+            <DropdownMenuItem className="cursor-pointer gap-2.5 px-2 py-2" onClick={openPortal}>
               <Icon icon="solar:card-linear" className="size-4" />
               Manage billing
             </DropdownMenuItem>
           )}
+
+          <DropdownMenuItem render={<Link href="/pricing" />} className="cursor-pointer gap-2.5 px-2 py-2">
+            <HugeiconsIcon icon={Tag01Icon} className="size-4" aria-hidden="true" />
+            Plans & pricing
+          </DropdownMenuItem>
 
           <DropdownMenuItem className="cursor-pointer gap-2.5 px-2 py-2" onClick={() => openUserProfile()}>
             <Icon icon="solar:settings-minimalistic-linear" className="size-4" />
             Manage account
           </DropdownMenuItem>
 
-          {!isPro && (
+          {isFree && (
             <DropdownMenuItem className="cursor-pointer gap-2.5 px-2 py-2" onClick={() => setPlansOpen(true)}>
               <Icon icon="solar:crown-linear" className="size-4" />
               <div className="flex flex-col">
                 <span className="text-sm font-medium text-foreground">Upgrade plan</span>
-                <span className="text-xs text-muted-foreground">Premium themes, 4K & API</span>
+                <span className="text-xs text-muted-foreground">Pro and Premium plans</span>
               </div>
             </DropdownMenuItem>
           )}

@@ -30,7 +30,6 @@ export function SnippetFrame({ elementId, element, windowWidth }: SnippetFramePr
       value: (props?.language as string)?.toLowerCase() || "typescript",
     },
     windowWidth,
-    code: (element.content as string) || "",
     exportSize: 2,
     themeId,
     onFileNameChange: () => {},

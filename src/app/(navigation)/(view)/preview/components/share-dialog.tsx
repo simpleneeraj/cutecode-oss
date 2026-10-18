@@ -104,7 +104,7 @@ export function ShareDialog({ slug }: ShareDialogProps) {
             </Button>
           </div>
 
-          <div className="space-y-2">
+          <div className="flex flex-col gap-2">
             <p className="text-xs font-medium text-foreground/80 px-1">Or copy link</p>
             <motion.div
               initial={{ opacity: 0, y: 4 }}

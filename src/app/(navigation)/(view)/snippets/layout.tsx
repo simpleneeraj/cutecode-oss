@@ -4,13 +4,13 @@ import Navigations from "../../components/navigation";
 import { PreviewSnippetHeader } from "../preview/components/preview-snippet-header";
 
 export const metadata: Metadata = {
-  title: "Preview | CuteCode",
-  description: "Preview your elegant code snippets on CuteCode.",
+  title: "Preview | Cool Snippets",
+  description: "Preview your elegant code snippets on Cool Snippets.",
 };
 
 const SnippetsLayout = async ({ children }: React.PropsWithChildren) => {
   return (
-    <View className="layout-fill relative flex-1 bg-accent dark:bg-black">
+    <View className="layout-fill relative flex-1 bg-muted">
       <PreviewSnippetHeader title="Snippets">
         <Navigations />
       </PreviewSnippetHeader>

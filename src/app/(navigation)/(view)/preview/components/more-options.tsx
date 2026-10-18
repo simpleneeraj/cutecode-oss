@@ -1,23 +1,24 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { HugeiconsIcon } from "@hugeicons/react";
 import {
-  ForbiddenCircle,
-  CodeSquare,
-  PenNewSquare,
-  EyeClosed,
-  Global,
-  Lock,
-  Pin,
-  TrashBinTrash,
-  DangerTriangle,
-  MenuDots,
-  Dislike,
-} from "@solar-icons/react";
+  CancelCircleIcon,
+  CodeSquareIcon,
+  Edit01Icon,
+  EyeIcon,
+  Globe02Icon,
+  LockIcon,
+  PinIcon,
+  Delete02Icon,
+  Alert01Icon,
+  MoreHorizontalIcon,
+  ThumbsDownIcon,
+} from "@hugeicons/core-free-icons";
 import { Menu, MenuItem, MenuPopup, MenuSeparator, MenuTrigger } from "@/components/ui/menu";
 import React, { useState } from "react";
 import { EmbedDialog } from "./embed-dialog";
-import { toast } from "sonner";
+import { toast } from "@/components/toast";
 
 type Visibility = "public" | "private" | "unlisted";
 
@@ -39,23 +40,23 @@ const VISIBILITY_CYCLE: Record<Visibility, { next: Visibility; label: string; ic
   public: {
     next: "unlisted",
     label: "Make Unlisted",
-    icon: <EyeClosed weight="LineDuotone" className="size-4" aria-hidden />,
+    icon: <HugeiconsIcon icon={EyeIcon} className="size-4" aria-hidden />,
   },
   unlisted: {
     next: "private",
     label: "Make Private",
-    icon: <Lock weight="LineDuotone" className="size-4" aria-hidden />,
+    icon: <HugeiconsIcon icon={LockIcon} className="size-4" aria-hidden />,
   },
   private: {
     next: "public",
     label: "Make Public",
-    icon: <Global weight="LineDuotone" className="size-4" aria-hidden />,
+    icon: <HugeiconsIcon icon={Globe02Icon} className="size-4" aria-hidden />,
   },
 };
 
 const testFun = () => {
   console.log("testFun");
-  toast.message("Feature coming soon!", { id: "testFun" });
+  toast.info("Feature coming soon!", { id: "testFun" });
 };
 export default function MoreOptions({
   slug,
@@ -79,14 +80,14 @@ export default function MoreOptions({
     <React.Fragment>
       <Menu>
         <MenuTrigger render={<Button variant="outline" size="sm" aria-label="More options" />}>
-          <MenuDots weight="LineDuotone" className="size-4" aria-hidden />
+          <HugeiconsIcon icon={MoreHorizontalIcon} className="size-4" aria-hidden />
         </MenuTrigger>
 
         <MenuPopup align="end">
           {isOwner ? (
             <>
               <MenuItem onClick={onEdit}>
-                <PenNewSquare weight="LineDuotone" className="size-4" aria-hidden />
+                <HugeiconsIcon icon={Edit01Icon} className="size-4" aria-hidden />
                 Edit Snippet
               </MenuItem>
 
@@ -96,20 +97,20 @@ export default function MoreOptions({
               </MenuItem>
 
               <MenuItem onClick={onPin}>
-                <Pin weight="LineDuotone" className="size-4" aria-hidden />
+                <HugeiconsIcon icon={PinIcon} className="size-4" aria-hidden />
                 Pin to Profile
               </MenuItem>
 
               <MenuSeparator />
 
               <MenuItem onClick={() => setEmbedOpen(true)}>
-                <CodeSquare weight="LineDuotone" className="size-4" aria-hidden />
+                <HugeiconsIcon icon={CodeSquareIcon} className="size-4" aria-hidden />
                 Embed Snippet
               </MenuItem>
               <MenuSeparator />
 
               <MenuItem onClick={onDelete} className={"text-destructive focus:text-destructive"}>
-                <TrashBinTrash weight="BoldDuotone" className="size-4" aria-hidden />
+                <HugeiconsIcon icon={Delete02Icon} className="size-4" aria-hidden />
                 Delete Snippet
               </MenuItem>
             </>
@@ -117,24 +118,24 @@ export default function MoreOptions({
             <>
               {/* ── Viewer actions ── */}
               <MenuItem onClick={() => setEmbedOpen(true)}>
-                <CodeSquare weight="LineDuotone" className="size-4" aria-hidden />
+                <HugeiconsIcon icon={CodeSquareIcon} className="size-4" aria-hidden />
                 Embed Snippet
               </MenuItem>
 
               <MenuSeparator />
 
               <MenuItem onClick={onNotInterested}>
-                <Dislike weight="LineDuotone" className="size-4" aria-hidden />
+                <HugeiconsIcon icon={ThumbsDownIcon} className="size-4" aria-hidden />
                 Not Interested
               </MenuItem>
 
               <MenuItem onClick={onReport}>
-                <DangerTriangle weight="LineDuotone" className="size-4" aria-hidden />
+                <HugeiconsIcon icon={Alert01Icon} className="size-4" aria-hidden />
                 Report
               </MenuItem>
 
               <MenuItem onClick={onBlock} className="text-destructive focus:text-destructive">
-                <ForbiddenCircle weight="LineDuotone" className="size-4" aria-hidden />
+                <HugeiconsIcon icon={CancelCircleIcon} className="size-4" aria-hidden />
                 Block User
               </MenuItem>
             </>

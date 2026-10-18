@@ -3,8 +3,8 @@ import View from "@/components/view";
 import { PreviewSnippetHeader } from "../preview/components/preview-snippet-header";
 
 export const metadata: Metadata = {
-  title: "Preview | CuteCode",
-  description: "Preview your elegant code snippets on CuteCode.",
+  title: "Preview | Cool Snippets",
+  description: "Preview your elegant code snippets on Cool Snippets.",
 };
 
 const PreviewSnippetLayout = async ({ children }: React.PropsWithChildren) => {

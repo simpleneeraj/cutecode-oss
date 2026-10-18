@@ -7,10 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import { PLANS } from "@/lib/billing/plans";
 import useBilling from "@/hooks/use-billing";
+import { usePricing, type PricingResult } from "@/hooks/use-pricing";
+import { Plan } from "@/db/schema";
+import type { PaidPlan } from "@/lib/billing/products";
 import { plansDialogOpenAtom } from "@/store/editor/plans";
 import { FREE_DAILY_PUBLISH_LIMIT } from "@/lib/billing/constants";
-
-const PRO_PRODUCT_ID = process.env.NEXT_PUBLIC_DODO_PRODUCT_PRO;
 
 type AccountCardProps = {
   plan: keyof typeof PLANS;
@@ -23,12 +24,26 @@ function formatDate(iso: string): string {
   return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(new Date(iso));
 }
 
-export function AccountCard({ plan, renewsAt, cancelAtPeriodEnd, totalSnippets }: AccountCardProps) {
-  const { openBilling, isLoading } = useBilling();
-  const setPlansOpen = useSetAtom(plansDialogOpenAtom);
+const NEXT_PLAN: Record<Plan, PaidPlan | null> = {
+  FREE: Plan.PRO,
+  PRO: Plan.PREMIUM,
+  PREMIUM: null,
+};
 
-  const isFree = plan === "FREE";
+function nextPlanPrice(plan: PaidPlan, pricing?: PricingResult) {
+  const info = pricing?.[plan].monthly;
+  if (info) return `${info.price}${info.interval}`;
+  return `$${PLANS[plan].prices.monthly}/month`;
+}
+
+export function AccountCard({ plan, renewsAt, cancelAtPeriodEnd, totalSnippets }: AccountCardProps) {
+  const { openPortal, isLoading } = useBilling();
+  const setPlansOpen = useSetAtom(plansDialogOpenAtom);
+  const { data: pricing } = usePricing();
+
+  const isFree = plan === Plan.FREE;
   const planMeta = PLANS[plan];
+  const nextPlan = NEXT_PLAN[plan];
 
   return (
     <Card className="flex h-fit flex-col gap-5 p-5">
@@ -43,11 +58,14 @@ export function AccountCard({ plan, renewsAt, cancelAtPeriodEnd, totalSnippets }
       <dl className="flex flex-col gap-3 text-sm">
         <div className="flex items-center justify-between">
           <dt className="text-muted-foreground">Plan</dt>
-          <dd className="font-medium text-foreground">
-            {planMeta.name}
-            {planMeta.price > 0 ? ` · $${planMeta.price}/mo` : ""}
-          </dd>
+          <dd className="font-medium text-foreground">{planMeta.name}</dd>
         </div>
+        {nextPlan && (
+          <div className="flex items-center justify-between">
+            <dt className="text-muted-foreground">{PLANS[nextPlan].name}</dt>
+            <dd className="font-medium text-foreground tabular-nums">{nextPlanPrice(nextPlan, pricing)}</dd>
+          </div>
+        )}
         <div className="flex items-center justify-between">
           <dt className="text-muted-foreground">Snippets</dt>
           <dd className="font-medium text-foreground tabular-nums">{totalSnippets}</dd>
@@ -67,19 +85,14 @@ export function AccountCard({ plan, renewsAt, cancelAtPeriodEnd, totalSnippets }
         )}
       </dl>
 
-      {isFree ? (
+      {nextPlan && (
         <Button size="lg" className="w-full" onClick={() => setPlansOpen(true)}>
           <Icon icon="solar:crown-linear" className="size-4" />
-          Upgrade plan
+          {`Upgrade to ${PLANS[nextPlan].name}`}
         </Button>
-      ) : (
-        <Button
-          variant="outline"
-          size="lg"
-          className="w-full"
-          disabled={isLoading}
-          onClick={() => openBilling(PRO_PRODUCT_ID)}
-        >
+      )}
+      {!isFree && (
+        <Button variant="outline" size="lg" className="w-full" disabled={isLoading} onClick={openPortal}>
           <Icon icon="solar:card-linear" className="size-4" />
           Manage billing
         </Button>

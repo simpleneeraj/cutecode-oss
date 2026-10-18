@@ -1,15 +1,15 @@
 import { cn } from "@/utils/cn";
 
 const CODE_LINES = [
-  { w: "55%", o: "bg-foreground/20" },
-  { w: "78%", o: "bg-foreground/12" },
-  { w: "42%", o: "bg-foreground/10" },
-  { w: "68%", o: "bg-foreground/14" },
-  { w: "34%", o: "bg-foreground/8" },
+  "w-11/20 bg-foreground/20",
+  "w-4/5 bg-foreground/12",
+  "w-2/5 bg-foreground/10",
+  "w-7/10 bg-foreground/14",
+  "w-1/3 bg-foreground/8",
 ];
 
 /**
- * Shared monochrome "mini editor" preview used by the snippets and explore grid
+ * Shared monochrome "mini editor" preview used by the snippets and profile grid
  * cards. Purely decorative — a calm window-chrome mock that reads consistently in
  * light and dark. `language` shows in the faux title bar when provided.
  */
@@ -27,8 +27,8 @@ export function SnippetPreview({ language, className }: { language?: string | nu
           )}
         </div>
         <div className="flex flex-1 flex-col gap-2 px-3 py-3">
-          {CODE_LINES.map((line, i) => (
-            <div key={i} className={cn("h-1.5 rounded-full", line.o)} style={{ width: line.w }} />
+          {CODE_LINES.map((line) => (
+            <div key={line} className={cn("h-1.5 rounded-full", line)} />
           ))}
         </div>
       </div>

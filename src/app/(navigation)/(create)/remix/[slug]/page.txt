@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import RemixClient from "./page.client";
 
 export const metadata: Metadata = {
-  title: "Remix Snippet — CuteCode",
+  title: "Remix Snippet — Cool Snippets",
   description: "Loading snippet to remix...",
 };
 

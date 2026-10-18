@@ -15,7 +15,6 @@ import SnippetNotFound from "../components/preview-not-found";
 import MaskWallpaper from "@/plugings/mask-wallpaper";
 import { useSnippetPreview } from "../hooks/use-snippet-preview";
 import { useSnippetComments, useSnippetMutations } from "@/hooks/use-snippet";
-import { useRealtimeChannel } from "@/hooks/use-realtime-channel";
 import { useAtomValue } from "jotai";
 import { wallpaperOptionsAtom } from "@/store/preview/wallpaper-atom";
 import SnippetInfo from "../components/snippet-info";
@@ -55,18 +54,6 @@ export default function PreviewSnippetClient({ slug }: PreviewSnippetClientProps
   const [commentText, setCommentText] = React.useState("");
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
-  // Realtime: live viewer presence + live comment sync for this snippet.
-  const { viewerCount, broadcast } = useRealtimeChannel({
-    channel: snippetId ? `snippet:${snippetId}` : null,
-    presence: true,
-    presenceKey: authenticatedUserId ?? undefined,
-    onBroadcast: {
-      "new-comment": () => {
-        void mutateComments();
-      },
-    },
-  });
-
   async function handleAddComment() {
     if (!snippetId || !commentText.trim()) return;
     setIsSubmitting(true);
@@ -74,8 +61,6 @@ export default function PreviewSnippetClient({ slug }: PreviewSnippetClientProps
       await addComment(snippetId, commentText.trim());
       setCommentText("");
       await mutateComments();
-      // Notify other viewers to refetch the thread.
-      broadcast("new-comment", { snippetId });
     } finally {
       setIsSubmitting(false);
     }
@@ -88,7 +73,7 @@ export default function PreviewSnippetClient({ slug }: PreviewSnippetClientProps
         {authenticatedUserId && (
           <div className="flex gap-2">
             <textarea
-              className="flex-1 resize-none rounded-md border border-border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-brand"
+              className="flex-1 resize-none rounded-md border border-border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring"
               rows={2}
               placeholder="Add a comment..."
               value={commentText}
@@ -113,7 +98,7 @@ export default function PreviewSnippetClient({ slug }: PreviewSnippetClientProps
           <ul className="flex flex-col gap-2">
             {comments.map((c) => (
               <li key={c.id} className="flex gap-2.5 text-sm">
-                <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-brand/20 text-brand text-[10px] font-bold">
+                <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary text-[10px] font-bold">
                   {(c.user?.name?.[0] ?? "U").toUpperCase()}
                 </span>
                 <div className="flex flex-col gap-0.5">
@@ -166,15 +151,6 @@ export default function PreviewSnippetClient({ slug }: PreviewSnippetClientProps
                 Published {format(new Date(snippetRecord.createdAt), "MMMM d, yyyy")}
               </Badge>
 
-              {viewerCount > 1 && (
-                <Badge variant="secondary" className="gap-1.5 bg-background/75 backdrop-blur-lg">
-                  <span className="relative flex size-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500/70" />
-                    <span className="relative inline-flex size-2 rounded-full bg-green-500" />
-                  </span>
-                  {viewerCount} viewing now
-                </Badge>
-              )}
             </View>
 
             <SnippetCard
@@ -230,16 +206,15 @@ export default function PreviewSnippetClient({ slug }: PreviewSnippetClientProps
         >
           <Link
             href={`/remix/${slug}`}
-            className="group flex items-center gap-2.5 rounded-full border border-border bg-background/80 backdrop-blur-sm px-4 py-2 text-sm font-medium text-muted-foreground transition-all hover:border-brand/60 hover:text-foreground hover:bg-background"
+            className="group flex items-center gap-2.5 rounded-full border border-border bg-background/80 backdrop-blur-sm px-4 py-2 text-sm font-medium text-muted-foreground transition-all hover:border-primary/40 hover:text-foreground hover:bg-background"
           >
             <span
-              className="flex size-5 items-center justify-center rounded-full text-xs font-bold transition-colors"
-              style={{ background: "hsl(var(--brand-subtle))", color: "hsl(var(--brand))" }}
+              className="flex size-5 items-center justify-center rounded-full text-xs font-bold transition-colors bg-primary/10 text-primary"
             >
               C
             </span>
-            Made with CuteCode
-            <span className="text-brand font-semibold group-hover:underline">Remix this</span>
+            Made with Cool Snippets
+            <span className="text-primary font-semibold group-hover:underline">Remix this</span>
           </Link>
         </motion.div>
       </View>

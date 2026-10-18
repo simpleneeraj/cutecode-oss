@@ -9,7 +9,7 @@ import FollowButton from "@/components/follow-button";
 import FollowersDialog from "@/components/followers-dialog";
 import { SnippetActions } from "./snippet-actions";
 import MoreOptions from "./more-options";
-import { Plan } from "@/generated/prisma/enums";
+import { Plan } from "@/db/schema";
 
 type SnippetAuthor = {
   id?: string;

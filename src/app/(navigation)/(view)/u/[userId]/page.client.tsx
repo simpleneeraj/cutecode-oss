@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { UsersGroupRounded } from "@solar-icons/react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { UserGroupIcon } from "@hugeicons/core-free-icons";
 import { useUserProfile, useUserMutations } from "@/hooks/use-user";
 import { useSnippetExplore } from "@/hooks/use-snippet";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ExploreSnippetCard } from "../../explore/components/explore-snippet-card";
+import { ExploreSnippetCard } from "@/components/snippet/explore-snippet-card";
 import { SLIDE_UP, EASE_OUT } from "@/lib/motion";
 import View from "@/components/view";
 import { useUser } from "@/hooks/use-auth";
@@ -62,7 +63,7 @@ export default function ProfilePageClient({ userId }: ProfilePageClientProps) {
     );
   }
 
-  const authorInitial = (profile.name || profile.email).charAt(0).toUpperCase();
+  const authorInitial = (profile.name || "?").charAt(0).toUpperCase();
   const isOwnProfile = profile.isOwnProfile;
 
   return (
@@ -76,8 +77,7 @@ export default function ProfilePageClient({ userId }: ProfilePageClientProps) {
         >
           {/* Avatar */}
           <div
-            className="flex size-20 items-center justify-center rounded-2xl text-3xl font-bold shrink-0"
-            style={{ background: "hsl(var(--brand-subtle))", color: "hsl(var(--brand))" }}
+            className="flex size-20 items-center justify-center rounded-2xl text-3xl font-bold shrink-0 bg-primary/10 text-primary"
           >
             {authorInitial}
           </div>
@@ -90,7 +90,7 @@ export default function ProfilePageClient({ userId }: ProfilePageClientProps) {
                 {profile.plan.toLowerCase()}
               </Badge>
               <span className="flex items-center gap-1">
-                <UsersGroupRounded weight="LineDuotone" className="size-3.5" aria-hidden="true" />
+                <HugeiconsIcon icon={UserGroupIcon} className="size-3.5" aria-hidden="true" />
                 {profile._count.followers}{" "}
                 {profile._count.followers === 1 ? "follower" : "followers"}
               </span>

@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import View from "@/components/view";
-import { Like, Bookmark, ChatRound, AltArrowDown, AltArrowUp, MagicStick3 } from "@solar-icons/react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { FavouriteIcon, Bookmark01Icon, ChatIcon, ArrowDown01Icon, ArrowUp01Icon, MagicWandIcon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { Tooltip, TooltipPopup, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -56,7 +57,7 @@ export function SnippetActions({
                     aria-label={upvoted ? "Remove upvote" : "Upvote"}
                     aria-pressed={upvoted}
                   >
-                    <Like weight="BoldDuotone" className="size-4 shrink-0" aria-hidden />
+                    <HugeiconsIcon icon={FavouriteIcon} className="size-4 shrink-0" aria-hidden />
                     <span className="tabular-nums">{upvoteCount}</span>
                   </Button>
                 }
@@ -74,12 +75,12 @@ export function SnippetActions({
                     aria-expanded={commentsOpen}
                     onClick={() => setCommentsOpen((prev) => !prev)}
                   >
-                    <ChatRound weight="LineDuotone" className="size-4 shrink-0" aria-hidden />
+                    <HugeiconsIcon icon={ChatIcon} className="size-4 shrink-0" aria-hidden />
                     <span className="tabular-nums">{commentCount}</span>
                     {commentsOpen ? (
-                      <AltArrowUp weight="LineDuotone" className="size-3 shrink-0 ml-0.5" aria-hidden />
+                      <HugeiconsIcon icon={ArrowUp01Icon} className="size-3 shrink-0 ml-0.5" aria-hidden />
                     ) : (
-                      <AltArrowDown weight="LineDuotone" className="size-3 shrink-0 ml-0.5" aria-hidden />
+                      <HugeiconsIcon icon={ArrowDown01Icon} className="size-3 shrink-0 ml-0.5" aria-hidden />
                     )}
                   </Button>
                 }
@@ -101,7 +102,7 @@ export function SnippetActions({
                     aria-label={bookmarked ? "Remove bookmark" : "Bookmark"}
                     aria-pressed={bookmarked}
                   >
-                    <Bookmark weight="BoldDuotone" className="size-4 shrink-0" aria-hidden />
+                    <HugeiconsIcon icon={Bookmark01Icon} className="size-4 shrink-0" aria-hidden />
                     <span className="tabular-nums">{bookmarkCount}</span>
                   </Button>
                 }
@@ -122,7 +123,7 @@ export function SnippetActions({
                     {isRemixing ? (
                       <Spinner className="size-4 shrink-0" />
                     ) : (
-                      <MagicStick3 weight="BoldDuotone" className="size-4 shrink-0" aria-hidden />
+                      <HugeiconsIcon icon={MagicWandIcon} className="size-4 shrink-0" aria-hidden />
                     )}
                     <span className="hidden sm:inline">{isRemixing ? "Remixing..." : "Remix"}</span>
                   </Button>

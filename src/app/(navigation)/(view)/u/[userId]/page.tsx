@@ -1,32 +1,34 @@
 import type { Metadata } from "next";
-import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
 import ProfilePageClient from "./page.client";
 import { BASE_URL } from "@/utils/common";
+import { eq } from "drizzle-orm";
+import { db } from "@/db";
+import { users, snippets } from "@/db/schema";
 
 type PageProps = { params: Promise<{ userId: string }> };
 
 async function getUserMeta(userId: string) {
-  return prisma.user.findUnique({
-    where: { id: userId },
-    select: { name: true, id: true, _count: { select: { snippets: true } } },
-  });
+  const user = await db.query.users.findFirst({ where: eq(users.id, userId), columns: { name: true, id: true } });
+  if (!user) return null;
+  const snippetCount = await db.$count(snippets, eq(snippets.userId, userId));
+  return { ...user, snippetCount };
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { userId } = await params;
   const user = await getUserMeta(userId);
-  if (!user) return { title: "User not found | CuteCode" };
+  if (!user) return { title: "User not found | Cool Snippets" };
 
   const name = user.name || "Anonymous";
-  const title = `${name} — CuteCode`;
-  const description = `${name} has published ${user._count.snippets} code snippet${user._count.snippets === 1 ? "" : "s"} on CuteCode. Browse and remix their work.`;
+  const title = `${name} — Cool Snippets`;
+  const description = `${name} has published ${user.snippetCount} code snippet${user.snippetCount === 1 ? "" : "s"} on Cool Snippets. Browse and remix their work.`;
 
   return {
     title,
     description,
     alternates: { canonical: `${BASE_URL}/u/${userId}` },
-    openGraph: { title, description, url: `${BASE_URL}/u/${userId}`, siteName: "CuteCode" },
+    openGraph: { title, description, url: `${BASE_URL}/u/${userId}`, siteName: "Cool Snippets" },
   };
 }
 

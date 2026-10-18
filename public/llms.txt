@@ -1,13 +1,13 @@
-# CuteCode
+# Cool Snippets
 
-> CuteCode is a free, open-source code screenshot tool and ray.so alternative. Create beautiful images of your code with 45+ themes, share snippets via unique URLs, and explore community-created code art. Built with Next.js, React, and TypeScript.
+> Cool Snippets is a free, open-source code screenshot tool and ray.so alternative. Create beautiful images of your code with 45+ themes, share snippets via unique URLs, and explore community-created code art. Built with Next.js, React, and TypeScript.
 
 ## Documentation
 
-- [Homepage](https://cutecode.app): Create beautiful code screenshots with the online editor
-- [Explore Snippets](https://cutecode.app/explore): Browse and discover public code snippets shared by the community
-- [Snippets](https://cutecode.app/snippets): View and manage your saved code snippets
-- [Pricing](https://cutecode.app/pricing): Free and Pro plans — unlimited HD exports, premium themes, watermark-free
+- [Homepage](https://coolsnippets.fun): Create beautiful code screenshots with the online editor
+- [Explore Snippets](https://coolsnippets.fun/explore): Browse and discover public code snippets shared by the community
+- [Snippets](https://coolsnippets.fun/snippets): View and manage your saved code snippets
+- [Pricing](https://coolsnippets.fun/pricing): Free and Pro plans — unlimited HD exports, premium themes, watermark-free
 - [GitHub Repository](https://github.com/simpleneeraj/cutecode): Source code, issues, and contribution guidelines
 
 ## Features
@@ -32,7 +32,7 @@
 - Clerk (authentication)
 - Jotai (state management)
 - Motion (animations)
-- Deployed on Vercel
+- Deployed on AWS Amplify
 
 ## API & Integration
 
@@ -42,4 +42,4 @@
 
 ## Optional
 
-- [llms-full.txt](https://cutecode.app/llms-full.txt): Extended documentation for AI agents
+- [llms-full.txt](https://coolsnippets.fun/llms-full.txt): Extended documentation for AI agents

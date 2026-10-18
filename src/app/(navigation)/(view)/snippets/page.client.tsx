@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Link } from "@/components/link";
-import { AddSquare, CodeSquare } from "@solar-icons/react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { AddSquareIcon, CodeSquareIcon } from "@hugeicons/core-free-icons";
 import { useSnippetList } from "@/hooks/use-snippet";
 import { Button } from "@/components/ui/button";
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
@@ -35,7 +36,7 @@ export default function SnippetsPageClient() {
             </Badge>
           </div>
           <Button size="sm" render={<Link href="/" />}>
-            <AddSquare weight="LineDuotone" className="size-4" aria-hidden="true" />
+            <HugeiconsIcon icon={AddSquareIcon} className="size-4" aria-hidden="true" />
             New Snippet
           </Button>
         </div>
@@ -53,14 +54,14 @@ export default function SnippetsPageClient() {
                 <Empty className="py-20">
                   <EmptyHeader>
                     <EmptyMedia variant="icon">
-                      <CodeSquare weight="BoldDuotone" aria-hidden="true" />
+                      <HugeiconsIcon icon={CodeSquareIcon} className="size-4" aria-hidden="true" />
                     </EmptyMedia>
                     <EmptyTitle>No snippets yet</EmptyTitle>
                     <EmptyDescription>Publish a code snippet from the editor and it will appear here.</EmptyDescription>
                   </EmptyHeader>
                   <EmptyContent>
                     <Button render={<Link href="/" />}>
-                      <AddSquare weight="LineDuotone" className="size-4" aria-hidden="true" />
+                      <HugeiconsIcon icon={AddSquareIcon} className="size-4" aria-hidden="true" />
                       Create your first snippet
                     </Button>
                   </EmptyContent>

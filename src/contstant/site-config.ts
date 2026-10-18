@@ -1,14 +1,12 @@
 import { BadgeVariant } from "@/typings/editor";
 
 const siteConfig = {
-  name: "CuteCode",
+  name: "Cool Snippets",
   version: "1.0.0",
   logo: "/favicon.png",
   tabs: [
     { label: "Create", value: "Create", href: "/", tags: [] },
-    { label: "Snippets", value: "Snippets", href: "/snippets", tags: [BadgeVariant.PREMIUM] },
-    { label: "Explore", value: "Explore", href: "/explore", tags: [BadgeVariant.PREMIUM] } as const,
-  ],
+    { label: "Snippets", value: "Snippets", href: "/snippets", tags: [BadgeVariant.PREMIUM] },  ],
 };
 
 export default siteConfig;

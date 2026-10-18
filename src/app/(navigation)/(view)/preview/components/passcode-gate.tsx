@@ -2,7 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import View from "@/components/view";
-import { ShieldWarning, LockPassword } from "@solar-icons/react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ShieldIcon, LockPasswordIcon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { Card, CardDescription, CardFooter, CardHeader, CardPanel, CardTitle } from "@/components/ui/card";
@@ -46,7 +47,7 @@ export function PasscodeGate({ passcode, invalidPasscode, isLoading, onChange, o
                 transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.1 }}
                 className="flex items-center justify-center w-14 h-14 rounded-2xl bg-muted border mb-2"
               >
-                <LockPassword weight="BoldDuotone" className="size-6 text-foreground" aria-hidden="true" />
+                <HugeiconsIcon icon={LockPasswordIcon} className="size-6 text-foreground" aria-hidden="true" />
               </motion.div>
             </View>
             <CardTitle>Passcode Required</CardTitle>
@@ -99,7 +100,7 @@ export function PasscodeGate({ passcode, invalidPasscode, isLoading, onChange, o
                     transition={{ duration: 0.2 }}
                     className="flex items-center gap-1.5 text-destructive text-sm font-medium"
                   >
-                    <ShieldWarning weight="LineDuotone" className="size-3.5 shrink-0" aria-hidden="true" />
+                    <HugeiconsIcon icon={ShieldIcon} className="size-3.5 shrink-0" aria-hidden="true" />
                     Incorrect passcode. Try again.
                   </motion.div>
                 ) : (
@@ -129,7 +130,7 @@ export function PasscodeGate({ passcode, invalidPasscode, isLoading, onChange, o
           </CardPanel>
 
           <CardFooter className="justify-center">
-            <p className="text-xs text-muted-foreground">Contact the author if you don't have the passcode.</p>
+            <p className="text-xs text-muted-foreground">Contact the author if you don&apos;t have the passcode.</p>
           </CardFooter>
         </Card>
       </motion.div>
