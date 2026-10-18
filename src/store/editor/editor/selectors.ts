@@ -21,6 +21,7 @@ export const elementFontSizeAtom = selectAtom(currentElementAtom, (el) => el?.st
 export const elementFontWeightAtom = selectAtom(currentElementAtom, (el) => el?.style?.fontWeight ?? 400);
 export const elementBackgroundAtom = selectAtom(currentElementAtom, (el) => el?.style?.background ?? "");
 export const elementThemeAtom = selectAtom(currentElementAtom, (el) => el?.properties?.theme ?? "");
+export const elementIsSampleCodeAtom = selectAtom(currentElementAtom, (el) => el?.properties?.isSampleCode ?? false);
 export const elementLanguageAtom = selectAtom(currentElementAtom, (el) => el?.properties?.language ?? "");
 export const elementHighlightedLinesAtom = selectAtom(
   currentElementAtom,

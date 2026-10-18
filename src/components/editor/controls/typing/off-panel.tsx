@@ -1,7 +1,7 @@
 import { useSetAtom } from "jotai";
 import { motion } from "motion/react";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { KeyboardIcon } from "@hugeicons/core-free-icons";
+import { PlayIcon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
 import { TypingMode, typingModeAtom } from "@/store/editor/editor";
 
@@ -11,7 +11,7 @@ export default function OffPanel() {
   return (
     <div className="flex flex-col gap-2">
       <p className="text-xs text-muted-foreground">
-        Code appears all at once. Turn on Replay to type it out character by character.
+        Your code shows up all at once. Replay types it out for you, one character at a time.
       </p>
       <Button
         size="sm"
@@ -20,8 +20,8 @@ export default function OffPanel() {
         onClick={() => setMode(TypingMode.Replay)}
         render={<motion.button whileTap={{ scale: 0.96 }} />}
       >
-        <HugeiconsIcon icon={KeyboardIcon} aria-hidden="true" />
-        Try Replay
+        <HugeiconsIcon icon={PlayIcon} aria-hidden="true" />
+        Turn on Replay
       </Button>
     </div>
   );

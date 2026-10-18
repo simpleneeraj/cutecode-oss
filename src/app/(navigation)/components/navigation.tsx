@@ -6,9 +6,11 @@ import { usePathname } from "next/navigation";
 import { Tabs, TabsList, TabsTab } from "@/components/ui/tabs";
 
 const EDITOR_ROUTES = ["/remix/", "/edit/"];
+const SNIPPET_ROUTES = ["/preview/", "/u/"];
 
 function activeTabHref(pathname: string) {
   if (EDITOR_ROUTES.some((route) => pathname.startsWith(route))) return "/";
+  if (SNIPPET_ROUTES.some((route) => pathname.startsWith(route))) return "/snippets";
   return pathname;
 }
 
@@ -23,7 +25,7 @@ export default function Navigations() {
             key={tab.value}
             value={tab.href}
             nativeButton={false}
-            className="h-8 px-2.5 text-sm hover:text-foreground"
+            className="h-8 px-2.5 text-sm text-foreground/70 hover:text-foreground"
             render={<Link href={tab.href} />}
           >
             {tab.label}

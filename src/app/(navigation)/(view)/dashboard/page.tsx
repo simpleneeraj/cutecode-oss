@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useSetAtom } from "jotai";
+import { resetEditorAtom } from "@/store/editor/editor";
 import { useDashboard } from "@/hooks/use-dashboard";
 import { useSubscription } from "@/hooks/use-subscription";
 import { Button } from "@/components/ui/button";
@@ -16,6 +18,7 @@ import { DashboardSkeleton } from "./components/dashboard-skeleton";
 export default function DashboardPage() {
   const { data, isLoading } = useDashboard();
   const { can } = useSubscription();
+  const resetEditor = useSetAtom(resetEditorAtom);
 
   if (isLoading || !data) return <DashboardSkeleton />;
 
@@ -26,7 +29,7 @@ export default function DashboardPage() {
           <h1 className="text-2xl font-semibold tracking-tight text-foreground">Dashboard</h1>
           <p className="text-sm text-muted-foreground">Welcome back{data.userName ? `, ${data.userName}` : ""}</p>
         </div>
-        <Button render={<Link href="/" />}>
+        <Button onClick={resetEditor} render={<Link href="/" />}>
           <Icon icon="solar:add-square-linear" className="size-4" aria-hidden="true" />
           New snippet
         </Button>

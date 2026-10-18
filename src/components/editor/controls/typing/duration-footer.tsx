@@ -10,7 +10,7 @@ export default function DurationFooter() {
   return (
     <div className="flex flex-col gap-0.5 border-t pt-2 text-xs text-muted-foreground">
       <span className="tabular-nums">{`≈ ${formatSeconds(durationMs)} video`}</span>
-      {isOverCap && <span>{`Over the ${MAX_VIDEO_MS / 1000}s export limit. Try a faster speed or less code.`}</span>}
+      {isOverCap && <span>{`Longer than the ${MAX_VIDEO_MS / 1000}s export limit. Pick a faster speed or trim the code.`}</span>}
     </div>
   );
 }

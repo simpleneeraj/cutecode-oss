@@ -22,7 +22,7 @@ export default function RecordPanel() {
   return (
     <div className="flex flex-col gap-2">
       <p className="text-xs text-muted-foreground">
-        Type in the editor while recording; we&apos;ll replay it in your video.
+        Hit record, then type in the editor. Your exact keystrokes play back in the export.
       </p>
       <Button size="sm" variant="outline" className="self-start" onClick={start} render={<motion.button whileTap={{ scale: 0.96 }} />}>
         <HugeiconsIcon icon={RecordIcon} className="text-destructive" aria-hidden="true" />

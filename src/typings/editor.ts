@@ -76,6 +76,7 @@ export type ElementProperties = {
   transparent?: boolean;
   showLineNumbers?: boolean;
   highlightedLines?: number[];
+  isSampleCode?: boolean;
   // glassmorphism?: {
   //   opacity: number;
   //   enabled: boolean;

@@ -21,8 +21,8 @@ const dock = tv({
       "scrollbar-hide w-full overflow-x-auto overscroll-x-contain border-t bg-background/70 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl",
       "sm:w-auto sm:max-w-full sm:rounded-2xl sm:border sm:border-border/60 sm:bg-popover/90 sm:pb-0 sm:shadow-lg",
     ],
-    track: "flex h-16 w-max min-w-full items-center gap-0 px-1 sm:h-auto sm:min-w-0 sm:justify-start sm:gap-1 sm:p-1.5",
-    divider: "mx-1 hidden h-5 w-px bg-border sm:block",
+    track: "flex h-16 w-max min-w-full items-center gap-0 px-1 sm:h-auto sm:min-w-0 sm:justify-start sm:gap-0.5 sm:p-1",
+    divider: "mx-0.5 hidden h-5 w-px bg-border sm:block",
   },
 });
 

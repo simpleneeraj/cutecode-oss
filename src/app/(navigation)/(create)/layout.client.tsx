@@ -4,6 +4,7 @@ import React from "react";
 import { MotionConfig, motion } from "motion/react";
 import View from "@/components/view";
 import { Header } from "../components/header";
+import PublishSnippet from "@/components/editor/export/publish-snippet";
 
 const drift = { duration: 24, repeat: Infinity, ease: "easeInOut" } as const;
 
@@ -35,7 +36,7 @@ export default function CodeLayoutClient({ children }: { children: React.ReactNo
     <MotionConfig reducedMotion="user">
       <View className="layout-fill relative isolate overflow-hidden">
         <Backdrop />
-        <Header />
+        <Header actions={<PublishSnippet />} />
         {children}
       </View>
     </MotionConfig>

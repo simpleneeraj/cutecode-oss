@@ -150,28 +150,21 @@ const PublishSnippet: React.FC = () => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <div className="flex items-center justify-between gap-2">
-        <DialogTrigger render={<Button variant="ghost" size="xs" />} onClick={onTriggerClick}>
-          <HugeiconsIcon icon={Share01Icon} aria-hidden="true" />
-          Publish snippet
-        </DialogTrigger>
-        {quota?.dailyLimit != null && isSignedIn && (
-          <span className="px-1 text-muted-foreground text-xs tabular-nums">
-            {quota.dailyRemaining}/{quota.dailyLimit} today
-          </span>
-        )}
-      </div>
+      <DialogTrigger render={<Button variant="outline" />} onClick={onTriggerClick}>
+        <HugeiconsIcon icon={Share01Icon} aria-hidden="true" />
+        Publish
+      </DialogTrigger>
 
       <DialogPopup className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="font-medium text-base">Publish snippet</DialogTitle>
-          <DialogDescription>Share a link to this snippet with anyone.</DialogDescription>
+          <DialogDescription>Get a link anyone can open.</DialogDescription>
         </DialogHeader>
 
-        <DialogPanel className="flex flex-col gap-4">
+        <DialogPanel className="flex flex-col gap-3">
           <Field>
-            <FieldLabel>Title</FieldLabel>
             <Input
+              aria-label="Title"
               placeholder={fileName || "Untitled Snippet"}
               value={title}
               onChange={(e) => dispatch({ title: e.target.value })}
@@ -179,19 +172,18 @@ const PublishSnippet: React.FC = () => {
           </Field>
 
           <Field>
-            <FieldLabel>Description</FieldLabel>
             <Textarea
-              placeholder="What does this snippet do?"
+              aria-label="Description"
+              placeholder="Description (optional)"
               value={description}
               onChange={(e) => dispatch({ description: e.target.value })}
-              rows={3}
+              rows={2}
               className="resize-none"
             />
           </Field>
 
           <Field>
-            <FieldLabel>Tags</FieldLabel>
-            <Input placeholder="Add tags" onKeyDown={onTagKeyDown} />
+            <Input aria-label="Tags" placeholder="Tags, press Enter to add" onKeyDown={onTagKeyDown} />
             {tags.length > 0 && (
               <div className="flex flex-wrap gap-1">
                 {tags.map((tag) => (
@@ -212,7 +204,6 @@ const PublishSnippet: React.FC = () => {
                 ))}
               </div>
             )}
-            <FieldDescription>Press Enter or comma to add. Up to 10.</FieldDescription>
           </Field>
 
           <Field>
@@ -250,7 +241,7 @@ const PublishSnippet: React.FC = () => {
         </DialogPanel>
 
         <DialogFooter>
-          {quota?.dailyLimit != null && (
+          {quota?.dailyLimit != null && (quota.dailyRemaining ?? 0) <= 5 && (
             <PublishQuota quota={quota} canUpgrade={activePlan !== Plan.PREMIUM} onUpgrade={onUpgrade} />
           )}
           <DialogClose render={<Button variant="ghost" disabled={isPending} />}>Cancel</DialogClose>

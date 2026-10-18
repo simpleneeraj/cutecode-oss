@@ -23,8 +23,10 @@ import { toPng, toSvg, toBlob } from "../lib/image";
 import { withFrozenScene, type VideoSize } from "../lib/animation";
 import { VideoEncoderChoice, encodeGif, encodeVideo, pickVideoEncoder } from "../lib/encoders";
 import ExportProgress from "./export-progress";
-import ExportPanel from "./panel";
+import ImageSection from "./panel/image-section";
+import VideoSection from "./panel/video-section";
 import ExportDockItem from "./export-dock-item";
+import SponsorCard from "@/components/sponsors/sponsor-card";
 import { VideoFormat } from "./panel/enums";
 import type { VideoFormatOption } from "./panel/types";
 import useExportScale from "./panel/use-export-scale";
@@ -52,6 +54,15 @@ function getVideoFormats(encoder: VideoEncoderChoice | null | undefined, canvasS
     pixelRatio: VIDEO_PIXEL_RATIO,
   };
   return [GIF_FORMAT, video];
+}
+
+function PanelHeader({ title, description }: { title: string; description: string }) {
+  return (
+    <header className="flex flex-col gap-0.5 px-1">
+      <h2 className="text-sm font-medium">{title}</h2>
+      <p className="text-xs text-muted-foreground">{description}</p>
+    </header>
+  );
 }
 
 type AnimatedExport = {
@@ -160,6 +171,7 @@ const ExportButton: React.FC = () => {
     if (isOpen) pickVideoEncoder(getEncoderSize()).then(setVideoEncoder);
   };
 
+
   const encodeClips = (format: VideoFormat, ...args: Parameters<typeof encodeGif>) => {
     if (format === VideoFormat.Video && videoEncoder) return encodeVideo(...args, videoEncoder);
     return encodeGif(...args);
@@ -224,20 +236,25 @@ const ExportButton: React.FC = () => {
 
   return (
     <>
-      <ExportDockItem onExport={savePng} onOpenChange={detectVideoEncoder}>
-        <ExportPanel
-          onDownloadPng={savePng}
-          onCopyPng={copyPng}
-          onDownloadSvg={saveSvg}
-          onExportVideo={saveAnimation}
-          videoFormats={videoFormats}
-          isVideoAvailable={isVideoAvailable}
-          isExporting={animatedExport !== null}
-        />
-        {isVideoAvailable && videoEncoder === null && (
-          <p className="px-1 text-muted-foreground text-xs">Use Chrome or Safari for video</p>
-        )}
-      </ExportDockItem>
+      <ExportDockItem
+        isReelDisabled={!isVideoAvailable}
+        onReelOpenChange={detectVideoEncoder}
+        imagePanel={
+          <>
+            <PanelHeader title="Export image" description="Save PNG or SVG, or copy it to your clipboard." />
+            <ImageSection onDownloadPng={savePng} onCopyPng={copyPng} onDownloadSvg={saveSvg} />
+            <SponsorCard />
+          </>
+        }
+        videoPanel={
+          <>
+            <PanelHeader title="Export reel" description="Save your animated preset or typing as MP4 or GIF." />
+            <VideoSection formats={videoFormats} isExporting={animatedExport !== null} onExportVideo={saveAnimation} />
+            {videoEncoder === null && <p className="px-1 text-muted-foreground text-xs">Use Chrome or Safari for video</p>}
+            <SponsorCard />
+          </>
+        }
+      />
       <ExportProgress
         label={animatedExport?.label ?? null}
         slideLabel={animatedExport?.slideLabel ?? null}

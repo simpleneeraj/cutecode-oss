@@ -8,7 +8,7 @@ export const dockTrigger = tv({
   variants: {
     shape: {
       icon: "size-9",
-      label: "h-9 gap-1 px-2.5",
+      label: "h-9 gap-1 px-2",
     },
   },
   defaultVariants: {

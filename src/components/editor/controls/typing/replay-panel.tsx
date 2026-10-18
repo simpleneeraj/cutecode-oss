@@ -1,7 +1,7 @@
 import { useSetAtom } from "jotai";
 import { motion } from "motion/react";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { RepeatIcon } from "@hugeicons/core-free-icons";
+import { PlayIcon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
 import { typingIsPausedAtom, typingReplayCountAtom } from "@/store/editor/editor";
 import HoldToggle from "./hold-toggle";
@@ -26,8 +26,8 @@ export default function ReplayPanel() {
         <HoldToggle />
       </SettingRow>
       <Button size="sm" variant="outline" onClick={preview} render={<motion.button whileTap={{ scale: 0.96 }} />}>
-        <HugeiconsIcon icon={RepeatIcon} aria-hidden="true" />
-        Preview
+        <HugeiconsIcon icon={PlayIcon} aria-hidden="true" />
+        Play preview
       </Button>
     </div>
   );

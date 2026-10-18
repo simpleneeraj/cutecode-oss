@@ -14,7 +14,7 @@ export default function RecordedSummary({ durationMs, onRerecord, onClear }: Rec
   return (
     <div className="flex flex-col gap-2">
       <p className="text-sm">
-        Recorded <span className="tabular-nums text-muted-foreground">{formatClock(durationMs)}</span>
+        Recording saved <span className="tabular-nums text-muted-foreground">{formatClock(durationMs)}</span>
       </p>
       <div className="flex gap-2">
         <Button

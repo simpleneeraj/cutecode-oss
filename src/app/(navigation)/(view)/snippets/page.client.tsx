@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useSetAtom } from "jotai";
+import { resetEditorAtom } from "@/store/editor/editor";
 import { Link } from "@/components/link";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { AddSquareIcon, CodeSquareIcon } from "@hugeicons/core-free-icons";
@@ -56,6 +58,7 @@ function SnippetsGrid({ snippets, isLoading }: { snippets: Snippet[]; isLoading:
 
 export default function SnippetsPageClient() {
   const [page, setPage] = useState(1);
+  const resetEditor = useSetAtom(resetEditorAtom);
   const { data, isLoading } = useSnippetList({ page, limit: PAGE_SIZE });
 
   const snippets = data?.snippets ?? [];
@@ -68,7 +71,7 @@ export default function SnippetsPageClient() {
           <h1 className="text-2xl font-semibold tracking-tight text-foreground">Snippets</h1>
           <p className="text-sm text-muted-foreground">Everything you have published.</p>
         </div>
-        <Button render={<Link href="/" />}>
+        <Button onClick={resetEditor} render={<Link href="/" />}>
           <HugeiconsIcon icon={AddSquareIcon} aria-hidden="true" />
           New snippet
         </Button>

@@ -16,7 +16,7 @@ export default function TypingControl() {
         <h2 id="typing-title" className="text-sm font-medium">
           Typing animation
         </h2>
-        <p className="text-xs text-muted-foreground">Make your code type itself in GIF and video exports.</p>
+        <p className="text-xs text-muted-foreground">Animate your code as if it is being typed, in GIF and video exports.</p>
       </motion.header>
       <motion.div layout="position">
         <ModeSelect />

@@ -15,7 +15,7 @@ function Brand({ activeLabel }: { activeLabel?: string }) {
     <div className="flex min-w-0 flex-1 basis-0 items-center gap-2.5">
       <Link href="/" className="flex items-center gap-2.5 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-ring">
         <motion.span whileHover={{ rotate: -6, scale: 1.04 }} whileTap={{ scale: 0.94 }}>
-          <BrandMark />
+          <BrandMark preload />
         </motion.span>
         <span className="hidden font-heading text-lg leading-none font-semibold tracking-tight whitespace-nowrap sm:inline">{siteConfig.name}</span>
       </Link>
@@ -40,9 +40,10 @@ function Brand({ activeLabel }: { activeLabel?: string }) {
 
 type HeaderProps = {
   title?: string;
+  actions?: React.ReactNode;
 };
 
-export function Header({ title }: HeaderProps) {
+export function Header({ title, actions }: HeaderProps) {
   const pathname = usePathname();
   const activeTab = siteConfig.tabs.find(({ href }) => href === pathname);
 
@@ -56,6 +57,7 @@ export function Header({ title }: HeaderProps) {
         </div>
 
         <div className="flex min-w-0 flex-1 basis-0 items-center justify-end gap-1.5 sm:gap-2">
+          {actions}
           <AuthControls />
         </div>
       </div>

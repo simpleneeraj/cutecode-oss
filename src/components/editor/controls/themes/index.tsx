@@ -1,5 +1,5 @@
 import { useAtomValue } from "jotai";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { Icon } from "@/components/ui/icon";
 import {
   Combobox,
@@ -18,7 +18,7 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowDown01Icon, Search01Icon, Fire02Icon, CrownIcon } from "@hugeicons/core-free-icons";
 import { Theme, IconType, BadgeVariant } from "@/typings/editor";
-import { elementContentAtom, elementThemeAtom, updateSlideElementAtom } from "@/store/editor/editor";
+import { elementContentAtom, elementIsSampleCodeAtom, elementThemeAtom, updateSlideElementAtom } from "@/store/editor/editor";
 import { motion } from "motion/react";
 import { cn } from "@/utils/cn";
 import { useSetAtom } from "jotai";
@@ -27,10 +27,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { themes } from "@/components/presets/themes";
 import { usePremiumAccess } from "@/hooks/use-premium-access";
-import { groupThemes } from "@/components/presets/themes/shared";
+import { groupThemes, type ThemeGroup } from "@/components/presets/themes/shared";
+import Image from "next/image";
+import { featuredThemeIds, sponsorForTheme } from "@/lib/sponsors";
+import { sponsorTier } from "@/lib/brand-presets";
 import { isPristineCode, sampleUpdate } from "@/components/presets/themes/samples";
 import { AccessLevel } from "@/typings/enums";
 import { trackEditor } from "@/lib/analytics";
+import BrandRequestDialog from "@/components/brand-request/brand-request-dialog";
 import { dockLabel, dockPopup, dockTrigger } from "../dock-styles";
 
 interface ThemeIconProps {
@@ -78,9 +82,32 @@ function ThemeIcon({ theme, className }: ThemeIconProps) {
   );
 }
 
-function Badges({ tags, access }: { tags?: Theme["tags"]; access: AccessLevel }) {
+const SPONSORED_GROUP = "Sponsored";
+
+function pinSponsored(groups: ThemeGroup[], sponsoredIds: string[]) {
+  const isSponsored = (theme: Partial<Theme>) => sponsoredIds.includes(theme.id ?? "");
+  const sponsored = groups.flatMap((group) => group.items.filter(isSponsored));
+  if (sponsored.length === 0) return groups;
+  const rest = groups
+    .map((group) => ({ ...group, items: group.items.filter((theme) => !isSponsored(theme)) }))
+    .filter((group) => group.items.length > 0);
+  return [{ value: SPONSORED_GROUP, items: sponsored }, ...rest];
+}
+
+function sponsorBadgeFor(themeId: string) {
+  const sponsor = sponsorForTheme(themeId);
+  return sponsor && sponsor.tier !== "preset" ? sponsorTier(sponsor.tier).badge : undefined;
+}
+
+function Badges({ tags, access, sponsorBadge }: { tags?: Theme["tags"]; access: AccessLevel; sponsorBadge?: string }) {
   return (
     <>
+      {sponsorBadge && (
+        <Badge className="gap-1 text-xs" size="sm" variant="success">
+          <Image src={sponsorBadge} alt="" width={12} height={12} className="size-3 rounded-[3px]" />
+          {SPONSORED_GROUP}
+        </Badge>
+      )}
       {tags?.includes(BadgeVariant.NEW) && (
         <Badge className="text-xs" size="sm" variant="info">
           {BadgeVariant.NEW}
@@ -105,19 +132,22 @@ const ThemeControl: React.FC = () => {
   const update = useSetAtom(updateSlideElementAtom);
   const themeId = useAtomValue(elementThemeAtom);
   const content = useAtomValue(elementContentAtom);
+  const isSampleCode = useAtomValue(elementIsSampleCodeAtom);
 
-  const groupedThemes = useMemo(() => groupThemes(themes), []);
+  const sponsoredIds = useMemo(() => featuredThemeIds(), []);
+  const groupedThemes = useMemo(() => pinSponsored(groupThemes(themes), sponsoredIds), [sponsoredIds]);
   const allThemes = useMemo(() => Object.values(themes), []);
-  const currentTheme = useMemo(() => allThemes.find((t) => t.id === themeId) ?? allThemes[0], [themeId, allThemes]);
+  const currentTheme = useMemo(() => allThemes.find((t) => t.id === themeId) ?? themes.mono, [themeId, allThemes]);
 
   const { checkAccess, withAccess } = usePremiumAccess();
+  const [isBrandRequestOpen, setIsBrandRequestOpen] = useState(false);
 
   const onValueChange = (theme: Theme | null) => {
     if (!theme) return;
     const isPremium = theme.tags?.includes(BadgeVariant.PREMIUM) ?? false;
     const access = checkAccess("premiumThemes", isPremium);
     withAccess(access, () => {
-      if (theme.sample && isPristineCode(content)) {
+      if (theme.sample && (isSampleCode || isPristineCode(content))) {
         const sample = sampleUpdate(theme);
         update({ ...sample, properties: { ...sample.properties, theme: theme.id } });
       } else {
@@ -127,7 +157,8 @@ const ThemeControl: React.FC = () => {
     });
   };
   return (
-    <Combobox<Theme>
+    <>
+      <Combobox<Theme>
         items={groupedThemes}
         value={currentTheme}
         onValueChange={onValueChange}
@@ -178,7 +209,11 @@ const ThemeControl: React.FC = () => {
                           <View className="flex flex-row items-center gap-2 text-start">
                             <ThemeIcon theme={theme} className="size-5" />
                             {theme.name}
-                            <Badges tags={theme?.tags} access={checkAccess("premiumThemes", isPremium)} />
+                            <Badges
+                              tags={theme?.tags}
+                              access={checkAccess("premiumThemes", isPremium)}
+                              sponsorBadge={sponsorBadgeFor(theme.id)}
+                            />
                           </View>
                         </ComboboxItem>
                       );
@@ -189,8 +224,15 @@ const ThemeControl: React.FC = () => {
               </React.Fragment>
             )}
           </ComboboxList>
+          <div className="border-t p-2">
+            <Button variant="ghost" size="sm" className="w-full" onClick={() => setIsBrandRequestOpen(true)}>
+              Become a sponsor
+            </Button>
+          </div>
         </ComboboxPopup>
       </Combobox>
+      <BrandRequestDialog open={isBrandRequestOpen} onOpenChange={setIsBrandRequestOpen} />
+    </>
   );
 };
 

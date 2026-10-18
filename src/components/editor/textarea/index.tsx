@@ -395,7 +395,7 @@ function JotaiEditor() {
 
   const onChangeEditor = useCallback<ChangeEventHandler<HTMLTextAreaElement>>(
     (event) => {
-      updateSlideElement({ content: event.target.value });
+      updateSlideElement({ content: event.target.value, properties: { isSampleCode: false } });
     },
     [updateSlideElement],
   );
