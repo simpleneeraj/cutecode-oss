@@ -5,23 +5,29 @@
 }
 
 .dark {
-  --bloom: rgba(255, 255, 255, 0.1);
-  --shimmer: rgba(255, 255, 255, 0.05);
-  --ring: rgba(255, 255, 255, 0.07);
-  --mote: rgba(255, 255, 255, 0.7);
-  --orb-cool: #2b2f38;
-  --orb-warm: #332d29;
-  background: radial-gradient(ellipse at 50% 45%, #161616 0%, #0b0b0b 50%, #000 100%);
+  --dot: rgba(255, 255, 255, 0.09);
+  --halo: rgba(150, 130, 255, 0.22);
+  --orb-warm: #ff9a62;
+  --orb-rose: #f272b6;
+  --orb-violet: #8b7bff;
+  --orb-cool: #4fb2ff;
+  --orb-mint: #7fe3d4;
+  --sheen: rgba(255, 255, 255, 0.55);
+  --orb-opacity: 0.92;
+  background: radial-gradient(ellipse at 72% 30%, #121212 0%, #070707 55%, #000 100%);
 }
 
 .light {
-  --bloom: rgba(255, 255, 255, 1);
-  --shimmer: rgba(120, 120, 140, 0.06);
-  --ring: rgba(0, 0, 0, 0.06);
-  --mote: rgba(60, 60, 70, 0.45);
-  --orb-cool: #dfe3ec;
-  --orb-warm: #efe6dd;
-  background: radial-gradient(ellipse at 50% 45%, #fff 0%, #f7f7f8 50%, #ececee 100%);
+  --dot: rgba(0, 0, 0, 0.1);
+  --halo: rgba(140, 150, 255, 0.28);
+  --orb-warm: #ffb27d;
+  --orb-rose: #f895c8;
+  --orb-violet: #a99cff;
+  --orb-cool: #7cc6ff;
+  --orb-mint: #9ff0e2;
+  --sheen: rgba(255, 255, 255, 0.85);
+  --orb-opacity: 1;
+  background: radial-gradient(ellipse at 72% 30%, #fff 0%, #f7f7f5 55%, #efefec 100%);
 }
 
 .transparent {
@@ -35,74 +41,82 @@
   pointer-events: none;
 }
 
-.shimmer {
+.dotGrid {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 900px;
-  height: 900px;
-  margin: -450px 0 0 -450px;
-  border-radius: 50%;
-  background: conic-gradient(from 0deg, transparent, var(--shimmer) 60deg, transparent 120deg, var(--shimmer) 200deg, transparent 260deg, var(--shimmer) 320deg, transparent);
-  mask-image: radial-gradient(circle, black 20%, transparent 65%);
+  background-image: radial-gradient(circle, var(--dot) 1px, transparent 1.5px);
+  background-position: center;
+  background-size: 16px 16px;
+  inset: 0;
+  mask-image: radial-gradient(ellipse at 50% 50%, black 15%, transparent 75%);
 }
 
-.bloom {
+.orbAnchor {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 680px;
-  height: 520px;
-  margin: -260px 0 0 -340px;
-  border-radius: 50%;
-  background: radial-gradient(ellipse, var(--bloom) 0%, transparent 70%);
+  top: 28%;
+  left: 74%;
+  width: 0;
+  height: 0;
 }
 
-.orbCool,
-.orbWarm {
+.halo {
   position: absolute;
+  width: 720px;
+  height: 720px;
+  margin: -360px 0 0 -360px;
   border-radius: 50%;
-  filter: blur(90px);
+  background: radial-gradient(circle, var(--halo) 0%, transparent 65%);
 }
 
-.orbCool {
-  top: -120px;
-  left: -100px;
-  width: 360px;
-  height: 360px;
-  background: var(--orb-cool);
-}
-
-.orbWarm {
-  right: -100px;
-  bottom: -120px;
-  width: 340px;
-  height: 340px;
-  background: var(--orb-warm);
-}
-
-.dark .orbCool,
-.dark .orbWarm {
-  opacity: 0.8;
-}
-
-.ring {
+.orb {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  border: 1px solid var(--ring);
-  border-radius: 50%;
+  overflow: hidden;
+  width: 400px;
+  height: 400px;
+  margin: -200px 0 0 -200px;
+  isolation: isolate;
+  mask-image: radial-gradient(white, black);
+  opacity: var(--orb-opacity);
 }
 
-.mote {
+.orbColor,
+.orbSwirl {
   position: absolute;
-  border-radius: 50%;
-  background: var(--mote);
+  inset: -25%;
+}
+
+.orbColor {
+  background: conic-gradient(
+    from 0deg,
+    var(--orb-warm),
+    var(--orb-rose),
+    var(--orb-violet),
+    var(--orb-cool),
+    var(--orb-mint),
+    var(--orb-cool),
+    var(--orb-violet),
+    var(--orb-rose),
+    var(--orb-warm)
+  );
+  filter: blur(32px);
+}
+
+.orbSwirl {
+  background:
+    radial-gradient(circle at 30% 35%, var(--orb-warm) 0%, transparent 40%),
+    radial-gradient(circle at 70% 65%, var(--orb-cool) 0%, transparent 40%);
+  filter: blur(40px);
+  mix-blend-mode: soft-light;
+}
+
+.orbSheen {
+  position: absolute;
+  background: radial-gradient(circle at 36% 28%, var(--sheen) 0%, transparent 45%);
+  inset: 0;
 }
 
 .grain {
   position: absolute;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
   inset: 0;
 }
 
@@ -111,20 +125,20 @@
   position: relative;
   z-index: 10;
   overflow: hidden;
-  border-radius: 14px;
+  border-radius: 16px;
 }
 
 .dark .window {
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  background: #0d0d0d;
-  filter: drop-shadow(0 0 90px rgba(255, 255, 255, 0.04)) drop-shadow(0 30px 80px rgba(0, 0, 0, 0.7));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(180deg, #0e0e0e 0%, #090909 100%);
+  filter: drop-shadow(0 0 48px rgba(255, 255, 255, 0.04)) drop-shadow(0 32px 64px rgba(0, 0, 0, 0.8));
 }
 
 .light .window {
   --line-number: hsla(240, 12%, 71%, 1);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   background: #fff;
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.03)) drop-shadow(0 24px 60px rgba(30, 30, 50, 0.08));
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.04)) drop-shadow(0 24px 48px rgba(0, 0, 0, 0.08));
 }
 
 .topEdge {
@@ -155,29 +169,29 @@
   display: grid;
   align-items: center;
   padding: 12px 16px 11px;
-  grid-gap: 12px;
-  grid-template-columns: 60px 1fr 60px;
+  grid-gap: 16px;
+  grid-template-columns: 64px 1fr 64px;
 }
 
 .dark .header {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  background: #111;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .light .header {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   background: #fafafa;
 }
 
 .dots {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
 }
 
 .dot {
-  width: 11px;
-  height: 11px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
 }
 
