@@ -1,45 +1,39 @@
 import { motion, easeInOut } from "motion/react";
 import { useLoop } from "../scene";
-import DriftingGlyph, { type Glyph } from "./drifting-glyph";
-import RisingMote, { type Mote } from "./rising-mote";
+import Dune, { type DuneLayer } from "./dune";
+import Sparkle, { type Star } from "./sparkle";
 import styles from "./claude.module.css";
 
-const GLYPHS: Glyph[] = [
-  { id: "quote-open", character: "“", x: 6, y: 8, size: 44, tilt: -6 },
-  { id: "pilcrow", character: "¶", x: 90, y: 10, size: 24, tilt: 4 },
-  { id: "ampersand", character: "&", x: 88, y: 80, size: 30, tilt: -8 },
-  { id: "section", character: "§", x: 4, y: 50, size: 20, tilt: 6 },
-  { id: "quote-close", character: "”", x: 14, y: 84, size: 36, tilt: 8 },
-  { id: "letter", character: "a", x: 54, y: 90, size: 22, tilt: -4 },
+const DUNES: DuneLayer[] = [
+  { id: "far", className: styles.duneFar, base: 30, amplitude: 10, phase: 0 },
+  { id: "mid", className: styles.duneMid, base: 40, amplitude: 12, phase: 0.33 },
+  { id: "near", className: styles.duneNear, base: 50, amplitude: 14, phase: 0.66 },
 ];
 
-const MOTES: Mote[] = Array.from({ length: 14 }, (_, index) => ({
-  id: `mote-${index}`,
-  left: `${(index * 37 + 7) % 100}%`,
-  size: 2 + (index % 3),
-  phase: ((index * 5) % 14) / 14,
-}));
+const STARS: Star[] = [
+  { id: "top-right", x: 88, y: 12, size: 16 },
+  { id: "top-left", x: 8, y: 18, size: 10 },
+  { id: "mid-right", x: 92, y: 58, size: 12 },
+  { id: "low-right", x: 82, y: 86, size: 18 },
+  { id: "low-left", x: 10, y: 78, size: 12 },
+  { id: "low-center", x: 46, y: 92, size: 8 },
+];
 
 export default function ClaudeScene() {
-  const raysRotate = useLoop([0, 15]);
   const glowScale = useLoop([1, 1.06, 1], { ease: easeInOut });
   const glowOpacity = useLoop([0.85, 1, 0.85], { ease: easeInOut });
-  const driftX = useLoop([0, 20, 0], { ease: easeInOut });
-  const driftY = useLoop([0, -14, 0], { ease: easeInOut, phase: 0.25 });
 
   return (
     <div className={styles.layer} aria-hidden>
-      <div className={styles.ruled} />
-      <motion.div className={styles.rays} style={{ rotate: raysRotate }} />
       <motion.div className={styles.glow} style={{ scale: glowScale, opacity: glowOpacity }} />
-      <motion.div className={styles.blobClay} style={{ x: driftX, y: driftY }} />
-      <motion.div className={styles.blobIvory} style={{ x: driftY, y: driftX }} />
+      <div className={styles.dunes}>
+        {DUNES.map((layer) => (
+          <Dune key={layer.id} layer={layer} />
+        ))}
+      </div>
       <div className={styles.grain} />
-      {MOTES.map((mote) => (
-        <RisingMote key={mote.id} mote={mote} />
-      ))}
-      {GLYPHS.map((glyph, index) => (
-        <DriftingGlyph key={glyph.id} glyph={glyph} phase={index / GLYPHS.length} />
+      {STARS.map((star, index) => (
+        <Sparkle key={star.id} star={star} phase={index / STARS.length} />
       ))}
     </div>
   );

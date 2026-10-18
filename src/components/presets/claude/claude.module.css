@@ -5,11 +5,11 @@
 }
 
 .dark {
-  background: radial-gradient(ellipse at 50% 0%, #2e2a25 0%, #1f1d1a 55%, #171614 100%);
+  background: linear-gradient(180deg, #1a1614 0%, #221a16 55%, #2e1d16 100%);
 }
 
 .light {
-  background: radial-gradient(ellipse at 50% 0%, #fdfbf6 0%, #f5f0e6 50%, #ebe2d2 100%);
+  background: linear-gradient(180deg, #fcf3ea 0%, #f8dfcb 55%, #f2c3a2 100%);
 }
 
 .transparent {
@@ -23,95 +23,70 @@
   pointer-events: none;
 }
 
-.ruled {
-  position: absolute;
-  inset: 0;
-  mask-image: radial-gradient(ellipse at 50% 40%, black 0%, transparent 75%);
-}
-
-.light .ruled {
-  background: repeating-linear-gradient(180deg, transparent 0 27px, rgba(160, 110, 80, 0.09) 27px 28px);
-}
-
-.dark .ruled {
-  background: repeating-linear-gradient(180deg, transparent 0 27px, rgba(240, 220, 200, 0.035) 27px 28px);
-}
-
-.rays {
-  position: absolute;
-  top: -70%;
-  left: 50%;
-  width: 170%;
-  aspect-ratio: 1;
-  margin-left: -85%;
-  mask-image: radial-gradient(circle, black 0%, transparent 60%);
-}
-
-.light .rays {
-  background: repeating-conic-gradient(from 0deg, rgba(217, 119, 87, 0.07) 0deg 5deg, transparent 5deg 15deg);
-}
-
-.dark .rays {
-  background: repeating-conic-gradient(from 0deg, rgba(224, 133, 121, 0.05) 0deg 5deg, transparent 5deg 15deg);
-}
-
 .glow {
   position: absolute;
-  top: -160px;
+  top: -200px;
   left: 50%;
-  width: 360px;
-  height: 360px;
-  margin-left: -180px;
+  width: 480px;
+  height: 400px;
+  margin-left: -240px;
   border-radius: 50%;
 }
 
 .light .glow {
-  background: radial-gradient(circle, rgba(255, 236, 214, 0.95) 0%, rgba(232, 168, 132, 0.3) 45%, transparent 70%);
+  background: radial-gradient(ellipse, rgba(255, 250, 244, 0.9) 0%, rgba(255, 238, 222, 0.4) 45%, transparent 70%);
 }
 
 .dark .glow {
-  background: radial-gradient(circle, rgba(217, 119, 87, 0.32) 0%, rgba(176, 68, 49, 0.12) 45%, transparent 70%);
+  background: radial-gradient(ellipse, rgba(217, 119, 87, 0.18) 0%, rgba(176, 68, 49, 0.06) 45%, transparent 70%);
 }
 
-.blobClay,
-.blobIvory {
+.dunes {
   position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
+  right: -8%;
+  bottom: 0;
+  left: -8%;
+  height: 56%;
 }
 
-.blobClay {
-  bottom: -100px;
-  left: -90px;
-  width: 320px;
-  height: 320px;
+.dune {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
-.blobIvory {
-  right: -80px;
-  bottom: -70px;
-  width: 260px;
-  height: 260px;
+.duneMid {
+  height: 80%;
 }
 
-.light .blobClay {
-  background: #e8a888;
-  opacity: 0.45;
+.duneNear {
+  height: 58%;
 }
 
-.light .blobIvory {
-  background: #f3dcc4;
-  opacity: 0.8;
+.light .duneFar {
+  color: #f0b896;
 }
 
-.dark .blobClay {
-  background: #b04431;
-  opacity: 0.2;
+.light .duneMid {
+  color: #e99a72;
 }
 
-.dark .blobIvory {
-  background: #cca199;
-  opacity: 0.1;
+.light .duneNear {
+  color: #dc7c54;
+}
+
+.dark .duneFar {
+  color: #33221b;
+}
+
+.dark .duneMid {
+  color: #45291e;
+}
+
+.dark .duneNear {
+  color: #5a3021;
 }
 
 .grain {
@@ -121,56 +96,40 @@
 }
 
 .dark .grain {
-  opacity: 0.6;
+  opacity: 0.5;
 }
 
-.mote {
+.sparkle {
   position: absolute;
-  bottom: 0;
-  border-radius: 50%;
+  display: block;
 }
 
-.light .mote {
-  background: #d97757;
+.light .sparkle {
+  color: #fff8f0;
+  filter: drop-shadow(0 0 4px rgba(255, 236, 214, 0.8));
 }
 
-.dark .mote {
-  background: #e8b49a;
-}
-
-.glyph {
-  position: absolute;
-  display: flex;
-  font-family: Georgia, "Times New Roman", serif;
-  font-style: italic;
-  line-height: 1;
-}
-
-.light .glyph {
-  color: rgba(176, 68, 49, 0.32);
-}
-
-.dark .glyph {
-  color: rgba(224, 133, 121, 0.22);
+.dark .sparkle {
+  color: #f0c4a8;
 }
 
 .window {
   position: relative;
   z-index: 10;
   overflow: hidden;
-  border-radius: 18px;
+  border-radius: 16px;
 }
 
 .light .window {
   border: 1px solid rgba(176, 68, 49, 0.12);
-  background: rgba(253, 252, 248, 0.96);
-  filter: drop-shadow(0 14px 44px rgba(120, 70, 40, 0.12)) drop-shadow(0 2px 8px rgba(176, 68, 49, 0.06));
+  background: #fffaf5;
+  filter: drop-shadow(0 16px 40px rgba(150, 70, 35, 0.16)) drop-shadow(0 2px 8px rgba(150, 70, 35, 0.08));
 }
 
 .dark .window {
-  border: 1px solid rgba(224, 133, 121, 0.12);
-  background: #22211e;
-  filter: drop-shadow(0 0 60px rgba(217, 119, 87, 0.08)) drop-shadow(0 24px 72px rgba(0, 0, 0, 0.6));
+  border: 1px solid rgba(240, 196, 168, 0.1);
+  background: #1f1b18;
+  filter: drop-shadow(0 24px 64px rgba(0, 0, 0, 0.55)) drop-shadow(0 0 48px rgba(217, 119, 87, 0.06));
 }
 
 .topEdge {
@@ -180,46 +139,46 @@
   right: 0;
   left: 0;
   overflow: hidden;
-  height: 2px;
+  height: 1px;
 }
 
 .light .topEdge {
-  background: rgba(217, 119, 87, 0.18);
+  background: rgba(255, 255, 255, 0.7);
 }
 
 .dark .topEdge {
-  background: rgba(224, 133, 121, 0.1);
+  background: rgba(240, 196, 168, 0.08);
 }
 
 .sweep {
   position: absolute;
   width: 40%;
-  background: linear-gradient(90deg, transparent, #c6613f, #f0c4a8, #d97757, transparent);
+  background: linear-gradient(90deg, transparent, #e99a72, #f8dfcb, #e99a72, transparent);
   inset-block: 0;
 }
 
 .header {
   display: grid;
   align-items: center;
-  padding: 12px 16px 11px;
-  grid-gap: 12px;
-  grid-template-columns: 60px 1fr 60px;
+  padding: 12px 16px;
+  grid-gap: 16px;
+  grid-template-columns: 56px 1fr 56px;
 }
 
 .light .header {
   border-bottom: 1px solid rgba(176, 68, 49, 0.1);
-  background: rgba(245, 240, 230, 0.85);
+  background: #f9e6d6;
 }
 
 .dark .header {
-  border-bottom: 1px solid #33302b;
-  background: #282622;
+  border-bottom: 1px solid rgba(240, 196, 168, 0.08);
+  background: #26201c;
 }
 
 .dots {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
 }
 
 .dot {
@@ -228,16 +187,28 @@
   border-radius: 50%;
 }
 
-.dot:nth-child(1) {
-  background: #c6613f;
+.light .dot:nth-child(1) {
+  background: #5b4038;
 }
 
-.dot:nth-child(2) {
-  background: #e08579;
+.light .dot:nth-child(2) {
+  background: #8a6a5e;
 }
 
-.dot:nth-child(3) {
-  background: #cca199;
+.light .dot:nth-child(3) {
+  background: #b89a8c;
+}
+
+.dark .dot:nth-child(1) {
+  background: #d97757;
+}
+
+.dark .dot:nth-child(2) {
+  background: #a8705c;
+}
+
+.dark .dot:nth-child(3) {
+  background: #6e5248;
 }
 
 .fileName {
@@ -275,9 +246,9 @@
 }
 
 .light .fileName {
-  color: #8a584e;
+  color: #6b4a40;
 }
 
 .dark .fileName {
-  color: #dfdcd8;
+  color: #d8cfc8;
 }
