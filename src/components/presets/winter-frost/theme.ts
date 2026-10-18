@@ -12,6 +12,12 @@ export const winterFrost: Theme = {
   group: "Seasonal",
   font: "geist-mono",
   tags: [BadgeVariant.NEW, BadgeVariant.PREMIUM],
+  sample: {
+    language: "Kotlin",
+    fileName: "snowfall.kt",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/kotlin.svg",
+    code: 'data class Snowflake(val x: Int)\n\nfun main() {\n    val width = 24\n    val flakes = List(6) { Snowflake((0 until width).random()) }\n    for (flake in flakes) {\n        println(" ".repeat(flake.x) + "*")\n    }\n    println("~".repeat(width))\n}',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#10283f",

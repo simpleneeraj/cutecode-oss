@@ -12,6 +12,12 @@ export const newYear: Theme = {
   group: "Seasonal",
   font: "geist-mono",
   tags: [BadgeVariant.NEW, BadgeVariant.PREMIUM],
+  sample: {
+    language: "Go",
+    fileName: "fireworks.go",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/go.svg",
+    code: 'package main\n\nimport "fmt"\n\nfunc main() {\n\tfor i := 3; i > 0; i-- {\n\t\tfmt.Println(i, "...")\n\t}\n\tfor _, color := range []string{"gold", "silver", "crimson"} {\n\t\tfmt.Printf("%s fireworks light up the sky\\n", color)\n\t}\n\tfmt.Println("Happy New Year!")\n}',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#1b2545",

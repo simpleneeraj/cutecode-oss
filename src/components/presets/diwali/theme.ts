@@ -12,6 +12,12 @@ export const diwali: Theme = {
   group: "Seasonal",
   font: "geist-mono",
   tags: [BadgeVariant.NEW, BadgeVariant.PREMIUM],
+  sample: {
+    language: "Rust",
+    fileName: "diya.rs",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/rust.svg",
+    code: 'fn main() {\n    let diyas = 7;\n    for night in 1..=diyas {\n        let lit = "*".repeat(night);\n        let dark = ".".repeat(diyas - night);\n        println!("Night {night}: [{lit}{dark}]");\n    }\n    println!("Happy Diwali, every diya is glowing!");\n}',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#3a1a2e",

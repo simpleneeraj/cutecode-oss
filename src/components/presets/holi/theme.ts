@@ -12,6 +12,12 @@ export const holi: Theme = {
   group: "Seasonal",
   font: "geist-mono",
   tags: [BadgeVariant.NEW, BadgeVariant.PREMIUM],
+  sample: {
+    language: "Swift",
+    fileName: "gulal.swift",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/swift.svg",
+    code: 'let colors = ["pink", "yellow", "green", "blue", "purple"]\nlet friends = ["Asha", "Ravi", "Meera"]\n\nfor (index, friend) in friends.enumerated() {\n    let color = colors[index % colors.count]\n    print("\\(friend) is covered in \\(color) gulal")\n}\n\nprint("Bura na mano, Holi hai!")',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#2a1f3d",

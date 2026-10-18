@@ -12,6 +12,12 @@ export const lunarNewYear: Theme = {
   group: "Seasonal",
   font: "geist-mono",
   tags: [BadgeVariant.NEW, BadgeVariant.PREMIUM],
+  sample: {
+    language: "Ruby",
+    fileName: "zodiac.rb",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/ruby.svg",
+    code: 'ANIMALS = %w[Rat Ox Tiger Rabbit Dragon Snake Horse Goat Monkey Rooster Dog Pig].freeze\n\ndef zodiac(year)\n  ANIMALS[(year - 2020) % 12]\nend\n\n[2026, 2027, 2028].each do |year|\n  puts "#{year} is the Year of the #{zodiac(year)}"\nend',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#3b0d0d",

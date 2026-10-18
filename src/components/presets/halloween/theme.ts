@@ -12,6 +12,12 @@ export const halloween: Theme = {
   group: "Seasonal",
   font: "geist-mono",
   tags: [BadgeVariant.NEW, BadgeVariant.PREMIUM],
+  sample: {
+    language: "Python",
+    fileName: "pumpkin.py",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/python.svg",
+    code: 'import random\n\nFACES = ["spooky", "goofy", "grumpy", "toothy"]\n\n\ndef carve(pumpkin: str) -> str:\n    face = random.choice(FACES)\n    return f"{pumpkin} gets a {face} grin"\n\n\nfor pumpkin in ["Jack", "Gourdon", "Patches"]:\n    print(carve(pumpkin))',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#2e1a47",

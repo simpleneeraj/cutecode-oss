@@ -12,6 +12,12 @@ export const christmas: Theme = {
   group: "Seasonal",
   font: "geist-mono",
   tags: [BadgeVariant.NEW, BadgeVariant.PREMIUM],
+  sample: {
+    language: "TypeScript",
+    fileName: "countdown.ts",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/typescript.svg",
+    code: 'const christmas = new Date(new Date().getFullYear(), 11, 25);\nconst msPerDay = 1000 * 60 * 60 * 24;\n\nfunction daysUntilChristmas(today: Date = new Date()): number {\n  const diff = christmas.getTime() - today.getTime();\n  return Math.max(0, Math.ceil(diff / msPerDay));\n}\n\nconst days = daysUntilChristmas();\nconsole.log(days === 0 ? "Merry Christmas!" : `${days} sleeps until Santa`);',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#2a2f2c",
