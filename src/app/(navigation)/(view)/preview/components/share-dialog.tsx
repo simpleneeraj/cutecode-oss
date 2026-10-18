@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { BASE_URL } from "@/utils/common";
 import {
   Dialog,
   DialogDescription,
@@ -50,13 +51,7 @@ function buildShareLinks(url: string) {
 
 export function ShareDialog({ slug }: ShareDialogProps) {
   const [copied, setCopied] = useState(false);
-  const [url, setUrl] = useState<string>("");
-
-  React.useEffect(() => {
-    if (typeof window !== "undefined") {
-      setUrl(window.location.href);
-    }
-  }, [slug]);
+  const url = `${BASE_URL}/preview/${slug}`;
 
   const handleCopy = async () => {
     try {

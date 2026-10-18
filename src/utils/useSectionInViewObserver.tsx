@@ -257,11 +257,15 @@ export function useSectionInViewObserver({ headerHeight, enabled = false }: Conf
 export function useSectionInView() {
   const router = useRouter();
   const pathname = usePathname();
-  const [sectionInView, setSectionInView] = React.useState<string>();
+  const [sectionInView, setSectionInView] = React.useState<string>(pathname);
+  const [trackedPathname, setTrackedPathname] = React.useState(pathname);
+
+  if (trackedPathname !== pathname) {
+    setTrackedPathname(pathname);
+    setSectionInView(pathname);
+  }
 
   React.useEffect(() => {
-    setSectionInView(pathname);
-
     const handleSectionInViewChange = (event: CustomEvent<string>) => {
       setSectionInView(event.detail);
     };

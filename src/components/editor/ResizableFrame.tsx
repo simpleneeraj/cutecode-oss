@@ -64,7 +64,6 @@ const ResizableFrame: React.FC<PropsWithChildren> = ({ children }) => {
 
   const mouseUpHandler = useCallback(() => {
     document.removeEventListener("mousemove", mouseMoveHandler);
-    document.removeEventListener("mouseup", mouseUpHandler);
     setResizing(false);
     clearSelection();
   }, [mouseMoveHandler, clearSelection]);
@@ -78,7 +77,7 @@ const ResizableFrame: React.FC<PropsWithChildren> = ({ children }) => {
         setResizing(true);
 
         document.addEventListener("mousemove", mouseMoveHandler);
-        document.addEventListener("mouseup", mouseUpHandler);
+        document.addEventListener("mouseup", mouseUpHandler, { once: true });
       },
     [mouseMoveHandler, mouseUpHandler],
   );
