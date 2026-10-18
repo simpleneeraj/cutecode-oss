@@ -8,6 +8,7 @@ import { Plan } from "@/db/schema";
 import { BillingInterval } from "@/lib/billing/products";
 import BillingIntervalTabs from "@/components/editor/dialogs/billing-interval-tabs";
 import PlanCard from "@/components/editor/dialogs/plan-card";
+import CheckoutNote from "@/components/editor/dialogs/checkout-note";
 
 const TIERS = [Plan.FREE, Plan.PRO, Plan.PREMIUM];
 
@@ -36,7 +37,7 @@ export default function PricingPlans() {
         ))}
       </div>
 
-      <p className="text-center text-xs text-muted-foreground">Secure checkout · Cancel anytime · Instant access</p>
+      <CheckoutNote />
     </div>
   );
 }

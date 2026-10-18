@@ -13,6 +13,7 @@ const staticRoutes: MetadataRoute.Sitemap = [
   { url: `${BASE_URL}/legal/terms`, changeFrequency: "yearly", priority: 0.3 },
   { url: `${BASE_URL}/legal/privacy`, changeFrequency: "yearly", priority: 0.3 },
   { url: `${BASE_URL}/legal/refund`, changeFrequency: "yearly", priority: 0.3 },
+  { url: `${BASE_URL}/legal/credits`, changeFrequency: "yearly", priority: 0.3 },
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

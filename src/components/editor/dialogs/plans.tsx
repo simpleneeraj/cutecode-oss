@@ -21,6 +21,7 @@ import { BillingInterval } from "@/lib/billing/products";
 import { plansDialogOpenAtom } from "@/store/editor/plans";
 import BillingIntervalTabs from "./billing-interval-tabs";
 import PlanCard from "./plan-card";
+import CheckoutNote from "./checkout-note";
 
 const TIERS = [Plan.FREE, Plan.PRO, Plan.PREMIUM];
 
@@ -68,7 +69,7 @@ export default function PlansDialog({ trigger }: PlansDialogProps) {
         </DialogPanel>
 
         <DialogFooter className="sm:justify-center">
-          <p className="text-center text-xs text-muted-foreground">Secure checkout · Cancel anytime · Instant access</p>
+          <CheckoutNote />
         </DialogFooter>
       </DialogPopup>
     </Dialog>

@@ -23,6 +23,13 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { Tag01Icon } from "@hugeicons/core-free-icons";
 import PremiumBadge from "./premium-badge";
 
+const LEGAL_LINKS = [
+  { href: "/legal/terms", label: "Terms" },
+  { href: "/legal/privacy", label: "Privacy" },
+  { href: "/legal/refund", label: "Refunds" },
+  { href: "/legal/credits", label: "Credits" },
+];
+
 interface ProfileDropdownProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export default function ProfileDropdown({ className, ...props }: ProfileDropdownProps) {
@@ -135,6 +142,14 @@ export default function ProfileDropdown({ className, ...props }: ProfileDropdown
             <Icon icon="solar:logout-3-linear" className="size-4" />
             Sign out
           </DropdownMenuItem>
+
+          <nav aria-label="Legal" className="flex flex-wrap gap-x-3 gap-y-1 px-2 pt-1 pb-1.5 text-xs text-muted-foreground">
+            {LEGAL_LINKS.map((link) => (
+              <Link key={link.href} href={link.href} className="hover:text-foreground">
+                {link.label}
+              </Link>
+            ))}
+          </nav>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
