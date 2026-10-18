@@ -1,17 +1,15 @@
 /**
  * @file analytics/index.ts
- * @description Enterprise-grade analytics utility for CuteCode.
+ * @description Enterprise-grade analytics utility for Cool Snippets.
  *
- * Wraps `@vercel/analytics` `track()` with:
+ * Routes events to CloudWatch RUM `recordEvent` with:
  *  - Fully typed event names and payloads via discriminated-union contract.
  *  - Zero-throw guarantee – tracking errors are silenced to never impact UX.
  *  - Consistent property snake_case convention across all events.
  *  - Tree-shakeable: each domain exports its own `track*` helper.
- *
- * Reference: https://vercel.com/docs/analytics/custom-events
  */
 
-import { track as vercelTrack } from "@vercel/analytics";
+import { recordRumEvent } from "./rum";
 
 // ─── Event Contract ───────────────────────────────────────────────────────────
 
@@ -23,7 +21,7 @@ export type AnalyticsEvent =
   // ── Navigation ─────────────────────────────────────────────────────────────
   | {
       name: "navigation:tab_changed";
-      payload: { tab: "Create" | "Explore" | "Snippets" };
+      payload: { tab: "Create" | "Snippets" };
     }
 
   // ── Export ──────────────────────────────────────────────────────────────────
@@ -63,14 +61,14 @@ export type AnalyticsEvent =
 // ─── Core Track Wrapper ───────────────────────────────────────────────────────
 
 /**
- * Type-safe, zero-throw wrapper around `@vercel/analytics` `track()`.
+ * Type-safe, zero-throw wrapper around CloudWatch RUM `recordEvent`.
  *
  * @example
  * trackEvent({ name: "export:png_saved", payload: { file_name: "my-snippet", export_size: 2 } });
  */
 export function trackEvent<E extends AnalyticsEvent>(event: E): void {
   try {
-    vercelTrack(event.name, event.payload as Record<string, string | number | boolean>);
+    recordRumEvent(event.name, event.payload);
   } catch {
     // Analytics must never break the application.
     if (process.env.NODE_ENV === "development") {
@@ -85,7 +83,7 @@ export function trackEvent<E extends AnalyticsEvent>(event: E): void {
 
 /** Track navigation events (header tab changes). */
 export const trackNavigation = {
-  tabChanged: (tab: "Create" | "Explore" | "Snippets") =>
+  tabChanged: (tab: "Create" | "Snippets") =>
     trackEvent({ name: "navigation:tab_changed", payload: { tab } }),
 };
 

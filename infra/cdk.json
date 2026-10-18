@@ -1,0 +1,9 @@
+{
+  "app": "npx tsx bin/main.ts",
+  "watch": { "exclude": ["node_modules", "cdk.out"] },
+  "context": {
+    "serviceRoleArn": "arn:aws:iam::ACCOUNT_ID:role/REPLACE_WITH_AMPLIFY_SERVICE_ROLE",
+    "domain": "coolsnippets.fun",
+    "sesFromEmail": "no-reply@cutecode.app"
+  }
+}
