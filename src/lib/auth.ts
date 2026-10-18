@@ -83,6 +83,7 @@ export const auth = betterAuth({
       assertSlugOnlyCheckout(ctx.path, ctx.body);
       const session = await getSessionFromCtx(ctx);
       if (session) await assertNoEntitledSubscription(session.user.id);
+      return { context: { body: { ...ctx.body, feature_flags: { allow_discount_code: true } } } };
     }),
   },
   plugins: [

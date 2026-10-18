@@ -83,19 +83,20 @@ async function listOurs(sdk: DodoPayments): Promise<Map<string, Product>> {
   }
 }
 
-async function syncProduct(sdk: DodoPayments, wanted: Wanted, found: Product | undefined, isDryRun: boolean) {
+async function syncProduct(sdk: DodoPayments, wanted: Wanted, found: Product | undefined, brandId: string, isDryRun: boolean) {
   if (!found) {
     if (isDryRun) return { id: "(would create)", action: "created" };
     const created = await sdk.products.create({
       name: wanted.name,
       tax_category: "saas",
       price: wanted.price,
+      brand_id: brandId,
       metadata: { app: "cutecode", slug: wanted.product.slug },
     });
     return { id: created.product_id, action: "created" };
   }
-  if (samePrice(found.price, wanted.price)) return { id: found.product_id, action: "kept" };
-  if (!isDryRun) await sdk.products.update(found.product_id, { price: wanted.price });
+  if (samePrice(found.price, wanted.price) && found.brand_id === brandId) return { id: found.product_id, action: "kept" };
+  if (!isDryRun) await sdk.products.update(found.product_id, { price: wanted.price, brand_id: brandId });
   return { id: found.product_id, action: "updated" };
 }
 
@@ -103,11 +104,13 @@ async function main(): Promise<void> {
   const isDryRun = process.argv.includes("--dry-run");
   const apiKey = process.env.DODO_PAYMENTS_API_KEY;
   if (!apiKey) throw new Error("DODO_PAYMENTS_API_KEY is not set");
+  const brandId = process.env.DODO_PAYMENTS_BRAND_ID;
+  if (!brandId) throw new Error("DODO_PAYMENTS_BRAND_ID is not set");
   const sdk = new DodoPayments({ bearerToken: apiKey, environment: resolveEnvironment() });
   const ours = await listOurs(sdk);
   const envLines: string[] = [];
   for (const wanted of wantedProducts()) {
-    const { id, action } = await syncProduct(sdk, wanted, ours.get(wanted.name), isDryRun);
+    const { id, action } = await syncProduct(sdk, wanted, ours.get(wanted.name), brandId, isDryRun);
     process.stdout.write(`${action.padEnd(8)} ${id}  ${wanted.name}\n`);
     envLines.push(`${wanted.product.envKey}="${id}"`);
   }
