@@ -2,10 +2,10 @@ export default function JsonLd() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    name: "Cool Snippets",
-    url: "https://coolsnippets.fun",
+    name: "CuteCode",
+    url: "https://cutecode.app",
     description:
-      "Create beautiful code screenshots in seconds. Pick a theme, export HD images, share instantly. Best alternative to ray.so and Carbon for developers.",
+      "Create beautiful code screenshots in seconds. Pick a theme, export HD images, share instantly. CuteCode is the best alternative to ray.so and Carbon for developers.",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "All",
     browserRequirements: "Requires JavaScript",
@@ -43,11 +43,11 @@ export default function JsonLd() {
       "Dark and light mode support",
       "Embed snippets anywhere",
     ],
-    screenshot: "https://coolsnippets.fun/og-image.png",
+    screenshot: "https://cutecode.app/og-image.png",
     author: {
       "@type": "Organization",
-      name: "Cool Snippets",
-      url: "https://coolsnippets.fun",
+      name: "CuteCode",
+      url: "https://cutecode.app",
     },
   };
 

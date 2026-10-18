@@ -8,7 +8,7 @@ import { PRODUCT_LIST, type BillingInterval, type BillingProduct } from "../../s
 
 config({ path: path.resolve(process.cwd(), `.env.${process.env.NODE_ENV ?? "development"}`) });
 
-const PREFIX = "Cool Snippets";
+const PREFIX = "CuteCode";
 const PAGE_SIZE = 100;
 
 const PAYMENT_INTERVAL: Record<BillingInterval, TimeInterval> = {

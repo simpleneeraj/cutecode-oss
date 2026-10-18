@@ -1,7 +1,7 @@
 # Brand presets launch on X
 
 ## Goal
-Get attention for coolsnippets.fun by posting a short video of each brand preset on X and tagging the company. One repost from a large dev-tool account beats weeks of solo posting.
+Get attention for cutecode.app by posting a short video of each brand preset on X and tagging the company. One repost from a large dev-tool account beats weeks of solo posting.
 
 ## Rules
 - Brand presets stay free. Charging for another company's look invites a takedown, not a repost.
@@ -13,7 +13,7 @@ Get attention for coolsnippets.fun by posting a short video of each brand preset
 - **Snippet:** real code from that company's SDK, so their team recognizes it instantly.
 - **Copy:** frame it as a gift. "Made a free <Brand> theme for your code snippets", not "how's that?".
 - **Tags:** the company account plus one devrel person or founder who is active on X.
-- **Link:** `coolsnippets.fun/?theme=<id>` opens the editor on that preset. This needs building first; see Prep.
+- **Link:** `cutecode.app/?theme=<id>` opens the editor on that preset. This needs building first; see Prep.
 
 ## Order
 | # | Brand | Preset id | Restyled | Snippet idea |

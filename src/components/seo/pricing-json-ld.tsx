@@ -9,10 +9,10 @@ const schema = {
   "@graph": [
     {
       "@type": "Product",
-      name: "Cool Snippets",
+      name: "CuteCode",
       description: "Code screenshot and snippet sharing tool with Free, Pro and Premium plans.",
       url: `${BASE_URL}/pricing`,
-      brand: { "@type": "Brand", name: "Cool Snippets" },
+      brand: { "@type": "Brand", name: "CuteCode" },
       offers: [PLANS.FREE, ...paidPlans].flatMap((plan) => {
         const cycles = plan.prices.monthly === 0 ? [["month", plan.prices.monthly] as const] : [["month", plan.prices.monthly] as const, ["year", plan.prices.yearly] as const];
         return cycles.map(([cycle, price]) => ({

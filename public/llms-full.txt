@@ -1,14 +1,14 @@
-# Cool Snippets — Full Documentation
+# CuteCode — Full Documentation
 
-> Cool Snippets is a free, open-source code screenshot tool and ray.so alternative. Create beautiful images of your code with 45+ themes, share snippets via unique URLs, and explore community-created code art. Built with Next.js, React, and TypeScript.
+> CuteCode is a free, open-source code screenshot tool and ray.so alternative. Create beautiful images of your code with 45+ themes, share snippets via unique URLs, and explore community-created code art. Built with Next.js, React, and TypeScript.
 
 ---
 
 ## Overview
 
-Cool Snippets lets developers and designers turn code into stunning, shareable images. Choose from 45+ curated themes — including brand themes from companies like Vercel, Stripe, and OpenAI — paste your code, and export a pixel-perfect screenshot in seconds. Every snippet can be saved, shared via a unique URL, and remixed by the community.
+CuteCode lets developers and designers turn code into stunning, shareable images. Choose from 45+ curated themes — including brand themes from companies like Vercel, Stripe, and OpenAI — paste your code, and export a pixel-perfect screenshot in seconds. Every snippet can be saved, shared via a unique URL, and remixed by the community.
 
-**Website:** https://coolsnippets.fun
+**Website:** https://cutecode.app
 **GitHub:** https://github.com/simpleneeraj/cutecode
 **Author:** simpleneeraj
 **License:** MIT
@@ -17,13 +17,13 @@ Cool Snippets lets developers and designers turn code into stunning, shareable i
 
 ## Pages & Routes
 
-- [Homepage](https://coolsnippets.fun): The main code screenshot editor. Paste code, pick a theme, customize, and export.
-- [Explore Snippets](https://coolsnippets.fun/explore): Browse public snippets shared by the community. Discover creative code art.
-- [Snippets](https://coolsnippets.fun/snippets): View and manage your saved code snippets (requires sign-in).
-- [Pricing](https://coolsnippets.fun/pricing): Compare Free and Pro plans. Pro includes unlimited HD exports, all premium themes, and watermark-free images.
-- [Embed](https://coolsnippets.fun/embed): Embeddable code preview route for integrating snippets into blogs and docs.
-- [Sign In](https://coolsnippets.fun/sign-in): Authentication page powered by Clerk.
-- [Sign Up](https://coolsnippets.fun/sign-up): Create a new Cool Snippets account.
+- [Homepage](https://cutecode.app): The main code screenshot editor. Paste code, pick a theme, customize, and export.
+- [Explore Snippets](https://cutecode.app/explore): Browse public snippets shared by the community. Discover creative code art.
+- [Snippets](https://cutecode.app/snippets): View and manage your saved code snippets (requires sign-in).
+- [Pricing](https://cutecode.app/pricing): Compare Free and Pro plans. Pro includes unlimited HD exports, all premium themes, and watermark-free images.
+- [Embed](https://cutecode.app/embed): Embeddable code preview route for integrating snippets into blogs and docs.
+- [Sign In](https://cutecode.app/sign-in): Authentication page powered by Clerk.
+- [Sign Up](https://cutecode.app/sign-up): Create a new CuteCode account.
 
 ---
 
@@ -38,7 +38,7 @@ Cool Snippets lets developers and designers turn code into stunning, shareable i
 - Line numbers toggle
 
 ### 45+ Built-in Themes
-Cool Snippets ships with 45+ themes organized into two categories: **Brand Themes** and **Aesthetic Themes**.
+CuteCode ships with 45+ themes organized into two categories: **Brand Themes** and **Aesthetic Themes**.
 
 #### Brand Themes (16)
 Officially inspired color palettes from popular developer tools and companies:
@@ -227,7 +227,7 @@ Themes are stored in `src/themes/` and can be selected from the theme picker in 
 
 Saved snippets follow this URL pattern:
 ```
-https://coolsnippets.fun/snippet/{snippetId}
+https://cutecode.app/snippet/{snippetId}
 ```
 
 Each snippet URL preserves:
@@ -243,14 +243,14 @@ Each snippet URL preserves:
 ### Embeddable Previews
 Use the `/embed` route to embed live, read-only code previews:
 ```
-https://coolsnippets.fun/embed/{snippetId}
+https://cutecode.app/embed/{snippetId}
 ```
 
 ### Shareable URLs
 Every snippet generates a unique URL that can be shared on social media, documentation, or chat.
 
 ### Open Source
-Cool Snippets is open source under the MIT License. Contributions, issues, and pull requests are welcome.
+CuteCode is open source under the MIT License. Contributions, issues, and pull requests are welcome.
 
 ---
 
@@ -270,9 +270,9 @@ Cool Snippets is open source under the MIT License. Contributions, issues, and p
 
 ---
 
-## Comparison: Cool Snippets vs Alternatives
+## Comparison: CuteCode vs Alternatives
 
-| Feature | Cool Snippets | ray.so | Carbon |
+| Feature | CuteCode | ray.so | Carbon |
 |---|---|---|---|
 | Open source | ✅ Yes (MIT) | ❌ No | ✅ Yes |
 | Themes | 45+ | ~10 | ~15 |
@@ -287,30 +287,30 @@ Cool Snippets is open source under the MIT License. Contributions, issues, and p
 
 ## FAQ
 
-**Is Cool Snippets free?**
+**Is CuteCode free?**
 Yes. The core features — code screenshots, 45+ themes, PNG export, and sharing — are completely free. A Pro plan is available with additional premium features.
 
-**Can I self-host Cool Snippets?**
-Yes. Cool Snippets is open source under the MIT License. Clone the repo, set up your environment, and deploy anywhere that supports Next.js.
+**Can I self-host CuteCode?**
+Yes. CuteCode is open source under the MIT License. Clone the repo, set up your environment, and deploy anywhere that supports Next.js.
 
 **What languages are supported?**
-Cool Snippets supports 100+ programming languages through Shiki, including JavaScript, TypeScript, Python, Rust, Go, Java, C++, Ruby, Swift, Kotlin, and many more.
+CuteCode supports 100+ programming languages through Shiki, including JavaScript, TypeScript, Python, Rust, Go, Java, C++, Ruby, Swift, Kotlin, and many more.
 
 **How do I share a snippet?**
 Save your snippet (requires sign-in), then copy the unique URL. Anyone with the link can view and remix your snippet.
 
-**Can I use Cool Snippets screenshots commercially?**
+**Can I use CuteCode screenshots commercially?**
 Yes. Screenshots you create are yours. The tool itself is MIT-licensed.
 
 ---
 
 ## Links
 
-- **Website:** https://coolsnippets.fun
+- **Website:** https://cutecode.app
 - **GitHub:** https://github.com/simpleneeraj/cutecode
-- **Explore Snippets:** https://coolsnippets.fun/explore
-- **Pricing:** https://coolsnippets.fun/pricing
+- **Explore Snippets:** https://cutecode.app/explore
+- **Pricing:** https://cutecode.app/pricing
 
 ---
 
-*This document is auto-generated for AI agents and LLMs. For the concise version, see [llms.txt](https://coolsnippets.fun/llms.txt).*
+*This document is auto-generated for AI agents and LLMs. For the concise version, see [llms.txt](https://cutecode.app/llms.txt).*

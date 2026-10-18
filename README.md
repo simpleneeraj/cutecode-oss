@@ -1,8 +1,8 @@
 <div align="center">
-  <img src="public/og-image.png" alt="Cool Snippets" width="100%" />
-  <h1>Cool Snippets</h1>
+  <img src="public/og-image.png" alt="CuteCode" width="100%" />
+  <h1>CuteCode</h1>
   <p><strong>Beautiful, animated images and videos of your code.</strong></p>
-  <a href="https://coolsnippets.fun"><strong>coolsnippets.fun</strong></a>
+  <a href="https://cutecode.app"><strong>cutecode.app</strong></a>
 </div>
 
 ## Features
@@ -51,7 +51,7 @@ GITHUB_CLIENT_SECRET=""
 GOOGLE_CLIENT_ID=""
 GOOGLE_CLIENT_SECRET=""
 
-DATABASE_URL="postgresql://user:password@localhost:5432/cool_snippets"
+DATABASE_URL="postgresql://user:password@localhost:5432/cutecode"
 
 DODO_PAYMENTS_API_KEY=""
 DODO_PAYMENTS_WEBHOOK_KEY=""
@@ -111,7 +111,7 @@ docs/             deploy runbook, launch plan
 
 ## Credits
 
-Cool Snippets started from [ray.so](https://ray.so) by [Raycast](https://raycast.com), used under the MIT License. Fonts, libraries and icons are credited at [/legal/credits](https://coolsnippets.fun/legal/credits) and in [CREDITS.md](CREDITS.md).
+CuteCode started from [ray.so](https://ray.so) by [Raycast](https://raycast.com), used under the MIT License. Fonts, libraries and icons are credited at [/legal/credits](https://cutecode.app/legal/credits) and in [CREDITS.md](CREDITS.md).
 
 ## License
 

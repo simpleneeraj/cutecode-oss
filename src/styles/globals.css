@@ -166,6 +166,9 @@
   body {
     @apply bg-background text-foreground;
   }
+  body:has([data-slot="embed"]) {
+    @apply bg-transparent;
+  }
 }
 
 /* ============================================================
@@ -185,9 +188,11 @@
   background-size: 24px 24px;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+@layer base {
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 }
 
 main {

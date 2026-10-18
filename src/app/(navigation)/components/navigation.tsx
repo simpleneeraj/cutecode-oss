@@ -5,11 +5,18 @@ import siteConfig from "@/contstant/site-config";
 import { usePathname } from "next/navigation";
 import { Tabs, TabsList, TabsTab } from "@/components/ui/tabs";
 
+const EDITOR_ROUTES = ["/remix/", "/edit/"];
+
+function activeTabHref(pathname: string) {
+  if (EDITOR_ROUTES.some((route) => pathname.startsWith(route))) return "/";
+  return pathname;
+}
+
 export default function Navigations() {
   const pathname = usePathname();
 
   return (
-    <Tabs value={pathname}>
+    <Tabs value={activeTabHref(pathname ?? "/")}>
       <TabsList>
         {siteConfig.tabs.map((tab) => (
           <TabsTab

@@ -1,7 +1,7 @@
 import { BadgeVariant } from "@/typings/editor";
 
 const siteConfig = {
-  name: "Cool Snippets",
+  name: "CuteCode",
   version: "1.0.0",
   logo: "/favicon.png",
   tabs: [

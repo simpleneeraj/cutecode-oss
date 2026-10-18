@@ -31,7 +31,7 @@ Everything else is a client component that fetches via tRPC + SWR hooks. Pages m
 Amplify Hosting (Next SSR, `amplify.yml`) + RDS PostgreSQL (db.t4g.micro) + Amazon SES + EventBridge (daily billing cron) + CloudWatch RUM. AWS resources live in the `infra/` CDK app. Runbook: `docs/deploy-aws.md`. Dodo webhook → `https://<domain>/api/auth/dodopayments/webhooks`.
 
 ## Env
-Only `.env.development` and `.env.production`. `.env.example` is deleted. Production secrets live only in SSM Parameter Store under `/cool-snippets/<branch>/` (loaded by `amplify.yml` for the build and by `src/lib/secrets.ts` at runtime); non-secret config is the `RUNTIME_VARS` allow-list in `amplify.yml`.
+Only `.env.development` and `.env.production`. `.env.example` is deleted. Production secrets live only in SSM Parameter Store under `/cutecode/<branch>/` (loaded by `amplify.yml` for the build and by `src/lib/secrets.ts` at runtime); non-secret config is the `RUNTIME_VARS` allow-list in `amplify.yml`.
 
 ## Code style
 - No comments unless asked.

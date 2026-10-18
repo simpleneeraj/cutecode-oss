@@ -13,7 +13,7 @@ export default function LegalLayout({ children }: LegalLayoutProps) {
         <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
           <Link href="/" className="flex items-center gap-2 text-sm font-semibold tracking-tight">
             <BrandMark className="size-6" />
-            Cool Snippets
+            CuteCode
           </Link>
           <Link href="/" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
             Open editor

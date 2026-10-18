@@ -9,6 +9,7 @@ import type { Metadata, Viewport } from "next";
 import { TooltipProvider } from "@/components/tooltip";
 import { ThemeProvider } from "@/components/theme-switch/theme-provider";
 import { headingFontVariable } from "@/fonts/global";
+import SWRProvider from "@/providers/swr-provider";
 
 const geistSans = Geist({
   subsets: ["latin"],
@@ -22,15 +23,15 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
-const title = "Cool Snippets — Create beautiful images of your code";
+const title = "CuteCode — Create beautiful images of your code";
 const description =
-  "Create beautiful code screenshots in seconds. Pick a theme, export HD images, share instantly. Best alternative to ray.so and Carbon for developers.";
+  "Create beautiful code screenshots in seconds. Pick a theme, export HD images, share instantly. CuteCode is the best alternative to ray.so and Carbon for developers.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
     default: title,
-    template: "%s | Cool Snippets",
+    template: "%s | CuteCode",
   },
   description,
   robots: {
@@ -61,7 +62,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: BASE_URL,
-    siteName: "Cool Snippets",
+    siteName: "CuteCode",
     title,
     description,
     images: [
@@ -69,7 +70,7 @@ export const metadata: Metadata = {
         url: `${BASE_URL}/og-image.png`,
         width: 1200,
         height: 630,
-        alt: "Cool Snippets — Create beautiful images of your code",
+        alt: "CuteCode — Create beautiful images of your code",
       },
     ],
     locale: "en_US",
@@ -82,10 +83,10 @@ export const metadata: Metadata = {
     description,
     images: [`${BASE_URL}/og-image.png`],
   },
-  applicationName: "Cool Snippets",
+  applicationName: "CuteCode",
   category: "Developer Tools",
-  creator: "Cool Snippets",
-  publisher: "Cool Snippets",
+  creator: "CuteCode",
+  publisher: "CuteCode",
 };
 
 export const viewport: Viewport = {
@@ -107,11 +108,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="relative">
         <ThemeProvider>
-          <TooltipProvider>
-            <div className="isolate relative flex flex-col">{children}</div>
-            <Toaster position="top-center" />
-            <RumMonitor />
-          </TooltipProvider>
+          <SWRProvider>
+            <TooltipProvider>
+              <div className="isolate relative flex flex-col">{children}</div>
+              <Toaster position="top-center" />
+              <RumMonitor />
+            </TooltipProvider>
+          </SWRProvider>
         </ThemeProvider>
       </body>
     </html>
