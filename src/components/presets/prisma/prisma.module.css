@@ -145,7 +145,7 @@
   height: 3px;
   border-radius: 3px;
   background: linear-gradient(90deg, transparent, currentColor 45%, #ffffff 55%, transparent);
-  box-shadow: 0 0 10px currentColor;
+  filter: drop-shadow(0 0 10px currentColor);
 }
 
 .source {
@@ -176,7 +176,7 @@
 
 .dark .spark {
   background: #a5b4fc;
-  box-shadow: 0 0 8px rgba(165, 180, 252, 0.7);
+  filter: drop-shadow(0 0 8px rgba(165, 180, 252, 0.7));
 }
 
 .light .sparkTeal {
@@ -185,7 +185,7 @@
 
 .dark .sparkTeal {
   background: #71e8df;
-  box-shadow: 0 0 8px rgba(113, 232, 223, 0.7);
+  filter: drop-shadow(0 0 8px rgba(113, 232, 223, 0.7));
 }
 
 .window {
@@ -197,19 +197,12 @@
 
 .light .window {
   background: rgba(255, 255, 255, 0.94);
-  box-shadow:
-    0 0 0 6px rgba(97, 100, 204, 0.06),
-    0 0 0 12px rgba(49, 186, 175, 0.04),
-    0 18px 50px rgba(62, 64, 131, 0.14);
+  filter: drop-shadow(0 18px 50px rgba(62, 64, 131, 0.14));
 }
 
 .dark .window {
   background: #0a0c1d;
-  box-shadow:
-    0 0 0 6px rgba(127, 156, 245, 0.05),
-    0 0 0 12px rgba(113, 232, 223, 0.025),
-    0 0 70px rgba(90, 103, 216, 0.14),
-    0 28px 80px rgba(0, 0, 0, 0.7);
+  filter: drop-shadow(0 0 70px rgba(90, 103, 216, 0.14)) drop-shadow(0 28px 80px rgba(0, 0, 0, 0.7));
 }
 
 .frameBorder {

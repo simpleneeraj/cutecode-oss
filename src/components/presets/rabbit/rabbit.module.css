@@ -62,10 +62,8 @@
   height: 340px;
   border-radius: 50%;
   background: repeating-conic-gradient(from 0deg, var(--orange) 0deg 3deg, #e04a0e 3deg 6deg);
-  box-shadow:
-    0 0 0 6px var(--shell),
-    0 0 0 7px var(--shell-edge),
-    0 20px 60px rgba(255, 95, 31, 0.25);
+  border: 6px solid var(--shell);
+  filter: drop-shadow(0 20px 60px rgba(255, 95, 31, 0.25));
 }
 
 .dialCap {
@@ -76,9 +74,7 @@
   height: 120px;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, #ff8a54, var(--orange) 60%, #d9450c);
-  box-shadow:
-    0 0 0 2px rgba(0, 0, 0, 0.15),
-    inset 0 2px 4px rgba(255, 255, 255, 0.35);
+  border: 2px solid rgba(0, 0, 0, 0.15);
 }
 
 .eye {
@@ -92,9 +88,8 @@
   justify-content: center;
   border-radius: 50%;
   background: var(--shell);
-  box-shadow:
-    0 0 0 1px var(--shell-edge),
-    0 12px 32px rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--shell-edge);
+  filter: drop-shadow(0 12px 32px rgba(0, 0, 0, 0.25));
 }
 
 .iris {
@@ -103,7 +98,6 @@
   height: 84px;
   border-radius: 50%;
   background: conic-gradient(from 0deg, #0b0b0b, #2a2a2a 25%, #0b0b0b 50%, #333 75%, #0b0b0b);
-  box-shadow: inset 0 0 0 3px #050505;
 }
 
 .pupil {
@@ -112,7 +106,7 @@
   height: 34px;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 35%, #ff9a6a 0%, var(--orange) 35%, #6b1f00 100%);
-  box-shadow: 0 0 18px rgba(255, 95, 31, 0.6);
+  filter: drop-shadow(0 0 18px rgba(255, 95, 31, 0.6));
 }
 
 .signals {
@@ -128,7 +122,7 @@
   height: 7px;
   border-radius: 50%;
   background: var(--orange);
-  box-shadow: 0 0 8px rgba(255, 95, 31, 0.7);
+  filter: drop-shadow(0 0 8px rgba(255, 95, 31, 0.7));
 }
 
 .key {
@@ -140,7 +134,7 @@
 .keyFilled {
   border-color: transparent;
   background: linear-gradient(160deg, #ff8a54, var(--orange));
-  box-shadow: 0 4px 12px rgba(255, 95, 31, 0.35);
+  filter: drop-shadow(0 4px 12px rgba(255, 95, 31, 0.35));
 }
 
 .window {
@@ -152,21 +146,14 @@
 
 .dark .window {
   background: #0b0b0b;
-  box-shadow:
-    0 0 0 1px #242424,
-    0 0 0 5px #111,
-    0 0 0 6px #1f1f1f,
-    0 28px 70px rgba(0, 0, 0, 0.75),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  border: 1px solid #242424;
+  filter: drop-shadow(0 28px 70px rgba(0, 0, 0, 0.75));
 }
 
 .light .window {
   background: #fff;
-  box-shadow:
-    0 0 0 1px #e2e2e2,
-    0 0 0 5px #f2f2f2,
-    0 0 0 6px #e4e4e4,
-    0 20px 50px rgba(120, 50, 10, 0.12);
+  border: 1px solid #e2e2e2;
+  filter: drop-shadow(0 20px 50px rgba(120, 50, 10, 0.12));
 }
 
 .topEdge {
@@ -218,17 +205,15 @@
 
 .dot:nth-child(1) {
   background: radial-gradient(circle at 35% 35%, #ff9a6a, var(--orange));
-  box-shadow: 0 0 6px rgba(255, 95, 31, 0.5);
+  filter: drop-shadow(0 0 6px rgba(255, 95, 31, 0.5));
 }
 
 .dark .dot:nth-child(n + 2) {
   background: #262626;
-  box-shadow: inset 0 0 0 1px #333;
 }
 
 .light .dot:nth-child(n + 2) {
   background: #e8e8e8;
-  box-shadow: inset 0 0 0 1px #d6d6d6;
 }
 
 .fileName {

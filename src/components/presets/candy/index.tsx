@@ -74,7 +74,6 @@ const CandyFrame = ({ padding, darkMode, transparent, children }: BaseFrameProps
           }
           blurAmount={20}
           tintColor={darkMode ? "rgba(30, 15, 60, 0.85)" : "rgba(255, 245, 255, 0.9)"}
-          tintBoxShadow={darkMode ? "inset 0 0 20px rgba(123,31,162,0.5)" : "inset 0 0 20px rgba(255,64,129,0.15)"}
         />
         {/* Jelly reflection overlay on the glass */}
         <div className={styles.jellyGloss} aria-hidden />

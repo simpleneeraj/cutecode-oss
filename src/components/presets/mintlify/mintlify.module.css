@@ -109,16 +109,14 @@
 
 .light .sheet {
   background: #ffffff;
-  box-shadow:
-    0 0 0 1px rgba(13, 147, 115, 0.1),
-    0 12px 32px rgba(13, 147, 115, 0.08);
+  border: 1px solid rgba(13, 147, 115, 0.1);
+  filter: drop-shadow(0 12px 32px rgba(13, 147, 115, 0.08));
 }
 
 .dark .sheet {
   background: #0c120f;
-  box-shadow:
-    0 0 0 1px rgba(85, 215, 153, 0.08),
-    0 16px 40px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(85, 215, 153, 0.08);
+  filter: drop-shadow(0 16px 40px rgba(0, 0, 0, 0.5));
 }
 
 .heading,
@@ -213,7 +211,7 @@
 
 .dark .drop {
   background: #55d799;
-  box-shadow: 0 0 8px rgba(85, 215, 153, 0.6);
+  filter: drop-shadow(0 0 8px rgba(85, 215, 153, 0.6));
 }
 
 .window {
@@ -225,20 +223,14 @@
 
 .light .window {
   background: #ffffff;
-  box-shadow:
-    0 0 0 1px #dfdfdf,
-    0 7px 15px rgba(0, 0, 0, 0.05),
-    0 28px 28px rgba(0, 0, 0, 0.04),
-    0 20px 60px rgba(13, 147, 115, 0.08);
+  border: 1px solid #dfdfdf;
+  filter: drop-shadow(0 7px 15px rgba(0, 0, 0, 0.05)) drop-shadow(0 28px 28px rgba(0, 0, 0, 0.04)) drop-shadow(0 20px 60px rgba(13, 147, 115, 0.08));
 }
 
 .dark .window {
   background: #070a08;
-  box-shadow:
-    0 0 0 1px rgba(85, 215, 153, 0.12),
-    0 0 60px rgba(13, 147, 115, 0.1),
-    0 28px 72px rgba(0, 0, 0, 0.6),
-    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(85, 215, 153, 0.12);
+  filter: drop-shadow(0 0 60px rgba(13, 147, 115, 0.1)) drop-shadow(0 28px 72px rgba(0, 0, 0, 0.6));
 }
 
 .topEdge {

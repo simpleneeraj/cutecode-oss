@@ -124,7 +124,7 @@
 
 .dark .mote {
   background: #a8c7fa;
-  box-shadow: 0 0 6px rgba(120, 160, 255, 0.8);
+  filter: drop-shadow(0 0 6px rgba(120, 160, 255, 0.8));
 }
 
 .light .mote {
@@ -190,22 +190,16 @@
   --line-number: rgba(171, 178, 191, 0.3);
 
   background: #16181d;
-  box-shadow:
-    0 0 0 1px rgba(155, 180, 255, 0.12),
-    0 0 70px rgba(79, 140, 255, 0.1),
-    0 24px 72px rgba(0, 0, 0, 0.6),
-    inset 0 1px 0 rgba(200, 215, 255, 0.06);
+  border: 1px solid rgba(155, 180, 255, 0.12);
+  filter: drop-shadow(0 0 70px rgba(79, 140, 255, 0.1)) drop-shadow(0 24px 72px rgba(0, 0, 0, 0.6));
 }
 
 .light .window {
   --line-number: rgba(55, 71, 79, 0.35);
 
   background: #ffffff;
-  box-shadow:
-    0 0 0 1px rgba(79, 110, 237, 0.14),
-    0 14px 44px rgba(79, 110, 237, 0.12),
-    0 2px 8px rgba(155, 114, 203, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(79, 110, 237, 0.14);
+  filter: drop-shadow(0 14px 44px rgba(79, 110, 237, 0.12)) drop-shadow(0 2px 8px rgba(155, 114, 203, 0.06));
 }
 
 .topEdge {
