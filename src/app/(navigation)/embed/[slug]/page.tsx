@@ -10,14 +10,11 @@ export const metadata: Metadata = {
     follow: false,
   },
 };
-type EmbedSnippetProps = {
-  params: Promise<{ slug: string }>;
-};
 
-const EmbedSnippet = async ({ params }: EmbedSnippetProps) => {
-  const { slug } = await params;
+export function generateStaticParams() {
+  return [];
+}
 
-  return <EmbedSnippetClient slug={slug} />;
-};
+const EmbedSnippet = () => <EmbedSnippetClient />;
 
 export default EmbedSnippet;

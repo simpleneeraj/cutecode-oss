@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useSetAtom } from "jotai";
 import { currentElementIdAtom, currentSlideIdAtom, editorAtom, windowWidthAtom } from "@/store/editor/editor";
 import { dispatchPublishSnippetAtom } from "@/components/editor/export/store";
@@ -14,8 +14,6 @@ import Frame from "@/components/editor/Frame";
 import Controls from "@/components/editor/controls";
 
 type PublishedSnippet = SharePreviewOutput["snippet"];
-
-type EditClientProps = { slug: string };
 
 function toEditorState({ presentation }: PublishedSnippet): EditorState {
   return {
@@ -52,7 +50,8 @@ function useLoadSnippet() {
   };
 }
 
-export default function EditClient({ slug }: EditClientProps) {
+export default function EditClient() {
+  const { slug } = useParams<{ slug: string }>();
   const router = useRouter();
   const loadSnippet = useLoadSnippet();
   const [isLoaded, setIsLoaded] = useState(false);

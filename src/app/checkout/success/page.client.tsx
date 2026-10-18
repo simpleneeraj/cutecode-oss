@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import useSWR from "swr";
 import { useTimeout } from "react-use";
 import { useUser } from "@/hooks/use-auth";
@@ -11,6 +13,18 @@ import PlanActivating from "./plan-activating";
 
 const POLL_MS = 2000;
 const SLOW_AFTER_MS = 30_000;
+const FAILED_STATUSES = ["failed", "canceled", "cancelled"];
+
+export function FailedCheckoutRedirect() {
+  const router = useRouter();
+  const status = useSearchParams().get("status");
+
+  useEffect(() => {
+    if (status && FAILED_STATUSES.includes(status)) router.replace("/checkout/failure");
+  }, [status, router]);
+
+  return null;
+}
 
 function usePlanActivation() {
   const { user } = useUser();

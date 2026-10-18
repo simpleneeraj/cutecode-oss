@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useSetAtom } from "jotai";
 import { editorAtom } from "@/store/editor/editor/core";
 import { currentSlideIdAtom, currentElementIdAtom } from "@/store/editor/editor/selection";
@@ -33,7 +33,8 @@ function toRemixState(presentation: Presentation): EditorState {
   return { slides: presentation.slides as EditorState["slides"], elements, slideElements };
 }
 
-export default function RemixClient({ slug }: { slug: string }) {
+export default function RemixClient() {
+  const { slug } = useParams<{ slug: string }>();
   const router = useRouter();
   const setEditor = useSetAtom(editorAtom);
   const setCurrentSlideId = useSetAtom(currentSlideIdAtom);

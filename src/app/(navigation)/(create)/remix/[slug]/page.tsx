@@ -7,13 +7,10 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-interface PageProps {
-  params: Promise<{
-    slug: string;
-  }>;
+export function generateStaticParams() {
+  return [];
 }
 
-export default async function RemixPage({ params }: PageProps) {
-  const { slug } = await params;
-  return <RemixClient slug={slug} />;
+export default function RemixPage() {
+  return <RemixClient />;
 }

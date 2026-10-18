@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useParams } from "next/navigation";
 import View from "@/components/view";
 import { useSharePreview } from "@/hooks/use-share";
 import { PasscodeGate } from "../../(view)/preview/components/passcode-gate";
@@ -8,8 +9,6 @@ import { EmbedFrame } from "../components/embed-frame";
 import { EmbedFooter } from "../components/embed-footer";
 import { EmbedLoading } from "../components/embed-loading";
 import { EmbedNotFound } from "../components/embed-not-found";
-
-type EmbedSnippetClientProps = { slug: string };
 
 type Element = Record<string, unknown>;
 
@@ -36,7 +35,8 @@ function readCode(element: Element | undefined) {
   return "";
 }
 
-export default function EmbedSnippetClient({ slug }: EmbedSnippetClientProps) {
+export default function EmbedSnippetClient() {
+  const { slug } = useParams<{ slug: string }>();
   const [passcode, setPasscode] = useState("");
   const [submittedPasscode, setSubmittedPasscode] = useState("");
 

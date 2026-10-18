@@ -4,6 +4,8 @@ import { and, desc, eq, exists, gt, isNull, lt, max, or } from "drizzle-orm";
 import { db } from "@/db";
 import { shareLinks, snippets, ShareVisibility } from "@/db/schema";
 
+export const revalidate = 3600;
+
 const MAX_DYNAMIC_ENTRIES = 5000;
 
 const staticRoutes: MetadataRoute.Sitemap = [

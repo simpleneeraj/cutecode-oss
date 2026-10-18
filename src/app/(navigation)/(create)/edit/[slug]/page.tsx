@@ -7,11 +7,10 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-type PageProps = {
-  params: Promise<{ slug: string }>;
-};
+export function generateStaticParams() {
+  return [];
+}
 
-export default async function EditPage({ params }: PageProps) {
-  const { slug } = await params;
-  return <EditClient slug={slug} />;
+export default function EditPage() {
+  return <EditClient />;
 }

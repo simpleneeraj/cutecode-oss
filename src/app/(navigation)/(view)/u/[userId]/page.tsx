@@ -9,6 +9,12 @@ import { users, snippets } from "@/db/schema";
 
 type PageProps = { params: Promise<{ userId: string }> };
 
+export const revalidate = 3600;
+
+export function generateStaticParams() {
+  return [];
+}
+
 const getUserMeta = cache(async (userId: string) => {
   const user = await db.query.users.findFirst({ where: eq(users.id, userId), columns: { name: true, id: true } });
   if (!user) return null;
