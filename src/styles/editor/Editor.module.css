@@ -154,11 +154,6 @@
   font-weight: 400;
 }
 
-.soehneMono {
-  font-family: var(--font-soehne-mono), "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", monospace;
-  font-weight: 400;
-}
-
 .robotoMono {
   font-family: var(--font-roboto-mono), "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", monospace;
   font-weight: 400;

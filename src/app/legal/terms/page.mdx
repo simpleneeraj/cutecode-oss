@@ -1,3 +1,5 @@
+import fonts from "@/fonts/editor/fonts";
+
 export const metadata = {
   title: "Terms and Conditions",
   description: "The terms and conditions for using Cool Snippets, the code screenshot and snippet sharing tool.",
@@ -25,6 +27,18 @@ You must not:
 * Sell, rent or sub-license material from Cool Snippets
 * Reproduce, duplicate or copy material from Cool Snippets
 * Redistribute content from Cool Snippets
+
+## Fonts
+
+The code fonts in Cool Snippets belong to their authors and are used under their licenses.
+
+<ul>
+  {fonts.map((font) => (
+    <li key={font.name}>
+      <a href={font.source_url}>{font.name}</a> by {font.provider}, {font.license}
+    </li>
+  ))}
+</ul>
 
 ## Disclaimer
 

@@ -1,6 +1,17 @@
 import { cn } from "@/utils/cn";
 import localFont from "next/font/local";
-import { Geist_Mono, Space_Mono, DM_Mono, Google_Sans_Code } from "next/font/google";
+import {
+  Geist_Mono,
+  Space_Mono,
+  DM_Mono,
+  Google_Sans_Code,
+  Red_Hat_Mono,
+  Atkinson_Hyperlegible_Mono,
+  Martian_Mono,
+  Azeret_Mono,
+  Fragment_Mono,
+  Reddit_Mono,
+} from "next/font/google";
 
 /* ------------------------------- */
 /* Fonts (MUST be top-level const) */
@@ -36,17 +47,53 @@ const dmMono = DM_Mono({
   variable: "--font-dm-mono",
 });
 
+const redHatMono = Red_Hat_Mono({
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+  variable: "--font-red-hat-mono",
+});
+
+const atkinsonHyperlegibleMono = Atkinson_Hyperlegible_Mono({
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+  variable: "--font-atkinson-hyperlegible-mono",
+});
+
+const martianMono = Martian_Mono({
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+  variable: "--font-martian-mono",
+});
+
+const azeretMono = Azeret_Mono({
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+  variable: "--font-azeret-mono",
+});
+
+const fragmentMono = Fragment_Mono({
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+  variable: "--font-fragment-mono",
+});
+
+const redditMono = Reddit_Mono({
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+  variable: "--font-reddit-mono",
+});
+
 const commitMono = localFont({
   src: "./commit-mono-regular.woff2",
   variable: "--font-commitmono",
   display: "swap",
 });
-
-// const soehneMono = localFont({
-//   src: "./soehne-mono-buch.woff2",
-//   variable: "--font-soehne-mono",
-//   display: "swap",
-// });
 
 const cascadiaCode = localFont({
   src: "./cascadia-code/cascadia-code.woff2",
@@ -236,9 +283,14 @@ const fontVariables = cn(
   spaceMono.variable,
   dmMono.variable,
   commitMono.variable,
-  // soehneMono.variable,
   majorMonoDisplay.variable,
   googleSansCode.variable,
+  redHatMono.variable,
+  atkinsonHyperlegibleMono.variable,
+  martianMono.variable,
+  azeretMono.variable,
+  fragmentMono.variable,
+  redditMono.variable,
 );
 
 export default fontVariables;
