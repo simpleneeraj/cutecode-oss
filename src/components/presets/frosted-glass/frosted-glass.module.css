@@ -109,20 +109,13 @@
 }
 
 .light .window {
+  border: 1px solid rgba(255, 255, 255, 0.8);
   background: rgba(255, 255, 255, 0.5);
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.8),
-    0 10px 40px rgba(99, 102, 241, 0.14),
-    inset 0 1px 0 rgba(255, 255, 255, 0.95);
 }
 
 .dark .window {
+  border: 1px solid rgba(255, 255, 255, 0.09);
   background: rgba(12, 14, 34, 0.55);
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.09),
-    0 10px 40px rgba(99, 102, 241, 0.16),
-    0 24px 80px rgba(0, 0, 0, 0.6),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .frost {
@@ -234,17 +227,17 @@
 
 .dot:nth-child(1) {
   background: radial-gradient(circle at 35% 35%, #a5b4fc, #4f46e5);
-  box-shadow: 0 1px 4px rgba(99, 102, 241, 0.5);
+  filter: drop-shadow(0 1px 4px rgba(99, 102, 241, 0.5));
 }
 
 .dot:nth-child(2) {
   background: radial-gradient(circle at 35% 35%, #7dd3fc, #0ea5e9);
-  box-shadow: 0 1px 4px rgba(14, 165, 233, 0.5);
+  filter: drop-shadow(0 1px 4px rgba(14, 165, 233, 0.5));
 }
 
 .dot:nth-child(3) {
   background: radial-gradient(circle at 35% 35%, #c4b5fd, #7c3aed);
-  box-shadow: 0 1px 4px rgba(124, 58, 237, 0.5);
+  filter: drop-shadow(0 1px 4px rgba(124, 58, 237, 0.5));
 }
 
 .fileName {

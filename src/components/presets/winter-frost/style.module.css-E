@@ -1,0 +1,268 @@
+.scene {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  isolation: isolate;
+}
+
+.light {
+  --ice: #4a8fd6;
+  --ice-soft: rgba(74, 143, 214, 0.35);
+  --flake: #ffffff;
+  --flake-glow: rgba(74, 143, 214, 0.45);
+  --aurora-a: rgba(94, 214, 220, 0.4);
+  --aurora-b: rgba(120, 160, 255, 0.35);
+  --aurora-c: rgba(190, 150, 255, 0.28);
+  --window-bg: rgba(251, 253, 255, 0.95);
+  --window-ring: rgba(74, 143, 214, 0.16);
+  --window-glow: drop-shadow(0 14px 44px rgba(29, 95, 168, 0.12));
+  --header-bg: rgba(240, 247, 255, 0.92);
+  --header-border: rgba(74, 143, 214, 0.14);
+  --file-color: #1d5fa8;
+  --edge-bg: rgba(74, 143, 214, 0.22);
+
+  background: radial-gradient(ellipse at 50% 0%, #ffffff 0%, #eaf4ff 50%, #d6e8fa 100%);
+}
+
+.dark {
+  --ice: #a8d8ff;
+  --ice-soft: rgba(168, 216, 255, 0.22);
+  --flake: #f2f8ff;
+  --flake-glow: rgba(168, 216, 255, 0.6);
+  --aurora-a: rgba(80, 230, 200, 0.32);
+  --aurora-b: rgba(90, 150, 255, 0.3);
+  --aurora-c: rgba(170, 120, 255, 0.24);
+  --window-bg: #08182e;
+  --window-ring: rgba(168, 216, 255, 0.14);
+  --window-glow: drop-shadow(0 0 60px rgba(80, 230, 200, 0.08)) drop-shadow(0 24px 75px rgba(0, 0, 0, 0.8));
+  --header-bg: #0c2038;
+  --header-border: rgba(168, 216, 255, 0.1);
+  --file-color: #a8d8ff;
+  --edge-bg: rgba(168, 216, 255, 0.12);
+
+  background: radial-gradient(ellipse at 50% 0%, #10305a 0%, #0b2240 45%, #06142a 100%);
+}
+
+.transparent {
+  background: transparent;
+}
+
+.layer {
+  position: absolute;
+  overflow: hidden;
+  inset: 0;
+  pointer-events: none;
+  container-type: size;
+}
+
+.aurora,
+.auroraTrail {
+  position: absolute;
+  left: -25%;
+  width: 150%;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 45%, transparent 100%);
+  transform-origin: 50% 0%;
+  will-change: transform, opacity;
+}
+
+.aurora {
+  top: -30px;
+  height: 200px;
+  background: linear-gradient(100deg, transparent 8%, var(--aurora-a) 28%, var(--aurora-b) 50%, var(--aurora-c) 70%, transparent 90%);
+}
+
+.auroraTrail {
+  top: 40px;
+  height: 140px;
+  background: linear-gradient(80deg, transparent 15%, var(--aurora-c) 35%, var(--aurora-a) 60%, transparent 85%);
+}
+
+.light .auroraTrail {
+  opacity: 0.7;
+}
+
+.frost {
+  position: absolute;
+  background:
+    radial-gradient(ellipse 38% 30% at 0% 0%, var(--ice-soft), transparent 70%),
+    radial-gradient(ellipse 34% 28% at 100% 100%, var(--ice-soft), transparent 70%),
+    radial-gradient(ellipse 30% 24% at 100% 0%, var(--ice-soft), transparent 70%),
+    radial-gradient(ellipse 30% 24% at 0% 100%, var(--ice-soft), transparent 70%);
+  inset: 0;
+}
+
+.crystal {
+  position: absolute;
+  will-change: transform, opacity;
+}
+
+.crystal::after {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--ice);
+  content: "";
+  inset: 42%;
+}
+
+.arm {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1.5px;
+  margin-left: -0.75px;
+  border-radius: 1px;
+  background: var(--ice);
+}
+
+.arm::before,
+.arm::after {
+  position: absolute;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  margin-left: -3.5px;
+  border-color: var(--ice);
+  border-style: solid;
+  content: "";
+  transform: rotate(45deg);
+}
+
+.arm::before {
+  top: 14%;
+  border-width: 1.5px 0 0 1.5px;
+}
+
+.arm::after {
+  bottom: 14%;
+  border-width: 0 1.5px 1.5px 0;
+}
+
+.light .crystal {
+  filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.9));
+}
+
+.dark .crystal {
+  filter: drop-shadow(0 0 4px var(--flake-glow));
+}
+
+.flake {
+  position: absolute;
+  top: 0;
+  border-radius: 50%;
+  background: var(--flake);
+  box-shadow: 0 0 4px var(--flake-glow);
+  will-change: transform, opacity;
+}
+
+.window {
+  position: relative;
+  z-index: 10;
+  overflow: hidden;
+  border-radius: 20px;
+  border: 1px solid var(--window-ring);
+  background: var(--window-bg);
+  filter: var(--window-glow);
+}
+
+.topEdge {
+  position: absolute;
+  z-index: 20;
+  top: 0;
+  right: 0;
+  left: 0;
+  overflow: hidden;
+  height: 2px;
+  background: var(--edge-bg);
+}
+
+.sweep {
+  position: absolute;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, #4a8fd6, #e6f4ff, #5ed6dc, transparent);
+  inset-block: 0;
+}
+
+.header {
+  display: grid;
+  align-items: center;
+  padding: 12px 16px 11px;
+  border-bottom: 1px solid var(--header-border);
+  background: var(--header-bg);
+  grid-gap: 12px;
+  grid-template-columns: 60px 1fr 60px;
+}
+
+.dots {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.dot {
+  position: relative;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+}
+
+.dot::after {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  content: "";
+}
+
+.dot:nth-child(1) {
+  background: radial-gradient(circle at 35% 35%, #e6f4ff, #7ab8ff);
+  box-shadow: 0 1px 4px rgba(122, 184, 255, 0.45);
+}
+
+.dot:nth-child(2) {
+  background: radial-gradient(circle at 35% 35%, #c8f5f2, #3cc4c9);
+  box-shadow: 0 1px 4px rgba(60, 196, 201, 0.45);
+}
+
+.dot:nth-child(3) {
+  background: radial-gradient(circle at 35% 35%, #e2d4ff, #9a7ae0);
+  box-shadow: 0 1px 4px rgba(154, 122, 224, 0.45);
+}
+
+.fileName {
+  position: relative;
+  display: flex;
+  height: 16px;
+  align-items: center;
+  justify-content: center;
+  color: var(--file-color);
+  font-family: var(--code-font, "Geist Mono", "Courier New", monospace);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 12px;
+
+  > input {
+    position: absolute;
+    width: 100%;
+    border: none;
+    margin: 0;
+    background-color: transparent;
+    color: inherit;
+    font: inherit;
+    inset: 0;
+    letter-spacing: inherit;
+    text-align: center;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  > input:focus + span {
+    display: none;
+  }
+}

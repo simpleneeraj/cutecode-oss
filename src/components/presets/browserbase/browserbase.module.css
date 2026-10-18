@@ -144,19 +144,15 @@
 }
 
 .light .window {
+  border: 1px solid rgba(0, 0, 0, 0.14);
   background: #ffffff;
-  box-shadow:
-    0 0 0 1px rgba(0, 0, 0, 0.14),
-    6px 6px 0 rgba(255, 69, 0, 0.85),
-    0 20px 50px rgba(120, 50, 20, 0.12);
+  filter: drop-shadow(6px 6px 0 rgba(255, 69, 0, 0.85)) drop-shadow(0 20px 50px rgba(120, 50, 20, 0.12));
 }
 
 .dark .window {
+  border: 1px solid rgba(255, 255, 255, 0.12);
   background: #0c0c0c;
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.12),
-    6px 6px 0 rgba(255, 69, 0, 0.55),
-    0 30px 80px rgba(0, 0, 0, 0.8);
+  filter: drop-shadow(6px 6px 0 rgba(255, 69, 0, 0.55)) drop-shadow(0 30px 80px rgba(0, 0, 0, 0.8));
 }
 
 .topEdge {

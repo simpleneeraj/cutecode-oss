@@ -162,21 +162,16 @@
 
 .light .window {
   --line-number: rgba(100, 116, 139, 0.5);
+  border: 1px solid rgba(15, 23, 42, 0.08);
   background: #ffffff;
-  box-shadow:
-    0 0 0 1px rgba(15, 23, 42, 0.08),
-    0 2px 4px rgba(15, 23, 42, 0.04),
-    0 16px 40px rgba(14, 165, 233, 0.12);
+  filter: drop-shadow(0 2px 4px rgba(15, 23, 42, 0.04)) drop-shadow(0 16px 40px rgba(14, 165, 233, 0.12));
 }
 
 .dark .window {
   --line-number: rgba(148, 163, 184, 0.35);
+  border: 1px solid rgba(186, 230, 253, 0.14);
   background: #0f172a;
-  box-shadow:
-    0 0 0 1px rgba(186, 230, 253, 0.14),
-    0 0 60px rgba(14, 165, 233, 0.1),
-    0 24px 72px rgba(2, 6, 23, 0.7),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  filter: drop-shadow(0 0 60px rgba(14, 165, 233, 0.1)) drop-shadow(0 24px 72px rgba(2, 6, 23, 0.7));
 }
 
 .topEdge {

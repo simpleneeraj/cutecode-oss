@@ -116,19 +116,15 @@
 }
 
 .light .window {
+  border: 1.5px solid #8a6a44;
   background: #f3e3c8;
-  box-shadow:
-    0 0 0 1.5px #8a6a44,
-    4px 4px 0 rgba(90, 55, 20, 0.35),
-    0 18px 50px rgba(90, 55, 20, 0.25);
+  filter: drop-shadow(4px 4px 0 rgba(90, 55, 20, 0.35)) drop-shadow(0 18px 50px rgba(90, 55, 20, 0.25));
 }
 
 .dark .window {
+  border: 1.5px solid #0f0a05;
   background: #2a1e12;
-  box-shadow:
-    0 0 0 1.5px #0f0a05,
-    4px 4px 0 rgba(0, 0, 0, 0.5),
-    0 24px 70px rgba(0, 0, 0, 0.7);
+  filter: drop-shadow(4px 4px 0 rgba(0, 0, 0, 0.5)) drop-shadow(0 24px 70px rgba(0, 0, 0, 0.7));
 }
 
 .rainbow {
@@ -188,13 +184,11 @@
 .light .dot {
   border: 1.5px solid #5a3a1a;
   background: #f3e3c8;
-  box-shadow: inset 1px 1px 0 #fff8ea;
 }
 
 .dark .dot {
   border: 1.5px solid #0f0a05;
   background: #2a1e12;
-  box-shadow: inset 1px 1px 0 rgba(212, 174, 128, 0.2);
 }
 
 .dot:nth-child(n + 2) {
