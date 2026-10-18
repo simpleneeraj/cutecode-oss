@@ -6,7 +6,7 @@ import { elementPaddingAtom, updateSlideElementAtom } from "@/store/editor/edito
 import useHotkeys from "@/utils/useHotkeys";
 import SegmentedControl from "../segmented-control";
 
-const PADDING_OPTIONS = [
+export const PADDING_OPTIONS = [
   { label: "16px", value: "16px" },
   { label: "32px", value: "32px" },
   { label: "64px", value: "64px" },

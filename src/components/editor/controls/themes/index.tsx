@@ -18,7 +18,13 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowDown01Icon, Search01Icon, Fire02Icon, CrownIcon } from "@hugeicons/core-free-icons";
 import { Theme, IconType, BadgeVariant } from "@/typings/editor";
-import { elementContentAtom, elementIsSampleCodeAtom, elementThemeAtom, updateSlideElementAtom } from "@/store/editor/editor";
+import {
+  elementContentAtom,
+  elementIsSampleCodeAtom,
+  elementThemeAtom,
+  previewThemeAtom,
+  updateSlideElementAtom,
+} from "@/store/editor/editor";
 import { motion } from "motion/react";
 import { cn } from "@/utils/cn";
 import { useSetAtom } from "jotai";
@@ -31,7 +37,7 @@ import { groupThemes, type ThemeGroup } from "@/components/presets/themes/shared
 import Image from "next/image";
 import { featuredThemeIds, sponsorForTheme } from "@/lib/sponsors";
 import { sponsorTier } from "@/lib/brand-presets";
-import { isPristineCode, sampleUpdate } from "@/components/presets/themes/samples";
+import { isPristineCode, themeChangeUpdate } from "@/components/presets/themes/samples";
 import { AccessLevel } from "@/typings/enums";
 import { trackEditor } from "@/lib/analytics";
 import BrandRequestDialog from "@/components/brand-request/brand-request-dialog";
@@ -141,18 +147,15 @@ const ThemeControl: React.FC = () => {
 
   const { checkAccess, withAccess } = usePremiumAccess();
   const [isBrandRequestOpen, setIsBrandRequestOpen] = useState(false);
+  const setPreviewTheme = useSetAtom(previewThemeAtom);
 
   const onValueChange = (theme: Theme | null) => {
     if (!theme) return;
     const isPremium = theme.tags?.includes(BadgeVariant.PREMIUM) ?? false;
     const access = checkAccess("premiumThemes", isPremium);
     withAccess(access, () => {
-      if (theme.sample && (isSampleCode || isPristineCode(content))) {
-        const sample = sampleUpdate(theme);
-        update({ ...sample, properties: { ...sample.properties, theme: theme.id } });
-      } else {
-        update({ properties: { theme: theme.id } });
-      }
+      setPreviewTheme(null);
+      update(themeChangeUpdate(theme, isSampleCode || isPristineCode(content)));
       trackEditor.themeChanged(theme.id, isPremium);
     });
   };

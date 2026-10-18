@@ -44,7 +44,7 @@ const frameInnerVariants: Variants = {
 
 const FIT_GUTTER = 32;
 
-const Frame = () => {
+const Frame = ({ isReady = true }: { isReady?: boolean }) => {
   const { frameRefs } = useContext(EditorContext);
 
   const themeId = useAtomValue(elementThemeAtom);
@@ -87,7 +87,7 @@ const Frame = () => {
             key={slide.id}
             className="w-full flex flex-col items-center justify-center"
             initial="hidden"
-            animate="visible"
+            animate={isReady ? "visible" : "hidden"}
             exit="exit"
           >
             <motion.div className="flex items-center justify-center mb-4" variants={toolbarVariants}>

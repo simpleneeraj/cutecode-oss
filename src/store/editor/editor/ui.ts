@@ -10,6 +10,8 @@ import { StoreKey } from "./keys";
  */
 export const loadingLanguageAtom = atom<boolean>(false);
 
+export const highlightReadyAtom = atom<boolean>(false);
+
 /*
  * Width override for the resizable frame.
  * Persisted so the user's chosen width survives a reload. Null = auto.

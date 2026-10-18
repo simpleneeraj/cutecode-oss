@@ -64,6 +64,7 @@ const atkinsonHyperlegibleMono = Atkinson_Hyperlegible_Mono({
   weight: "400",
   display: "swap",
   preload: false,
+  adjustFontFallback: false,
   variable: "--font-atkinson-hyperlegible-mono",
 });
 

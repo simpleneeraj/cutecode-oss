@@ -69,3 +69,5 @@ export const themeLineNumbersAtom = atom<boolean>((get) => {
  * Themes the user has unlocked — persisted to localStorage.
  */
 export const unlockedThemesAtom = atomWithStorage<Theme["id"][]>(StoreKey.UNLOCKED_THEMES, []);
+
+export const previewThemeAtom = atom<{ elementId: string; themeId: Theme["id"] } | null>(null);

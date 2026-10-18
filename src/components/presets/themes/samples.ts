@@ -15,3 +15,9 @@ export function sampleUpdate({ sample }: Theme): Partial<ElementType> {
     header: { properties: { title: { text: sample.fileName, icon: sample.icon } } },
   };
 }
+
+export function themeChangeUpdate(theme: Theme, canReplaceCode: boolean): Partial<ElementType> {
+  if (!theme.sample || !canReplaceCode) return { properties: { theme: theme.id } };
+  const sample = sampleUpdate(theme);
+  return { ...sample, properties: { ...sample.properties, theme: theme.id } };
+}

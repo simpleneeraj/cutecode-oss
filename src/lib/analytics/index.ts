@@ -52,6 +52,8 @@ export type AnalyticsEvent =
   | { name: "editor:padding_changed"; payload: { padding: number } }
   | { name: "editor:background_image_set"; payload: Record<string, never> }
 
+  | { name: "link:opened"; payload: { ref: string; theme_id: string; has_code: boolean } }
+
   // ── Premium Gate ────────────────────────────────────────────────────────────
   | {
       name: "premium_gate:triggered";
@@ -145,6 +147,11 @@ export const trackEditor = {
 
   backgroundImageSet: () =>
     trackEvent({ name: "editor:background_image_set", payload: {} }),
+};
+
+export const trackLink = {
+  opened: (ref: string, themeId: string, hasCode: boolean) =>
+    trackEvent({ name: "link:opened", payload: { ref, theme_id: themeId, has_code: hasCode } }),
 };
 
 /** Track premium gate triggers. */

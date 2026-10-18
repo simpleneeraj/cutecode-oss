@@ -1,4 +1,4 @@
-import { useDeferredValue } from "react";
+import { Suspense, useDeferredValue } from "react";
 import dynamic from "next/dynamic";
 import { useAtomValue, useSetAtom } from "jotai";
 import { presetsAtom, updateSlideElementAtom } from "@/store/editor/editor";
@@ -125,6 +125,61 @@ const FRAME_REGISTRY: Record<string, React.ComponentType<BaseFrameProps>> = {
   [themes.cassette.id]: CassetteFrame,
 };
 
+const PRESET_LOADERS: Record<string, () => Promise<unknown>> = {
+  [themes.vercel.id]: () => import("./vercel"),
+  [themes.rabbit.id]: () => import("./rabbit"),
+  [themes.supabase.id]: () => import("./supabase"),
+  [themes.openai.id]: () => import("./openai"),
+  [themes.tailwind.id]: () => import("./tailwind"),
+  [themes.clerk.id]: () => import("./clerk"),
+  [themes.mintlify.id]: () => import("./mintlify"),
+  [themes.triggerdev.id]: () => import("./triggerdev"),
+  [themes.prisma.id]: () => import("./prisma"),
+  [themes.elevenlabs.id]: () => import("./eleven-labs"),
+  [themes.resend.id]: () => import("./resend"),
+  [themes.browserbase.id]: () => import("./browserbase"),
+  [themes.nuxt.id]: () => import("./nuxt"),
+  [themes.gemini.id]: () => import("./gemini"),
+  [themes.cloudflare.id]: () => import("./cloudflare"),
+  [themes.stripe.id]: () => import("./stripe"),
+  [themes["dodo-payments"].id]: () => import("./dodo-payments"),
+  [themes.roses.id]: () => import("./roses"),
+  [themes.claude.id]: () => import("./claude"),
+  [themes["retro-mac"].id]: () => import("./retro-mac"),
+  [themes.love.id]: () => import("./love"),
+  [themes.valentine.id]: () => import("./valentine"),
+  [themes["coffee-date"].id]: () => import("./coffee-date"),
+  [themes["sunset-chill"].id]: () => import("./sunset-chill"),
+  [themes.ps6.id]: () => import("./ps6"),
+  [themes["aurora-nights"].id]: () => import("./aurora-nights"),
+  [themes["starry-night"].id]: () => import("./starry-night"),
+  [themes["strawberry-milk"].id]: () => import("./strawberry-milk"),
+  [themes["frosted-glass"].id]: () => import("./frosted-glass"),
+  [themes["velvet-night"].id]: () => import("./velvet-night"),
+  [themes["peachy-mood"].id]: () => import("./peachy-mood"),
+  [themes["neon-dreams"].id]: () => import("./neon-dreams"),
+  [themes["golden-hour"].id]: () => import("./golden-hour"),
+  [themes.christmas.id]: () => import("./christmas"),
+  [themes.halloween.id]: () => import("./halloween"),
+  [themes.diwali.id]: () => import("./diwali"),
+  [themes["new-year"].id]: () => import("./new-year"),
+  [themes["lunar-new-year"].id]: () => import("./lunar-new-year"),
+  [themes.holi.id]: () => import("./holi"),
+  [themes["winter-frost"].id]: () => import("./winter-frost"),
+  [themes.vhs.id]: () => import("./vhs"),
+  [themes.polaroid.id]: () => import("./polaroid"),
+  [themes.typewriter.id]: () => import("./typewriter"),
+  [themes["groovy-70s"].id]: () => import("./groovy-70s"),
+  [themes["lofi-rain"].id]: () => import("./lofi-rain"),
+  [themes["lofi-rooftop"].id]: () => import("./lofi-rooftop"),
+  [themes.vinyl.id]: () => import("./vinyl"),
+  [themes.cassette.id]: () => import("./cassette"),
+};
+
+export function preloadPreset(themeId: string) {
+  return PRESET_LOADERS[themeId]?.();
+}
+
 function renderFrame(themeId: BaseFrameProps["themeId"], props: Omit<BaseFrameProps, "themeId">) {
   const Frame = (themeId && FRAME_REGISTRY[themeId]) || DefaultFrame;
   return <Frame themeId={themeId} {...props} />;
@@ -135,7 +190,7 @@ export function PresetFrame({ themeId, ...props }: BaseFrameProps) {
 
   return (
     <>
-      {renderFrame(shownThemeId, props)}
+      <Suspense>{renderFrame(shownThemeId, props)}</Suspense>
       <span hidden data-ignore-in-export data-shown-theme={shownThemeId} />
       <ThemeLoadingPill isVisible={shownThemeId !== themeId} />
     </>

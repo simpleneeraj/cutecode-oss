@@ -8,6 +8,7 @@ import {
   elementThemeAtom,
   themeDarkModeAtom,
   loadingLanguageAtom,
+  highlightReadyAtom,
   elementHighlightedLinesAtom,
 } from "@/store/editor/editor";
 import { useEditorContext } from "@/store/editor/context/editor";
@@ -23,6 +24,7 @@ const HighlightedCode: React.FC<PropTypes> = ({ selectedLanguage, code, previewD
   const [highlightedHtml, setHighlightedHtml] = useState("");
   const { highlighter } = useEditorContext();
   const setIsLoadingLanguage = useSetAtom(loadingLanguageAtom);
+  const setHighlightReady = useSetAtom(highlightReadyAtom);
 
   // Use preview data if available, else Jotai
   const jotaiHighlightedLines = useAtomValue(elementHighlightedLinesAtom);
@@ -34,6 +36,7 @@ const HighlightedCode: React.FC<PropTypes> = ({ selectedLanguage, code, previewD
   const themeId = previewData ? previewData.properties?.theme || "default" : jotaiThemeId;
 
   const themeName = resolveShikiTheme(themeId, darkMode);
+  const isPreview = !!previewData;
 
   useEffect(() => {
     const generateHighlightedHtml = async () => {
@@ -61,10 +64,23 @@ const HighlightedCode: React.FC<PropTypes> = ({ selectedLanguage, code, previewD
       });
     };
 
+    const isFinal = selectedLanguage === LANGUAGES.plaintext || !!highlighter;
+
     generateHighlightedHtml().then((newHtml) => {
       setHighlightedHtml(newHtml);
+      if (isFinal && !isPreview) setHighlightReady(true);
     });
-  }, [code, selectedLanguage, highlighter, setIsLoadingLanguage, setHighlightedHtml, highlightedLines, themeName]);
+  }, [
+    code,
+    selectedLanguage,
+    highlighter,
+    setIsLoadingLanguage,
+    setHighlightedHtml,
+    setHighlightReady,
+    highlightedLines,
+    themeName,
+    isPreview,
+  ]);
 
   return (
     <div

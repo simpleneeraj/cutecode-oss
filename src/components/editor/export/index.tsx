@@ -17,10 +17,12 @@ import { useEditorContext } from "@/store/editor/context/editor";
 import { toast } from "@/components/toast";
 import { usePremiumAccess } from "@/hooks/use-premium-access";
 import { AccessLevel } from "@/typings/enums";
+import { BadgeVariant } from "@/typings/editor";
 import download from "../util/download";
 import usePngClipboardSupported from "../util/usePngClipboardSupported";
 import { toPng, toSvg, toBlob } from "../lib/image";
 import { withFrozenScene, type VideoSize } from "../lib/animation";
+import { RENDER_SIZE, isRenderMode } from "../lib/render-mode";
 import { VideoEncoderChoice, encodeGif, encodeVideo, pickVideoEncoder } from "../lib/encoders";
 import ExportProgress from "./export-progress";
 import ImageSection from "./panel/image-section";
@@ -32,7 +34,13 @@ import type { VideoFormatOption } from "./panel/types";
 import useExportScale from "./panel/use-export-scale";
 import useVideoClips from "./use-video-clips";
 
-const GIF_FORMAT: VideoFormatOption = { value: VideoFormat.Gif, label: "GIF", extension: "gif", fps: 20, pixelRatio: 1 };
+const GIF_FORMAT: VideoFormatOption = {
+  value: VideoFormat.Gif,
+  label: "GIF",
+  extension: "gif",
+  fps: 20,
+  pixelRatio: 1,
+};
 
 const VIDEO_FPS = 24;
 const PORTRAIT_VIDEO_FPS = 30;
@@ -40,6 +48,7 @@ const VIDEO_PIXEL_RATIO = 2;
 
 function getVideoSize(canvasSize: CanvasSize): VideoSize | null {
   if (canvasSize === CanvasSize.Auto) return null;
+  if (isRenderMode()) return RENDER_SIZE;
   const { exportWidth, exportHeight } = CANVAS_DIMENSIONS[canvasSize];
   return { width: exportWidth, height: exportHeight };
 }
@@ -99,10 +108,11 @@ const ExportButton: React.FC = () => {
   const pngClipboardSupported = usePngClipboardSupported();
   const customFileName = useAtomValue(fileNameAtom);
   const exportSize = useExportScale();
-  const { checkAccess } = usePremiumAccess();
+  const { checkAccess, withAccess } = usePremiumAccess();
   const isPlanLoading = checkAccess("watermarkRemoval") === AccessLevel.LOADING;
   const isWatermarked = checkAccess("watermarkRemoval") !== AccessLevel.ALLOWED;
   const theme = useAtomValue(themeAtom);
+  const themeAccess = checkAccess("premiumThemes", theme.tags?.includes(BadgeVariant.PREMIUM) ?? false);
   const setSceneTime = useSetAtom(sceneExportTimeAtom);
   const canvasSize = useAtomValue(canvasSizeAtom);
   const typingMode = useAtomValue(typingModeAtom);
@@ -120,40 +130,45 @@ const ExportButton: React.FC = () => {
     toast.info("Checking your plan, try again in a moment");
   };
 
-  const savePng = async () => {
+  const runExport = (run: () => Promise<void>) => {
     if (isPlanLoading) return notifyPlanLoading();
-    const frame = getCurrentFrame();
-    const toastId = toast.loading("Exporting PNG…");
-    const dataUrl = await withFrozenScene(setSceneTime, () => toPng(frame, { pixelRatio: exportSize }));
-    download(dataUrl, uniqueFileName("png"));
-    toast.dismiss(toastId);
-    trackExport.pngSaved(baseName, exportSize);
+    withAccess(themeAccess, () => void run());
   };
 
-  const copyPng = async () => {
-    if (isPlanLoading) return notifyPlanLoading();
-    const frame = getCurrentFrame();
-    const toastId = toast.loading("Copying PNG…");
-    const clipboardItem = new ClipboardItem({
-      "image/png": withFrozenScene(setSceneTime, () => toBlob(frame, { pixelRatio: exportSize })).then((blob) => {
-        if (!blob) throw new Error("expected toBlob to return a blob");
-        return blob;
-      }),
+  const savePng = () =>
+    runExport(async () => {
+      const frame = getCurrentFrame();
+      const toastId = toast.loading("Exporting PNG…");
+      const dataUrl = await withFrozenScene(setSceneTime, () => toPng(frame, { pixelRatio: exportSize }));
+      download(dataUrl, uniqueFileName("png"));
+      toast.dismiss(toastId);
+      trackExport.pngSaved(baseName, exportSize);
     });
-    await navigator.clipboard.write([clipboardItem]);
-    toast.success("PNG copied to clipboard!", { id: toastId });
-    trackExport.pngCopied(exportSize);
-  };
 
-  const saveSvg = async () => {
-    if (isPlanLoading) return notifyPlanLoading();
-    const frame = getCurrentFrame();
-    const toastId = toast.loading("Exporting SVG…");
-    const dataUrl = await withFrozenScene(setSceneTime, () => toSvg(frame));
-    download(dataUrl, uniqueFileName("svg"));
-    toast.dismiss(toastId);
-    trackExport.svgSaved(baseName);
-  };
+  const copyPng = () =>
+    runExport(async () => {
+      const frame = getCurrentFrame();
+      const toastId = toast.loading("Copying PNG…");
+      const clipboardItem = new ClipboardItem({
+        "image/png": withFrozenScene(setSceneTime, () => toBlob(frame, { pixelRatio: exportSize })).then((blob) => {
+          if (!blob) throw new Error("expected toBlob to return a blob");
+          return blob;
+        }),
+      });
+      await navigator.clipboard.write([clipboardItem]);
+      toast.success("PNG copied to clipboard!", { id: toastId });
+      trackExport.pngCopied(exportSize);
+    });
+
+  const saveSvg = () =>
+    runExport(async () => {
+      const frame = getCurrentFrame();
+      const toastId = toast.loading("Exporting SVG…");
+      const dataUrl = await withFrozenScene(setSceneTime, () => toSvg(frame));
+      download(dataUrl, uniqueFileName("svg"));
+      toast.dismiss(toastId);
+      trackExport.svgSaved(baseName);
+    });
 
   const updateAnimatedExport = (patch: Partial<AnimatedExport>) => {
     setAnimatedExport((current) => current && { ...current, ...patch });
@@ -171,49 +186,56 @@ const ExportButton: React.FC = () => {
     if (isOpen) pickVideoEncoder(getEncoderSize()).then(setVideoEncoder);
   };
 
-
   const encodeClips = (format: VideoFormat, ...args: Parameters<typeof encodeGif>) => {
     if (format === VideoFormat.Video && videoEncoder) return encodeVideo(...args, videoEncoder);
     return encodeGif(...args);
   };
 
-  const saveAnimation = async (format: VideoFormat, isReel: boolean) => {
-    const option = videoFormats.find(({ value }) => value === format);
-    if (!option) return;
-    if (isPlanLoading) return notifyPlanLoading();
-    const isVideo = format === VideoFormat.Video;
-    const isHd = checkAccess("hdVideo") === AccessLevel.ALLOWED;
-    const controller = new AbortController();
-    const restoreSelection = videoClips.saveSelection();
-    abortRef.current = controller;
-    setAnimatedExport({ label: isReel ? `${option.label} reel` : option.label, progress: 0, frame: null, slideLabel: null });
-    try {
-      const clips = isReel
-        ? videoClips.slideClips((index, count) => updateAnimatedExport({ slideLabel: `Slide ${index + 1} of ${count}` }))
-        : [videoClips.currentClip()];
-      const encoding = encodeClips(format, clips, {
-        fps: option.fps,
-        pixelRatio: isHd ? option.pixelRatio : 1,
-        size: isVideo ? getVideoSize(canvasSize) : null,
-        setTime: setSceneTime,
-        signal: controller.signal,
-        isWatermarked,
-        onProgress: (progress, preview) => updateAnimatedExport(preview ? { progress, frame: preview } : { progress }),
+  const saveAnimation = (format: VideoFormat, isReel: boolean) =>
+    runExport(async () => {
+      const option = videoFormats.find(({ value }) => value === format);
+      if (!option) return;
+      const isVideo = format === VideoFormat.Video;
+      const isHd = checkAccess("hdVideo") === AccessLevel.ALLOWED;
+      const controller = new AbortController();
+      const restoreSelection = videoClips.saveSelection();
+      abortRef.current = controller;
+      setAnimatedExport({
+        label: isReel ? `${option.label} reel` : option.label,
+        progress: 0,
+        frame: null,
+        slideLabel: null,
       });
-      encoding.catch(() => undefined);
-      const blob = await Promise.race([encoding, rejectOnAbort(controller.signal)]);
-      download(blob, uniqueFileName(option.extension));
-      toast.success(`${option.label} saved`);
-    } catch (error) {
-      if (controller.signal.aborted) return;
-      toast.error(error instanceof Error ? error.message : `Couldn't export ${option.label}`);
-    } finally {
-      abortRef.current = null;
-      restoreSelection();
-      setSceneTime(null);
-      setAnimatedExport(null);
-    }
-  };
+      try {
+        const clips = isReel
+          ? videoClips.slideClips((index, count) =>
+              updateAnimatedExport({ slideLabel: `Slide ${index + 1} of ${count}` }),
+            )
+          : [videoClips.currentClip()];
+        const encoding = encodeClips(format, clips, {
+          fps: option.fps,
+          pixelRatio: isHd ? option.pixelRatio : 1,
+          size: isVideo ? getVideoSize(canvasSize) : null,
+          setTime: setSceneTime,
+          signal: controller.signal,
+          isWatermarked,
+          onProgress: (progress, preview) =>
+            updateAnimatedExport(preview ? { progress, frame: preview } : { progress }),
+        });
+        encoding.catch(() => undefined);
+        const blob = await Promise.race([encoding, rejectOnAbort(controller.signal)]);
+        download(blob, uniqueFileName(option.extension));
+        toast.success(`${option.label} saved`);
+      } catch (error) {
+        if (controller.signal.aborted) return;
+        toast.error(error instanceof Error ? error.message : `Couldn't export ${option.label}`);
+      } finally {
+        abortRef.current = null;
+        restoreSelection();
+        setSceneTime(null);
+        setAnimatedExport(null);
+      }
+    });
 
   useHotkeys("ctrl+s,cmd+s", (event) => {
     event.preventDefault();
@@ -221,7 +243,8 @@ const ExportButton: React.FC = () => {
   });
   useHotkeys("ctrl+c,cmd+c", (event) => {
     const hasSelectedText = Boolean(window.getSelection()?.toString());
-    if (!pngClipboardSupported || hasSelectedText) return;
+    const isTyping = event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLInputElement;
+    if (!pngClipboardSupported || hasSelectedText || isTyping) return;
     if (isPlanLoading) return notifyPlanLoading();
     event.preventDefault();
     copyPng();
@@ -250,7 +273,9 @@ const ExportButton: React.FC = () => {
           <>
             <PanelHeader title="Export reel" description="Save your animated preset or typing as MP4 or GIF." />
             <VideoSection formats={videoFormats} isExporting={animatedExport !== null} onExportVideo={saveAnimation} />
-            {videoEncoder === null && <p className="px-1 text-muted-foreground text-xs">Use Chrome or Safari for video</p>}
+            {videoEncoder === null && (
+              <p className="px-1 text-muted-foreground text-xs">Use Chrome or Safari for video</p>
+            )}
             <SponsorCard />
           </>
         }
