@@ -1,17 +1,19 @@
 import { useAtomValue } from "jotai";
 import { CropIcon } from "@hugeicons/core-free-icons";
-import { CanvasSize, canvasSizeAtom } from "@/store/editor/editor";
+import { canvasSizeAtom, elementPaddingAtom } from "@/store/editor/editor";
 import DockPopover from "../dock-popover";
+import PaddingControl from "../padding";
 import CanvasSizeControl, { CANVAS_SIZE_OPTIONS } from ".";
 
 export default function CanvasSizePopover() {
   const canvasSize = useAtomValue(canvasSizeAtom);
+  const padding = useAtomValue(elementPaddingAtom);
   const ratio = CANVAS_SIZE_OPTIONS.find((option) => option.value === canvasSize)?.label;
-  const caption = canvasSize === CanvasSize.Auto ? undefined : ratio;
 
   return (
-    <DockPopover label="Canvas size" icon={CropIcon} caption={caption}>
+    <DockPopover label="Canvas" icon={CropIcon} caption={`${ratio} · ${String(padding).replace("px", "")}`}>
       <CanvasSizeControl />
+      <PaddingControl />
     </DockPopover>
   );
 }

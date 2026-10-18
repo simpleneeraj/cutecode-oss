@@ -1,19 +1,14 @@
 "use client";
 
 import { motion } from "motion/react";
-import { useAtomValue } from "jotai";
 import { tv } from "tailwind-variants";
-import { SquareSquareIcon } from "@hugeicons/core-free-icons";
 import { Separator } from "@/components/ui/separator";
-import { elementPaddingAtom } from "@/store/editor/editor";
 import { usePlanStyleGuard } from "@/hooks/use-plan-style-guard";
 import ThemeControl from "./themes";
-import PaddingControl from "./padding";
 import LanguageControl from "./language";
 import OptionsControl from "./options";
 import FontFaceControl from "./font-face";
 import CanvasSizePopover from "./canvas-size/canvas-size-popover";
-import DockPopover from "./dock-popover";
 import TypingPopover from "./typing-popover";
 
 const entrance = { type: "spring", stiffness: 380, damping: 32, delay: 0.1 } as const;
@@ -33,7 +28,6 @@ const dock = tv({
 const { root, bar, track, divider } = dock();
 
 export default function Controls() {
-  const padding = useAtomValue(elementPaddingAtom);
   usePlanStyleGuard();
 
   return (
@@ -45,9 +39,6 @@ export default function Controls() {
           <Separator orientation="vertical" className={divider()} />
           <LanguageControl />
           <Separator orientation="vertical" className={divider()} />
-          <DockPopover label="Padding" icon={SquareSquareIcon} caption={String(padding).replace("px", "")}>
-            <PaddingControl />
-          </DockPopover>
           <CanvasSizePopover />
           <Separator orientation="vertical" className={divider()} />
           <TypingPopover />
