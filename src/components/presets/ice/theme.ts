@@ -9,6 +9,12 @@ export const ice: Theme = {
     to: "#80deea",
   },
   group: "Classic",
+  sample: {
+    language: "Elixir",
+    fileName: "ice.ex",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/elixir.svg",
+    code: "defmodule Ice do\n  def freeze(temps) do\n    temps\n    |> Enum.filter(&(&1 <= 0))\n    |> Enum.map(&{&1, :frozen})\n    |> Map.new()\n  end\nend\n\nIO.inspect(Ice.freeze([-12, 3, 0, -4, 8]))",
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#1C1B29",

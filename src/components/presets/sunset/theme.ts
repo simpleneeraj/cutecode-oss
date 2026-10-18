@@ -9,6 +9,12 @@ export const sunset: Theme = {
     to: "#FF7A2F",
   },
   group: "Classic",
+  sample: {
+    language: "Swift",
+    fileName: "Sunset.swift",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/swift.svg",
+    code: 'struct Color {\n    let r, g, b: Double\n\n    func blend(_ other: Color, _ t: Double) -> Color {\n        Color(r: r + (other.r - r) * t, g: g + (other.g - g) * t, b: b + (other.b - b) * t)\n    }\n}\n\nlet gold = Color(r: 1.0, g: 0.75, b: 0.3)\nlet violet = Color(r: 0.45, g: 0.2, b: 0.6)\nlet sky = stride(from: 0.0, through: 1.0, by: 0.25).map { gold.blend(violet, $0) }\nprint(sky.map { String(format: "%.2f", $0.g) })',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#737568",

@@ -9,6 +9,12 @@ export const falcon: Theme = {
     to: "#363654",
   },
   group: "Classic",
+  sample: {
+    language: "Dart",
+    fileName: "falcon.dart",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/dart.svg",
+    code: "class Falcon {\n  final String name;\n  final double diveSpeedKmh;\n\n  const Falcon(this.name, this.diveSpeedKmh);\n}\n\nvoid main() {\n  const flock = [Falcon('Peregrine', 389), Falcon('Gyrfalcon', 209), Falcon('Merlin', 112)];\n  final fastest = flock.reduce((a, b) => a.diveSpeedKmh > b.diveSpeedKmh ? a : b);\n  print('${fastest.name} dives at ${fastest.diveSpeedKmh} km/h');\n}",
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#464C65",

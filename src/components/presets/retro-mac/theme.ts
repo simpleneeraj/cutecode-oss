@@ -12,6 +12,12 @@ export const retroMac: Theme = {
   icon: { type: IconType.IMAGE, source: "/editor/assets/retro-mac/glyph.svg" },
   tags: [BadgeVariant.PREMIUM],
   font: "fira-code",
+  sample: {
+    language: "C++",
+    fileName: "hello_mac.c",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/c.svg",
+    code: "#include <stdio.h>\n#include <string.h>\nint main(void) {\n    const char *title = \"Welcome to Macintosh\";\n    int width = (int)strlen(title) + 4;\n\n    for (int i = 0; i < width; i++) putchar('=');\n    printf(\"\\n| %s |\\n\", title);\n    for (int i = 0; i < width; i++) putchar('=');\n    putchar('\\n');\n    return 0;\n}",
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#3D2810",

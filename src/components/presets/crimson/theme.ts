@@ -9,6 +9,12 @@ export const crimson: Theme = {
     to: "#733434",
   },
   group: "Classic",
+  sample: {
+    language: "SQL",
+    fileName: "crimson_ledger.sql",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/database.svg",
+    code: "SELECT\n  account_id,\n  SUM(amount) AS balance,\n  COUNT(*) AS entries\nFROM ledger\nWHERE posted_at >= DATE '2026-01-01'\nGROUP BY account_id\nHAVING SUM(amount) < 0\nORDER BY balance ASC\nLIMIT 10;",
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#685B5B",

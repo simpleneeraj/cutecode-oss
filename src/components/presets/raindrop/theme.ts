@@ -9,6 +9,12 @@ export const raindrop: Theme = {
     to: "#1C55AA",
   },
   group: "Classic",
+  sample: {
+    language: "JavaScript",
+    fileName: "raindrop.js",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/javascript.svg",
+    code: "const drops = Array.from({ length: 50 }, () => ({\n  x: Math.random() * innerWidth,\n  y: Math.random() * -innerHeight,\n  speed: 2 + Math.random() * 4,\n}));\n\n(function fall() {\n  for (const drop of drops) drop.y = drop.y > innerHeight ? 0 : drop.y + drop.speed;\n  requestAnimationFrame(fall);\n})();",
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#687077",

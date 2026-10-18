@@ -12,6 +12,12 @@ export const typewriter: Theme = {
   group: "Vintage",
   font: "space-mono",
   tags: [BadgeVariant.NEW, BadgeVariant.PREMIUM],
+  sample: {
+    language: "C++",
+    fileName: "typewriter.c",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/c.svg",
+    code: '#include <stdio.h>\n#include <unistd.h>\n\nint main(void) {\n    const char *line = "The quick brown fox jumps over the lazy dog.";\n\n    for (const char *c = line; *c != \'\\0\'; c++) {\n        putchar(*c);\n        fflush(stdout), usleep(80000);\n    }\n    puts("\\a");\n}',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#24211c",

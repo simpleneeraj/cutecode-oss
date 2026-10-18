@@ -9,6 +9,12 @@ export const forest: Theme = {
     to: "#213223",
   },
   group: "Classic",
+  sample: {
+    language: "Python",
+    fileName: "forest.py",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/python.svg",
+    code: 'forest = {"oak": {"branch": {"leaf": {}, "acorn": {}}, "root": {}}, "pine": {"cone": {}}}\n\n\ndef walk(tree: dict, depth: int = 0) -> None:\n    for name, children in tree.items():\n        print("  " * depth + name)\n        walk(children, depth + 1)\n\n\nwalk(forest)',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#262217",

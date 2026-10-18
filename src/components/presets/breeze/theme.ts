@@ -9,6 +9,12 @@ export const breeze: Theme = {
     to: "#6A3DEC",
   },
   group: "Classic",
+  sample: {
+    language: "TypeScript",
+    fileName: "breeze.ts",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/typescript.svg",
+    code: 'export function debounce<T extends unknown[]>(fn: (...args: T) => void, wait = 200) {\n  let timer: ReturnType<typeof setTimeout> | undefined;\n\n  return (...args: T) => {\n    clearTimeout(timer);\n    timer = setTimeout(() => fn(...args), wait);\n  };\n}\n\nconst onResize = debounce(() => console.log(window.innerWidth), 150);\nwindow.addEventListener("resize", onResize);',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#434447",

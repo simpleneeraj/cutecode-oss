@@ -12,6 +12,12 @@ export const ps6: Theme = {
   tags: [BadgeVariant.NEW, BadgeVariant.PREMIUM],
   group: "Retro",
   font: "fira-code",
+  sample: {
+    language: "C++",
+    fileName: "game_loop.cpp",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/cpp.svg",
+    code: "#include <chrono>\n#include <iostream>\n#include <thread>\n\nint main() {\n    constexpr auto frame = std::chrono::microseconds(8333);\n\n    for (int tick = 0; tick < 120; ++tick) {\n        std::cout << \"frame \" << tick << '\\n';\n        std::this_thread::sleep_for(frame);\n    }\n}",
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#1a1a3a",

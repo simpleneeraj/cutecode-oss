@@ -10,6 +10,12 @@ export const dusk: Theme = {
   },
   group: "Classic",
   tags: [BadgeVariant.NEW],
+  sample: {
+    language: "Clojure",
+    fileName: "dusk.clj",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/clojure.svg",
+    code: "(ns dusk.core)\n\n(defn phase [hour]\n  (cond\n    (< hour 6) :night\n    (< hour 12) :morning\n    (< hour 18) :afternoon\n    (< hour 21) :dusk\n    :else :night))\n\n(println (frequencies (map phase (range 24))))",
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#2E2A3D",

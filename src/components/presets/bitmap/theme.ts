@@ -9,6 +9,12 @@ export const bitmap: Theme = {
     to: "#F1393F",
   },
   group: "Classic",
+  sample: {
+    language: "Java",
+    fileName: "BitmapSearch.java",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/java.svg",
+    code: "public final class BitmapSearch {\n    public static int binarySearch(int[] pixels, int target) {\n        int lo = 0, hi = pixels.length - 1;\n        while (lo <= hi) {\n            int mid = (lo + hi) >>> 1;\n            if (pixels[mid] == target) return mid;\n            if (pixels[mid] < target) lo = mid + 1; else hi = mid - 1;\n        }\n        return -1;\n    }\n\n}",
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#685B5B",

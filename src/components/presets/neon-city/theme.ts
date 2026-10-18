@@ -10,6 +10,12 @@ export const neonCity: Theme = {
   },
   group: "Classic",
   tags: [BadgeVariant.NEW],
+  sample: {
+    language: "TSX",
+    fileName: "NeonSign.tsx",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/react_ts.svg",
+    code: 'import { useEffect, useState } from "react";\n\nexport function NeonSign({ text }: { text: string }) {\n  const [lit, setLit] = useState(true);\n\n  useEffect(() => {\n    const id = setInterval(() => setLit((on) => !on), 900);\n    return () => clearInterval(id);\n  }, []);\n\n  return <h1 style={{ opacity: lit ? 1 : 0.4, color: "#ff2fd1" }}>{text}</h1>;\n}',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#343B58",

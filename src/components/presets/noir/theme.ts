@@ -9,6 +9,12 @@ export const noir: Theme = {
     to: "#181818",
   },
   group: "Classic",
+  sample: {
+    language: "Go",
+    fileName: "case_file.go",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/go.svg",
+    code: 'package main\n\nimport "fmt"\n\nfunc main() {\n\talibis := map[string]bool{"Vera": true, "Sal": false, "Lou": true}\n\tfor name, solid := range alibis {\n\t\tif !solid {\n\t\t\tfmt.Printf("%s has no alibi. Case closed.\\n", name)\n\t\t}\n\t}\n}',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#111111",

@@ -9,6 +9,12 @@ export const meadow: Theme = {
     to: "#A0872D",
   },
   group: "Classic",
+  sample: {
+    language: "Lua",
+    fileName: "meadow.lua",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/lua.svg",
+    code: 'local flowers = { daisy = 12, clover = 30, poppy = 7 }\n\nlocal function bloom(meadow)\n  local total = 0\n  for name, count in pairs(meadow) do\n    print(string.format("%-8s %s", name, string.rep("*", count // 3)))\n    total = total + count\n  end\n  return total\nend\n\nprint("Total blooms: " .. bloom(flowers))',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#54594D",

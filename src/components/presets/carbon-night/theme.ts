@@ -10,6 +10,12 @@ export const carbonNight: Theme = {
   },
   group: "Classic",
   tags: [BadgeVariant.NEW],
+  sample: {
+    language: "Scala",
+    fileName: "CarbonNight.scala",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/scala.svg",
+    code: 'case class Reading(hour: Int, gramsCo2: Double)\n\nobject CarbonNight extends App {\n  val readings = (0 until 24).map(h => Reading(h, 200 + 150 * math.sin(h / 24.0 * math.Pi)))\n\n  val cleanest = readings\n    .filter(r => r.hour >= 22 || r.hour < 6)\n    .minBy(_.gramsCo2)\n\n  println(f"Charge at ${cleanest.hour}%02d:00 (${cleanest.gramsCo2}%.0f g/kWh)")\n}',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#383B42",

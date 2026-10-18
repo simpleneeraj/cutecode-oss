@@ -9,6 +9,12 @@ export const sand: Theme = {
     to: "#AF8856",
   },
   group: "Classic",
+  sample: {
+    language: "Ruby",
+    fileName: "hourglass.rb",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/ruby.svg",
+    code: 'def hourglass(seconds)\n  seconds.downto(1) do |left|\n    grains = "." * left\n    puts "#{left.to_s.rjust(2)}s #{grains}"\n    sleep 1\n  end\n  puts "Time is up."\nend\n\nhourglass(5)',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#262217",

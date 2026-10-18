@@ -12,6 +12,12 @@ export const groovy70s: Theme = {
   group: "Vintage",
   font: "fira-code",
   tags: [BadgeVariant.NEW, BadgeVariant.PREMIUM],
+  sample: {
+    language: "Lisp",
+    fileName: "groovy.lisp",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/lisp.svg",
+    code: '(defparameter *playlist*\n  \'(("Stayin\' Alive" . 1977)\n    ("Le Freak" . 1978)\n    ("Superstition" . 1972)))\n\n(defun groovy-p (track)\n  (<= 1970 (cdr track) 1979))\n\n(dolist (track (remove-if-not #\'groovy-p *playlist*))\n  (format t "~a (~d)~%" (car track) (cdr track)))',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#3b2414",

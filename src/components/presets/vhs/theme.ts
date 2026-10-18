@@ -12,6 +12,12 @@ export const vhs: Theme = {
   group: "Vintage",
   font: "jetbrains-mono",
   tags: [BadgeVariant.NEW, BadgeVariant.PREMIUM],
+  sample: {
+    language: "C++",
+    fileName: "rewind.c",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/c.svg",
+    code: '#include <stdio.h>\n\nint main(void) {\n    int counter = 1987;\n\n    while (counter > 0) {\n        printf("REW %04d\\r", counter);\n        counter -= 37;\n    }\n    printf("\\nPLAY >\\n");\n    return 0;\n}',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#1f2933",

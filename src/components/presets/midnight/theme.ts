@@ -9,6 +9,12 @@ export const midnight: Theme = {
     to: "#202033",
   },
   group: "Classic",
+  sample: {
+    language: "Rust",
+    fileName: "midnight.rs",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/rust.svg",
+    code: 'use std::time::{SystemTime, UNIX_EPOCH};\n\nfn seconds_until_midnight(now: u64) -> u64 {\n    const DAY: u64 = 86_400;\n    DAY - now % DAY\n}\n\nfn main() {\n    let now = SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_secs();\n    let left = seconds_until_midnight(now);\n    println!("{:02}:{:02} until midnight UTC", left / 3600, left % 3600 / 60);\n}',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#434447",

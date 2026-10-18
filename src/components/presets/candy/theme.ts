@@ -9,6 +9,12 @@ export const candy: Theme = {
     to: "#E9BFF8",
   },
   group: "Classic",
+  sample: {
+    language: "CSS",
+    fileName: "candy.css",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/css.svg",
+    code: ":root {\n  --bubblegum: #ff8fcf;\n  --mint: #9ef0d6;\n}\n.candy-button {\n  padding: 12px 24px;\n  border: none;\n  border-radius: 999px;\n  background: linear-gradient(135deg, var(--bubblegum), var(--mint));\n  color: #3b1d3a;\n  font-weight: 700;\n}",
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#434447",

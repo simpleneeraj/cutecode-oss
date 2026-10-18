@@ -10,6 +10,12 @@ export const ember: Theme = {
   },
   group: "Classic",
   tags: [BadgeVariant.NEW],
+  sample: {
+    language: "Erlang",
+    fileName: "ember.erl",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/erlang.svg",
+    code: '-module(ember).\n-export([cool/1]).\n\ncool(Temp) when Temp =< 20 ->\n    io:format("Ember is out at ~p C~n", [Temp]);\ncool(Temp) ->\n    io:format("Glowing at ~p C~n", [Temp]),\n    timer:sleep(200),\n    cool(Temp div 2).',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#3D352C",

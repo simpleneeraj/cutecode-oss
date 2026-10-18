@@ -12,6 +12,12 @@ export const polaroid: Theme = {
   group: "Vintage",
   font: "geist-mono",
   tags: [BadgeVariant.NEW, BadgeVariant.PREMIUM],
+  sample: {
+    language: "Bash",
+    fileName: "develop.sh",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/console.svg",
+    code: '#!/usr/bin/env bash\nset -euo pipefail\n\nmkdir -p developed\nfor shot in film/*.jpg; do\n  name=$(basename "$shot" .jpg)\n  echo "Developing $name..."\n  sleep 1\n  cp "$shot" "developed/${name}_instant.jpg"\ndone\necho "$(ls developed | wc -l) prints ready."',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#3d2f26",

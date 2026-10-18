@@ -10,6 +10,12 @@ export const paper: Theme = {
   },
   group: "Classic",
   tags: [BadgeVariant.NEW],
+  sample: {
+    language: "Kotlin",
+    fileName: "PaperFold.kt",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/kotlin.svg",
+    code: 'fun foldsToReachMoon(thicknessMm: Double = 0.1): Int {\n    val moonDistanceMm = 384_400_000_000.0\n    var thickness = thicknessMm\n    var folds = 0\n    while (thickness < moonDistanceMm) {\n        thickness *= 2\n        folds++\n    }\n    return folds\n}\n\nfun main() = println("Folds to the moon: ${foldsToReachMoon()}")',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#1F2328",

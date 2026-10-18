@@ -10,6 +10,12 @@ export const fjord: Theme = {
   },
   group: "Classic",
   tags: [BadgeVariant.NEW],
+  sample: {
+    language: "OCaml",
+    fileName: "fjord.ml",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/ocaml.svg",
+    code: 'type depth = { name : string; meters : int }\n\nlet fjords =\n  [ { name = "Sognefjord"; meters = 1308 };\n    { name = "Hardangerfjord"; meters = 891 };\n    { name = "Geirangerfjord"; meters = 260 } ]\n\nlet deepest =\n  List.fold_left (fun acc f -> if f.meters > acc.meters then f else acc) (List.hd fjords) fjords\n\nlet () = Printf.printf "%s: %d m\\n" deepest.name deepest.meters',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#2F3747",

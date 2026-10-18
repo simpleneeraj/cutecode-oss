@@ -10,6 +10,12 @@ export const latte: Theme = {
   },
   group: "Classic",
   tags: [BadgeVariant.NEW],
+  sample: {
+    language: "PHP",
+    fileName: "latte.php",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/php.svg",
+    code: "<?php\nfunction brew(string $size, bool $oatMilk = false): array\n{\n    $shots = ['small' => 1, 'medium' => 2, 'large' => 3][$size] ?? 1;\n    return [\n        'espresso' => $shots,\n        'milk' => $oatMilk ? 'oat' : 'whole',\n        'price' => 3.5 + $shots * 0.75,\n    ];\n}\n\necho json_encode(brew('medium', true)), PHP_EOL;",
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#47465C",

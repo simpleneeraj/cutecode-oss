@@ -10,6 +10,12 @@ export const petal: Theme = {
   },
   group: "Classic",
   tags: [BadgeVariant.NEW],
+  sample: {
+    language: "R",
+    fileName: "petal.R",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/r.svg",
+    code: "library(stats)\n\npetals <- aggregate(\n  cbind(Petal.Length, Petal.Width) ~ Species,\n  data = iris,\n  FUN = mean\n)\n\npetals$ratio <- round(petals$Petal.Length / petals$Petal.Width, 2)\nprint(petals[order(-petals$ratio), ])",
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#544E6E",

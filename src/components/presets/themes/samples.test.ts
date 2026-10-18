@@ -24,6 +24,6 @@ describe("presets/themes/samples", () => {
   });
 
   it("returns an empty patch for a theme without a sample", () => {
-    expect(sampleUpdate(themes.mono)).toEqual({});
+    expect(sampleUpdate({ ...themes.mono, sample: undefined })).toEqual({});
   });
 });

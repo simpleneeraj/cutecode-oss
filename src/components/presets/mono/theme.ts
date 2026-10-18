@@ -9,6 +9,12 @@ export const mono: Theme = {
     to: "#181818",
   },
   group: "Classic",
+  sample: {
+    language: "Haskell",
+    fileName: "Mono.hs",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/haskell.svg",
+    code: "import Data.Monoid (Sum (..))\n\nnewtype Shade = Shade Int deriving (Show)\n\ninstance Semigroup Shade where\n  Shade a <> Shade b = Shade (min 255 (a + b))\ninstance Monoid Shade where\n  mempty = Shade 0\n\nmain :: IO ()\nmain = print (mconcat (map Shade [64, 96, 128]), getSum (foldMap Sum [1, 2, 3 :: Int]))",
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#111111",
