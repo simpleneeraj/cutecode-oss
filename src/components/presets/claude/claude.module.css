@@ -41,15 +41,15 @@
   background: radial-gradient(ellipse, rgba(217, 119, 87, 0.18) 0%, rgba(176, 68, 49, 0.06) 45%, transparent 70%);
 }
 
-.dunes {
+.skylines {
   position: absolute;
-  right: -8%;
-  bottom: 0;
-  left: -8%;
-  height: 56%;
+  right: 0;
+  bottom: 14%;
+  left: 0;
+  height: 50%;
 }
 
-.dune {
+.skyline {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -57,36 +57,48 @@
   height: 100%;
 }
 
-.duneMid {
-  height: 80%;
+.skylineNear {
+  height: 62%;
 }
 
-.duneNear {
-  height: 58%;
+.ground {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 14%;
 }
 
-.light .duneFar {
-  color: #f0b896;
+.light .skylineFar {
+  fill: #f0b896;
 }
 
-.light .duneMid {
-  color: #e99a72;
+.light .skylineNear .buildings {
+  fill: #e99a72;
 }
 
-.light .duneNear {
-  color: #dc7c54;
+.light .windows {
+  fill: #fff3e6;
 }
 
-.dark .duneFar {
-  color: #33221b;
+.light .ground {
+  background: #dc7c54;
 }
 
-.dark .duneMid {
-  color: #45291e;
+.dark .skylineFar {
+  fill: #33221b;
 }
 
-.dark .duneNear {
-  color: #5a3021;
+.dark .skylineNear .buildings {
+  fill: #45291e;
+}
+
+.dark .windows {
+  fill: #f0c4a8;
+}
+
+.dark .ground {
+  background: #5a3021;
 }
 
 .grain {
@@ -115,11 +127,11 @@
 
 .critter {
   position: absolute;
-  bottom: 18%;
+  bottom: 14%;
   left: 10%;
   display: block;
-  width: 72px;
-  height: 32px;
+  width: 144px;
+  height: 64px;
 }
 
 .critterEyes {

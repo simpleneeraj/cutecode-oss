@@ -1,14 +1,54 @@
 import { motion, easeInOut } from "motion/react";
 import { useLoop } from "../scene";
-import Dune, { type DuneLayer } from "./dune";
 import PixelCritter from "./pixel-critter";
+import PixelSkyline, { type SkylineLayer } from "./pixel-skyline";
 import Sparkle, { type Star } from "./sparkle";
 import styles from "./claude.module.css";
 
-const DUNES: DuneLayer[] = [
-  { id: "far", className: styles.duneFar, base: 30, amplitude: 10, phase: 0 },
-  { id: "mid", className: styles.duneMid, base: 40, amplitude: 12, phase: 0.33 },
-  { id: "near", className: styles.duneNear, base: 50, amplitude: 14, phase: 0.66 },
+const SKYLINES: SkylineLayer[] = [
+  {
+    id: "far",
+    className: styles.skylineFar,
+    height: 28,
+    lit: false,
+    buildings: [
+      { id: "f1", x: 0, width: 5, height: 14 },
+      { id: "f2", x: 5, width: 6, height: 22 },
+      { id: "f3", x: 11, width: 4, height: 16 },
+      { id: "f4", x: 15, width: 7, height: 26 },
+      { id: "f5", x: 22, width: 5, height: 12 },
+      { id: "f6", x: 27, width: 6, height: 19 },
+      { id: "f7", x: 33, width: 8, height: 24 },
+      { id: "f8", x: 41, width: 5, height: 15 },
+      { id: "f9", x: 46, width: 6, height: 21 },
+      { id: "f10", x: 52, width: 4, height: 13 },
+      { id: "f11", x: 56, width: 7, height: 25 },
+      { id: "f12", x: 63, width: 5, height: 17 },
+      { id: "f13", x: 68, width: 6, height: 22 },
+      { id: "f14", x: 74, width: 6, height: 14 },
+    ],
+  },
+  {
+    id: "near",
+    className: styles.skylineNear,
+    height: 20,
+    lit: true,
+    buildings: [
+      { id: "n1", x: 0, width: 6, height: 10 },
+      { id: "n2", x: 7, width: 8, height: 17 },
+      { id: "n2-antenna", x: 10, width: 2, height: 20 },
+      { id: "n3", x: 16, width: 5, height: 8 },
+      { id: "n4", x: 22, width: 7, height: 14 },
+      { id: "n5", x: 30, width: 5, height: 10 },
+      { id: "n6", x: 36, width: 4, height: 6 },
+      { id: "n7", x: 41, width: 7, height: 12 },
+      { id: "n8", x: 49, width: 6, height: 16 },
+      { id: "n9", x: 56, width: 4, height: 9 },
+      { id: "n10", x: 61, width: 8, height: 18 },
+      { id: "n11", x: 70, width: 5, height: 11 },
+      { id: "n12", x: 76, width: 4, height: 7 },
+    ],
+  },
 ];
 
 const STARS: Star[] = [
@@ -26,11 +66,12 @@ export default function ClaudeScene() {
   return (
     <div className={styles.layer} aria-hidden>
       <motion.div className={styles.glow} style={{ scale: glowScale, opacity: glowOpacity }} />
-      <div className={styles.dunes}>
-        {DUNES.map((layer) => (
-          <Dune key={layer.id} layer={layer} />
+      <div className={styles.skylines}>
+        {SKYLINES.map((layer) => (
+          <PixelSkyline key={layer.id} layer={layer} />
         ))}
       </div>
+      <div className={styles.ground} />
       <PixelCritter />
       <div className={styles.grain} />
       {STARS.map((star, index) => (
