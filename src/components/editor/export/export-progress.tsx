@@ -33,7 +33,7 @@ export default function ExportProgress({ label, slideLabel, progress, frame, has
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange} disablePointerDismissal>
-      <DialogPopup showCloseButton={false} className="sm:max-w-105" backdropClassName="bg-background backdrop-blur-none">
+      <DialogPopup showCloseButton={false} className="sm:max-w-105" backdropClassName="backdrop-blur-none">
         <MotionConfig reducedMotion="user">
           <div className="flex flex-col gap-4 p-4">
             <ExportPreview frame={heldFrame} aspectRatio={aspectRatio} />

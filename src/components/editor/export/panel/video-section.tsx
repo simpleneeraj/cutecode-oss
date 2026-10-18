@@ -23,7 +23,7 @@ type VideoSectionProps = {
 };
 
 export default function VideoSection({ formats, isExporting, onExportVideo }: VideoSectionProps) {
-  const [selectedValue, setSelectedValue] = useState(VideoFormat.Gif);
+  const [selectedValue, setSelectedValue] = useState(VideoFormat.Video);
   const [isReelSelected, setIsReelSelected] = useState(false);
   const slideCount = useAtomValue(slidesAtom).length;
   const { checkAccess } = usePremiumAccess();
