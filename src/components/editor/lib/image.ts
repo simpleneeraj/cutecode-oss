@@ -2,7 +2,7 @@ import { toPng as htmlToPng, toSvg as htmlToSvg, toBlob as htmlToBlob } from "ht
 
 export const imageFilter = (node: HTMLElement) => node.tagName !== "TEXTAREA" && !node.dataset?.ignoreInExport;
 
-export const isSafari =
+const isSafari =
   typeof navigator !== "undefined" &&
   navigator.userAgent.indexOf("Safari") > -1 &&
   navigator.userAgent.indexOf("Chrome") <= -1;
