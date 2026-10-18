@@ -1,39 +1,32 @@
-/**
- * server/routers/presentation.ts
- *
- * All presentation-related tRPC procedures.
- *
- * Procedures:
- *   presentation.list   — paginated list (owner only)
- *   presentation.get    — single presentation (owner only)
- *   presentation.create — create a new presentation
- *   presentation.sync   — patch slides / elements / metadata
- *   presentation.delete — hard-delete (owner only)
- */
-
 import { z } from "zod";
-import { prisma } from "@/lib/db";
+import { and, eq } from "drizzle-orm";
+import { db } from "@/db";
+import { presentations, shareLinks, snippets } from "@/db/schema";
 import { TRPCError } from "@trpc/server";
-import { type Prisma } from "@/generated/prisma/client";
 import { router, protectedProcedure, paginationInput } from "../init";
 import { createPresentationSchema, syncPresentationSchema } from "@/lib/schemas";
+import { assertPremiumAssetsAllowed } from "@/lib/billing/premium-assets";
+
+async function isShared(presentationId: string) {
+  const [link, publicSnippet] = await Promise.all([
+    db.query.shareLinks.findFirst({ where: eq(shareLinks.presentationId, presentationId), columns: { id: true } }),
+    db.query.snippets.findFirst({
+      where: and(eq(snippets.presentationId, presentationId), eq(snippets.isPublic, true)),
+      columns: { id: true },
+    }),
+  ]);
+  return !!link || !!publicSnippet;
+}
 
 export const presentationRouter = router({
-  /**
-   * List presentations
-   * @param page - Page number
-   * @param limit - Items per page
-   * @returns List of presentations
-   * @throws TRPCError
-   */
   list: protectedProcedure.input(paginationInput).query(async ({ ctx, input }) => {
     const { page, limit } = input;
-    const skip = (page - 1) * limit;
+    const offset = (page - 1) * limit;
 
-    const [presentations, total] = await prisma.$transaction([
-      prisma.presentation.findMany({
-        where: { userId: ctx.user.id },
-        select: {
+    const [presentationsRows, total] = await Promise.all([
+      db.query.presentations.findMany({
+        where: eq(presentations.userId, ctx.user.id),
+        columns: {
           id: true,
           name: true,
           width: true,
@@ -42,25 +35,19 @@ export const presentationRouter = router({
           createdAt: true,
           updatedAt: true,
         },
-        orderBy: { updatedAt: "desc" },
-        skip,
-        take: limit,
+        orderBy: (presentations, { desc }) => [desc(presentations.updatedAt)],
+        offset,
+        limit,
       }),
-      prisma.presentation.count({ where: { userId: ctx.user.id } }),
+      db.$count(presentations, eq(presentations.userId, ctx.user.id)),
     ]);
 
-    return { presentations, total, page, limit };
+    return { presentations: presentationsRows, total, page, limit };
   }),
 
-  /**
-   * Get presentation
-   * @param id - Presentation id
-   * @returns Presentation
-   * @throws TRPCError
-   */
   get: protectedProcedure.input(z.object({ id: z.string().min(1) })).query(async ({ ctx, input }) => {
-    const presentation = await prisma.presentation.findFirst({
-      where: { id: input.id, userId: ctx.user.id },
+    const presentation = await db.query.presentations.findFirst({
+      where: and(eq(presentations.id, input.id), eq(presentations.userId, ctx.user.id)),
     });
 
     if (!presentation) {
@@ -70,75 +57,59 @@ export const presentationRouter = router({
     return presentation;
   }),
 
-  /**
-   * Create presentation
-   * @param name - Presentation name
-   * @param width - Presentation width
-   * @param slides - Presentation slides
-   * @param elements - Presentation elements
-   * @param slideElements - Presentation slide elements
-   * @returns Created presentation
-   * @throws TRPCError
-   */
   create: protectedProcedure.input(createPresentationSchema).mutation(async ({ ctx, input }) => {
-    return prisma.presentation.create({
-      data: {
+    const [presentation] = await db
+      .insert(presentations)
+      .values({
         userId: ctx.user.id,
         name: input.name,
         width: input.width,
-        slides: input.slides as Prisma.InputJsonValue,
-        elements: input.elements as Prisma.InputJsonValue,
-        slideElements: input.slideElements as Prisma.InputJsonValue,
-      },
-    });
+        slides: input.slides,
+        elements: input.elements,
+        slideElements: input.slideElements,
+      })
+      .returning();
+    return presentation;
   }),
 
-  /**
-   * Sync presentation
-   * @param id - Presentation id
-   * @param data - Presentation data
-   * @returns Updated presentation
-   * @throws TRPCError
-   */
   sync: protectedProcedure
     .input(z.object({ id: z.string().min(1), data: syncPresentationSchema }))
     .mutation(async ({ ctx, input }) => {
-      const existing = await prisma.presentation.findFirst({
-        where: { id: input.id, userId: ctx.user.id },
+      const existing = await db.query.presentations.findFirst({
+        where: and(eq(presentations.id, input.id), eq(presentations.userId, ctx.user.id)),
       });
 
       if (!existing) {
         throw new TRPCError({ code: "NOT_FOUND", message: "Presentation not found" });
       }
 
-      return prisma.presentation.update({
-        where: { id: input.id },
-        data: {
+      if (await isShared(input.id)) assertPremiumAssetsAllowed(ctx.user.plan, input.data.elements);
+
+      const [updated] = await db
+        .update(presentations)
+        .set({
           ...(input.data.name && { name: input.data.name }),
           ...(input.data.width && { width: input.data.width }),
-          slides: input.data.slides as Prisma.InputJsonValue,
-          elements: input.data.elements as Prisma.InputJsonValue,
-          slideElements: input.data.slideElements as Prisma.InputJsonValue,
-        },
-      });
+          slides: input.data.slides,
+          elements: input.data.elements,
+          slideElements: input.data.slideElements,
+        })
+        .where(eq(presentations.id, input.id))
+        .returning();
+
+      return updated;
     }),
 
-  /**
-   * Delete presentation
-   * @param id - Presentation id
-   * @returns Deleted presentation
-   * @throws TRPCError
-   */
   delete: protectedProcedure.input(z.object({ id: z.string().min(1) })).mutation(async ({ ctx, input }) => {
-    const existing = await prisma.presentation.findFirst({
-      where: { id: input.id, userId: ctx.user.id },
+    const existing = await db.query.presentations.findFirst({
+      where: and(eq(presentations.id, input.id), eq(presentations.userId, ctx.user.id)),
     });
 
     if (!existing) {
       throw new TRPCError({ code: "NOT_FOUND", message: "Presentation not found" });
     }
 
-    await prisma.presentation.delete({ where: { id: input.id } });
+    await db.delete(presentations).where(eq(presentations.id, input.id));
     return { deleted: true, id: input.id };
   }),
 });

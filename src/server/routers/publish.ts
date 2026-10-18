@@ -1,55 +1,42 @@
-/**
- * server/routers/publish.ts
- *
- * Publish procedure — the big atomic "publish a snippet" operation.
- *
- * Procedures:
- *   publish.publish — creates or updates presentation + snippet + shareLink in one transaction
- */
-
 import { z } from "zod";
 import bcrypt from "bcryptjs";
-import { prisma } from "@/lib/db";
+import { and, eq } from "drizzle-orm";
+import { db } from "@/db";
+import { snippets, presentations, shareLinks } from "@/db/schema";
+import { ShareVisibility } from "@/db/schema";
 import { generateUniqueSlug } from "@/lib/share/slug";
 import { TRPCError } from "@trpc/server";
 import { router, protectedProcedure } from "../init";
-import { publishRateLimit, publishDailyRateLimit, checkRateLimit } from "@/lib/redis";
-import { ShareVisibility, type Prisma } from "@/generated/prisma/client";
-import { Plan } from "@/generated/prisma/enums";
-import { isPlanAtLeast } from "@/lib/billing/plans";
-import { FREE_DAILY_PUBLISH_LIMIT } from "@/lib/billing/constants";
+import { publishRateLimit, checkRateLimit, cacheDel } from "@/lib/in-memory-store";
+import { consumePublishQuota, getPublishQuota } from "@/lib/billing/publish-quota";
+import { assertPremiumAssetsAllowed } from "@/lib/billing/premium-assets";
+import { requireShareVisibility } from "@/lib/billing/require-capability";
+import { publishedContent } from "@/lib/share/published-content";
+import {
+  descriptionSchema,
+  elementsSchema,
+  passcodeSchema,
+  slideElementsSchema,
+  slidesSchema,
+  tagsSchema,
+  titleSchema,
+} from "@/lib/schemas";
 
 export const publishRouter = router({
-  /**
-   * Publish a presentation
-   * @param name - Presentation name
-   * @param width - Presentation width
-   * @param slides - Presentation slides
-   * @param elements - Presentation elements
-   * @param slideElements - Presentation slide elements
-   * @param elementId - Element id
-   * @param title - Presentation title
-   * @param description - Presentation description
-   * @param tags - Presentation tags
-   * @param visibility - Presentation visibility
-   * @param passcode - Presentation passcode
-   * @returns Published presentation
-   * @throws TRPCError
-   */
   publish: protectedProcedure
     .input(
       z.object({
         name: z.string().max(120).optional(),
         width: z.number().int().optional(),
-        slides: z.record(z.string(), z.unknown()).default({}),
-        elements: z.record(z.string(), z.unknown()),
-        slideElements: z.record(z.string(), z.array(z.string())).default({}),
+        slides: slidesSchema.default({}),
+        elements: elementsSchema,
+        slideElements: slideElementsSchema.default({}),
         elementId: z.string().min(1),
-        title: z.string().max(200).optional(),
-        description: z.string().max(2000).optional(),
-        tags: z.array(z.string()).max(10).optional(),
+        title: titleSchema.optional(),
+        description: descriptionSchema.optional(),
+        tags: tagsSchema.optional(),
         visibility: z.enum(ShareVisibility).default(ShareVisibility.PUBLIC),
-        passcode: z.string().min(4).max(32).optional(),
+        passcode: passcodeSchema.optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -61,9 +48,6 @@ export const publishRouter = router({
       const {
         name,
         width,
-        slides,
-        elements,
-        slideElements,
         elementId,
         title,
         description,
@@ -72,131 +56,129 @@ export const publishRouter = router({
         passcode,
       } = input;
 
-      if (!elements[elementId]) {
+      requireShareVisibility(ctx.user.plan, visibility);
+
+      if (!input.elements[elementId]) {
         throw new TRPCError({ code: "BAD_REQUEST", message: "Missing required presentation elements." });
       }
 
-      if (visibility === ShareVisibility.PASSCODE && (!passcode || passcode.length < 4)) {
-        throw new TRPCError({ code: "BAD_REQUEST", message: "Passcode must be at least 4 characters." });
-      }
+      const { slides, elements, slideElements } = publishedContent(input, elementId);
+      assertPremiumAssetsAllowed(ctx.user.plan, elements);
 
       const passcodeHash = visibility === ShareVisibility.PASSCODE && passcode ? await bcrypt.hash(passcode, 10) : null;
 
       const safeName = (name || "Untitled").slice(0, 120);
       const safeWidth = Math.max(400, Math.min(width ?? 680, 1600));
 
-      /**
-       * Idempotency: reuse existing share link for this elementId.
-       * Updates do NOT count against the daily publish quota.
-       */
-      const existingSnippet = await prisma.snippet.findFirst({
-        where: { userId: ctx.user.id, elementId },
-        include: { shareLinks: { select: { slug: true, id: true }, take: 1, orderBy: { createdAt: "asc" } } },
-        orderBy: { createdAt: "desc" },
+      const existingSnippet = await db.query.snippets.findFirst({
+        where: and(eq(snippets.userId, ctx.user.id), eq(snippets.elementId, elementId)),
+        with: {
+          shareLinks: { columns: { slug: true, id: true }, orderBy: (shareLinks, { asc }) => [asc(shareLinks.createdAt)], limit: 1 },
+        },
+        orderBy: (snippets, { desc }) => [desc(snippets.createdAt)],
       });
 
       const existingSlug = existingSnippet?.shareLinks?.[0]?.slug;
 
       if (existingSnippet && existingSlug) {
-        await prisma.$transaction(async (tx) => {
-          await tx.presentation.update({
-            where: { id: existingSnippet.presentationId },
-            data: {
-              name: safeName,
-              width: safeWidth,
-              slides: slides as Prisma.InputJsonValue,
-              elements: elements as Prisma.InputJsonValue,
-              slideElements: slideElements as Prisma.InputJsonValue,
-            },
-          });
+        const existingLink = await db.query.shareLinks.findFirst({
+          where: eq(shareLinks.slug, existingSlug),
+          columns: { passcodeHash: true },
+        });
+        const keptPasscodeHash =
+          visibility === ShareVisibility.PASSCODE ? (passcodeHash ?? existingLink?.passcodeHash ?? null) : null;
+        if (visibility === ShareVisibility.PASSCODE && !keptPasscodeHash) {
+          throw new TRPCError({ code: "BAD_REQUEST", message: "A 6-digit passcode is required." });
+        }
 
-          await tx.snippet.update({
-            where: { id: existingSnippet.id },
-            data: {
-              title: title ?? undefined,
-              description: description ?? undefined,
-              tags: tags ? { set: tags } : { set: [] },
+        const becomesPublic = visibility === ShareVisibility.PUBLIC && !existingSnippet.isPublic;
+        const quota = await db.transaction(async (tx) => {
+          const consumed = becomesPublic ? await consumePublishQuota(tx, ctx.user.id, { addsLiveSnippet: false }) : null;
+
+          await tx
+            .update(presentations)
+            .set({ name: safeName, width: safeWidth, slides, elements, slideElements })
+            .where(eq(presentations.id, existingSnippet.presentationId));
+
+          await tx
+            .update(snippets)
+            .set({
+              title: title ?? null,
+              description: description ?? null,
+              tags: tags ?? [],
               isPublic: visibility === ShareVisibility.PUBLIC,
-            },
-          });
+            })
+            .where(eq(snippets.id, existingSnippet.id));
 
-          const existingShareLink = await tx.shareLink.findUnique({ where: { slug: existingSlug } });
-          if (existingShareLink) {
-            await tx.shareLink.update({
-              where: { id: existingShareLink.id },
-              data: {
-                visibility,
-                passcodeHash: passcodeHash ?? existingShareLink.passcodeHash,
-                indexable: visibility === ShareVisibility.PUBLIC,
-              },
-            });
-          }
+          await tx
+            .update(shareLinks)
+            .set({
+              visibility,
+              passcodeHash: keptPasscodeHash,
+              indexable: visibility === ShareVisibility.PUBLIC,
+            })
+            .where(eq(shareLinks.slug, existingSlug));
+
+          return consumed;
         });
 
-        return { slug: existingSlug, updated: true };
+        await cacheDel(`shareLink:${existingSlug}`);
+        return { slug: existingSlug, updated: true, quota: quota ?? (await getPublishQuota(db, ctx.user.id)) };
       }
 
-      /**
-       * New publish — enforce daily quota for free-plan users.
-       * Pro and above get unlimited new publishes.
-       */
-      const isFreeUser = !isPlanAtLeast(ctx.user.plan, Plan.PRO);
-      if (isFreeUser) {
-        const { success: dailyOk } = await checkRateLimit(publishDailyRateLimit, `publish:daily:${ctx.user.id}`);
-        if (!dailyOk) {
-          throw new TRPCError({
-            code: "TOO_MANY_REQUESTS",
-            message: `Daily publish limit reached (${FREE_DAILY_PUBLISH_LIMIT}/day). Upgrade to Pro for unlimited publishes.`,
-          });
-        }
+      if (visibility === ShareVisibility.PASSCODE && !passcodeHash) {
+        throw new TRPCError({ code: "BAD_REQUEST", message: "A 6-digit passcode is required." });
       }
 
-      /**
-       * First publish
-       */
       const slug = await generateUniqueSlug();
 
-      const shareLink = await prisma.$transaction(async (tx) => {
-        const presentation = await tx.presentation.create({
-          data: {
+      const quota = await db.transaction(async (tx) => {
+        const consumed = await consumePublishQuota(tx, ctx.user.id, { addsLiveSnippet: true });
+
+        const [presentation] = await tx
+          .insert(presentations)
+          .values({
             userId: ctx.user.id,
             name: safeName,
             width: safeWidth,
-            slides: slides as Prisma.InputJsonValue,
-            elements: elements as Prisma.InputJsonValue,
-            slideElements: slideElements as Prisma.InputJsonValue,
-          },
-        });
+            slides,
+            elements,
+            slideElements,
+          })
+          .returning();
 
-        const snippet = await tx.snippet.create({
-          data: {
+        const [snippet] = await tx
+          .insert(snippets)
+          .values({
             userId: ctx.user.id,
             presentationId: presentation.id,
             elementId,
-            title: title ?? undefined,
-            description: description ?? undefined,
-            tags: tags ? { set: tags } : { set: [] },
+            title: title ?? null,
+            description: description ?? null,
+            tags: tags ?? [],
             isPublic: visibility === ShareVisibility.PUBLIC,
-          },
+          })
+          .returning();
+
+        await tx.insert(shareLinks).values({
+          userId: ctx.user.id,
+          slug,
+          targetType: "SNIPPET",
+          targetId: snippet.id,
+          snippetId: snippet.id,
+          presentationId: presentation.id,
+          visibility,
+          passcodeHash,
+          allowCopy: true,
+          allowDownload: true,
+          indexable: visibility === ShareVisibility.PUBLIC,
         });
 
-        return tx.shareLink.create({
-          data: {
-            userId: ctx.user.id,
-            slug,
-            targetType: "SNIPPET",
-            targetId: snippet.id,
-            snippetId: snippet.id,
-            presentationId: presentation.id,
-            visibility,
-            passcodeHash,
-            allowCopy: true,
-            allowDownload: true,
-            indexable: visibility === ShareVisibility.PUBLIC,
-          },
-        });
+        return consumed;
       });
 
-      return { slug: shareLink.slug, updated: false };
+      return { slug, updated: false, quota };
     }),
+
+  quota: protectedProcedure.query(({ ctx }) => getPublishQuota(db, ctx.user.id)),
 });

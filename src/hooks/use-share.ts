@@ -12,7 +12,10 @@
 "use client";
 
 import useSWR, { useSWRConfig } from "swr";
+import { useSetAtom } from "jotai";
 import { trpc } from "@/lib/trpc";
+import { isForbiddenError } from "@/lib/trpc-error";
+import { plansDialogOpenAtom } from "@/store/editor/plans";
 import type { inferRouterOutputs } from "@trpc/server";
 import type { AppRouter } from "@/server/types";
 
@@ -43,10 +46,10 @@ export function useShareList({
 // useShareLinkPreview
 // ─────────────────────────────────────────────
 
-export function useSharePreview(slug: string | null, { passcode, ip }: { passcode?: string; ip?: string } = {}) {
+export function useSharePreview(slug: string | null, { passcode }: { passcode?: string } = {}) {
   return useSWR(
     slug ? (["share.preview", slug, passcode ?? null] as const) : null,
-    () => trpc.share.preview.query({ slug: slug!, passcode, ip }),
+    () => trpc.share.preview.mutate({ slug: slug!, passcode: passcode || undefined }),
     {
       refreshInterval: 30_000,
       revalidateOnFocus: false,
@@ -62,7 +65,13 @@ export function useSharePreview(slug: string | null, { passcode, ip }: { passcod
 // ─────────────────────────────────────────────
 
 export function useShareAnalytics(id: string | null) {
-  return useSWR(id ? (["share.analytics", id] as const) : null, () => trpc.share.analytics.query({ id: id! }));
+  const setPlansOpen = useSetAtom(plansDialogOpenAtom);
+  return useSWR(id ? (["share.analytics", id] as const) : null, () => trpc.share.analytics.query({ id: id! }), {
+    shouldRetryOnError: (error: unknown) => !isForbiddenError(error),
+    onError: (error: unknown) => {
+      if (isForbiddenError(error)) setPlansOpen(true);
+    },
+  });
 }
 
 // ─────────────────────────────────────────────
@@ -95,21 +104,29 @@ export type UpdateShareInput = {
 
 export function useShareMutations() {
   const { mutate } = useSWRConfig();
+  const setPlansOpen = useSetAtom(plansDialogOpenAtom);
+
+  const openPlansOnForbidden = (error: unknown): never => {
+    if (isForbiddenError(error)) setPlansOpen(true);
+    throw error;
+  };
 
   const createShare = async (input: CreateShareInput) => {
-    const result = await trpc.share.create.mutate({
-      ...input,
-      visibility: input.visibility ?? "PUBLIC",
-      isE2EEncrypted: input.isE2EEncrypted ?? false,
-      allowDownload: input.allowDownload ?? true,
-      allowCopy: input.allowCopy ?? true,
-    });
+    const result = await trpc.share.create
+      .mutate({
+        ...input,
+        visibility: input.visibility ?? "PUBLIC",
+        isE2EEncrypted: input.isE2EEncrypted ?? false,
+        allowDownload: input.allowDownload ?? true,
+        allowCopy: input.allowCopy ?? true,
+      })
+      .catch(openPlansOnForbidden);
     await mutate((key) => Array.isArray(key) && key[0] === "share.list");
     return result;
   };
 
   const updateShare = async (id: string, data: UpdateShareInput) => {
-    const result = await trpc.share.update.mutate({ id, data });
+    const result = await trpc.share.update.mutate({ id, data }).catch(openPlansOnForbidden);
     await mutate((key) => Array.isArray(key) && key[0] === "share.list");
     return result;
   };

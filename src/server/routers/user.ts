@@ -1,41 +1,24 @@
-/**
- * server/routers/user.ts
- *
- * All user/social tRPC procedures.
- *
- * Procedures:
- *   user.profile       — public profile (counts + isFollowing) — Redis-cached
- *   user.followers     — cursor-paginated followers list
- *   user.following     — cursor-paginated following list
- *   user.toggleFollow  — follow / unfollow (auth required)
- */
-
 import { z } from "zod";
-import { prisma } from "@/lib/db";
+import { and, eq, desc, lt, inArray } from "drizzle-orm";
+import { db } from "@/db";
+import { users, userFollows, snippets } from "@/db/schema";
 import { TRPCError } from "@trpc/server";
 import { router, protectedProcedure, publicProcedure } from "../init";
-import { apiRateLimit, socialRateLimit, checkRateLimit, cacheGet, cacheSet, cacheDel } from "@/lib/redis";
+import { apiRateLimit, socialRateLimit, checkRateLimit, cacheGet, cacheSet, cacheDel } from "@/lib/in-memory-store";
 
 const PAGE_SIZE = 20;
 
 export const userRouter = router({
-  /**
-   * Get user profile
-   * @param input
-   *
-   * @returns
-   */
   profile: publicProcedure
     .input(
       z.object({
         userId: z.string().min(1),
-        ip: z.string().optional(),
       }),
     )
     .query(async ({ ctx, input }) => {
-      const { userId, ip = "anonymous" } = input;
+      const { userId } = input;
 
-      const { success } = await checkRateLimit(apiRateLimit, `user-profile:${ip}`);
+      const { success } = await checkRateLimit(apiRateLimit, `user-profile:${ctx.ip}`);
       if (!success) {
         throw new TRPCError({ code: "TOO_MANY_REQUESTS", message: "Too many requests." });
       }
@@ -44,41 +27,37 @@ export const userRouter = router({
       let profile = await cacheGet<{
         id: string;
         name: string | null;
-        email: string;
         plan: string;
         createdAt: Date;
         _count: { followers: number; following: number; snippets: number };
       }>(cacheKey);
 
       if (!profile) {
-        const user = await prisma.user.findUnique({
-          where: { id: userId },
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            plan: true,
-            createdAt: true,
-            _count: { select: { followers: true, following: true, snippets: true } },
-          },
+        const user = await db.query.users.findFirst({
+          where: eq(users.id, userId),
+          columns: { id: true, name: true, plan: true, createdAt: true },
         });
 
         if (!user) throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
-        profile = user;
+
+        const [followers, following, snippetCount] = await Promise.all([
+          db.$count(userFollows, eq(userFollows.followingId, userId)),
+          db.$count(userFollows, eq(userFollows.followerId, userId)),
+          db.$count(snippets, eq(snippets.userId, userId)),
+        ]);
+
+        profile = { ...user, _count: { followers, following, snippets: snippetCount } };
         await cacheSet(cacheKey, profile, 60);
       }
 
-      /**
-       * isFollowing / isOwnProfile are viewer-specific — never cache them
-       */
       let isFollowing = false;
       let isOwnProfile = false;
 
       if (ctx.user) {
         isOwnProfile = ctx.user.id === userId;
         if (!isOwnProfile) {
-          const follow = await prisma.userFollows.findUnique({
-            where: { followerId_followingId: { followerId: ctx.user.id, followingId: userId } },
+          const follow = await db.query.userFollows.findFirst({
+            where: and(eq(userFollows.followerId, ctx.user.id), eq(userFollows.followingId, userId)),
           });
           isFollowing = !!follow;
         }
@@ -87,127 +66,124 @@ export const userRouter = router({
       return { ...profile, isFollowing, isOwnProfile };
     }),
 
-  /**
-   * Get user followers
-   * @param input
-   * @returns
-   */
   followers: publicProcedure
     .input(
       z.object({
         userId: z.string().min(1),
         cursor: z.string().optional(),
-        ip: z.string().optional(),
       }),
     )
     .query(async ({ ctx, input }) => {
-      const { userId, cursor, ip = "anonymous" } = input;
+      const { userId, cursor } = input;
 
-      const { success } = await checkRateLimit(apiRateLimit, `followers-list:${ip}`);
+      const { success } = await checkRateLimit(apiRateLimit, `followers-list:${ctx.ip}`);
       if (!success) {
         throw new TRPCError({ code: "TOO_MANY_REQUESTS", message: "Too many requests." });
       }
 
-      const target = await prisma.user.findUnique({ where: { id: userId }, select: { id: true } });
+      const target = await db.query.users.findFirst({ where: eq(users.id, userId), columns: { id: true } });
       if (!target) throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
 
-      const rows = await prisma.userFollows.findMany({
-        where: { followingId: userId },
-        take: PAGE_SIZE,
-        ...(cursor ? { skip: 1, cursor: { followerId_followingId: { followerId: cursor, followingId: userId } } } : {}),
-        orderBy: { createdAt: "desc" },
-        include: {
-          follower: {
-            select: { id: true, name: true, plan: true, _count: { select: { followers: true } } },
-          },
-        },
+      let cursorCreatedAt: Date | null = null;
+      if (cursor) {
+        const cursorRow = await db.query.userFollows.findFirst({
+          where: and(eq(userFollows.followerId, cursor), eq(userFollows.followingId, userId)),
+          columns: { createdAt: true },
+        });
+        cursorCreatedAt = cursorRow?.createdAt ?? null;
+      }
+
+      const rows = await db.query.userFollows.findMany({
+        where: and(
+          eq(userFollows.followingId, userId),
+          ...(cursorCreatedAt ? [lt(userFollows.createdAt, cursorCreatedAt)] : []),
+        ),
+        orderBy: (userFollows, { desc }) => [desc(userFollows.createdAt)],
+        limit: PAGE_SIZE,
+        with: { follower: { columns: { id: true, name: true, plan: true } } },
       });
-      /**
-       * Batch: is the viewer following each of these users?
-       */
+
       let viewerFollowingSet = new Set<string>();
       if (ctx.user && rows.length > 0) {
         const followerIds = rows.map((r) => r.follower.id);
-        const follows = await prisma.userFollows.findMany({
-          where: { followerId: ctx.user.id, followingId: { in: followerIds } },
-          select: { followingId: true },
+        const follows = await db.query.userFollows.findMany({
+          where: and(eq(userFollows.followerId, ctx.user.id), inArray(userFollows.followingId, followerIds)),
+          columns: { followingId: true },
         });
         viewerFollowingSet = new Set(follows.map((f) => f.followingId));
       }
 
-      const users = rows.map((r) => ({
+      const usersList = rows.map((r) => ({
         ...r.follower,
+        _count: { followers: 0 },
         followedAt: r.createdAt,
         isFollowing: viewerFollowingSet.has(r.follower.id),
         isOwnProfile: r.follower.id === ctx.user?.id,
       }));
 
       const nextCursor = rows.length === PAGE_SIZE ? rows[rows.length - 1].follower.id : null;
-      return { users, nextCursor, total: users.length };
+      return { users: usersList, nextCursor, total: usersList.length };
     }),
 
-  /**
-   * Get user following list
-   * @param input
-   * @returns
-   */
   following: publicProcedure
     .input(
       z.object({
         userId: z.string().min(1),
         cursor: z.string().optional(),
-        ip: z.string().optional(),
       }),
     )
     .query(async ({ ctx, input }) => {
-      const { userId, cursor, ip = "anonymous" } = input;
+      const { userId, cursor } = input;
 
-      const { success } = await checkRateLimit(apiRateLimit, `following-list:${ip}`);
+      const { success } = await checkRateLimit(apiRateLimit, `following-list:${ctx.ip}`);
       if (!success) {
         throw new TRPCError({ code: "TOO_MANY_REQUESTS", message: "Too many requests." });
       }
 
-      const target = await prisma.user.findUnique({ where: { id: userId }, select: { id: true } });
+      const target = await db.query.users.findFirst({ where: eq(users.id, userId), columns: { id: true } });
       if (!target) throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
 
-      const rows = await prisma.userFollows.findMany({
-        where: { followerId: userId },
-        take: PAGE_SIZE,
-        ...(cursor ? { skip: 1, cursor: { followerId_followingId: { followerId: userId, followingId: cursor } } } : {}),
-        orderBy: { createdAt: "desc" },
-        include: {
-          following: {
-            select: { id: true, name: true, plan: true, _count: { select: { followers: true } } },
-          },
-        },
+      let cursorCreatedAt: Date | null = null;
+      if (cursor) {
+        const cursorRow = await db.query.userFollows.findFirst({
+          where: and(eq(userFollows.followerId, userId), eq(userFollows.followingId, cursor)),
+          columns: { createdAt: true },
+        });
+        cursorCreatedAt = cursorRow?.createdAt ?? null;
+      }
+
+      const rows = await db.query.userFollows.findMany({
+        where: and(
+          eq(userFollows.followerId, userId),
+          ...(cursorCreatedAt ? [lt(userFollows.createdAt, cursorCreatedAt)] : []),
+        ),
+        orderBy: (userFollows, { desc }) => [desc(userFollows.createdAt)],
+        limit: PAGE_SIZE,
+        with: { following: { columns: { id: true, name: true, plan: true } } },
       });
 
       let viewerFollowingSet = new Set<string>();
       if (ctx.user && rows.length > 0) {
         const targetIds = rows.map((r) => r.following.id);
-        const follows = await prisma.userFollows.findMany({
-          where: { followerId: ctx.user.id, followingId: { in: targetIds } },
-          select: { followingId: true },
+        const follows = await db.query.userFollows.findMany({
+          where: and(eq(userFollows.followerId, ctx.user.id), inArray(userFollows.followingId, targetIds)),
+          columns: { followingId: true },
         });
         viewerFollowingSet = new Set(follows.map((f) => f.followingId));
       }
 
-      const users = rows.map((r) => ({
+      const usersList = rows.map((r) => ({
         ...r.following,
+        _count: { followers: 0 },
         followedAt: r.createdAt,
         isFollowing: viewerFollowingSet.has(r.following.id),
         isOwnProfile: r.following.id === ctx.user?.id,
       }));
 
       const nextCursor = rows.length === PAGE_SIZE ? rows[rows.length - 1].following.id : null;
-      return { users, nextCursor, total: users.length };
+      return { users: usersList, nextCursor, total: usersList.length };
     }),
 
-  /**
-   * Toggle follow
-   * @param input
-   * @returns
-   */
   toggleFollow: protectedProcedure
     .input(z.object({ targetUserId: z.string().min(1) }))
     .mutation(async ({ ctx, input }) => {
@@ -222,24 +198,24 @@ export const userRouter = router({
         throw new TRPCError({ code: "TOO_MANY_REQUESTS", message: "Too many requests. Slow down." });
       }
 
-      const targetUser = await prisma.user.findUnique({ where: { id: targetUserId }, select: { id: true } });
+      const targetUser = await db.query.users.findFirst({ where: eq(users.id, targetUserId), columns: { id: true } });
       if (!targetUser) throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
 
-      const existing = await prisma.userFollows.findUnique({
-        where: { followerId_followingId: { followerId: ctx.user.id, followingId: targetUserId } },
+      const existing = await db.query.userFollows.findFirst({
+        where: and(eq(userFollows.followerId, ctx.user.id), eq(userFollows.followingId, targetUserId)),
       });
 
       if (existing) {
-        await prisma.userFollows.delete({
-          where: { followerId_followingId: { followerId: ctx.user.id, followingId: targetUserId } },
-        });
-        const count = await prisma.userFollows.count({ where: { followingId: targetUserId } });
+        await db
+          .delete(userFollows)
+          .where(and(eq(userFollows.followerId, ctx.user.id), eq(userFollows.followingId, targetUserId)));
+        const count = await db.$count(userFollows, eq(userFollows.followingId, targetUserId));
         await Promise.all([cacheDel(`user-profile:${targetUserId}`), cacheDel(`user-profile:${ctx.user.id}`)]);
         return { following: false, followerCount: count };
       }
 
-      await prisma.userFollows.create({ data: { followerId: ctx.user.id, followingId: targetUserId } });
-      const count = await prisma.userFollows.count({ where: { followingId: targetUserId } });
+      await db.insert(userFollows).values({ followerId: ctx.user.id, followingId: targetUserId });
+      const count = await db.$count(userFollows, eq(userFollows.followingId, targetUserId));
       await Promise.all([cacheDel(`user-profile:${targetUserId}`), cacheDel(`user-profile:${ctx.user.id}`)]);
       return { following: true, followerCount: count };
     }),

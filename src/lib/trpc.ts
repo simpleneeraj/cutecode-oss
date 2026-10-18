@@ -15,8 +15,7 @@ import type { AppRouter } from "@/server/types";
 
 function getBaseUrl() {
   if (typeof window !== "undefined") return ""; // browser — relative URL
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
-  return `http://localhost:${process.env.PORT ?? 3000}`;
+  return process.env.NEXT_PUBLIC_BASE_URL || `http://localhost:${process.env.PORT ?? 3000}`;
 }
 
 export const trpc = createTRPCClient<AppRouter>({

@@ -1,56 +1,97 @@
-/**
- * server/routers/shareLink.ts
- *
- * All share-link-related tRPC procedures.
- *
- * Procedures:
- *   shareLink.list      — owner's links, optionally filtered by snippetId / presentationId
- *   shareLink.update    — patch visibility / passcode / expiry etc.
- *   shareLink.delete    — hard-delete (owner only)
- *   shareLink.create    — create a new share link
- *   shareLink.preview   — public preview (passcode-gated if needed)
- *   shareLink.analytics — view count + sparkline data (owner only)
- */
-
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
+import { and, eq, gt, isNull, lt, or, sql } from "drizzle-orm";
 import bcrypt from "bcryptjs";
+import { createHash } from "node:crypto";
 import { generateUniqueSlug } from "@/lib/share/slug";
-import { prisma } from "@/lib/db";
+import { db } from "@/db";
+import {
+  shareLinks,
+  shareLinkViews,
+  snippets,
+  presentations,
+  snippetUpvotes,
+  snippetBookmarks,
+  snippetComments,
+  userFollows,
+  type DbShareLink,
+} from "@/db/schema";
 import { router, protectedProcedure, publicProcedure } from "../init";
-import { createShareLinkSchema, updateShareLinkSchema } from "@/lib/schemas";
-import { apiRateLimit, cacheGet, cacheSet, checkRateLimit } from "@/lib/redis";
-import { ShareVisibility } from "@/generated/prisma/enums";
+import { createShareLinkSchema, passcodeSchema, updateShareLinkSchema } from "@/lib/schemas";
+import {
+  apiRateLimit,
+  cacheDel,
+  cacheGet,
+  cacheSet,
+  checkRateLimit,
+  isRateLimited,
+  passcodeRateLimit,
+  passcodeShareRateLimit,
+  recordRateLimitHit,
+} from "@/lib/in-memory-store";
+import { consumePublishQuota } from "@/lib/billing/publish-quota";
+import { assertPremiumAssetsAllowed } from "@/lib/billing/premium-assets";
+import { can } from "@/lib/billing/plans";
+import { requireCapability, requireShareVisibility } from "@/lib/billing/require-capability";
+import { isShareExpired, resolveShareAccess } from "@/lib/share/access";
+import { publishedContent } from "@/lib/share/published-content";
 
-const SHARE_LINK_SELECT = {
-  id: true,
-  slug: true,
-  visibility: true,
-  isE2EEncrypted: true,
-  encryptionHint: true,
-  maxViews: true,
-  viewCount: true,
-  expiresAt: true,
-  allowDownload: true,
-  allowCopy: true,
-  indexable: true,
-  snippetId: true,
-  presentationId: true,
-  createdAt: true,
-  updatedAt: true,
-} as const;
+function toShareLinkDto(link: DbShareLink) {
+  return {
+    id: link.id,
+    slug: link.slug,
+    visibility: link.visibility,
+    isE2EEncrypted: link.isE2EEncrypted,
+    encryptionHint: link.encryptionHint,
+    maxViews: link.maxViews,
+    viewCount: link.viewCount,
+    expiresAt: link.expiresAt,
+    allowDownload: link.allowDownload,
+    allowCopy: link.allowCopy,
+    indexable: link.indexable,
+    snippetId: link.snippetId,
+    presentationId: link.presentationId,
+    createdAt: link.createdAt,
+    updatedAt: link.updatedAt,
+  };
+}
+
+function hashViewer(viewer: string) {
+  return createHash("sha256").update(viewer).digest("hex");
+}
+
+async function recordView(shareLinkId: string, viewerHash: string, passcodeUsed: boolean) {
+  return db.transaction(async (tx) => {
+    await tx.execute(sql`SELECT pg_advisory_xact_lock(hashtext(${`view:${shareLinkId}:${viewerHash}`}))`);
+    const seen = await tx.query.shareLinkViews.findFirst({
+      where: and(
+        eq(shareLinkViews.shareLinkId, shareLinkId),
+        eq(shareLinkViews.ipHash, viewerHash),
+        gt(shareLinkViews.viewedAt, sql`now() - interval '24 hours'`),
+      ),
+      columns: { id: true },
+    });
+    if (seen) return true;
+
+    const [counted] = await tx
+      .update(shareLinks)
+      .set({ viewCount: sql`${shareLinks.viewCount} + 1` })
+      .where(
+        and(
+          eq(shareLinks.id, shareLinkId),
+          or(isNull(shareLinks.maxViews), lt(shareLinks.viewCount, shareLinks.maxViews)),
+          or(isNull(shareLinks.expiresAt), gt(shareLinks.expiresAt, sql`now()`)),
+        ),
+      )
+      .returning({ id: shareLinks.id });
+    if (!counted) return false;
+
+    await tx.insert(shareLinkViews).values({ shareLinkId, ipHash: viewerHash, passcodeUsed });
+    return true;
+  });
+}
 
 export const shareRouter = router({
-  /**
-   * List share links
-   *
-   * @param snippetId - Snippet id
-   * @param presentationId - Presentation id
-   *
-   * @returns List share links
-   *
-   * @throws TRPCError
-   */
   list: protectedProcedure
     .input(
       z.object({
@@ -59,37 +100,35 @@ export const shareRouter = router({
       }),
     )
     .query(async ({ ctx, input }) => {
-      const links = await prisma.shareLink.findMany({
-        where: {
-          userId: ctx.user.id,
-          ...(input.snippetId && { snippetId: input.snippetId }),
-          ...(input.presentationId && { presentationId: input.presentationId }),
+      const links = await db.query.shareLinks.findMany({
+        where: and(
+          eq(shareLinks.userId, ctx.user.id),
+          ...(input.snippetId ? [eq(shareLinks.snippetId, input.snippetId)] : []),
+          ...(input.presentationId ? [eq(shareLinks.presentationId, input.presentationId)] : []),
+        ),
+        columns: {
+          id: true,
+          slug: true,
+          visibility: true,
+          isE2EEncrypted: true,
+          encryptionHint: true,
+          maxViews: true,
+          viewCount: true,
+          expiresAt: true,
+          allowDownload: true,
+          allowCopy: true,
+          indexable: true,
+          snippetId: true,
+          presentationId: true,
+          createdAt: true,
+          updatedAt: true,
         },
-        select: SHARE_LINK_SELECT,
-        orderBy: { createdAt: "desc" },
+        orderBy: (shareLinks, { desc }) => [desc(shareLinks.createdAt)],
       });
-
-      return links;
+      const showViews = can(ctx.user.plan, "fullAnalytics");
+      return links.map((link) => ({ ...link, viewCount: showViews ? link.viewCount : null }));
     }),
 
-  /**
-   * Create share link
-   *
-   * @param snippetId - Snippet id
-   * @param presentationId - Presentation id
-   * @param visibility - Share link visibility
-   * @param passcode - Share link passcode
-   * @param isE2EEncrypted - Share link is E2E encrypted
-   * @param encryptionHint - Share link encryption hint
-   * @param maxViews - Share link max views
-   * @param expiresAt - Share link expires at
-   * @param allowDownload - Share link allow download
-   * @param allowCopy - Share link allow copy
-   *
-   * @returns Created share link
-   *
-   * @throws TRPCError
-   */
   create: protectedProcedure.input(createShareLinkSchema).mutation(async ({ ctx, input }) => {
     const {
       snippetId,
@@ -104,59 +143,60 @@ export const shareRouter = router({
       allowCopy,
     } = input;
 
-    // Verify ownership of the target
-    if (snippetId) {
-      const snippet = await prisma.snippet.findFirst({ where: { id: snippetId, userId: ctx.user.id } });
-      if (!snippet) throw new TRPCError({ code: "BAD_REQUEST", message: "Snippet not found" });
-    }
+    requireShareVisibility(ctx.user.plan, visibility);
+
+    const snippet = snippetId
+      ? await db.query.snippets.findFirst({
+          where: and(eq(snippets.id, snippetId), eq(snippets.userId, ctx.user.id)),
+          with: { presentation: { columns: { elements: true } }, shareLinks: { columns: { id: true }, limit: 1 } },
+        })
+      : undefined;
+    if (snippetId && !snippet) throw new TRPCError({ code: "BAD_REQUEST", message: "Snippet not found" });
+    if (snippet) assertPremiumAssetsAllowed(ctx.user.plan, snippet.presentation.elements);
 
     if (presentationId) {
-      const presentation = await prisma.presentation.findFirst({ where: { id: presentationId, userId: ctx.user.id } });
+      const presentation = await db.query.presentations.findFirst({ where: and(eq(presentations.id, presentationId), eq(presentations.userId, ctx.user.id)) });
       if (!presentation) throw new TRPCError({ code: "BAD_REQUEST", message: "Presentation not found" });
     }
 
-    const passcodeHash = passcode ? await bcrypt.hash(passcode, 10) : undefined;
-
-    // Generate a collision-free slug.
+    const passcodeHash = passcode && visibility === "PASSCODE" ? await bcrypt.hash(passcode, 10) : null;
     const slug = await generateUniqueSlug();
 
-    return prisma.shareLink.create({
-      data: {
-        userId: ctx.user.id,
-        slug,
-        targetType: snippetId ? "SNIPPET" : presentationId ? "PRESENTATION" : "COLLECTION",
-        targetId: snippetId ?? presentationId ?? "",
-        snippetId: snippetId ?? null,
-        presentationId: presentationId ?? null,
-        visibility,
-        passcodeHash: passcodeHash ?? null,
-        isE2EEncrypted,
-        encryptionHint: encryptionHint ?? null,
-        maxViews: maxViews ?? null,
-        expiresAt: expiresAt ? new Date(expiresAt) : null,
-        allowDownload,
-        allowCopy,
-        indexable: visibility === ShareVisibility.PUBLIC,
-      },
-      select: SHARE_LINK_SELECT,
+    return db.transaction(async (tx) => {
+      const quota = await consumePublishQuota(tx, ctx.user.id, {
+        addsLiveSnippet: !!snippet && !snippet.isPublic && snippet.shareLinks.length === 0,
+      });
+
+      const [link] = await tx
+        .insert(shareLinks)
+        .values({
+          userId: ctx.user.id,
+          slug,
+          targetType: snippetId ? "SNIPPET" : presentationId ? "PRESENTATION" : "COLLECTION",
+          targetId: snippetId ?? presentationId ?? "",
+          snippetId: snippetId ?? null,
+          presentationId: presentationId ?? null,
+          visibility,
+          passcodeHash,
+          isE2EEncrypted,
+          encryptionHint: encryptionHint ?? null,
+          maxViews: maxViews ?? null,
+          expiresAt: expiresAt ? new Date(expiresAt) : null,
+          allowDownload,
+          allowCopy,
+          indexable: visibility === "PUBLIC",
+        })
+        .returning();
+
+      return { ...toShareLinkDto(link), quota };
     });
   }),
 
-  /**
-   * Update share link
-   *
-   * @param id - Share link id
-   * @param data - Share link data
-   *
-   * @returns Updated share link
-   *
-   * @throws TRPCError
-   */
   update: protectedProcedure
     .input(z.object({ id: z.string().min(1), data: updateShareLinkSchema }))
     .mutation(async ({ ctx, input }) => {
-      const existing = await prisma.shareLink.findFirst({
-        where: { id: input.id, userId: ctx.user.id },
+      const existing = await db.query.shareLinks.findFirst({
+        where: and(eq(shareLinks.id, input.id), eq(shareLinks.userId, ctx.user.id)),
       });
 
       if (!existing) {
@@ -164,113 +204,72 @@ export const shareRouter = router({
       }
 
       const { passcode, visibility, expiresAt, ...rest } = input.data;
+      requireShareVisibility(ctx.user.plan, visibility);
 
-      let passcodeHash: string | null | undefined;
-      if (passcode) {
-        passcodeHash = await bcrypt.hash(passcode, 10);
-      } else if (visibility && visibility !== ShareVisibility.PASSCODE) {
-        passcodeHash = null;
+      const nextVisibility = visibility ?? existing.visibility;
+      if (nextVisibility === "PASSCODE" && !passcode && !existing.passcodeHash) {
+        throw new TRPCError({ code: "BAD_REQUEST", message: "A 6-digit passcode is required." });
       }
 
-      return prisma.shareLink.update({
-        where: { id: input.id },
-        data: {
-          ...rest,
-          ...(visibility !== undefined && { visibility }),
-          ...(passcodeHash !== undefined && { passcodeHash }),
-          ...(expiresAt !== undefined && { expiresAt: expiresAt ? new Date(expiresAt) : null }),
-          ...(visibility !== undefined && { indexable: visibility === ShareVisibility.PUBLIC }),
-        },
-        select: SHARE_LINK_SELECT,
-      });
+      const updateData: Record<string, unknown> = { ...rest };
+      if (passcode && nextVisibility === "PASSCODE") {
+        updateData.passcodeHash = await bcrypt.hash(passcode, 10);
+      } else if (nextVisibility !== "PASSCODE") {
+        updateData.passcodeHash = null;
+      }
+      if (visibility !== undefined) {
+        updateData.visibility = visibility;
+        updateData.indexable = visibility === "PUBLIC";
+      }
+      if (expiresAt !== undefined) {
+        updateData.expiresAt = expiresAt ? new Date(expiresAt) : null;
+      }
+
+      const [updated] = await db
+        .update(shareLinks)
+        .set(updateData)
+        .where(eq(shareLinks.id, input.id))
+        .returning();
+
+      await cacheDel(`shareLink:${existing.slug}`);
+      return toShareLinkDto(updated);
     }),
 
-  /**
-   * Delete share link
-   *
-   * @param id - Share link id
-   *
-   * @returns Deleted share link
-   *
-   * @throws TRPCError
-   */
   delete: protectedProcedure.input(z.object({ id: z.string().min(1) })).mutation(async ({ ctx, input }) => {
-    const existing = await prisma.shareLink.findFirst({
-      where: { id: input.id, userId: ctx.user.id },
+    const existing = await db.query.shareLinks.findFirst({
+      where: and(eq(shareLinks.id, input.id), eq(shareLinks.userId, ctx.user.id)),
     });
 
     if (!existing) {
       throw new TRPCError({ code: "NOT_FOUND", message: "Share link not found" });
     }
 
-    await prisma.shareLink.delete({ where: { id: input.id } });
+    await db.delete(shareLinks).where(eq(shareLinks.id, input.id));
+    await cacheDel(`shareLink:${existing.slug}`);
     return { deleted: true, id: input.id };
   }),
 
-  /**
-   * Preview share link
-   *
-   * @param slug - Share link slug
-   * @param passcode - Share link passcode
-   * @param ip - User ip
-   *
-   * @returns Preview share link
-   *
-   * @throws TRPCError
-   */
   preview: publicProcedure
     .input(
       z.object({
         slug: z.string().min(1),
-        passcode: z.string().optional(),
-        ip: z.string().optional(),
+        passcode: passcodeSchema.optional(),
       }),
     )
-    .query(async ({ ctx, input }) => {
-      const { slug, passcode, ip = "anonymous" } = input;
+    .mutation(async ({ ctx, input }) => {
+      const { slug, passcode } = input;
 
-      const { success } = await checkRateLimit(apiRateLimit, `preview:${ip}`);
+      const { success } = await checkRateLimit(apiRateLimit, `preview:${ctx.ip}`);
       if (!success) {
         throw new TRPCError({ code: "TOO_MANY_REQUESTS", message: "Too many requests. Please try again later." });
       }
 
-      /**
-       * Track view asynchronously
-       *
-       * @param slug - Share link slug
-       * @param passcode - Share link passcode
-       * @param ip - User ip
-       *
-       * @returns void
-       *
-       * @throws TRPCError
-       */
-      prisma
-        .$transaction([
-          prisma.shareLink.update({
-            where: { slug },
-            data: { viewCount: { increment: 1 } },
-          }),
-          prisma.shareLinkView.create({
-            data: {
-              shareLink: { connect: { slug } },
-              ipHash: ip,
-              passcodeUsed: !!passcode,
-            },
-          }),
-        ])
-        .catch(console.error);
-
       const cacheKey = `shareLink:${slug}`;
-      let shareLink: Awaited<ReturnType<typeof fetchShareLink>> | null = null;
-
-      if (!ctx.user && !passcode) {
-        shareLink = await cacheGet<Awaited<ReturnType<typeof fetchShareLink>>>(cacheKey);
-      }
+      let shareLink = !ctx.user && !passcode ? await cacheGet<PreviewShareLink>(cacheKey) : null;
 
       if (!shareLink) {
         shareLink = await fetchShareLink(slug);
-        if (shareLink?.visibility === ShareVisibility.PUBLIC && !ctx.user) {
+        if (shareLink?.visibility === "PUBLIC" && !ctx.user) {
           await cacheSet(cacheKey, shareLink, 30);
         }
       }
@@ -279,22 +278,46 @@ export const shareRouter = router({
         throw new TRPCError({ code: "NOT_FOUND", message: "Share link not found" });
       }
 
-      // Passcode protection
-      if (shareLink.visibility === ShareVisibility.PASSCODE && shareLink.passcodeHash) {
-        const isOwner = ctx.user?.id === shareLink.userId;
+      const isOwner = ctx.user?.id === shareLink.userId;
+      const access = resolveShareAccess({
+        visibility: shareLink.visibility,
+        ownerId: shareLink.userId,
+        viewerId: ctx.user?.id,
+        hasPasscodeHash: !!shareLink.passcodeHash,
+        passcode,
+        expired: isShareExpired(shareLink),
+      });
 
-        if (!isOwner) {
-          if (!passcode) {
-            throw new TRPCError({ code: "FORBIDDEN", message: "Passcode required" });
-          }
-          const isValid = await bcrypt.compare(passcode, shareLink.passcodeHash);
-          if (!isValid) {
-            throw new TRPCError({ code: "FORBIDDEN", message: "Invalid passcode" });
-          }
+      if (access === "not_found") {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Share link not found" });
+      }
+      if (access === "passcode_required") {
+        throw new TRPCError({ code: "FORBIDDEN", message: "Passcode required" });
+      }
+      if (access === "verify_passcode") {
+        await verifyPasscode(shareLink, passcode!, ctx.ip);
+      }
+
+      if (!isOwner) {
+        const viewer = ctx.user ? `user:${ctx.user.id}` : `anon:${ctx.ip}|${ctx.userAgent}`;
+        const counted = await recordView(shareLink.id, hashViewer(viewer), access === "verify_passcode");
+        if (!counted) {
+          await cacheDel(cacheKey);
+          throw new TRPCError({ code: "NOT_FOUND", message: "Share link not found" });
         }
       }
 
-      const snippet = shareLink.snippet;
+      const { snippet } = shareLink;
+      const publicLink = {
+        id: shareLink.id,
+        slug: shareLink.slug,
+        userId: shareLink.userId,
+        visibility: shareLink.visibility,
+        viewCount: shareLink.viewCount,
+        allowDownload: shareLink.allowDownload,
+        allowCopy: shareLink.allowCopy,
+        createdAt: shareLink.createdAt,
+      };
       let userUpvoted = false;
       let userBookmarked = false;
       let isFollowing = false;
@@ -304,19 +327,15 @@ export const shareRouter = router({
         currentUserId = ctx.user.id;
 
         const [upvote, bookmark, follow] = await Promise.all([
-          prisma.snippetUpvote.findUnique({
-            where: { snippetId_userId: { snippetId: snippet.id, userId: ctx.user.id } },
+          db.query.snippetUpvotes.findFirst({
+            where: and(eq(snippetUpvotes.snippetId, snippet.id), eq(snippetUpvotes.userId, ctx.user.id)),
           }),
-          prisma.snippetBookmark.findUnique({
-            where: { snippetId_userId: { snippetId: snippet.id, userId: ctx.user.id } },
+          db.query.snippetBookmarks.findFirst({
+            where: and(eq(snippetBookmarks.snippetId, snippet.id), eq(snippetBookmarks.userId, ctx.user.id)),
           }),
-          snippet.user?.id
-            ? prisma.userFollows.findUnique({
-                where: {
-                  followerId_followingId: { followerId: ctx.user.id, followingId: snippet.user.id },
-                },
-              })
-            : Promise.resolve(null),
+          db.query.userFollows.findFirst({
+            where: and(eq(userFollows.followerId, ctx.user.id), eq(userFollows.followingId, snippet.userId)),
+          }),
         ]);
 
         userUpvoted = !!upvote;
@@ -324,33 +343,21 @@ export const shareRouter = router({
         isFollowing = !!follow;
       }
 
-      return { shareLink, snippet, userUpvoted, userBookmarked, isFollowing, currentUserId };
+      return { shareLink: publicLink, snippet, userUpvoted, userBookmarked, isFollowing, currentUserId };
     }),
 
-  /**
-   * Analytics for share link
-   *
-   * @param id - Share link id
-   *
-   * @returns Analytics for share link
-   *
-   * @throws TRPCError
-   */
   analytics: protectedProcedure.input(z.object({ id: z.string().min(1) })).query(async ({ ctx, input }) => {
-    const link = await prisma.shareLink.findFirst({
-      where: { id: input.id, userId: ctx.user.id },
-      select: {
-        id: true,
-        slug: true,
-        viewCount: true,
-        maxViews: true,
-        expiresAt: true,
+    requireCapability(ctx.user.plan, "fullAnalytics");
+    const link = await db.query.shareLinks.findFirst({
+      where: and(eq(shareLinks.id, input.id), eq(shareLinks.userId, ctx.user.id)),
+      with: {
         views: {
-          orderBy: { viewedAt: "desc" },
-          take: 100,
-          select: { id: true, passcodeUsed: true, referer: true, viewedAt: true },
+          orderBy: (shareLinkViews, { desc }) => [desc(shareLinkViews.viewedAt)],
+          limit: 100,
+          columns: { id: true, passcodeUsed: true, referer: true, viewedAt: true },
         },
       },
+      columns: { id: true, slug: true, viewCount: true, maxViews: true, expiresAt: true },
     });
 
     if (!link) {
@@ -375,17 +382,80 @@ export const shareRouter = router({
   }),
 });
 
-async function fetchShareLink(slug: string) {
-  return prisma.shareLink.findUnique({
-    where: { slug },
-    include: {
+const previewLinkColumns = {
+  id: true,
+  slug: true,
+  userId: true,
+  visibility: true,
+  passcodeHash: true,
+  viewCount: true,
+  maxViews: true,
+  expiresAt: true,
+  allowDownload: true,
+  allowCopy: true,
+  createdAt: true,
+} as const;
+
+type PreviewShareLink = Pick<DbShareLink, keyof typeof previewLinkColumns> & {
+  snippet:
+    | (typeof snippets.$inferSelect & {
+        user: { id: string; name: string | null } | null;
+        presentation: Pick<typeof presentations.$inferSelect, "id" | "name" | "width"> & ReturnType<typeof publishedContent>;
+        _count: { upvotes: number; bookmarks: number; comments: number };
+      })
+    | null;
+};
+
+async function verifyPasscode(shareLink: PreviewShareLink, passcode: string, ip: string) {
+  const ipKey = `${ip}:${shareLink.id}`;
+  const [ipLimited, shareLimited] = await Promise.all([
+    isRateLimited(passcodeRateLimit, ipKey),
+    isRateLimited(passcodeShareRateLimit, shareLink.id),
+  ]);
+  if (ipLimited || shareLimited) {
+    throw new TRPCError({ code: "TOO_MANY_REQUESTS", message: "Too many passcode attempts. Please try again later." });
+  }
+  if (await bcrypt.compare(passcode, shareLink.passcodeHash!)) return;
+  await Promise.all([recordRateLimitHit(passcodeRateLimit, ipKey), recordRateLimitHit(passcodeShareRateLimit, shareLink.id)]);
+  throw new TRPCError({ code: "FORBIDDEN", message: "Invalid passcode" });
+}
+
+async function fetchShareLink(slug: string): Promise<PreviewShareLink | null> {
+  const link = await db.query.shareLinks.findFirst({
+    where: eq(shareLinks.slug, slug),
+    columns: previewLinkColumns,
+    with: {
       snippet: {
-        include: {
-          user: { select: { id: true, name: true } },
-          presentation: true,
-          _count: { select: { upvotes: true, bookmarks: true, comments: true } },
+        with: {
+          user: { columns: { id: true, name: true } },
+          presentation: { columns: { id: true, name: true, width: true, slides: true, elements: true, slideElements: true } },
         },
       },
     },
   });
+
+  if (!link) return null;
+
+  if (!link.snippet) return { ...link, snippet: null };
+
+  const { presentation, ...snippet } = link.snippet;
+  const [upvotes, bookmarks, comments] = await Promise.all([
+    db.$count(snippetUpvotes, eq(snippetUpvotes.snippetId, snippet.id)),
+    db.$count(snippetBookmarks, eq(snippetBookmarks.snippetId, snippet.id)),
+    db.$count(snippetComments, eq(snippetComments.snippetId, snippet.id)),
+  ]);
+
+  return {
+    ...link,
+    snippet: {
+      ...snippet,
+      presentation: {
+        id: presentation.id,
+        name: presentation.name,
+        width: presentation.width,
+        ...publishedContent(presentation, snippet.elementId),
+      },
+      _count: { upvotes, bookmarks, comments },
+    },
+  };
 }

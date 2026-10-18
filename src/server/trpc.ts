@@ -23,6 +23,8 @@ import { presentationRouter } from "./routers/presentation";
 import { shareRouter } from "./routers/share";
 import { userRouter } from "./routers/user";
 import { publishRouter } from "./routers/publish";
+import { billingRouter } from "./routers/billing";
+import { dashboardRouter } from "./routers/dashboard";
 
 export const appRouter = router({
   snippet: snippetRouter,
@@ -30,6 +32,8 @@ export const appRouter = router({
   share: shareRouter,
   user: userRouter,
   publish: publishRouter,
+  billing: billingRouter,
+  dashboard: dashboardRouter,
 });
 
 /**

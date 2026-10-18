@@ -1,63 +1,55 @@
-import { Dub } from "dub";
 import { NextRequest, NextResponse } from "next/server";
+import { db } from "@/db";
+import { shortUrls } from "@/db/schema";
+import { nanoid } from "nanoid";
+import { BASE_URL } from "@/utils/common";
+import { CLIENT_IP_HEADER } from "@/lib/client-ip";
+import { apiRateLimit, checkRateLimit } from "@/lib/in-memory-store";
+import { logger } from "@/lib/logger";
 
-export const runtime = "edge";
+const ALLOWED_HOSTS = new Set(["localhost", "coolsnippets.fun", "www.coolsnippets.fun"]);
 
-const dub = new Dub({
-  token: process.env.DUB_TOKEN,
-});
-
-const tagIdsByRef = {
-  codeImage: "clsokhlen0001kz0gxlqfgpp0",
-  snippets: "clsokhqzy0003kz0gxdhcycue",
-  prompts: "clsokhzja0006kz0g64z47gfr",
-  themes: "clsoki8190008kz0gzajzalh7",
-  icons: "cltyfpaho0001lwxwdcd93mkc",
-  presets: "clu9ko3n300068tq0zhk7bc7f",
-  quicklinks: "cm0qhn6fo000w3dl1i22hcgoz",
-  desktopClient: "tag_LmjLVKbcZB45xNbcgNPLV0Hh",
-};
-
-export type refProps = keyof typeof tagIdsByRef;
-
-const getTagId = (ref: refProps) => {
-  return ref ? tagIdsByRef[ref] : undefined;
-};
+function isUniqueViolation(error: unknown): boolean {
+  const code = (e: unknown) => (e && typeof e === "object" && "code" in e ? e.code : undefined);
+  return code(error) === "23505" || code((error as { cause?: unknown } | null)?.cause) === "23505";
+}
 
 export async function GET(req: NextRequest) {
-  const searchParams = req.nextUrl.searchParams;
-  const urlQuery = searchParams.get("url");
-  const refQuery = searchParams.get("ref");
-
-  const url = new URL(urlQuery as string);
-  const tagId = getTagId(refQuery as refProps);
-
-  if (!url) {
-    return NextResponse.json({ error: "Missing URL" });
+  const { success } = await checkRateLimit(apiRateLimit, `shorten:${req.headers.get(CLIENT_IP_HEADER) ?? "unknown"}`);
+  if (!success) {
+    return NextResponse.json({ error: "Too many requests" }, { status: 429 });
   }
 
-  if (!refQuery) {
-    return NextResponse.json({ error: "Missing ref" });
+  const urlQuery = req.nextUrl.searchParams.get("url");
+  const ref = req.nextUrl.searchParams.get("ref")?.slice(0, 64) ?? null;
+
+  if (!urlQuery) {
+    return NextResponse.json({ error: "Missing URL" }, { status: 400 });
   }
 
-  if (!tagId) {
-    return NextResponse.json({ error: "Invalid ref" });
+  let target: URL;
+  try {
+    target = new URL(urlQuery);
+  } catch {
+    return NextResponse.json({ error: "Invalid URL" }, { status: 400 });
   }
 
-  if (
-    url.hostname.endsWith("ray.so") ||
-    url.hostname.includes("raycastapp.vercel.app") ||
-    url.hostname === "localhost" ||
-    url.hostname.endsWith("cutecode.com") ||
-    (process.env.NEXT_PUBLIC_VERCEL_URL && url.hostname.includes(process.env.NEXT_PUBLIC_VERCEL_URL))
-  ) {
-    const link = await dub.links.create({
-      url: url.href,
-      domain: "go.ray.so",
-      tagIds: [tagId],
-    });
-    return NextResponse.json({ link: `https://ray.so/${link.key}` });
+  const allowed = ALLOWED_HOSTS.has(target.hostname) || target.hostname === req.nextUrl.hostname;
+  if (!allowed) {
+    return NextResponse.json({ error: "Unable to shorten this link" }, { status: 400 });
   }
 
-  return NextResponse.json({ error: "Unable to shorten this link" }, { status: 400 });
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const code = nanoid(7);
+    try {
+      await db.insert(shortUrls).values({ code, url: target.href, ref });
+      return NextResponse.json({ link: `${BASE_URL}/s/${code}` });
+    } catch (error) {
+      if (isUniqueViolation(error)) continue;
+      logger.error({ err: error }, "[shorten-url] insert failed");
+      break;
+    }
+  }
+
+  return NextResponse.json({ error: "Unable to shorten this link" }, { status: 500 });
 }

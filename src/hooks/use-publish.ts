@@ -6,13 +6,16 @@
 
 "use client";
 
-import { useSWRConfig } from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import { trpc } from "@/lib/trpc";
 import type { inferRouterOutputs } from "@trpc/server";
 import type { AppRouter } from "@/server/types";
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
 export type PublishOutput = RouterOutput["publish"]["publish"];
+export type PublishQuota = RouterOutput["publish"]["quota"];
+
+const QUOTA_KEY = ["publish.quota"] as const;
 
 export type PublishInput = {
   name?: string;
@@ -43,10 +46,15 @@ export function usePublish() {
     await Promise.all([
       mutate((key) => Array.isArray(key) && key[0] === "snippet.list"),
       mutate((key) => Array.isArray(key) && key[0] === "presentation.list"),
+      mutate(QUOTA_KEY, result.quota, { revalidate: false }),
     ]);
 
     return result;
   };
 
   return { publish };
+}
+
+export function usePublishQuota(enabled: boolean) {
+  return useSWR(enabled ? QUOTA_KEY : null, () => trpc.publish.quota.query());
 }

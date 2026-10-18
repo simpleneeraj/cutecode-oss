@@ -1,92 +1,49 @@
-/**
- * server/init.ts
- *
- * tRPC core — context, procedures, shared inputs.
- * Sub-routers MUST import from here (not trpc.ts) to avoid circular deps.
- */
-
 import "server-only";
 import { z } from "zod";
-import { createClient } from "@/lib/supabase/server";
-import { prisma } from "@/lib/db";
-import { cacheGet, cacheSet } from "@/lib/redis";
+import { eq } from "drizzle-orm";
+import { auth } from "@/lib/auth";
+import { clientIpFromHeaders } from "@/lib/client-ip";
+import { db } from "@/db";
+import { users } from "@/db/schema";
+import type { DbUser } from "@/db/schema";
 import { initTRPC, TRPCError } from "@trpc/server";
-import type { User } from "@/generated/prisma/client";
 import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 
-/**
- * Context type
- */
 export type Context = {
-  user: User | null;
+  user: DbUser | null;
+  ip: string;
+  userAgent: string;
 };
 
-/**
- * Create context for tRPC
- * @param req
- * @returns
- */
+export function requestIp(headers: Headers): string {
+  return clientIpFromHeaders(headers);
+}
+
 export async function createContext({ req }: FetchCreateContextFnOptions): Promise<Context> {
+  const ip = requestIp(req.headers);
+  const userAgent = req.headers.get("user-agent") ?? "";
   try {
-    const supabase = await createClient();
-    const {
-      data: { user: authUser },
-    } = await supabase.auth.getUser();
-    if (!authUser) return { user: null };
-
-    const userId = authUser.id;
-    const cacheKey = `user-ctx:${userId}`;
-    let user = await cacheGet<User>(cacheKey);
-
-    if (!user) {
-      user = await prisma.user.findUnique({ where: { supabaseId: userId } });
-
-      // ── Just-in-time provisioning ─────────────────────────────────────────
-      // If the user is authenticated in Supabase but missing from our DB,
-      // upsert from the metadata.
-      if (!user) {
-        try {
-          const email = authUser.email ?? "";
-          const name = authUser.user_metadata?.full_name || authUser.user_metadata?.name || undefined;
-
-          try {
-            user = await prisma.user.upsert({
-              where: { supabaseId: userId },
-              create: { supabaseId: userId, email, name: name ?? null },
-              update: { email, name: name ?? null },
-            });
-          } catch (upsertErr: any) {
-            // P2002 = unique constraint violation — a concurrent request already
-            // created this user between our findUnique and this upsert. That's
-            // fine; just fetch the row that now exists.
-            if (upsertErr?.code === "P2002") {
-              user = await prisma.user.findUnique({ where: { supabaseId: userId } });
-            } else {
-              throw upsertErr;
-            }
-          }
-        } catch (provisionErr) {
-          console.error("[tRPC] JIT user provisioning failed:", provisionErr);
-          return { user: null };
-        }
-      }
-
-      if (user) {
-        await cacheSet(cacheKey, user, 60 * 30); // Cache for 30 minutes
-      }
-    }
-
-    return { user };
+    const session = await auth.api.getSession({ headers: req.headers });
+    if (!session) return { user: null, ip, userAgent };
+    const user = await db.query.users.findFirst({ where: eq(users.id, session.user.id) });
+    return { user: user ?? null, ip, userAgent };
   } catch (e) {
-    console.error(e);
-    return { user: null };
+    console.error("[createContext] error:", e);
+    return { user: null, ip, userAgent };
   }
 }
-const t = initTRPC.context<Context>().create();
+
+const t = initTRPC.context<Context>().create({
+  errorFormatter({ shape, error }) {
+    if (error.code !== "INTERNAL_SERVER_ERROR") return shape;
+    console.error("[trpc] internal error:", error.cause ?? error);
+    if (process.env.NODE_ENV !== "production") return shape;
+    return { ...shape, message: "Internal server error", data: { ...shape.data, stack: undefined } };
+  },
+});
 
 export const router = t.router;
 export const publicProcedure = t.procedure;
-
 export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
   if (!ctx.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
@@ -94,9 +51,6 @@ export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
   return next({ ctx: { user: ctx.user } });
 });
 
-/**
- * Pagination input
- */
 export const paginationInput = z.object({
   page: z.number().int().min(1).default(1),
   limit: z.number().int().min(1).max(100).default(20),
