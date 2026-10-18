@@ -2,19 +2,19 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import { useSubscription } from "./use-subscription";
-import { createCustomerPortalAction, createCheckoutAction } from "@/lib/billing/actions";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "@/components/toast";
 
 function useBilling() {
   const router = useRouter();
-  const { isPro } = useSubscription();
   const [isLoading, setIsLoading] = React.useState(false);
 
   async function openPortal() {
     try {
       setIsLoading(true);
-      const url = await createCustomerPortalAction();
-      window.location.href = url;
+      const res = await authClient.dodopayments.customer.portal();
+      if (res.data?.url) window.location.href = res.data.url;
+      else toast.error(res.error?.message ?? "Something went wrong. Try again.");
     } catch {
       router.push("/");
     } finally {
@@ -22,11 +22,12 @@ function useBilling() {
     }
   }
 
-  async function openCheckout(productId: string) {
+  async function openCheckout(slug: string) {
     try {
       setIsLoading(true);
-      const url = await createCheckoutAction(productId);
-      window.location.href = url;
+      const res = await authClient.dodopayments.checkoutSession({ slug });
+      if (res.data?.url) window.location.href = res.data.url;
+      else toast.error(res.error?.message ?? "Something went wrong. Try again.");
     } catch {
       router.push("/");
     } finally {
@@ -34,17 +35,7 @@ function useBilling() {
     }
   }
 
-  async function openBilling(productId?: string) {
-    if (isPro) {
-      await openPortal();
-    } else if (productId) {
-      await openCheckout(productId);
-    } else {
-      router.push("/");
-    }
-  }
-
-  return { openPortal, openCheckout, openBilling, isLoading };
+  return { openPortal, openCheckout, isLoading };
 }
 
 export default useBilling;

@@ -11,4 +11,6 @@ export const GRACE_PERIOD_DAYS = 7;
  * Pro+ users have unlimited publishes. Updating an existing snippet does not count.
  * Change this single value to adjust the limit across the entire app.
  */
-export const FREE_DAILY_PUBLISH_LIMIT = 10;
+export const FREE_DAILY_PUBLISH_LIMIT = 3;
+
+export const FREE_MAX_LIVE_SNIPPETS = 25;

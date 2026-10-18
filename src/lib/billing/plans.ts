@@ -1,78 +1,123 @@
-import { Plan } from "@/generated/prisma/enums";
+import { Plan } from "@/db/enums";
+import { FREE_DAILY_PUBLISH_LIMIT, FREE_MAX_LIVE_SNIPPETS } from "./constants";
 
-export const PLANS = {
+type Capabilities = {
+  premiumThemes: boolean;
+  premiumFonts: boolean;
+  maxExportScale: number;
+  watermarkRemoval: boolean;
+  hdVideo: boolean;
+  dailyPublishes: number;
+  maxLiveSnippets: number;
+  privateShares: boolean;
+  fullAnalytics: boolean;
+  brandKits: boolean;
+  apiMonthlyRenders: number;
+};
+
+export type Capability = keyof Capabilities;
+
+export type NumericCapability = {
+  [Key in Capability]: Capabilities[Key] extends number ? Key : never;
+}[Capability];
+
+export type PlanPrices = { monthly: number; yearly: number };
+
+export type PlanDefinition = Capabilities & {
+  name: string;
+  prices: PlanPrices;
+  features: string[];
+};
+
+export const PLANS: Record<Plan, PlanDefinition> = {
   FREE: {
     name: "Free",
-    monthlyExports: 10,
+    prices: { monthly: 0, yearly: 0 },
     premiumThemes: false,
-    hdExport: false,
-    export4k: false,
+    premiumFonts: false,
+    maxExportScale: 2,
     watermarkRemoval: false,
-    savedSnippets: 5,
-    apiAccess: false,
-    price: 0,
+    hdVideo: false,
+    dailyPublishes: FREE_DAILY_PUBLISH_LIMIT,
+    maxLiveSnippets: FREE_MAX_LIVE_SNIPPETS,
+    privateShares: false,
+    fullAnalytics: false,
+    brandKits: false,
+    apiMonthlyRenders: 0,
+    features: [
+      "All Classic and Brand themes",
+      "PNG, SVG and copy at 1x and 2x",
+      "GIF and video export with watermark",
+      "Typing animation and multi-slide reels",
+      `Publish ${FREE_DAILY_PUBLISH_LIMIT} snippets a day, up to ${FREE_MAX_LIVE_SNIPPETS} live`,
+    ],
   },
   PRO: {
     name: "Pro",
-    monthlyExports: Infinity,
+    prices: { monthly: 5, yearly: 48 },
     premiumThemes: true,
-    hdExport: true,
-    export4k: false,
+    premiumFonts: true,
+    maxExportScale: 3,
     watermarkRemoval: true,
-    savedSnippets: Infinity,
-    apiAccess: false,
-    price: 5,
+    hdVideo: false,
+    dailyPublishes: 30,
+    maxLiveSnippets: Infinity,
+    privateShares: false,
+    fullAnalytics: false,
+    brandKits: false,
+    apiMonthlyRenders: 0,
+    features: [
+      "Everything in Free",
+      "Premium animated themes and fonts",
+      "3x image export",
+      "No watermark on images or video",
+      "Publish 30 snippets a day, unlimited live",
+    ],
   },
   PREMIUM: {
     name: "Premium",
-    monthlyExports: Infinity,
+    prices: { monthly: 12, yearly: 120 },
     premiumThemes: true,
-    hdExport: true,
-    export4k: true,
+    premiumFonts: true,
+    maxExportScale: 6,
     watermarkRemoval: true,
-    savedSnippets: Infinity,
-    apiAccess: true,
-    price: 12,
+    hdVideo: true,
+    dailyPublishes: 100,
+    maxLiveSnippets: Infinity,
+    privateShares: true,
+    fullAnalytics: true,
+    brandKits: true,
+    apiMonthlyRenders: 0,
+    features: [
+      "Everything in Pro",
+      "4x and 6x image export",
+      "HD video exports",
+      "Passcode and private shares",
+      "Per-snippet analytics",
+      "Publish 100 snippets a day",
+      "Brand kits (coming soon)",
+    ],
   },
-} as const satisfies Record<
-  Plan,
-  {
-    name: string;
-    monthlyExports: number;
-    premiumThemes: boolean;
-    hdExport: boolean;
-    export4k: boolean;
-    watermarkRemoval: boolean;
-    savedSnippets: number;
-    apiAccess: boolean;
-    price: number;
-  }
->;
+};
 
-export type PlanKey = keyof typeof PLANS;
-export type PlanFeature = keyof (typeof PLANS)[PlanKey];
-
-export function getPlanLimits(plan: Plan) {
-  return PLANS[plan];
-}
-
-/** Returns true if the plan includes the given feature */
-export function canUseFeature(plan: Plan, feature: PlanFeature): boolean {
-  const limits = PLANS[plan];
-  const value = limits[feature];
+export function can(plan: Plan, capability: Capability): boolean {
+  const value = PLANS[plan][capability];
   if (typeof value === "boolean") return value;
-  if (typeof value === "number") return value > 0;
-  return false;
+  return value > 0;
 }
 
-/** Numeric rank of each plan — higher is better */
+export function limit(plan: Plan, capability: NumericCapability): number {
+  return PLANS[plan][capability];
+}
+
 export const PLAN_ORDER: Record<Plan, number> = {
   FREE: 0,
   PRO: 1,
   PREMIUM: 2,
 };
 
-/** Returns true if userPlan is at least as good as requiredPlan */
 export function isPlanAtLeast(userPlan: Plan, requiredPlan: Plan): boolean {
   return PLAN_ORDER[userPlan] >= PLAN_ORDER[requiredPlan];
 }
+
+export type PlanKey = keyof typeof PLANS;

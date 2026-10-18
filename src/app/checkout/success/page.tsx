@@ -5,11 +5,6 @@ type Props = {
   searchParams: Promise<{ status?: string; subscription_id?: string; email?: string }>;
 };
 
-/**
- * Server component — runs before anything is sent to the browser.
- * If Dodo returns status=failed or status=canceled, redirect immediately
- * to the failure page without ever rendering the success UI.
- */
 export default async function CheckoutSuccessPage({ searchParams }: Props) {
   const { status } = await searchParams;
 
