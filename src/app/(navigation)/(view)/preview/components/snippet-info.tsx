@@ -1,8 +1,6 @@
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { EyeIcon, Copy01Icon, CheckmarkCircleIcon } from "@hugeicons/core-free-icons";
+import { Copy01Icon, Tick02Icon } from "@hugeicons/core-free-icons";
 
 type SnippetInfoProps = {
   language: string | null;
@@ -10,33 +8,20 @@ type SnippetInfoProps = {
   copied: boolean;
   onCopy: () => void;
 };
+
 const SnippetInfo = ({ language, viewCount, copied, onCopy }: SnippetInfoProps) => {
   return (
-    <div className="flex items-center justify-between px-3 py-1.5 bg-muted/40 border-b border-border">
-      <div className="flex items-center gap-2">
-        <span className="flex items-center gap-1 text-xxs text-muted-foreground">
-          <HugeiconsIcon icon={EyeIcon} className="size-3.5" aria-hidden="true" />
-          <span className="tabular-nums">{viewCount}</span>
+    <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
+      <span className="flex items-center gap-1.5">
+        {language && <span className="font-mono">{language}</span>}
+        {language && <span aria-hidden="true">·</span>}
+        <span className="tabular-nums">
+          {viewCount.toLocaleString()} {viewCount === 1 ? "view" : "views"}
         </span>
-        <Separator orientation="vertical" />{" "}
-        {language && (
-          <Badge variant="secondary" className="text-xxs font-mono">
-            {language}
-          </Badge>
-        )}
-      </div>
-      <Button size="sm" variant="ghost" onClick={onCopy} aria-label={copied ? "Copied!" : "Copy code"}>
-        {copied ? (
-          <>
-            <HugeiconsIcon icon={CheckmarkCircleIcon} className="size-3.5" aria-hidden="true" />
-            <span>Copied</span>
-          </>
-        ) : (
-          <>
-            <HugeiconsIcon icon={Copy01Icon} className="size-3.5" aria-hidden="true" />
-            <span>Copy</span>
-          </>
-        )}
+      </span>
+      <Button size="xs" variant="ghost" onClick={onCopy} aria-label={copied ? "Copied" : "Copy code"}>
+        <HugeiconsIcon icon={copied ? Tick02Icon : Copy01Icon} aria-hidden="true" />
+        {copied ? "Copied" : "Copy"}
       </Button>
     </div>
   );

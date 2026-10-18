@@ -62,9 +62,9 @@ export default async function SnippetOgImage({ params }: Props) {
 
         {/* Top: logo + brand */}
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          <img src={logoUrl} alt="Cool Snippets" width={40} height={40} style={{ borderRadius: 10 }} />
+          <img src={logoUrl} alt="CuteCode" width={40} height={40} style={{ borderRadius: 10 }} />
           <span style={{ color: "#e8d5c4", fontSize: 28, fontWeight: 700, letterSpacing: "-0.5px" }}>
-            Cool Snippets
+            CuteCode
           </span>
         </div>
 
@@ -134,7 +134,7 @@ export default async function SnippetOgImage({ params }: Props) {
               letterSpacing: "-0.3px",
             }}
           >
-            Remix on Cool Snippets
+            Remix on CuteCode
           </div>
         </div>
       </div>

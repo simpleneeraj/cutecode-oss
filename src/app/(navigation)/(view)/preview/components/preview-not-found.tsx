@@ -1,33 +1,29 @@
 "use client";
-import { cn } from "@/utils/cn";
+
 import { Link } from "@/components/link";
 import { Button } from "@/components/ui/button";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { AddSquareIcon, InformationCircleIcon } from "@hugeicons/core-free-icons";
+import { AddSquareIcon, FileNotFoundIcon } from "@hugeicons/core-free-icons";
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 
 export default function SnippetNotFound() {
   return (
-    <div className={cn("h-screen flex flex-col")}>
-      <main className="layout-fill">
-        <Empty>
-          <EmptyHeader>
-            <EmptyMedia variant="icon">
-              <HugeiconsIcon icon={InformationCircleIcon} className="size-4" aria-hidden="true" />
-            </EmptyMedia>
-            <EmptyTitle>Snippet Not Found</EmptyTitle>
-            <EmptyDescription>This snippet may have been deleted or the link is incorrect.</EmptyDescription>
-          </EmptyHeader>
-          <EmptyContent>
-            <div className="flex gap-2">
-              <Button size="sm" render={<Link href="/" />}>
-                <HugeiconsIcon icon={AddSquareIcon} className="mr-1 h-4 w-4" aria-hidden="true" />
-                Create snippet
-              </Button>
-            </div>
-          </EmptyContent>
-        </Empty>
-      </main>
+    <div className="layout-fill">
+      <Empty>
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <HugeiconsIcon icon={FileNotFoundIcon} aria-hidden="true" />
+          </EmptyMedia>
+          <EmptyTitle>Snippet not found</EmptyTitle>
+          <EmptyDescription>It may have been deleted, expired, or the link is incorrect.</EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>
+          <Button size="sm" render={<Link href="/" />}>
+            <HugeiconsIcon icon={AddSquareIcon} aria-hidden="true" />
+            Create snippet
+          </Button>
+        </EmptyContent>
+      </Empty>
     </div>
   );
 }

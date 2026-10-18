@@ -9,8 +9,8 @@ type PremiumBadgeProps = {
 
 const PremiumBadge: React.FC<PremiumBadgeProps> = ({ plan }) => {
   return (
-    <span className="inline-flex shrink-0 items-center gap-1 rounded-md border bg-muted px-1.5 py-0.5 text-xs font-semibold tracking-wide text-foreground">
-      <Icon icon="solar:crown-bold" className="size-3" />
+    <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-warning/30 bg-linear-to-b from-warning/20 to-warning/5 px-2 py-0.5 text-xs font-medium text-warning-foreground shadow-xs">
+      <Icon icon="solar:crown-bold" className="size-3 text-warning" />
       {PLANS[plan].name}
     </span>
   );

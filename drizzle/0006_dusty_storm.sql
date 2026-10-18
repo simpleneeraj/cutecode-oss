@@ -1,0 +1,1 @@
+ALTER TABLE "snippets" ADD COLUMN "pinned_at" timestamp;

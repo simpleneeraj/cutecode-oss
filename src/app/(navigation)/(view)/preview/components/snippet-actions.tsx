@@ -1,14 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
-import View from "@/components/view";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { FavouriteIcon, Bookmark01Icon, ChatIcon, ArrowDown01Icon, ArrowUp01Icon, MagicWandIcon } from "@hugeicons/core-free-icons";
+import { FavouriteIcon, Bookmark01Icon, ChatIcon, CodeSquareIcon, MagicWandIcon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import { Tooltip, TooltipPopup, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Toggle } from "@/components/ui/toggle";
 import { EmbedDialog } from "./embed-dialog";
 import { ShareDialog } from "./share-dialog";
+import MoreOptions from "./more-options";
+import type { OwnedSnippet } from "../hooks/use-snippet-preview";
 
 type SnippetActionsProps = {
   slug: string;
@@ -17,10 +18,10 @@ type SnippetActionsProps = {
   bookmarked?: boolean;
   bookmarkCount: number;
   commentCount: number;
+  ownedSnippet?: OwnedSnippet;
   onUpvote: () => void;
   onBookmark: () => void;
-  /** Optional: render prop for inline comments panel */
-  renderComments?: () => React.ReactNode;
+  renderComments: () => React.ReactNode;
 };
 
 export function SnippetActions({
@@ -30,11 +31,13 @@ export function SnippetActions({
   bookmarked,
   bookmarkCount,
   commentCount,
+  ownedSnippet,
   onUpvote,
   onBookmark,
   renderComments,
 }: SnippetActionsProps) {
   const [commentsOpen, setCommentsOpen] = useState(false);
+  const [embedOpen, setEmbedOpen] = useState(false);
   const [isRemixing, setIsRemixing] = useState(false);
 
   const handleRemix = () => {
@@ -43,110 +46,56 @@ export function SnippetActions({
   };
 
   return (
-    <div className="flex flex-col gap-0 w-full">
-      <div className="flex flex-wrap gap-2 justify-between w-full">
-        <View className="flex items-center gap-2">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger
-                render={
-                  <Button
-                    variant={upvoted ? "default" : "outline"}
-                    className="gap-2"
-                    onClick={onUpvote}
-                    aria-label={upvoted ? "Remove upvote" : "Upvote"}
-                    aria-pressed={upvoted}
-                  >
-                    <HugeiconsIcon icon={FavouriteIcon} className="size-4 shrink-0" aria-hidden />
-                    <span className="tabular-nums">{upvoteCount}</span>
-                  </Button>
-                }
-              />
-              <TooltipPopup>Upvote</TooltipPopup>
-            </Tooltip>
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div className="flex items-center gap-1" aria-label="Engagement" role="group">
+          <Toggle
+            size="sm"
+            pressed={!!upvoted}
+            onPressedChange={onUpvote}
+            aria-label={upvoted ? "Remove upvote" : "Upvote"}
+          >
+            <HugeiconsIcon icon={FavouriteIcon} aria-hidden="true" />
+            <span className="tabular-nums">{upvoteCount}</span>
+          </Toggle>
+          <Toggle
+            size="sm"
+            pressed={commentsOpen}
+            onPressedChange={setCommentsOpen}
+            aria-label={commentsOpen ? "Hide comments" : "Show comments"}
+            aria-expanded={commentsOpen}
+          >
+            <HugeiconsIcon icon={ChatIcon} aria-hidden="true" />
+            <span className="tabular-nums">{commentCount}</span>
+          </Toggle>
+          <Toggle
+            size="sm"
+            pressed={!!bookmarked}
+            onPressedChange={onBookmark}
+            aria-label={bookmarked ? "Remove bookmark" : "Bookmark"}
+          >
+            <HugeiconsIcon icon={Bookmark01Icon} aria-hidden="true" />
+            <span className="tabular-nums">{bookmarkCount}</span>
+          </Toggle>
+        </div>
 
-            <Tooltip>
-              <TooltipTrigger
-                render={
-                  <Button
-                    variant={commentsOpen ? "default" : "outline"}
-                    className="gap-2"
-                    aria-label={commentsOpen ? "Hide comments" : "Show comments"}
-                    aria-expanded={commentsOpen}
-                    onClick={() => setCommentsOpen((prev) => !prev)}
-                  >
-                    <HugeiconsIcon icon={ChatIcon} className="size-4 shrink-0" aria-hidden />
-                    <span className="tabular-nums">{commentCount}</span>
-                    {commentsOpen ? (
-                      <HugeiconsIcon icon={ArrowUp01Icon} className="size-3 shrink-0 ml-0.5" aria-hidden />
-                    ) : (
-                      <HugeiconsIcon icon={ArrowDown01Icon} className="size-3 shrink-0 ml-0.5" aria-hidden />
-                    )}
-                  </Button>
-                }
-              />
-              <TooltipPopup>{commentsOpen ? "Hide comments" : "Show comments"}</TooltipPopup>
-            </Tooltip>
-          </TooltipProvider>
-        </View>
-
-        <View className="flex items-center gap-2 flex-wrap">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger
-                render={
-                  <Button
-                    variant={bookmarked ? "default" : "outline"}
-                    className="gap-2"
-                    onClick={onBookmark}
-                    aria-label={bookmarked ? "Remove bookmark" : "Bookmark"}
-                    aria-pressed={bookmarked}
-                  >
-                    <HugeiconsIcon icon={Bookmark01Icon} className="size-4 shrink-0" aria-hidden />
-                    <span className="tabular-nums">{bookmarkCount}</span>
-                  </Button>
-                }
-              />
-              <TooltipPopup>Save</TooltipPopup>
-            </Tooltip>
-
-            <Tooltip>
-              <TooltipTrigger
-                render={
-                  <Button
-                    variant="outline"
-                    className="gap-2"
-                    onClick={handleRemix}
-                    aria-label="Remix in editor"
-                    disabled={isRemixing}
-                  >
-                    {isRemixing ? (
-                      <Spinner className="size-4 shrink-0" />
-                    ) : (
-                      <HugeiconsIcon icon={MagicWandIcon} className="size-4 shrink-0" aria-hidden />
-                    )}
-                    <span className="hidden sm:inline">{isRemixing ? "Remixing..." : "Remix"}</span>
-                  </Button>
-                }
-              />
-              <TooltipPopup>Remix in Editor</TooltipPopup>
-            </Tooltip>
-
-            <EmbedDialog slug={slug} />
-            <ShareDialog slug={slug} />
-          </TooltipProvider>
-        </View>
+        <div className="flex items-center gap-1">
+          <ShareDialog slug={slug} />
+          <Button variant="ghost" size="sm" onClick={() => setEmbedOpen(true)} aria-label="Embed">
+            <HugeiconsIcon icon={CodeSquareIcon} aria-hidden="true" />
+            <span className="max-sm:hidden">Embed</span>
+          </Button>
+          {ownedSnippet && <MoreOptions slug={slug} snippet={ownedSnippet} />}
+          <Button size="sm" className="ms-1" onClick={handleRemix} disabled={isRemixing} aria-label="Remix in editor">
+            {isRemixing ? <Spinner /> : <HugeiconsIcon icon={MagicWandIcon} aria-hidden="true" />}
+            {isRemixing ? "Remixing..." : "Remix"}
+          </Button>
+        </div>
       </div>
 
-      {commentsOpen && (
-        <div className="mt-3 border-t border-border pt-3">
-          {renderComments ? (
-            renderComments()
-          ) : (
-            <p className="text-sm text-muted-foreground">No comments yet. Be the first to comment.</p>
-          )}
-        </div>
-      )}
+      {commentsOpen && renderComments()}
+
+      <EmbedDialog slug={slug} open={embedOpen} onOpenChange={setEmbedOpen} />
     </div>
   );
 }

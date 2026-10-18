@@ -1,16 +1,40 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import View from "@/components/view";
-import siteConfig from "@/contstant/site-config";
 import { useSharePreview } from "@/hooks/use-share";
-import BlackHoleLoader from "@/components/loader/black-hole";
 import { PasscodeGate } from "../../(view)/preview/components/passcode-gate";
-import { SnippetFrame } from "../../(view)/preview/components/snippet-frame";
-import SnippetNotFound from "../../(view)/preview/components/preview-not-found";
+import { EmbedFrame } from "../components/embed-frame";
+import { EmbedFooter } from "../components/embed-footer";
+import { EmbedLoading } from "../components/embed-loading";
+import { EmbedNotFound } from "../components/embed-not-found";
 
 type EmbedSnippetClientProps = { slug: string };
+
+type Element = Record<string, unknown>;
+
+type Presentation = {
+  width?: number;
+  elements?: Record<string, unknown>;
+  slideElements?: Record<string, string[]>;
+};
+
+function isElement(value: unknown): value is Element {
+  return typeof value === "object" && value !== null;
+}
+
+function readElements({ elements = {}, slideElements }: Presentation) {
+  const elementIds = slideElements ? Object.values(slideElements).flat() : Object.keys(elements);
+  return elementIds.flatMap((id) => {
+    const element = elements[id];
+    return isElement(element) ? [{ id, element }] : [];
+  });
+}
+
+function readCode(element: Element | undefined) {
+  if (typeof element?.content === "string") return element.content;
+  return "";
+}
 
 export default function EmbedSnippetClient({ slug }: EmbedSnippetClientProps) {
   const [passcode, setPasscode] = useState("");
@@ -20,67 +44,33 @@ export default function EmbedSnippetClient({ slug }: EmbedSnippetClientProps) {
     passcode: submittedPasscode,
   });
 
-  if (isLoading) {
-    return (
-      <View className="flex items-center justify-center min-h-[200px]">
-        <BlackHoleLoader />
-      </View>
-    );
-  }
+  if (isLoading) return <EmbedLoading />;
 
   const trpcError = error as { data?: { code?: string } } | null;
   const requiresPasscode = trpcError?.data?.code === "FORBIDDEN";
 
   if (requiresPasscode) {
     return (
-      <View className="flex items-center justify-center p-4 bg-background border rounded-lg">
-        <PasscodeGate
-          passcode={passcode}
-          invalidPasscode={!!submittedPasscode}
-          onChange={setPasscode}
-          onSubmit={() => setSubmittedPasscode(passcode)}
-        />
-      </View>
+      <PasscodeGate
+        passcode={passcode}
+        invalidPasscode={!!submittedPasscode}
+        onChange={setPasscode}
+        onSubmit={() => setSubmittedPasscode(passcode)}
+      />
     );
   }
 
-  if (error || !data) {
-    return <SnippetNotFound />;
-  }
+  if (error || !data) return <EmbedNotFound />;
 
-  const { snippet } = data;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const rawPresentation: any = snippet.presentation;
-  const elements: Record<string, unknown> | undefined = rawPresentation?.elements;
-  const slideElements: Record<string, string[]> | undefined = rawPresentation?.slideElements;
-
-  const elementIds: string[] = slideElements
-    ? (Object.values(slideElements).flat() as string[])
-    : Object.keys(elements ?? {});
+  const presentation: Presentation = data.snippet.presentation ?? {};
+  const frames = readElements(presentation);
 
   return (
-    <View className="flex flex-col gap-4 p-2 ">
-      <View className="flex-1 flex flex-col justify-center">
-        {elementIds.map((elId) => {
-          const element = elements?.[elId] as Record<string, unknown> | undefined;
-          if (!element) return null;
-          return (
-            <SnippetFrame key={elId} elementId={elId} element={element} windowWidth={rawPresentation?.width ?? 800} />
-          );
-        })}
-      </View>
-
-      <View className="flex items-center justify-end px-2 pt-2 border-t">
-        <Link
-          href={`${process.env.NEXT_PUBLIC_BASE_URL}`}
-          target="_blank"
-          className="flex items-center gap-1.5 opacity-60 hover:opacity-100 transition-opacity"
-        >
-          <span className="text-xxs font-medium uppercase tracking-wider text-muted-foreground">Powered by</span>
-          <img src={`${process.env.NEXT_PUBLIC_BASE_URL}/favicon.png`} alt="" className="w-4 h-4" />
-          <span>{siteConfig.name}</span>
-        </Link>
-      </View>
+    <View className="layout-scroll justify-center-safe gap-3 p-4">
+      {frames.map(({ id, element }) => (
+        <EmbedFrame key={id} elementId={id} element={element} windowWidth={presentation.width ?? 800} />
+      ))}
+      <EmbedFooter slug={slug} code={readCode(frames[0]?.element)} />
     </View>
   );
 }

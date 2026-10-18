@@ -3,13 +3,12 @@
 import { useEffect, useRef } from "react";
 import View from "@/components/view";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { ShieldIcon, LockPasswordIcon } from "@hugeicons/core-free-icons";
+import { SquareLock02Icon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import { Card, CardDescription, CardFooter, CardHeader, CardPanel, CardTitle } from "@/components/ui/card";
 import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
 import { OTPField, OTPFieldInput, OTPFieldSeparator } from "@/components/ui/otp-field";
-import { motion, AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 
 const OTP_LENGTH = 6;
 const OTP_SLOT_KEYS = Array.from({ length: OTP_LENGTH }, (_, i) => `otp-slot-${i}`);
@@ -22,6 +21,33 @@ type PasscodeGateProps = {
   onSubmit: () => void;
 };
 
+type PasscodeSlotsProps = {
+  keys: string[];
+  offset: number;
+  invalidPasscode: boolean;
+};
+
+function PasscodeSlots({ keys, offset, invalidPasscode }: PasscodeSlotsProps) {
+  return keys.map((key, i) => (
+    <OTPFieldInput
+      key={key}
+      aria-label={`Digit ${i + offset + 1} of ${OTP_LENGTH}`}
+      aria-invalid={invalidPasscode || undefined}
+    />
+  ));
+}
+
+function PasscodeStatus({ invalidPasscode }: { invalidPasscode: boolean }) {
+  if (invalidPasscode) {
+    return (
+      <p className="text-xs text-destructive-foreground" role="alert">
+        Incorrect passcode. Try again.
+      </p>
+    );
+  }
+  return <FieldDescription className="text-xs">Ask the author for the {OTP_LENGTH}-digit code.</FieldDescription>;
+}
+
 export function PasscodeGate({ passcode, invalidPasscode, isLoading, onChange, onSubmit }: PasscodeGateProps) {
   const isComplete = passcode.length === OTP_LENGTH;
   const prevComplete = useRef(false);
@@ -32,107 +58,40 @@ export function PasscodeGate({ passcode, invalidPasscode, isLoading, onChange, o
   }, [isComplete, onSubmit]);
 
   return (
-    <View className="layout-fill flex items-center justify-center bg-background/60 backdrop-blur-sm">
+    <View className="layout-fill items-center justify-center p-4">
       <motion.div
-        initial={{ opacity: 0, y: 16, scale: 0.97 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+        initial={{ opacity: 0, y: 4 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.2 }}
+        className="flex w-full max-w-xs flex-col items-center gap-6 text-center"
       >
-        <Card className="w-full max-w-sm">
-          <CardHeader className="items-center text-center">
-            <View className="flex items-center justify-center">
-              <motion.div
-                initial={{ scale: 0.7, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.1 }}
-                className="flex items-center justify-center w-14 h-14 rounded-2xl bg-muted border mb-2"
-              >
-                <HugeiconsIcon icon={LockPasswordIcon} className="size-6 text-foreground" aria-hidden="true" />
-              </motion.div>
-            </View>
-            <CardTitle>Passcode Required</CardTitle>
-            <CardDescription>
-              This snippet is protected. Enter the {OTP_LENGTH}-digit passcode to view it.
-            </CardDescription>
-          </CardHeader>
+        <div className="flex flex-col items-center gap-3">
+          <HugeiconsIcon icon={SquareLock02Icon} className="size-6 text-muted-foreground" aria-hidden="true" />
+          <h1 className="text-base font-medium text-foreground">This snippet is protected</h1>
+        </div>
 
-          <CardPanel className="flex flex-col items-center gap-4">
-            <Field className="items-center">
-              <FieldLabel className="sr-only">Passcode</FieldLabel>
+        <Field className="items-center gap-2">
+          <FieldLabel className="sr-only">Passcode</FieldLabel>
+          <OTPField
+            length={OTP_LENGTH}
+            size="lg"
+            mask
+            value={passcode}
+            onValueChange={onChange}
+            aria-label="6-digit passcode"
+            aria-invalid={invalidPasscode || undefined}
+          >
+            <PasscodeSlots keys={OTP_SLOT_KEYS.slice(0, 3)} offset={0} invalidPasscode={invalidPasscode} />
+            <OTPFieldSeparator />
+            <PasscodeSlots keys={OTP_SLOT_KEYS.slice(3)} offset={3} invalidPasscode={invalidPasscode} />
+          </OTPField>
+          <PasscodeStatus invalidPasscode={invalidPasscode} />
+        </Field>
 
-              <OTPField
-                length={OTP_LENGTH}
-                size="lg"
-                mask
-                value={passcode}
-                onValueChange={onChange}
-                aria-label="6-digit passcode"
-                aria-invalid={invalidPasscode || undefined}
-              >
-                {OTP_SLOT_KEYS.slice(0, 3).map((key, i) => (
-                  <OTPFieldInput
-                    key={key}
-                    aria-label={`Digit ${i + 1} of ${OTP_LENGTH}`}
-                    aria-invalid={invalidPasscode || undefined}
-                    className="placeholder:text-muted-foreground focus-visible:placeholder:text-transparent"
-                    placeholder="•"
-                  />
-                ))}
-                <OTPFieldSeparator />
-                {OTP_SLOT_KEYS.slice(3).map((key, i) => (
-                  <OTPFieldInput
-                    key={key}
-                    aria-label={`Digit ${i + 4} of ${OTP_LENGTH}`}
-                    aria-invalid={invalidPasscode || undefined}
-                    className="placeholder:text-muted-foreground focus-visible:placeholder:text-transparent"
-                    placeholder="•"
-                  />
-                ))}
-              </OTPField>
-
-              <AnimatePresence mode="wait">
-                {invalidPasscode ? (
-                  <motion.div
-                    key="error"
-                    initial={{ opacity: 0, y: -4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -4 }}
-                    transition={{ duration: 0.2 }}
-                    className="flex items-center gap-1.5 text-destructive text-sm font-medium"
-                  >
-                    <HugeiconsIcon icon={ShieldIcon} className="size-3.5 shrink-0" aria-hidden="true" />
-                    Incorrect passcode. Try again.
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="hint"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <FieldDescription>Auto-submits when all digits are filled.</FieldDescription>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </Field>
-
-            <Button className="w-full" onClick={onSubmit} disabled={!isComplete || isLoading}>
-              {isLoading ? (
-                <>
-                  <Spinner />
-                  Unlocking...
-                </>
-              ) : (
-                "Unlock"
-              )}
-            </Button>
-          </CardPanel>
-
-          <CardFooter className="justify-center">
-            <p className="text-xs text-muted-foreground">Contact the author if you don&apos;t have the passcode.</p>
-          </CardFooter>
-        </Card>
+        <Button className="w-full" onClick={onSubmit} disabled={!isComplete || isLoading}>
+          {isLoading && <Spinner />}
+          {isLoading ? "Unlocking..." : "Unlock"}
+        </Button>
       </motion.div>
     </View>
   );

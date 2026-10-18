@@ -3,9 +3,7 @@
 import { Link } from "@/components/link";
 import { motion } from "motion/react";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { FavouriteIcon, Bookmark01Icon } from "@hugeicons/core-free-icons";
-import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
-import { cn } from "@/utils/cn";
+import { PinIcon } from "@hugeicons/core-free-icons";
 import { EASE_OUT } from "@/lib/motion";
 import { SnippetPreview } from "@/app/(navigation)/components/snippet-preview";
 
@@ -25,66 +23,46 @@ export type ExploreSnippet = {
 type ExploreSnippetCardProps = {
   snippet: ExploreSnippet;
   index: number;
+  isPinned?: boolean;
 };
 
-export function ExploreSnippetCard({ snippet, index }: ExploreSnippetCardProps) {
+export function ExploreSnippetCard({ snippet, index, isPinned }: ExploreSnippetCardProps) {
   const slug = snippet.shareLinks[0]?.slug;
-  const authorName = snippet.user?.name || "Anonymous";
-  const authorInitial = authorName.charAt(0).toUpperCase();
+  const title = snippet.title || snippet.presentation.name || "Untitled snippet";
+  const upvotes = snippet._count.upvotes;
 
   if (!slug) return null;
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.96 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.28, delay: Math.min(index * 0.04, 0.4), ease: EASE_OUT }}
-      whileHover={{ y: -3, transition: { duration: 0.18, ease: EASE_OUT } }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.2, delay: Math.min(index * 0.03, 0.3), ease: EASE_OUT }}
+      data-slot="snippet-card"
+      className="relative flex flex-col gap-3"
     >
-      <Card className="group relative flex h-full flex-col overflow-hidden transition-shadow hover:shadow-md">
-        {/* Card-level link as an overlay so the nested author link stays valid HTML */}
-        <Link
-          href={`/preview/${slug}`}
-          aria-label={snippet.title || snippet.presentation.name || "Open snippet"}
-          className="absolute inset-0 z-0"
-        />
-
-        <SnippetPreview language={snippet.presentation.name} />
-
-        <CardHeader className="flex-1 gap-1 p-4">
-          <CardTitle className="truncate text-sm leading-tight">
-            {snippet.title || snippet.presentation.name || "Untitled Snippet"}
-          </CardTitle>
-          {snippet.description && (
-            <CardDescription className="mt-0.5 line-clamp-2 text-xs">{snippet.description}</CardDescription>
+      <Link href={`/preview/${slug}`} aria-label={title} className="absolute inset-0 z-0" />
+      <SnippetPreview language={snippet.presentation.name} />
+      <div className="flex min-w-0 flex-col gap-0.5 px-1">
+        <span className="flex min-w-0 items-center gap-1.5 text-sm font-medium text-foreground">
+          {isPinned && (
+            <HugeiconsIcon icon={PinIcon} className="size-3.5 shrink-0 text-muted-foreground" aria-label="Pinned" />
           )}
-        </CardHeader>
-
-        <CardFooter className="flex items-center justify-between gap-2 border-t px-4 py-3">
-          {/* Author — real link, lifted above the card overlay */}
+          <span className="truncate">{title}</span>
+        </span>
+        <span className="flex min-w-0 items-center gap-1 text-xs text-muted-foreground">
           <Link
             href={snippet.user?.id ? `/u/${snippet.user.id}` : "#"}
-            onClick={(e) => e.stopPropagation()}
-            className={cn("relative z-10 flex min-w-0 items-center gap-1.5 transition-opacity hover:opacity-80")}
+            className="relative z-10 truncate transition-colors hover:text-foreground"
           >
-            <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-muted text-[10px] font-bold text-muted-foreground">
-              {authorInitial}
-            </span>
-            <span className="truncate text-xs text-muted-foreground">{authorName}</span>
+            {snippet.user?.name || "Anonymous"}
           </Link>
-
-          <div className="relative z-10 flex shrink-0 items-center gap-2.5 text-xs text-muted-foreground">
-            <span className="flex items-center gap-1">
-              <HugeiconsIcon icon={FavouriteIcon} className="size-3.5" aria-hidden="true" />
-              {snippet._count.upvotes}
-            </span>
-            <span className="flex items-center gap-1">
-              <HugeiconsIcon icon={Bookmark01Icon} className="size-3.5" aria-hidden="true" />
-              {snippet._count.bookmarks}
-            </span>
-          </div>
-        </CardFooter>
-      </Card>
+          <span aria-hidden="true">·</span>
+          <span className="shrink-0 tabular-nums">
+            {upvotes} {upvotes === 1 ? "upvote" : "upvotes"}
+          </span>
+        </span>
+      </div>
     </motion.div>
   );
 }

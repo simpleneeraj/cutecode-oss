@@ -1,6 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { and, eq, desc, inArray, lt, or, sql } from "drizzle-orm";
+import { and, eq, desc, inArray, isNotNull, lt, or, sql } from "drizzle-orm";
 import { db } from "@/db";
 import {
   snippets,
@@ -30,6 +30,8 @@ async function attachCounts(ids: string[]) {
   const toMap = (rows: { snippetId: string; c: number }[]) => Object.fromEntries(rows.map((r) => [r.snippetId, Number(r.c)]));
   return { upvotes: toMap(upRows), bookmarks: toMap(bmRows), comments: toMap(cmRows) };
 }
+
+const MAX_PINNED_SNIPPETS = 3;
 
 const liveSharedSnippet = sql`EXISTS (SELECT 1 FROM share_links WHERE share_links.snippet_id = ${snippets.id} AND share_links.visibility = 'PUBLIC' AND (share_links.expires_at IS NULL OR share_links.expires_at > now()) AND (share_links.max_views IS NULL OR share_links.view_count < share_links.max_views))`;
 
@@ -84,11 +86,25 @@ export const snippetRouter = router({
         limit: z.number().int().min(1).max(48).default(24),
         sort: z.enum(["recent", "popular"]).default("recent"),
         language: z.string().optional(),
+        userId: z.string().optional(),
       }),
     )
     .query(async ({ input }) => {
-      const { page, limit, sort, language } = input;
+      const { page, limit, sort, language, userId } = input;
       const offset = (page - 1) * limit;
+      const filters = and(
+        eq(snippets.isPublic, true),
+        liveSharedSnippet,
+        ...(userId ? [eq(snippets.userId, userId)] : []),
+        ...(language
+          ? [sql`EXISTS (SELECT 1 FROM jsonb_each(${presentations.elements}) WHERE value->>'language' = ${language})`]
+          : []),
+      );
+      const pinnedFirst = userId ? [sql`${snippets.pinnedAt} DESC NULLS LAST`] : [];
+      const sortOrder =
+        sort === "popular"
+          ? sql`(SELECT COUNT(*) FROM snippet_upvotes WHERE snippet_upvotes.snippet_id = ${snippets.id}) DESC`
+          : desc(snippets.createdAt);
 
       const base = db
         .select({
@@ -98,6 +114,7 @@ export const snippetRouter = router({
           tags: snippets.tags,
           createdAt: snippets.createdAt,
           elementId: snippets.elementId,
+          pinnedAt: snippets.pinnedAt,
           userId: users.id,
           userName: users.name,
           presentationId: presentations.id,
@@ -108,20 +125,9 @@ export const snippetRouter = router({
         .from(snippets)
         .innerJoin(users, eq(snippets.userId, users.id))
         .innerJoin(presentations, eq(snippets.presentationId, presentations.id))
-        .where(
-          and(
-            eq(snippets.isPublic, true),
-            liveSharedSnippet,
-            ...(language
-              ? [sql`EXISTS (SELECT 1 FROM jsonb_each(${presentations.elements}) WHERE value->>'language' = ${language})`]
-              : []),
-          ),
-        );
+        .where(filters);
 
-      const rows = await (sort === "popular"
-        ? base.orderBy(sql`(SELECT COUNT(*) FROM snippet_upvotes WHERE snippet_upvotes.snippet_id = ${snippets.id}) DESC`)
-        : base.orderBy(desc(snippets.createdAt))
-      ).limit(limit).offset(offset);
+      const rows = await base.orderBy(...pinnedFirst, sortOrder).limit(limit).offset(offset);
 
       const ids = rows.map((r) => r.id);
       const counts = await attachCounts(ids);
@@ -133,6 +139,7 @@ export const snippetRouter = router({
         tags: r.tags,
         createdAt: r.createdAt,
         elementId: r.elementId,
+        pinnedAt: r.pinnedAt,
         user: { id: r.userId, name: r.userName },
         presentation: {
           id: r.presentationId,
@@ -151,15 +158,7 @@ export const snippetRouter = router({
         .select({ c: sql<number>`count(DISTINCT ${snippets.id})` })
         .from(snippets)
         .innerJoin(presentations, eq(snippets.presentationId, presentations.id))
-        .where(
-          and(
-            eq(snippets.isPublic, true),
-            liveSharedSnippet,
-            ...(language
-              ? [sql`EXISTS (SELECT 1 FROM jsonb_each(${presentations.elements}) WHERE value->>'language' = ${language})`]
-              : []),
-          ),
-        );
+        .where(filters);
 
       const total = Number(totalRows[0]?.c ?? 0);
       return { snippets: snippetList, total, page, limit };
@@ -269,6 +268,33 @@ export const snippetRouter = router({
     });
     await Promise.all(links.map(({ slug }) => cacheDel(`shareLink:${slug}`)));
     return { deleted: true, id: input.id };
+  }),
+
+  togglePin: protectedProcedure.input(z.object({ id: z.string().min(1) })).mutation(async ({ ctx, input }) => {
+    const existing = await db.query.snippets.findFirst({
+      where: and(eq(snippets.id, input.id), eq(snippets.userId, ctx.user.id)),
+      columns: { id: true, pinnedAt: true },
+    });
+
+    if (!existing) {
+      throw new TRPCError({ code: "NOT_FOUND", message: "Snippet not found" });
+    }
+
+    if (existing.pinnedAt) {
+      await db.update(snippets).set({ pinnedAt: null }).where(eq(snippets.id, input.id));
+      return { pinned: false };
+    }
+
+    const pinnedCount = await db.$count(snippets, and(eq(snippets.userId, ctx.user.id), isNotNull(snippets.pinnedAt)));
+    if (pinnedCount >= MAX_PINNED_SNIPPETS) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: `You can pin up to ${MAX_PINNED_SNIPPETS} snippets. Unpin one first.`,
+      });
+    }
+
+    await db.update(snippets).set({ pinnedAt: new Date() }).where(eq(snippets.id, input.id));
+    return { pinned: true };
   }),
 
   toggleUpvote: protectedProcedure

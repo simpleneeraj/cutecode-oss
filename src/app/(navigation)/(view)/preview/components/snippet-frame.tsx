@@ -1,9 +1,12 @@
 "use client";
 
 import View from "@/components/view";
+import { cn } from "@/utils/cn";
 import { BaseFrameProps } from "@/typings/presets";
 import { PresetFrame } from "@/components/presets";
 import Editor from "@/components/editor/textarea";
+import fonts from "@/fonts/editor/fonts";
+import styles from "@/styles/editor/Frame.module.css";
 
 type RawElement = Record<string, unknown>;
 
@@ -18,6 +21,8 @@ export function SnippetFrame({ elementId, element, windowWidth }: SnippetFramePr
   const style = element.style as Record<string, unknown> | undefined;
   const header = element.header as { properties?: { title?: { text?: string } } } | undefined;
   const themeId = (props?.theme as string) || "default";
+  const codeFont = fonts.find((font) => font.name === style?.fontFamily);
+  const frameStyle: Record<string, string> = codeFont ? { "--code-font": `var(${codeFont.variable})` } : {};
 
   const frameProps: BaseFrameProps = {
     padding: style?.padding ? parseInt(style.padding as string) : 32,
@@ -36,10 +41,12 @@ export function SnippetFrame({ elementId, element, windowWidth }: SnippetFramePr
   };
 
   return (
-    <View className="relative overflow-hidden">
-      <PresetFrame key={elementId} {...frameProps}>
-        <Editor previewData={element} />
-      </PresetFrame>
+    <View className="relative flex justify-center-safe overflow-x-auto">
+      <div className={cn(styles.outerFrame, "rounded-2xl")} data-canvas-size="auto" style={frameStyle}>
+        <PresetFrame key={elementId} {...frameProps}>
+          <Editor previewData={element} />
+        </PresetFrame>
+      </div>
     </View>
   );
 }

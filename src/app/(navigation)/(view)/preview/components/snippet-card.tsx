@@ -1,21 +1,15 @@
 "use client";
 
 import React from "react";
-import View from "@/components/view";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardFooter, CardHeader, CardPanel, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import FollowButton from "@/components/follow-button";
 import FollowersDialog from "@/components/followers-dialog";
 import { SnippetActions } from "./snippet-actions";
-import MoreOptions from "./more-options";
-import { Plan } from "@/db/schema";
+import type { OwnedSnippet } from "../hooks/use-snippet-preview";
 
 type SnippetAuthor = {
   id?: string;
   name?: string | null;
-  supabaseId?: string;
-  plan?: string;
 };
 
 type SnippetCardProps = {
@@ -24,7 +18,6 @@ type SnippetCardProps = {
   author?: SnippetAuthor;
   title?: string | null;
   description?: string | null;
-  tags?: string[];
   commentCount: number;
   upvoted: boolean;
   upvoteCount: number;
@@ -34,9 +27,10 @@ type SnippetCardProps = {
   followerCount: number;
   followingCount: number;
   currentUserId?: string;
+  ownedSnippet?: OwnedSnippet;
   onUpvote: () => void;
   onBookmark: () => void;
-  renderComments?: () => React.ReactNode;
+  renderComments: () => React.ReactNode;
 };
 
 export function SnippetCard({
@@ -45,7 +39,6 @@ export function SnippetCard({
   author,
   title,
   description,
-  tags = ["swiftui", "ios"],
   commentCount,
   upvoted,
   upvoteCount,
@@ -55,91 +48,56 @@ export function SnippetCard({
   followerCount,
   followingCount,
   currentUserId,
+  ownedSnippet,
   onUpvote,
   onBookmark,
   renderComments,
 }: SnippetCardProps) {
   const authorId = author?.id ?? "";
-  const handle = `@${author?.name?.replace(/\s+/g, "").toLowerCase() || "user"}`;
 
   return (
-    <Card className="w-full bg-background/50 backdrop-blur-lg">
-      <CardHeader>
-        <CardTitle>
-          <View className="flex items-center justify-between">
-            <View className="flex items-center gap-3">
-              <Avatar className="size-10 shrink-0 ring-2 ring-border">
-                <AvatarFallback className="bg-foreground text-background text-sm font-semibold">
-                  {author?.name?.[0]?.toUpperCase() || "U"}
-                </AvatarFallback>
-              </Avatar>
-
-              <div className="text-left">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-sm font-semibold leading-tight">{author?.name || "Anonymous"}</span>
-                  {author?.plan && author.plan !== Plan.FREE && (
-                    <Badge variant="secondary" className="text-[10px] px-1 py-0 h-4">
-                      {author.plan}
-                    </Badge>
-                  )}
-                </div>
-                <div className="text-xs text-muted-foreground leading-tight">{handle}</div>
-                <FollowersDialog
-                  userId={authorId}
-                  currentUserId={currentUserId}
-                  followerCount={followerCount}
-                  followingCount={followingCount}
-                />
-              </div>
-            </View>
-
-            <View className="flex items-center gap-2">
-              <FollowButton
-                targetUserId={authorId}
+    <article className="flex flex-col gap-6">
+      <header className="flex flex-col gap-3">
+        <div className="flex items-center gap-3">
+          <Avatar className="size-9 shrink-0">
+            <AvatarFallback className="text-sm font-medium">{author?.name?.[0]?.toUpperCase() || "U"}</AvatarFallback>
+          </Avatar>
+          <div className="flex min-w-0 flex-1 flex-col">
+            <h1 className="truncate text-base font-semibold tracking-tight">{title || "Untitled snippet"}</h1>
+            <div className="flex min-w-0 items-center text-xs text-muted-foreground">
+              <span className="me-1 truncate">{author?.name || "Anonymous"}</span>
+              <FollowersDialog
+                userId={authorId}
                 currentUserId={currentUserId}
-                initialIsFollowing={isFollowing}
-                initialFollowerCount={followerCount}
+                followerCount={followerCount}
+                followingCount={followingCount}
               />
-              <MoreOptions slug={slug} currentUserId={currentUserId} authorId={authorId} />
-            </View>
-          </View>
-        </CardTitle>
-      </CardHeader>
-
-      <CardPanel>
-        <View className="flex flex-col gap-3">
-          {title && <h2 className="text-base font-semibold leading-snug">{title}</h2>}
-          {description && (
-            <article className="prose prose-sm dark:prose-invert">
-              <p>{description}</p>
-            </article>
-          )}
-          <View className="flex flex-col gap-0 rounded-lg overflow-hidden border border-border">{children}</View>
-          {tags.length > 0 && (
-            <div className="flex flex-wrap gap-1.5">
-              {tags.map((tag) => (
-                <Badge variant="outline" className="text-xxs" key={tag}>
-                  #{tag}
-                </Badge>
-              ))}
             </div>
-          )}
-        </View>
-      </CardPanel>
+          </div>
+          <FollowButton
+            targetUserId={authorId}
+            currentUserId={currentUserId}
+            initialIsFollowing={isFollowing}
+            initialFollowerCount={followerCount}
+          />
+        </div>
+        {description && <p className="max-w-prose text-sm text-muted-foreground text-pretty">{description}</p>}
+      </header>
 
-      <CardFooter>
-        <SnippetActions
-          slug={slug}
-          upvoted={upvoted}
-          upvoteCount={upvoteCount}
-          bookmarked={bookmarked}
-          bookmarkCount={bookmarkCount}
-          commentCount={commentCount}
-          onUpvote={onUpvote}
-          onBookmark={onBookmark}
-          renderComments={renderComments}
-        />
-      </CardFooter>
-    </Card>
+      <div className="flex flex-col gap-8">{children}</div>
+
+      <SnippetActions
+        slug={slug}
+        upvoted={upvoted}
+        upvoteCount={upvoteCount}
+        bookmarked={bookmarked}
+        bookmarkCount={bookmarkCount}
+        commentCount={commentCount}
+        ownedSnippet={ownedSnippet}
+        onUpvote={onUpvote}
+        onBookmark={onBookmark}
+        renderComments={renderComments}
+      />
+    </article>
   );
 }

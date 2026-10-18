@@ -22,6 +22,7 @@ import { Icon } from "@/components/ui/icon";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Tag01Icon } from "@hugeicons/core-free-icons";
 import PremiumBadge from "./premium-badge";
+import AccountSettingsDialog from "./account-settings-dialog";
 
 const LEGAL_LINKS = [
   { href: "/legal/terms", label: "Terms" },
@@ -36,7 +37,8 @@ export default function ProfileDropdown({ className, ...props }: ProfileDropdown
   const { user } = useUser();
   const { openPortal } = useBilling();
   const { plan, isFree } = useSubscription();
-  const { signOut, openUserProfile } = useAuthActions();
+  const { signOut } = useAuthActions();
+  const [isAccountOpen, setIsAccountOpen] = React.useState(false);
 
   const resetEditor = useSetAtom(resetEditorAtom);
   const setPlansOpen = useSetAtom(plansDialogOpenAtom);
@@ -70,7 +72,7 @@ export default function ProfileDropdown({ className, ...props }: ProfileDropdown
               type="button"
               className={cn(
                 "relative flex size-8 items-center justify-center rounded-full p-0 outline-none",
-                !isFree && "ring-2 ring-warning/40 ring-offset-1 ring-offset-background",
+                !isFree && "ring-1 ring-warning/60 ring-offset-2 ring-offset-background",
               )}
             >
               <Avatar className="size-full">
@@ -79,7 +81,7 @@ export default function ProfileDropdown({ className, ...props }: ProfileDropdown
               </Avatar>
 
               {!isFree && (
-                <span className="absolute -bottom-0.5 -right-0.5 flex size-3.5 items-center justify-center rounded-full bg-foreground ring-2 ring-background">
+                <span className="absolute -right-1 -bottom-1 flex size-4 items-center justify-center rounded-full bg-linear-to-b from-warning to-warning-foreground ring-2 ring-background">
                   <Icon icon="solar:crown-bold" className="size-2.5 text-background" />
                 </span>
               )}
@@ -121,7 +123,7 @@ export default function ProfileDropdown({ className, ...props }: ProfileDropdown
             Plans & pricing
           </DropdownMenuItem>
 
-          <DropdownMenuItem className="cursor-pointer gap-2.5 px-2 py-2" onClick={() => openUserProfile()}>
+          <DropdownMenuItem className="cursor-pointer gap-2.5 px-2 py-2" onClick={() => setIsAccountOpen(true)}>
             <Icon icon="solar:settings-minimalistic-linear" className="size-4" />
             Manage account
           </DropdownMenuItem>
@@ -152,6 +154,7 @@ export default function ProfileDropdown({ className, ...props }: ProfileDropdown
           </nav>
         </DropdownMenuContent>
       </DropdownMenu>
+      <AccountSettingsDialog open={isAccountOpen} onOpenChange={setIsAccountOpen} />
     </div>
   );
 }

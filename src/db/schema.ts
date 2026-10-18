@@ -121,6 +121,7 @@ export const snippets = pgTable(
     isPublic: boolean("is_public").notNull().default(false),
     isE2EEncrypted: boolean("is_e2e_encrypted").notNull().default(false),
     encryptionHint: text("encryption_hint"),
+    pinnedAt: timestamp("pinned_at"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
     updatedAt: timestamp("updated_at").notNull().defaultNow(),
   },

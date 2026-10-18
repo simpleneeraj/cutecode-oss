@@ -28,23 +28,23 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const share = await getShareLinkMeta(slug);
 
   if (!share || !share.snippet) {
-    return { title: "Snippet not found | Cool Snippets" };
+    return { title: "Snippet not found | CuteCode" };
   }
 
   if (!exposesShareDetails(share)) {
-    return { title: "Protected snippet | Cool Snippets", robots: { index: false, follow: false } };
+    return { title: "Protected snippet | CuteCode", robots: { index: false, follow: false } };
   }
 
   const { snippet, visibility, indexable } = share;
   const isIndexable = visibility === ShareVisibility.PUBLIC && indexable;
 
-  const title = snippet.title ? `${snippet.title} — Cool Snippets` : "Code Snippet — Cool Snippets";
+  const title = snippet.title ? `${snippet.title} — CuteCode` : "Code Snippet — CuteCode";
 
   const description =
     snippet.description ||
     (snippet.user?.name
-      ? `Beautiful code snippet by ${snippet.user.name}. View, copy, or remix it on Cool Snippets.`
-      : "View and share this code snippet created with Cool Snippets. Beautiful syntax highlighting, custom themes, and HD export.");
+      ? `Beautiful code snippet by ${snippet.user.name}. View, copy, or remix it on CuteCode.`
+      : "View and share this code snippet created with CuteCode. Beautiful syntax highlighting, custom themes, and HD export.");
 
   const ogImageUrl = `${BASE_URL}/preview/${slug}/opengraph-image`;
 
@@ -57,7 +57,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     openGraph: {
       type: "website",
       url: `${BASE_URL}/preview/${slug}`,
-      siteName: "Cool Snippets",
+      siteName: "CuteCode",
       title,
       description,
       images: [{ url: ogImageUrl, width: 1200, height: 630, alt: title }],

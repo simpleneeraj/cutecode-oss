@@ -1,30 +1,23 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
-import { motion } from "motion/react";
-import View from "@/components/view";
-import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { format } from "date-fns";
+import { Spinner } from "@/components/ui/spinner";
+import { Textarea } from "@/components/ui/textarea";
 import { PasscodeGate } from "../components/passcode-gate";
 import { SnippetFrame } from "../components/snippet-frame";
 import { SnippetCard } from "../components/snippet-card";
 import { PreviewLoading } from "../components/preview-loading";
 import SnippetNotFound from "../components/preview-not-found";
-import MaskWallpaper from "@/plugings/mask-wallpaper";
 import { useSnippetPreview } from "../hooks/use-snippet-preview";
-import { useSnippetComments, useSnippetMutations } from "@/hooks/use-snippet";
-import { useAtomValue } from "jotai";
-import { wallpaperOptionsAtom } from "@/store/preview/wallpaper-atom";
+import { useAddComment, useSnippetComments } from "@/hooks/use-snippet";
 import SnippetInfo from "../components/snippet-info";
 import copy from "copy-to-clipboard";
 
 type PreviewSnippetClientProps = { slug: string };
 
 export default function PreviewSnippetClient({ slug }: PreviewSnippetClientProps) {
-  const wallpaperOptions = useAtomValue(wallpaperOptionsAtom);
-
   const {
     passcodeInput,
     setPasscodeInput,
@@ -38,6 +31,7 @@ export default function PreviewSnippetClient({ slug }: PreviewSnippetClientProps
     hasUserBookmarked,
     isAuthorFollowed,
     authenticatedUserId,
+    ownedSnippet,
     authorFollowerCount,
     authorFollowingCount,
     presentationConfig,
@@ -49,33 +43,26 @@ export default function PreviewSnippetClient({ slug }: PreviewSnippetClientProps
   } = useSnippetPreview(slug);
 
   const snippetId = snippetRecord?.id ?? null;
-  const { data: commentsData, mutate: mutateComments } = useSnippetComments(snippetId);
-  const { addComment } = useSnippetMutations();
+  const { data: commentsData } = useSnippetComments(snippetId);
+  const { trigger: addComment, isMutating: isSubmitting } = useAddComment(snippetId);
   const [commentText, setCommentText] = React.useState("");
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   async function handleAddComment() {
     if (!snippetId || !commentText.trim()) return;
-    setIsSubmitting(true);
-    try {
-      await addComment(snippetId, commentText.trim());
-      setCommentText("");
-      await mutateComments();
-    } finally {
-      setIsSubmitting(false);
-    }
+    await addComment(commentText.trim());
+    setCommentText("");
   }
 
   function renderComments() {
     const comments = commentsData?.comments ?? [];
     return (
-      <div className="flex flex-col gap-3">
+      <section className="flex flex-col gap-6" aria-label="Comments">
         {authenticatedUserId && (
-          <div className="flex gap-2">
-            <textarea
-              className="flex-1 resize-none rounded-md border border-border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring"
+          <div className="flex flex-col gap-2">
+            <Textarea
               rows={2}
               placeholder="Add a comment..."
+              aria-label="Add a comment"
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)}
               onKeyDown={(e) => {
@@ -88,28 +75,31 @@ export default function PreviewSnippetClient({ slug }: PreviewSnippetClientProps
               onClick={handleAddComment}
               className="self-end"
             >
+              {isSubmitting && <Spinner />}
               {isSubmitting ? "Posting..." : "Post"}
             </Button>
           </div>
         )}
         {comments.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No comments yet. Be the first to comment.</p>
+          <p className="text-sm text-muted-foreground">No comments yet.</p>
         ) : (
-          <ul className="flex flex-col gap-2">
+          <ul className="flex flex-col gap-5">
             {comments.map((c) => (
-              <li key={c.id} className="flex gap-2.5 text-sm">
-                <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary text-[10px] font-bold">
-                  {(c.user?.name?.[0] ?? "U").toUpperCase()}
-                </span>
-                <div className="flex flex-col gap-0.5">
-                  <span className="font-medium leading-tight">{c.user?.name ?? "Anonymous"}</span>
-                  <p className="text-muted-foreground leading-snug">{c.content}</p>
+              <li key={c.id} className="flex gap-3 text-sm">
+                <Avatar className="size-6 shrink-0">
+                  <AvatarFallback className="text-xs font-medium">
+                    {(c.user?.name?.[0] ?? "U").toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex min-w-0 flex-col gap-0.5">
+                  <span className="text-xs font-medium">{c.user?.name ?? "Anonymous"}</span>
+                  <p className="text-pretty">{c.content}</p>
                 </div>
               </li>
             ))}
           </ul>
         )}
-      </div>
+      </section>
     );
   }
 
@@ -128,7 +118,6 @@ export default function PreviewSnippetClient({ slug }: PreviewSnippetClientProps
         passcode={passcodeInput}
         onChange={(val) => {
           setPasscodeInput(val);
-          // Clear the submitted passcode so error resets when user retypes
           if (isInvalidPasscode) setSubmittedPasscode("");
         }}
         isLoading={isPasscodeVerifying}
@@ -141,83 +130,46 @@ export default function PreviewSnippetClient({ slug }: PreviewSnippetClientProps
   if (!snippetRecord) return <SnippetNotFound />;
 
   return (
-    <React.Fragment>
-      {/* <MaskWallpaper options={wallpaperOptions} className="absolute top-0 left-0 w-full h-full z-0" /> */}
-      <View className="layout-scroll flex-2 gap-3">
-        <View className="flex flex-row gap-3 z-10 max-w-3xl mx-auto w-full p-2 relative">
-          <View className="flex flex-col flex-2 gap-3 relative">
-            <View className="flex items-center justify-center gap-2">
-              <Badge variant="secondary" className="bg-background/75 backdrop-blur-lg">
-                Published {format(new Date(snippetRecord.createdAt), "MMMM d, yyyy")}
-              </Badge>
-
-            </View>
-
-            <SnippetCard
-              slug={slug}
-              author={snippetRecord.user ?? undefined}
-              description={snippetRecord.description}
-              commentCount={snippetRecord._count?.comments ?? 0}
-              upvoted={hasUserUpvoted!}
-              upvoteCount={snippetRecord._count?.upvotes ?? 0}
-              bookmarked={hasUserBookmarked!}
-              bookmarkCount={snippetRecord._count?.bookmarks ?? 0}
-              isFollowing={isAuthorFollowed}
-              followerCount={authorFollowerCount}
-              followingCount={authorFollowingCount}
-              currentUserId={authenticatedUserId}
-              onUpvote={handleUpvoteToggle}
-              onBookmark={handleBookmarkToggle}
-              tags={snippetRecord.tags ?? []}
-              title={snippetRecord.title ?? ""}
-              renderComments={renderComments}
-            >
-              <View className="flex flex-col">
-                {resolvedElementIds.map((elementId) => {
-                  const presentationElement = presentationElements?.[elementId];
-                  if (!presentationElement) return null;
-                  return (
-                    <React.Fragment key={elementId}>
-                      <SnippetFrame
-                        elementId={elementId}
-                        element={presentationElement}
-                        windowWidth={presentationConfig?.width ?? 800}
-                      />
-                      <SnippetInfo
-                        copied={copied}
-                        viewCount={shareLinkPayload?.shareLink?.viewCount ?? 0}
-                        language={presentationElement?.properties?.language}
-                        onCopy={() => onCopy(presentationElement?.content)}
-                      />
-                    </React.Fragment>
-                  );
-                })}
-              </View>
-            </SnippetCard>
-          </View>
-        </View>
-
-        {/* Attribution CTA — always visible, non-dismissible */}
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.35, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="z-10 flex items-center justify-center pb-8"
-        >
-          <Link
-            href={`/remix/${slug}`}
-            className="group flex items-center gap-2.5 rounded-full border border-border bg-background/80 backdrop-blur-sm px-4 py-2 text-sm font-medium text-muted-foreground transition-all hover:border-primary/40 hover:text-foreground hover:bg-background"
-          >
-            <span
-              className="flex size-5 items-center justify-center rounded-full text-xs font-bold transition-colors bg-primary/10 text-primary"
-            >
-              C
-            </span>
-            Made with Cool Snippets
-            <span className="text-primary font-semibold group-hover:underline">Remix this</span>
-          </Link>
-        </motion.div>
-      </View>
-    </React.Fragment>
+    <div className="mx-auto flex w-full max-w-4xl flex-col px-4 py-8 md:px-6 md:py-10">
+      <SnippetCard
+        slug={slug}
+        author={snippetRecord.user ?? undefined}
+        description={snippetRecord.description}
+        commentCount={snippetRecord._count?.comments ?? 0}
+        upvoted={hasUserUpvoted!}
+        upvoteCount={snippetRecord._count?.upvotes ?? 0}
+        bookmarked={hasUserBookmarked!}
+        bookmarkCount={snippetRecord._count?.bookmarks ?? 0}
+        isFollowing={isAuthorFollowed}
+        followerCount={authorFollowerCount}
+        followingCount={authorFollowingCount}
+        currentUserId={authenticatedUserId}
+        ownedSnippet={ownedSnippet}
+        onUpvote={handleUpvoteToggle}
+        onBookmark={handleBookmarkToggle}
+        title={snippetRecord.title ?? ""}
+        renderComments={renderComments}
+      >
+        {resolvedElementIds.map((elementId) => {
+          const presentationElement = presentationElements?.[elementId];
+          if (!presentationElement) return null;
+          return (
+            <div key={elementId} className="flex flex-col gap-2">
+              <SnippetFrame
+                elementId={elementId}
+                element={presentationElement}
+                windowWidth={presentationConfig?.width ?? 800}
+              />
+              <SnippetInfo
+                copied={copied}
+                viewCount={shareLinkPayload?.shareLink?.viewCount ?? 0}
+                language={presentationElement?.properties?.language}
+                onCopy={() => onCopy(presentationElement?.content)}
+              />
+            </div>
+          );
+        })}
+      </SnippetCard>
+    </div>
   );
 }

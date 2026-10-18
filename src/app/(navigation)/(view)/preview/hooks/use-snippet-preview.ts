@@ -1,13 +1,31 @@
 // hooks/use-snippet-preview.ts
-import { useCallback, useRef, useState } from "react";
+import { useState } from "react";
 import { toast } from "@/components/toast";
-import { useSharePreview } from "@/hooks/use-share";
-import { useSnippetMutations } from "@/hooks/use-snippet";
+import { sharePreviewKey, useSharePreview } from "@/hooks/use-share";
+import { useSnippetReactions } from "@/hooks/use-snippet";
 import { useUserProfile } from "@/hooks/use-user";
+import type { ShareVisibility } from "@/db/schema";
 
 type ShareLinkPayload = NonNullable<ReturnType<typeof useSharePreview>["data"]>;
 
-function buildUpvoteOptimisticPayload(payload: ShareLinkPayload): Record<string, unknown> {
+export type OwnedSnippet = {
+  id: string;
+  shareLinkId: string;
+  visibility: ShareVisibility;
+  isPinned: boolean;
+};
+
+function toOwnedSnippet(payload: ShareLinkPayload | undefined): OwnedSnippet | undefined {
+  if (!payload?.currentUserId || payload.currentUserId !== payload.snippet.userId) return undefined;
+  return {
+    id: payload.snippet.id,
+    shareLinkId: payload.shareLink.id,
+    visibility: payload.shareLink.visibility,
+    isPinned: !!payload.snippet.pinnedAt,
+  };
+}
+
+function buildUpvoteOptimisticPayload(payload: ShareLinkPayload): ShareLinkPayload {
   return {
     ...payload,
     userUpvoted: !payload.userUpvoted,
@@ -21,7 +39,7 @@ function buildUpvoteOptimisticPayload(payload: ShareLinkPayload): Record<string,
   };
 }
 
-function buildBookmarkOptimisticPayload(payload: ShareLinkPayload): Record<string, unknown> {
+function buildBookmarkOptimisticPayload(payload: ShareLinkPayload): ShareLinkPayload {
   return {
     ...payload,
     userBookmarked: !payload.userBookmarked,
@@ -43,52 +61,27 @@ export function useSnippetPreview(slug: string) {
     data: shareLinkPayload,
     isLoading: isShareLinkLoading,
     error: shareLinkError,
-    mutate: revalidateShareLink,
   } = useSharePreview(slug, { passcode: submittedPasscode });
 
-  const { toggleUpvote, toggleBookmark } = useSnippetMutations();
+  const { toggleUpvote, toggleBookmark, isMutating } = useSnippetReactions(sharePreviewKey(slug, submittedPasscode));
 
   const snippetId = shareLinkPayload?.snippet?.id ?? "";
   const authorId = shareLinkPayload?.snippet?.user?.id ?? "";
   const { data: authorProfile } = useUserProfile(authorId || null);
 
-  const isMutationPending = useRef(false);
-
-  const executeOptimisticToggle = useCallback(
-    async (optimisticPayload: Record<string, unknown>, mutationFn: () => Promise<unknown>, errorMessage: string) => {
-      if (isMutationPending.current) return;
-      isMutationPending.current = true;
-      revalidateShareLink(optimisticPayload as any, false);
-      try {
-        await mutationFn();
-        revalidateShareLink();
-      } catch {
-        toast.error(errorMessage);
-        revalidateShareLink();
-      } finally {
-        isMutationPending.current = false;
-      }
-    },
-    [revalidateShareLink],
-  );
-
   const handleUpvoteToggle = async () => {
     if (!shareLinkPayload?.currentUserId) return toast.error("Sign in to upvote.");
-    if (!snippetId) return;
-    await executeOptimisticToggle(
-      buildUpvoteOptimisticPayload(shareLinkPayload),
-      () => toggleUpvote(snippetId),
-      "Failed to upvote.",
+    if (!snippetId || isMutating) return;
+    await toggleUpvote(snippetId, { optimisticData: buildUpvoteOptimisticPayload(shareLinkPayload) }).catch(() =>
+      toast.error("Failed to upvote."),
     );
   };
 
   const handleBookmarkToggle = async () => {
     if (!shareLinkPayload?.currentUserId) return toast.error("Sign in to bookmark.");
-    if (!snippetId) return;
-    await executeOptimisticToggle(
-      buildBookmarkOptimisticPayload(shareLinkPayload),
-      () => toggleBookmark(snippetId),
-      "Failed to bookmark.",
+    if (!snippetId || isMutating) return;
+    await toggleBookmark(snippetId, { optimisticData: buildBookmarkOptimisticPayload(shareLinkPayload) }).catch(() =>
+      toast.error("Failed to bookmark."),
     );
   };
 
@@ -133,6 +126,7 @@ export function useSnippetPreview(slug: string) {
     hasUserBookmarked: shareLinkPayload?.userBookmarked,
     isAuthorFollowed: shareLinkPayload?.isFollowing,
     authenticatedUserId: shareLinkPayload?.currentUserId,
+    ownedSnippet: toOwnedSnippet(shareLinkPayload),
     // author profile
     authorFollowerCount: authorProfile?._count?.followers ?? 0,
     authorFollowingCount: authorProfile?._count?.following ?? 0,

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
 import { Link } from "@/components/link";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { AddSquareIcon, CodeSquareIcon } from "@hugeicons/core-free-icons";
@@ -10,75 +9,74 @@ import { Button } from "@/components/ui/button";
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { SnippetCard, type Snippet } from "./components/snippet-card";
 import { SnippetSkeletonCard } from "./components/snippet-skeleton-card";
-import { Badge } from "@/components/ui/badge";
 import { BrowsePagination } from "../../components/browse-pagination";
-import View from "@/components/view";
 
-const GRID = "grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
+const PAGE_SIZE = 12;
+const GRID = "grid gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-3";
+const SKELETON_KEYS = Array.from({ length: 6 }, (_, i) => `skeleton-${i}`);
+
+function SnippetsEmpty() {
+  return (
+    <Empty className="py-24">
+      <EmptyHeader>
+        <EmptyMedia variant="icon">
+          <HugeiconsIcon icon={CodeSquareIcon} aria-hidden="true" />
+        </EmptyMedia>
+        <EmptyTitle>No snippets yet</EmptyTitle>
+        <EmptyDescription>Publish from the editor and your snippets will show up here.</EmptyDescription>
+      </EmptyHeader>
+      <EmptyContent>
+        <Button variant="outline" size="sm" render={<Link href="/" />}>
+          Open editor
+        </Button>
+      </EmptyContent>
+    </Empty>
+  );
+}
+
+function SnippetsGrid({ snippets, isLoading }: { snippets: Snippet[]; isLoading: boolean }) {
+  if (isLoading) {
+    return (
+      <div className={GRID} aria-busy="true">
+        {SKELETON_KEYS.map((key) => (
+          <SnippetSkeletonCard key={key} />
+        ))}
+      </div>
+    );
+  }
+  if (snippets.length === 0) return <SnippetsEmpty />;
+  return (
+    <div className={GRID}>
+      {snippets.map((snippet, index) => (
+        <SnippetCard key={snippet.id} snippet={snippet} index={index} />
+      ))}
+    </div>
+  );
+}
 
 export default function SnippetsPageClient() {
   const [page, setPage] = useState(1);
-  const { data, isLoading } = useSnippetList({ page, limit: 12 });
+  const { data, isLoading } = useSnippetList({ page, limit: PAGE_SIZE });
 
   const snippets = data?.snippets ?? [];
-  const total = data?.total ?? 0;
-  const totalPages = Math.ceil(total / 12);
+  const totalPages = Math.ceil((data?.total ?? 0) / PAGE_SIZE);
 
   return (
-    <View className="layout-fill z-10">
-      <View className="mx-auto flex w-full max-w-6xl flex-col gap-5 px-4 py-6 sm:px-6 layout-fill">
-        {/* Toolbar */}
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <h1 className="font-heading text-xl font-semibold tracking-tight text-foreground">My Snippets</h1>
-            <Badge variant="outline" className="tabular-nums">
-              {isLoading ? "…" : total} {total !== 1 ? "snippets" : "snippet"}
-            </Badge>
-          </div>
-          <Button size="sm" render={<Link href="/" />}>
-            <HugeiconsIcon icon={AddSquareIcon} className="size-4" aria-hidden="true" />
-            New Snippet
-          </Button>
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-8 md:px-6 md:py-10">
+      <div className="flex items-end justify-between gap-4">
+        <div className="flex min-w-0 flex-col gap-1">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">Snippets</h1>
+          <p className="text-sm text-muted-foreground">Everything you have published.</p>
         </div>
+        <Button render={<Link href="/" />}>
+          <HugeiconsIcon icon={AddSquareIcon} aria-hidden="true" />
+          New snippet
+        </Button>
+      </div>
 
-        <View className="layout-scroll">
-          <AnimatePresence mode="wait">
-            {isLoading ? (
-              <motion.div key="skeleton" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className={GRID}>
-                {Array.from({ length: 8 }).map((_, i) => (
-                  <SnippetSkeletonCard key={i} />
-                ))}
-              </motion.div>
-            ) : snippets.length === 0 ? (
-              <motion.div key="empty" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
-                <Empty className="py-20">
-                  <EmptyHeader>
-                    <EmptyMedia variant="icon">
-                      <HugeiconsIcon icon={CodeSquareIcon} className="size-4" aria-hidden="true" />
-                    </EmptyMedia>
-                    <EmptyTitle>No snippets yet</EmptyTitle>
-                    <EmptyDescription>Publish a code snippet from the editor and it will appear here.</EmptyDescription>
-                  </EmptyHeader>
-                  <EmptyContent>
-                    <Button render={<Link href="/" />}>
-                      <HugeiconsIcon icon={AddSquareIcon} className="size-4" aria-hidden="true" />
-                      Create your first snippet
-                    </Button>
-                  </EmptyContent>
-                </Empty>
-              </motion.div>
-            ) : (
-              <motion.div key="grid" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className={GRID}>
-                {snippets.map((snippet, i) => (
-                  <SnippetCard key={snippet.id} snippet={snippet as Snippet} index={i} />
-                ))}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </View>
+      <SnippetsGrid snippets={snippets} isLoading={isLoading} />
 
-        <BrowsePagination page={page} totalPages={totalPages} onPageChange={setPage} />
-      </View>
-    </View>
+      <BrowsePagination page={page} totalPages={totalPages} onPageChange={setPage} />
+    </div>
   );
 }

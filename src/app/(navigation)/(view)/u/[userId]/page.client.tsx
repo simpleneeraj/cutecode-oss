@@ -1,10 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { UserGroupIcon } from "@hugeicons/core-free-icons";
-import { useUserProfile, useUserMutations } from "@/hooks/use-user";
+import { useUserProfile, useToggleFollow } from "@/hooks/use-user";
 import { useSnippetExplore } from "@/hooks/use-snippet";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -20,24 +19,16 @@ type ProfilePageClientProps = {
 
 export default function ProfilePageClient({ userId }: ProfilePageClientProps) {
   const { user: currentClerkUser } = useUser();
-  const { data: profile, isLoading: profileLoading, mutate: mutateProfile } = useUserProfile(userId);
-  const { data: snippetsData, isLoading: snippetsLoading } = useSnippetExplore({ limit: 12 });
+  const { data: profile, isLoading: profileLoading } = useUserProfile(userId);
+  const { data: snippetsData, isLoading: snippetsLoading } = useSnippetExplore({ limit: 12, userId });
 
-  const { toggleFollow } = useUserMutations();
-  const [isFollowPending, setIsFollowPending] = useState(false);
+  const { trigger: toggleFollow, isMutating: isFollowPending } = useToggleFollow(userId);
 
-  const snippets =
-    snippetsData?.snippets?.filter((s) => s.user?.id === userId) ?? [];
+  const snippets = snippetsData?.snippets ?? [];
 
   async function handleFollowToggle() {
     if (!profile) return;
-    setIsFollowPending(true);
-    try {
-      await toggleFollow(userId);
-      await mutateProfile();
-    } finally {
-      setIsFollowPending(false);
-    }
+    await toggleFollow();
   }
 
   if (profileLoading) {
@@ -153,7 +144,7 @@ export default function ProfilePageClient({ userId }: ProfilePageClientProps) {
                 className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
               >
                 {snippets.map((snippet, i) => (
-                  <ExploreSnippetCard key={snippet.id} snippet={snippet} index={i} />
+                  <ExploreSnippetCard key={snippet.id} snippet={snippet} index={i} isPinned={!!snippet.pinnedAt} />
                 ))}
               </motion.div>
             )}

@@ -11,8 +11,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Group, GroupSeparator } from "@/components/ui/group";
+import { Input } from "@/components/ui/input";
 import { toast } from "@/components/toast";
-import { AnimatePresence, motion } from "motion/react";
 import { Icon } from "@/components/ui/icon";
 import { shortenUrl } from "@/utils/common";
 import siteConfig from "@/contstant/site-config";
@@ -20,6 +21,32 @@ import siteConfig from "@/contstant/site-config";
 type ShareDialogProps = {
   slug: string;
 };
+
+function buildShareLinks(url: string) {
+  const shareUrl = encodeURIComponent(url);
+  const baseText = `Crafted this beautiful code presentation using ${siteConfig.name} ✨ Check it out!`;
+  return [
+    {
+      label: "X",
+      icon: "ri:twitter-x-fill",
+      href: `https://twitter.com/intent/tweet?url=${shareUrl}&text=${encodeURIComponent(baseText)}&via=iamsimpleneeraj`,
+    },
+    {
+      label: "LinkedIn",
+      icon: "ri:linkedin-fill",
+      href: `https://www.linkedin.com/shareArticle?mini=true&url=${shareUrl}&title=${encodeURIComponent(
+        `Code Snippet on ${siteConfig.name}`,
+      )}&summary=${encodeURIComponent(`${baseText} @simpleneeraj`)}`,
+    },
+    {
+      label: "Facebook",
+      icon: "ri:facebook-circle-fill",
+      href: `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}&quote=${encodeURIComponent(
+        `${baseText} @simpleneeraj`,
+      )}`,
+    },
+  ];
+}
 
 export function ShareDialog({ slug }: ShareDialogProps) {
   const [copied, setCopied] = useState(false);
@@ -29,7 +56,7 @@ export function ShareDialog({ slug }: ShareDialogProps) {
     if (typeof window !== "undefined") {
       setUrl(window.location.href);
     }
-  }, []);
+  }, [slug]);
 
   const handleCopy = async () => {
     try {
@@ -43,112 +70,40 @@ export function ShareDialog({ slug }: ShareDialogProps) {
     }
   };
 
-  const shareUrl = encodeURIComponent(url);
-  const baseText = `Crafted this beautiful code presentation using ${siteConfig.name} ✨ Check it out!`;
-
-  const urls = {
-    twitter: `https://twitter.com/intent/tweet?url=${shareUrl}&text=${encodeURIComponent(baseText)}&via=iamsimpleneeraj`,
-    linkedin: `https://www.linkedin.com/shareArticle?mini=true&url=${shareUrl}&title=${encodeURIComponent(
-      `Code Snippet on ${siteConfig.name}`,
-    )}&summary=${encodeURIComponent(`${baseText} @simpleneeraj`)}`,
-    facebook: `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}&quote=${encodeURIComponent(
-      `${baseText} @simpleneeraj`,
-    )}`,
-  };
-
   return (
     <Dialog>
-      <DialogTrigger render={<Button variant="outline" className="gap-2" />}>
-        <Icon icon="solar:share-linear" className="size-4" />
-        <span>Share</span>
+      <DialogTrigger render={<Button variant="ghost" size="sm" aria-label="Share" />}>
+        <Icon icon="solar:share-linear" />
+        <span className="max-sm:hidden">Share</span>
       </DialogTrigger>
 
-      <DialogPopup className="sm:max-w-md overflow-hidden rounded-2xl p-0">
-        <DialogHeader className="relative px-5 pt-5 pb-4">
-          <DialogTitle className="flex items-center gap-2.5 text-base">
-            <span className="flex size-8 items-center justify-center rounded-xl bg-foreground text-background">
-              <Icon icon="solar:share-bold" className="size-4" />
-            </span>
-            Share Snippet
-          </DialogTitle>
-          <DialogDescription className="mt-1 text-xs text-muted-foreground">
-            Share this snippet with your friends or colleagues.
-          </DialogDescription>
+      <DialogPopup className="sm:max-w-md">
+        <DialogHeader className="gap-1 px-5 pt-5">
+          <DialogTitle className="text-base font-medium">Share snippet</DialogTitle>
+          <DialogDescription>Send the link or post it to your network.</DialogDescription>
         </DialogHeader>
 
-        <DialogPanel className="flex flex-col gap-5 px-5 pb-5">
-          <div className="grid grid-cols-3 gap-3">
-            <Button
-              variant="outline"
-              className="flex flex-col min-h-16 py-3 gap-2"
-              render={<a href={urls.twitter} target="_blank" rel="noopener noreferrer" />}
-            >
-              <Icon icon="ri:twitter-x-fill" className="size-5" />
-              <span className="text-xs">Twitter</span>
+        <DialogPanel className="flex flex-col gap-4 px-5 pb-5">
+          <Group className="w-full">
+            <Input readOnly value={url} placeholder="Loading..." aria-label="Snippet link" className="font-mono" />
+            <GroupSeparator />
+            <Button variant="outline" onClick={handleCopy} disabled={!url}>
+              <Icon icon={copied ? "solar:check-circle-linear" : "solar:copy-linear"} />
+              {copied ? "Copied" : "Copy"}
             </Button>
-            <Button
-              variant="outline"
-              className="flex flex-col min-h-16 py-3 gap-2"
-              render={<a href={urls.linkedin} target="_blank" rel="noopener noreferrer" />}
-            >
-              <Icon icon="ri:linkedin-fill" className="size-5" />
-              <span className="text-xs">LinkedIn</span>
-            </Button>
-            <Button
-              variant="outline"
-              className="flex flex-col min-h-16 py-3 gap-2"
-              render={<a href={urls.facebook} target="_blank" rel="noopener noreferrer" />}
-            >
-              <Icon icon="ri:facebook-circle-fill" className="size-5" />
-              <span className="text-xs">Facebook</span>
-            </Button>
-          </div>
+          </Group>
 
-          <div className="flex flex-col gap-2">
-            <p className="text-xs font-medium text-foreground/80 px-1">Or copy link</p>
-            <motion.div
-              initial={{ opacity: 0, y: 4 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1, duration: 0.25 }}
-              className="flex items-center gap-1.5 rounded-xl border bg-muted/50 pl-3 pr-1 py-1.5"
-            >
-              <Icon icon="solar:link-bold" className="size-3.5 shrink-0 text-muted-foreground" />
-              <span className="flex-1 truncate font-mono text-xs text-muted-foreground select-all">
-                {url || "Loading..."}
-              </span>
+          <div className="grid grid-cols-3 gap-2">
+            {buildShareLinks(url).map((link) => (
               <Button
-                variant="ghost"
-                size="sm"
-                className="shrink-0 size-7 p-0 rounded-lg"
-                onClick={handleCopy}
-                aria-label="Copy link"
-                disabled={!url}
+                key={link.label}
+                variant="outline"
+                render={<a href={link.href} target="_blank" rel="noopener noreferrer" />}
               >
-                <AnimatePresence mode="wait" initial={false}>
-                  {copied ? (
-                    <motion.span
-                      key="check"
-                      initial={{ scale: 0.5, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      exit={{ scale: 0.5, opacity: 0 }}
-                      transition={{ duration: 0.15 }}
-                    >
-                      <Icon icon="solar:check-circle-bold" className="size-3.5 text-foreground" />
-                    </motion.span>
-                  ) : (
-                    <motion.span
-                      key="clipboard"
-                      initial={{ scale: 0.5, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      exit={{ scale: 0.5, opacity: 0 }}
-                      transition={{ duration: 0.15 }}
-                    >
-                      <Icon icon="solar:copy-bold" className="size-3.5" />
-                    </motion.span>
-                  )}
-                </AnimatePresence>
+                <Icon icon={link.icon} />
+                {link.label}
               </Button>
-            </motion.div>
+            ))}
           </div>
         </DialogPanel>
       </DialogPopup>
