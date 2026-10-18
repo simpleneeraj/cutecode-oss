@@ -49,10 +49,18 @@ function buildingLights(building: Building, height: number, offset: number) {
   return lights;
 }
 
+function svgProps(height: number) {
+  return {
+    viewBox: `0 0 ${WIDTH} ${height}`,
+    preserveAspectRatio: "xMidYMax slice",
+    shapeRendering: "crispEdges",
+  };
+}
+
 function WindowLight({ light }: WindowLightProps) {
   const opacity = useLoop([1, 0.2, 1], { phase: light.phase, cycles: 2 });
-  if (!light.twinkle) return <rect x={light.x} y={light.y} width={1} height={1} />;
-  return <motion.rect x={light.x} y={light.y} width={1} height={1} style={{ opacity }} />;
+  if (!light.twinkle) return <rect x={light.x} y={light.y} width={1} height={1} fill="currentColor" />;
+  return <motion.rect x={light.x} y={light.y} width={1} height={1} fill="currentColor" style={{ opacity }} />;
 }
 
 export default function PixelSkyline({ layer }: PixelSkylineProps) {
@@ -61,13 +69,8 @@ export default function PixelSkyline({ layer }: PixelSkylineProps) {
     : [];
 
   return (
-    <svg
-      className={cn(styles.skyline, layer.className)}
-      viewBox={`0 0 ${WIDTH} ${layer.height}`}
-      preserveAspectRatio="xMidYMax slice"
-      shapeRendering="crispEdges"
-    >
-      <g className={styles.buildings}>
+    <>
+      <svg className={cn(styles.skyline, layer.className)} {...svgProps(layer.height)}>
         {layer.buildings.map((building) => (
           <rect
             key={building.id}
@@ -75,14 +78,15 @@ export default function PixelSkyline({ layer }: PixelSkylineProps) {
             y={layer.height - building.height}
             width={building.width}
             height={building.height}
+            fill="currentColor"
           />
         ))}
-      </g>
-      <g className={styles.windows}>
+      </svg>
+      <svg className={cn(styles.skyline, layer.className, styles.windows)} {...svgProps(layer.height)}>
         {lights.map((light) => (
           <WindowLight key={light.id} light={light} />
         ))}
-      </g>
-    </svg>
+      </svg>
+    </>
   );
 }

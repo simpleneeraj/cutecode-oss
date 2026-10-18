@@ -31,7 +31,7 @@ const INNER_LEGS: Cell[] = [
   { id: "leg-3", x: 13, y: 6, width: 1, height: 2 },
 ];
 
-const BLINK = [1, 1, 1, 1, 1, 1, 1, 1, 1, 0.1, 1];
+const BLINK = [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1];
 
 type CellsProps = {
   cells: Cell[];
@@ -39,7 +39,7 @@ type CellsProps = {
 
 function Cells({ cells }: CellsProps) {
   return cells.map((cell) => (
-    <rect key={cell.id} x={cell.x} y={cell.y} width={cell.width} height={cell.height} />
+    <rect key={cell.id} x={cell.x} y={cell.y} width={cell.width} height={cell.height} fill="currentColor" />
   ));
 }
 
@@ -49,17 +49,19 @@ export default function PixelCritter() {
   const blink = useLoop(BLINK, { cycles: 2 });
 
   return (
-    <svg className={styles.critter} viewBox="0 0 18 8" shapeRendering="crispEdges">
-      <motion.g style={{ y: outerStep }}>
-        <Cells cells={OUTER_LEGS} />
-      </motion.g>
-      <motion.g style={{ y: innerStep }}>
-        <Cells cells={INNER_LEGS} />
-      </motion.g>
-      <Cells cells={BODY} />
-      <motion.g className={styles.critterEyes} style={{ scaleY: blink }}>
+    <div className={styles.critter}>
+      <svg className={styles.critterBody} viewBox="0 0 18 8" shapeRendering="crispEdges">
+        <motion.g style={{ y: outerStep }}>
+          <Cells cells={OUTER_LEGS} />
+        </motion.g>
+        <motion.g style={{ y: innerStep }}>
+          <Cells cells={INNER_LEGS} />
+        </motion.g>
+        <Cells cells={BODY} />
+      </svg>
+      <motion.svg className={styles.critterEyes} viewBox="0 0 18 8" shapeRendering="crispEdges" style={{ opacity: blink }}>
         <Cells cells={EYES} />
-      </motion.g>
-    </svg>
+      </motion.svg>
+    </div>
   );
 }
