@@ -136,7 +136,7 @@ export class MainStack extends Stack {
     const destination = new events.ApiDestination(this, "BillingCronDestination", {
       apiDestinationName: `${PREFIX}-billing-cron`,
       connection,
-      endpoint: `https://${domain}/api/cron/billing`,
+      endpoint: `https://www.${domain}/api/cron/billing`,
       httpMethod: events.HttpMethod.GET,
     });
     new events.Rule(this, "BillingCronRule", {
