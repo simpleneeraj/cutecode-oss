@@ -7,8 +7,6 @@ import { CrownIcon } from "@hugeicons/core-free-icons";
 import { useUser } from "@/hooks/use-auth";
 import { usePricing } from "@/hooks/use-pricing";
 import { useSubscription } from "@/hooks/use-subscription";
-import { Badge } from "@/components/ui/badge";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
   Dialog,
   DialogFooter,
@@ -21,10 +19,10 @@ import {
 import { Plan } from "@/db/schema";
 import { BillingInterval } from "@/lib/billing/products";
 import { plansDialogOpenAtom } from "@/store/editor/plans";
+import BillingIntervalTabs from "./billing-interval-tabs";
 import PlanCard from "./plan-card";
 
 const TIERS = [Plan.FREE, Plan.PRO, Plan.PREMIUM];
-const INTERVALS = Object.values(BillingInterval);
 
 type PlansDialogProps = {
   trigger?: React.ReactNode;
@@ -36,11 +34,6 @@ export default function PlansDialog({ trigger }: PlansDialogProps) {
   const { data: pricing } = usePricing();
   const [open, setOpen] = useAtom(plansDialogOpenAtom);
   const [interval, setBillingInterval] = useState<BillingInterval>(BillingInterval.MONTHLY);
-
-  function onIntervalChange(value: string[]) {
-    const next = INTERVALS.find((option) => value.includes(option));
-    if (next) setBillingInterval(next);
-  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -57,15 +50,7 @@ export default function PlansDialog({ trigger }: PlansDialogProps) {
         </DialogHeader>
 
         <DialogPanel className="flex flex-col gap-5">
-          <ToggleGroup variant="outline" className="self-center" value={[interval]} onValueChange={onIntervalChange}>
-            <ToggleGroupItem value={BillingInterval.MONTHLY}>Monthly</ToggleGroupItem>
-            <ToggleGroupItem value={BillingInterval.YEARLY}>
-              Yearly
-              <Badge variant="success" size="sm">
-                2 months free
-              </Badge>
-            </ToggleGroupItem>
-          </ToggleGroup>
+          <BillingIntervalTabs value={interval} onChange={setBillingInterval} />
 
           <div className="grid gap-4 pt-2 md:grid-cols-3">
             {TIERS.map((tier) => (
