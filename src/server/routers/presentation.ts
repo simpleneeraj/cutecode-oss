@@ -5,7 +5,7 @@ import { presentations, shareLinks, snippets } from "@/db/schema";
 import { TRPCError } from "@trpc/server";
 import { router, protectedProcedure, paginationInput } from "../init";
 import { createPresentationSchema, syncPresentationSchema } from "@/lib/schemas";
-import { assertPremiumAssetsAllowed } from "@/lib/billing/premium-assets";
+import { assertPremiumAssetsAllowed, assertSlideLimit } from "@/lib/billing/premium-assets";
 
 async function isShared(presentationId: string) {
   const [link, publicSnippet] = await Promise.all([
@@ -83,7 +83,10 @@ export const presentationRouter = router({
         throw new TRPCError({ code: "NOT_FOUND", message: "Presentation not found" });
       }
 
-      if (await isShared(input.id)) assertPremiumAssetsAllowed(ctx.user.plan, input.data.elements);
+      if (await isShared(input.id)) {
+        assertPremiumAssetsAllowed(ctx.user.plan, input.data.elements);
+        assertSlideLimit(ctx.user.plan, input.data.slides);
+      }
 
       const [updated] = await db
         .update(presentations)

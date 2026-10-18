@@ -19,7 +19,7 @@ export const PRICING_FAQ: FaqItem[] = [
   {
     question: "What do I get with Premium?",
     answer:
-      "Premium includes everything in Pro plus 4x and 6x image export, HD video exports, passcode and private shares, per-snippet views, upvotes and comments, and 100 publishes a day.",
+      "Premium includes everything in Pro plus 4x image export, HD video exports, passcode and private shares, per-snippet views, upvotes and comments, and 100 publishes a day.",
   },
   {
     question: "Can I switch between monthly and yearly billing?",

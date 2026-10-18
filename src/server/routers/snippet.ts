@@ -15,7 +15,7 @@ import { router, protectedProcedure, publicProcedure, paginationInput } from "..
 import { createSnippetSchema, updateSnippetSchema } from "@/lib/schemas";
 import { socialRateLimit, commentRateLimit, checkRateLimit, cacheDel } from "@/lib/in-memory-store";
 import { consumePublishQuota } from "@/lib/billing/publish-quota";
-import { assertPremiumAssetsAllowed, stripPremiumAssets } from "@/lib/billing/premium-assets";
+import { assertPremiumAssetsAllowed, assertSlideLimit, stripPremiumAssets } from "@/lib/billing/premium-assets";
 import { isShareExhausted, isShareExpired } from "@/lib/share/access";
 import { publishedContent } from "@/lib/share/published-content";
 import { generateUniqueSlug } from "@/lib/share/slug";
@@ -194,7 +194,10 @@ export const snippetRouter = router({
       throw new TRPCError({ code: "BAD_REQUEST", message: "Element not found in presentation" });
     }
 
-    if (input.isPublic) assertPremiumAssetsAllowed(ctx.user.plan, elements);
+    if (input.isPublic) {
+      assertPremiumAssetsAllowed(ctx.user.plan, elements);
+      assertSlideLimit(ctx.user.plan, presentation.slides);
+    }
 
     return db.transaction(async (tx) => {
       const quota = input.isPublic ? await consumePublishQuota(tx, ctx.user.id, { addsLiveSnippet: true }) : null;
@@ -220,7 +223,7 @@ export const snippetRouter = router({
     .mutation(async ({ ctx, input }) => {
       const existing = await db.query.snippets.findFirst({
         where: and(eq(snippets.id, input.id), eq(snippets.userId, ctx.user.id)),
-        with: { presentation: { columns: { elements: true } }, shareLinks: { columns: { id: true }, limit: 1 } },
+        with: { presentation: { columns: { elements: true, slides: true } }, shareLinks: { columns: { id: true }, limit: 1 } },
       });
 
       if (!existing) {
@@ -228,7 +231,10 @@ export const snippetRouter = router({
       }
 
       const becomesPublic = input.data.isPublic === true && !existing.isPublic;
-      if (becomesPublic) assertPremiumAssetsAllowed(ctx.user.plan, existing.presentation.elements);
+      if (becomesPublic) {
+        assertPremiumAssetsAllowed(ctx.user.plan, existing.presentation.elements);
+        assertSlideLimit(ctx.user.plan, existing.presentation.slides);
+      }
 
       return db.transaction(async (tx) => {
         const quota = becomesPublic

@@ -15,7 +15,7 @@ export const LIMITS = {
   title: 120,
   description: 500,
   slideCode: 20_000,
-  slides: 20,
+  slides: 25,
   elementsBytes: 512 * 1024,
 } as const;
 

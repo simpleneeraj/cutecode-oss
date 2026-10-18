@@ -13,6 +13,7 @@ type Capabilities = {
   fullAnalytics: boolean;
   brandKits: boolean;
   apiMonthlyRenders: number;
+  maxSlides: number;
 };
 
 export type Capability = keyof Capabilities;
@@ -44,11 +45,12 @@ export const PLANS: Record<Plan, PlanDefinition> = {
     fullAnalytics: false,
     brandKits: false,
     apiMonthlyRenders: 0,
+    maxSlides: 3,
     features: [
       "All Classic and Brand themes",
       "PNG, SVG and copy at 1x and 2x",
       "GIF and video export with watermark",
-      "Typing animation and multi-slide reels",
+      "Typing animation and reels up to 3 slides",
       `Publish ${FREE_DAILY_PUBLISH_LIMIT} snippets a day, up to ${FREE_MAX_LIVE_SNIPPETS} live`,
     ],
   },
@@ -66,10 +68,12 @@ export const PLANS: Record<Plan, PlanDefinition> = {
     fullAnalytics: false,
     brandKits: false,
     apiMonthlyRenders: 0,
+    maxSlides: 10,
     features: [
       "Everything in Free",
       "Premium animated themes and fonts",
       "3x image export",
+      "Up to 10 slides per reel",
       "No watermark on images or video",
       "Publish 30 snippets a day, unlimited live",
     ],
@@ -79,7 +83,7 @@ export const PLANS: Record<Plan, PlanDefinition> = {
     prices: { monthly: 12, yearly: 120 },
     premiumThemes: true,
     premiumFonts: true,
-    maxExportScale: 6,
+    maxExportScale: 4,
     watermarkRemoval: true,
     hdVideo: true,
     dailyPublishes: 100,
@@ -88,10 +92,12 @@ export const PLANS: Record<Plan, PlanDefinition> = {
     fullAnalytics: true,
     brandKits: true,
     apiMonthlyRenders: 0,
+    maxSlides: 25,
     features: [
       "Everything in Pro",
-      "4x and 6x image export",
+      "4x image export",
       "HD video exports",
+      "Up to 25 slides per reel",
       "Passcode and private shares",
       "Per-snippet analytics",
       "Publish 100 snippets a day",

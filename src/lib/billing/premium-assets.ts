@@ -3,7 +3,7 @@ import { themes } from "@/components/presets/themes";
 import fonts from "@/fonts/editor/fonts";
 import { BadgeVariant } from "@/typings/editor";
 import type { Plan } from "@/db/enums";
-import { can } from "@/lib/billing/plans";
+import { can, limit } from "@/lib/billing/plans";
 
 const FREE_THEME = "mono";
 const FREE_FONT = "DM Mono";
@@ -46,6 +46,12 @@ export function assertPremiumAssetsAllowed(plan: Plan, elements: Record<string, 
   if (!locked.theme && !locked.font) return;
   const what = locked.theme && locked.font ? "premium themes and fonts" : locked.theme ? "premium themes" : "premium fonts";
   throw new TRPCError({ code: "FORBIDDEN", message: `Your plan does not include ${what}. Upgrade to publish this snippet.` });
+}
+
+export function assertSlideLimit(plan: Plan, slides: Record<string, unknown>) {
+  const max = limit(plan, "maxSlides");
+  if (Object.keys(slides).length <= max) return;
+  throw new TRPCError({ code: "FORBIDDEN", message: `Your plan allows ${max} slides. Upgrade to publish this reel.` });
 }
 
 function stripElement(plan: Plan, element: ElementLike): ElementLike {

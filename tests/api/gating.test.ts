@@ -29,6 +29,7 @@ const EXPECTED: Record<Plan, Record<Capability, boolean | number>> = {
     fullAnalytics: false,
     brandKits: false,
     apiMonthlyRenders: 0,
+    maxSlides: 3,
   },
   PRO: {
     premiumThemes: true,
@@ -42,11 +43,12 @@ const EXPECTED: Record<Plan, Record<Capability, boolean | number>> = {
     fullAnalytics: false,
     brandKits: false,
     apiMonthlyRenders: 0,
+    maxSlides: 10,
   },
   PREMIUM: {
     premiumThemes: true,
     premiumFonts: true,
-    maxExportScale: 6,
+    maxExportScale: 4,
     watermarkRemoval: true,
     hdVideo: true,
     dailyPublishes: 100,
@@ -55,6 +57,7 @@ const EXPECTED: Record<Plan, Record<Capability, boolean | number>> = {
     fullAnalytics: true,
     brandKits: true,
     apiMonthlyRenders: 0,
+    maxSlides: 25,
   },
 };
 

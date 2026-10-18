@@ -9,7 +9,7 @@ import { TRPCError } from "@trpc/server";
 import { router, protectedProcedure } from "../init";
 import { publishRateLimit, checkRateLimit, cacheDel } from "@/lib/in-memory-store";
 import { consumePublishQuota, getPublishQuota } from "@/lib/billing/publish-quota";
-import { assertPremiumAssetsAllowed } from "@/lib/billing/premium-assets";
+import { assertPremiumAssetsAllowed, assertSlideLimit } from "@/lib/billing/premium-assets";
 import { requireShareVisibility } from "@/lib/billing/require-capability";
 import { publishedContent } from "@/lib/share/published-content";
 import {
@@ -64,6 +64,7 @@ export const publishRouter = router({
 
       const { slides, elements, slideElements } = publishedContent(input, elementId);
       assertPremiumAssetsAllowed(ctx.user.plan, elements);
+      assertSlideLimit(ctx.user.plan, slides);
 
       const passcodeHash = visibility === ShareVisibility.PASSCODE && passcode ? await bcrypt.hash(passcode, 10) : null;
 

@@ -15,6 +15,7 @@ import {
   updateSlideElementAtom,
 } from "@/store/editor/editor";
 import useHotkeys from "@/utils/useHotkeys";
+import { usePremiumAccess } from "@/hooks/use-premium-access";
 import ToolbarAction from "./toolbar-action";
 
 export default function ToolbarParticle() {
@@ -26,14 +27,21 @@ export default function ToolbarParticle() {
   const selectSlide = useSetAtom(selectSlideAtom);
   const darkMode = useAtomValue(elementDarkModeAtom);
   const updateSlideElement = useSetAtom(updateSlideElementAtom);
+  const { checkLimit, withAccess } = usePremiumAccess();
 
   const currentIndex = slides.findIndex((slide) => slide.id === slideId);
   const isFirst = currentIndex === 0;
   const isLast = currentIndex === slides.length - 1;
   const canDelete = slides.length > 1;
 
+  const withSlideRoom = (onAllowed: () => void) => withAccess(checkLimit("maxSlides", slides.length + 1), onAllowed);
+
   const addSlide = () => {
-    createSlide({ id: crypto.randomUUID(), name: "New Slide", background: {} });
+    withSlideRoom(() => createSlide({ id: crypto.randomUUID(), name: "New Slide", background: {} }));
+  };
+
+  const copySlide = () => {
+    withSlideRoom(duplicateSlide);
   };
 
   const previousSlide = () => {
@@ -55,7 +63,7 @@ export default function ToolbarParticle() {
   useHotkeys("shift+left", previousSlide);
   useHotkeys("shift+right", nextSlide);
   useHotkeys("a", addSlide);
-  useHotkeys("shift+d", duplicateSlide);
+  useHotkeys("shift+d", copySlide);
   useHotkeys("shift+backspace", removeSlide);
   useHotkeys("d", toggleDarkMode);
 
@@ -71,7 +79,7 @@ export default function ToolbarParticle() {
           )}
           <ToolbarSeparator orientation="vertical" />
           <ToolbarAction label="Add slide" icon={AddSquareIcon} keys={["A"]} onClick={addSlide} />
-          <ToolbarAction label="Duplicate slide" icon={Copy01Icon} keys={["⇧", "D"]} onClick={duplicateSlide} />
+          <ToolbarAction label="Duplicate slide" icon={Copy01Icon} keys={["⇧", "D"]} onClick={copySlide} />
           {canDelete && (
             <ToolbarAction label="Delete slide" icon={Delete02Icon} keys={["Shift", "⌫"]} onClick={removeSlide} isDestructive />
           )}

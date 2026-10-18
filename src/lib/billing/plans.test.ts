@@ -43,7 +43,7 @@ describe("billing/plans", () => {
   it("scales export by plan", () => {
     expect(limit(Plan.FREE, "maxExportScale")).toBe(2);
     expect(limit(Plan.PRO, "maxExportScale")).toBe(3);
-    expect(limit(Plan.PREMIUM, "maxExportScale")).toBe(6);
+    expect(limit(Plan.PREMIUM, "maxExportScale")).toBe(4);
   });
 
   it("limits daily publishes per plan", () => {
@@ -56,6 +56,12 @@ describe("billing/plans", () => {
     expect(limit(Plan.FREE, "maxLiveSnippets")).toBe(25);
     expect(limit(Plan.PRO, "maxLiveSnippets")).toBe(Infinity);
     expect(limit(Plan.PREMIUM, "maxLiveSnippets")).toBe(Infinity);
+  });
+
+  it("caps slides per reel by plan", () => {
+    expect(limit(Plan.FREE, "maxSlides")).toBe(3);
+    expect(limit(Plan.PRO, "maxSlides")).toBe(10);
+    expect(limit(Plan.PREMIUM, "maxSlides")).toBe(25);
   });
 
   it("treats a zero numeric capability as unavailable", () => {
