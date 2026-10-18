@@ -11,6 +11,7 @@ import FontFaceControl from "./font-face";
 import CanvasSizePopover from "./canvas-size/canvas-size-popover";
 import TypingPopover from "./typing-popover";
 import ExportButton from "../export";
+import { dockDivider } from "./dock-styles";
 
 const entrance = { type: "spring", stiffness: 380, damping: 32, delay: 0.1 } as const;
 
@@ -22,11 +23,10 @@ const dock = tv({
       "sm:w-auto sm:max-w-full sm:rounded-2xl sm:border sm:border-border/60 sm:bg-popover/90 sm:pb-0 sm:shadow-lg",
     ],
     track: "flex h-16 w-max min-w-full items-center gap-0 px-1 sm:h-auto sm:min-w-0 sm:justify-start sm:gap-0.5 sm:p-1",
-    divider: "mx-0.5 hidden h-5 w-px bg-border sm:block",
   },
 });
 
-const { root, bar, track, divider } = dock();
+const { root, bar, track } = dock();
 
 export default function Controls() {
   usePlanStyleGuard();
@@ -37,13 +37,13 @@ export default function Controls() {
         <div className={track()}>
           <ThemeControl />
           <FontFaceControl />
-          <Separator orientation="vertical" className={divider()} />
+          <Separator orientation="vertical" className={dockDivider()} />
           <LanguageControl />
-          <Separator orientation="vertical" className={divider()} />
+          <Separator orientation="vertical" className={dockDivider()} />
           <CanvasSizePopover />
-          <Separator orientation="vertical" className={divider()} />
+          <Separator orientation="vertical" className={dockDivider()} />
           <TypingPopover />
-          <Separator orientation="vertical" className={divider()} />
+          <Separator orientation="vertical" className={dockDivider()} />
           <ExportButton />
           <OptionsControl />
         </div>

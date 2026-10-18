@@ -16,6 +16,10 @@ export const dockTrigger = tv({
   },
 });
 
+export const dockDivider = tv({
+  base: "mx-0.5 hidden h-5 w-px bg-border sm:block",
+});
+
 export const dockLabel = tv({
   base: "text-[10px] leading-none text-muted-foreground sm:hidden",
 });
