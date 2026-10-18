@@ -16,7 +16,6 @@ const FLOATERS = [
 const MOTES = Array.from({ length: 18 }, (_, index) => ({
   left: `${(index * 41 + 9) % 100}%`,
   size: 3 + ((index * 4) % 3),
-  cycles: 1 + (index % 2),
   phase: ((index * 7) % 18) / 18,
 }));
 
@@ -25,8 +24,8 @@ type Mote = (typeof MOTES)[number];
 
 function FloatingIcon({ floater, index }: { floater: Floater; index: number }) {
   const phase = index / FLOATERS.length;
-  const y = useLoop([0, -10, 0], { phase, ease: easeInOut });
-  const rotate = useLoop([0, index % 2 === 0 ? 8 : -8, 0], { phase, ease: easeInOut });
+  const y = useLoop([0, -6, 0], { phase, ease: easeInOut });
+  const rotate = useLoop([0, index % 2 === 0 ? 5 : -5, 0], { phase, ease: easeInOut });
 
   return (
     <motion.span className={styles.floater} style={{ left: `${floater.x}%`, top: `${floater.y}%`, y, rotate }}>
@@ -36,8 +35,8 @@ function FloatingIcon({ floater, index }: { floater: Floater; index: number }) {
 }
 
 function RisingMote({ mote }: { mote: Mote }) {
-  const y = useLoop([0, -340], { cycles: mote.cycles, phase: mote.phase });
-  const opacity = useLoop([0, 0.8, 0.4, 0], { cycles: mote.cycles, phase: mote.phase });
+  const y = useLoop([0, -220], { phase: mote.phase });
+  const opacity = useLoop([0, 0.8, 0.4, 0], { phase: mote.phase });
 
   return (
     <motion.span className={styles.mote} style={{ left: mote.left, width: mote.size, height: mote.size, y, opacity }} />
@@ -45,10 +44,10 @@ function RisingMote({ mote }: { mote: Mote }) {
 }
 
 function GoldenHourScene() {
-  const rotate = useLoop([0, 360]);
-  const glowScale = useLoop([1, 1.08, 1], { ease: easeInOut });
-  const driftX = useLoop([0, 24, 0], { ease: easeInOut });
-  const driftY = useLoop([0, -18, 0], { ease: easeInOut, phase: 0.25 });
+  const rotate = useLoop([0, 18]);
+  const glowScale = useLoop([1, 1.05, 1], { ease: easeInOut });
+  const driftX = useLoop([0, 14, 0], { ease: easeInOut });
+  const driftY = useLoop([0, -10, 0], { ease: easeInOut, phase: 0.25 });
 
   return (
     <div className={styles.layer} aria-hidden>
@@ -67,7 +66,7 @@ function GoldenHourScene() {
 }
 
 function TopEdgeSweep() {
-  const x = useLoop(["-100%", "300%", "300%"]);
+  const x = useLoop(["-100%", "300%", "300%"], { ease: easeInOut });
 
   return (
     <div className={styles.topEdge} aria-hidden>

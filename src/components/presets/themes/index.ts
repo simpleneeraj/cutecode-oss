@@ -15,6 +15,7 @@ import { browserbase } from "../browserbase/theme";
 import { cloudflare } from "../cloudflare/theme";
 import { gemini } from "../gemini/theme";
 import { stripe } from "../stripe/theme";
+import { dodoPayments } from "../dodo-payments/theme";
 import { bitmap } from "../bitmap/theme";
 import { noir } from "../noir/theme";
 import { ice } from "../ice/theme";
@@ -82,6 +83,7 @@ export const themes: { [index: string]: Theme } = {
   openai,
   supabase,
   stripe,
+  "dodo-payments": dodoPayments,
   tailwind,
   cloudflare,
   gemini,

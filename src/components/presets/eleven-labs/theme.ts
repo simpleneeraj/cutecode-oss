@@ -8,7 +8,7 @@ export const elevenlabs: Theme = {
     from: "#000",
     to: "#000",
   },
-  icon: { type: IconType.ICONIFY, source: "simple-icons:elevenlabs" },
+  icon: { type: IconType.IMAGE, source: "/editor/assets/elevenlabs/logo.svg" },
   font: "roboto-mono",
   partner: true,
   group: "Brands",

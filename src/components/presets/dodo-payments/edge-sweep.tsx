@@ -1,9 +1,9 @@
-import { motion } from "motion/react";
+import { motion, easeInOut } from "motion/react";
 import { useLoop } from "../scene";
-import styles from "./openai.module.css";
+import styles from "./dodo-payments.module.css";
 
 export default function EdgeSweep() {
-  const x = useLoop(["-100%", "300%"]);
+  const x = useLoop(["-100%", "300%", "300%"], { ease: easeInOut });
 
   return (
     <div className={styles.topEdge} aria-hidden>

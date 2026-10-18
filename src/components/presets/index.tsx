@@ -24,6 +24,7 @@ const NuxtFrame = dynamic<BaseFrameProps>(() => import("./nuxt"));
 const GeminiFrame = dynamic<BaseFrameProps>(() => import("./gemini"));
 const CloudflareFrame = dynamic<BaseFrameProps>(() => import("./cloudflare"));
 const StripeFrame = dynamic<BaseFrameProps>(() => import("./stripe"));
+const DodoPaymentsFrame = dynamic<BaseFrameProps>(() => import("./dodo-payments"));
 const RosesFrame = dynamic<BaseFrameProps>(() => import("./roses"));
 const ClaudeFrame = dynamic<BaseFrameProps>(() => import("./claude"));
 const RetroMacFrame = dynamic<BaseFrameProps>(() => import("./retro-mac"));
@@ -90,6 +91,7 @@ const FRAME_REGISTRY: Record<string, React.ComponentType<BaseFrameProps>> = {
   [themes.gemini.id]: GeminiFrame,
   [themes.cloudflare.id]: CloudflareFrame,
   [themes.stripe.id]: StripeFrame,
+  [themes["dodo-payments"].id]: DodoPaymentsFrame,
   [themes.roses.id]: RosesFrame,
   [themes.claude.id]: ClaudeFrame,
   [themes["retro-mac"].id]: RetroMacFrame,

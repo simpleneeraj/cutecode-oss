@@ -18,7 +18,7 @@ describe("presets/themes/samples", () => {
     const { sample } = themes.resend;
     expect(sampleUpdate(themes.resend)).toEqual({
       content: sample?.code,
-      properties: { language: "TypeScript" },
+      properties: { language: "TypeScript", isSampleCode: true },
       header: { properties: { title: { text: "send-welcome.ts", icon: sample?.icon } } },
     });
   });

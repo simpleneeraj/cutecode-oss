@@ -1,0 +1,56 @@
+import { Theme, IconType } from "@/typings/editor";
+import { convertToShikiTheme } from "../themes/shared";
+
+export const dodoPayments: Theme = {
+  id: "dodo-payments",
+  name: "Dodo Payments",
+  background: {
+    from: "#004f32",
+    to: "#00160d",
+  },
+  icon: { type: IconType.IMAGE, source: "/editor/assets/dodo-payments/logo.svg" },
+  font: "geist-mono",
+  partner: true,
+  group: "Brands",
+  sample: {
+    language: "TypeScript",
+    fileName: "checkout.ts",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/typescript.svg",
+    code: 'import DodoPayments from "dodopayments";\n\nconst client = new DodoPayments({\n  bearerToken: process.env.DODO_PAYMENTS_API_KEY,\n  environment: "test_mode",\n});\n\nconst session = await client.checkoutSessions.create({\n  product_cart: [{ product_id: "pdt_123", quantity: 1 }],\n  customer: { email: "customer@example.com", name: "John Doe" },\n  return_url: "https://yourapp.com/checkout/success",\n});\n\nconsole.log(session.checkout_url);',
+  },
+  lineNumbers: true,
+  syntax: {
+    light: convertToShikiTheme({
+      foreground: "#0d0d0d",
+      constant: "#004f32",
+      parameter: "#344054",
+      stringExpression: "#ea580c",
+      keyword: "#004f32",
+      function: "#059669",
+      punctuation: "#344054",
+      string: "#ea580c",
+      comment: "#667085",
+      link: "#ea580c",
+      number: "#ea580c",
+      property: "#1d4ed8",
+      diffInserted: "#059669",
+      diffDeleted: "#d92d20",
+    }),
+    dark: convertToShikiTheme({
+      foreground: "#ffffff",
+      constant: "#c6fe1e",
+      parameter: "#e5fbf2",
+      stringExpression: "#ffdcc3",
+      keyword: "#c6fe1e",
+      function: "#99efcb",
+      punctuation: "#a0a0a0",
+      string: "#ffdcc3",
+      comment: "#667085",
+      link: "#ffdcc3",
+      number: "#ffdcc3",
+      property: "#a0c1ff",
+      diffInserted: "#99efcb",
+      diffDeleted: "#d92d20",
+    }),
+  },
+};

@@ -46,6 +46,7 @@ const SCENE_THEME_IDS = [
   "gemini",
   "cloudflare",
   "stripe",
+  "dodo-payments",
 ];
 
 export const isSceneTheme = (themeId: string) => SCENE_THEME_IDS.includes(themeId);

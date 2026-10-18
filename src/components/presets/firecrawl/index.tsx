@@ -91,7 +91,7 @@ function FirecrawlFrameCanvas({
     const canvas = canvasRef.current;
     if (!canvas || size.width === 0 || size.height === 0) return;
     const displayDpr = Math.min(2, typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1);
-    /* Use at least export scale so the canvas stays sharp when user exports at 2x/4x/6x. */
+    /* Use at least export scale so the canvas stays sharp when user exports at 2x/4x. */
     const dpr = Math.max(displayDpr, exportPixelRatio);
     canvas.width = size.width * dpr;
     canvas.height = size.height * dpr;

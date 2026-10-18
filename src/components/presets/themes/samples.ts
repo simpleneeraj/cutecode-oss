@@ -11,7 +11,7 @@ export function sampleUpdate({ sample }: Theme): Partial<ElementType> {
   if (!sample) return {};
   return {
     content: sample.code,
-    properties: { language: sample.language },
+    properties: { language: sample.language, isSampleCode: true },
     header: { properties: { title: { text: sample.fileName, icon: sample.icon } } },
   };
 }

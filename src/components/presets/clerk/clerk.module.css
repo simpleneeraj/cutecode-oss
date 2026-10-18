@@ -5,11 +5,25 @@
 }
 
 .dark {
-  background: radial-gradient(ellipse at 50% 0%, #212126 0%, #131316 55%, #0a0a0b 100%);
+  --grid-line: rgba(255, 255, 255, 0.045);
+  --card: #212126;
+  --card-border: rgba(255, 255, 255, 0.07);
+  --tray: #1a1a1e;
+  --skeleton: rgba(255, 255, 255, 0.1);
+  --skeleton-soft: rgba(255, 255, 255, 0.05);
+
+  background: #131316;
 }
 
 .light {
-  background: radial-gradient(ellipse at 50% 0%, #f4f2ff 0%, #fafafb 55%, #f7f7f8 100%);
+  --grid-line: rgba(19, 19, 22, 0.05);
+  --card: #ffffff;
+  --card-border: rgba(19, 19, 22, 0.07);
+  --tray: #f7f7f8;
+  --skeleton: rgba(19, 19, 22, 0.1);
+  --skeleton-soft: rgba(19, 19, 22, 0.05);
+
+  background: #fafafb;
 }
 
 .transparent {
@@ -23,156 +37,248 @@
   pointer-events: none;
 }
 
-.halo {
+.grid {
   position: absolute;
-  top: -200px;
-  left: 50%;
-  width: 480px;
-  height: 400px;
-  margin-left: -240px;
-  border-radius: 50%;
-}
-
-.light .halo {
-  background: radial-gradient(circle, rgba(108, 71, 255, 0.22) 0%, rgba(108, 71, 255, 0.06) 45%, transparent 70%);
-}
-
-.dark .halo {
-  background: radial-gradient(circle, rgba(108, 71, 255, 0.38) 0%, rgba(108, 71, 255, 0.1) 45%, transparent 70%);
-}
-
-.pattern {
-  position: absolute;
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-position: center;
+  background-size: 32px 32px;
   inset: 0;
-  background-size: 16px 16px;
-  mask-image: radial-gradient(ellipse 80% 45% at 50% 100%, black 0%, transparent 100%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, black 0%, transparent 100%);
 }
 
-.light .pattern {
-  background-image: radial-gradient(circle, rgba(19, 19, 22, 0.14) 1px, transparent 1.5px);
-}
-
-.dark .pattern {
-  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1.5px);
-}
-
-.ring {
+.glow {
   position: absolute;
+  top: 50%;
   left: 50%;
+  width: 70%;
+  aspect-ratio: 1.6;
+  border-radius: 50%;
+  translate: -50% -50%;
+}
+
+.dark .glow {
+  background: radial-gradient(ellipse, rgba(108, 71, 255, 0.32) 0%, rgba(108, 71, 255, 0.08) 45%, transparent 70%);
+}
+
+.light .glow {
+  background: radial-gradient(ellipse, rgba(108, 71, 255, 0.16) 0%, rgba(108, 71, 255, 0.04) 45%, transparent 70%);
+}
+
+.stack {
+  position: absolute;
+  bottom: -40px;
+  left: 3%;
+  width: 196px;
+  rotate: -6deg;
+}
+
+.ghost {
+  position: absolute;
+  border: 1px solid var(--card-border);
+  background: var(--card);
+  border-radius: 14px;
+  inset: -10px 10px 10px -10px;
+  opacity: 0.5;
+}
+
+.tray {
+  position: relative;
+  border: 1px solid var(--card-border);
+  background: var(--tray);
+  border-radius: 14px;
+}
+
+.dark .tray {
+  filter: drop-shadow(0 16px 32px rgba(0, 0, 0, 0.5));
+}
+
+.light .tray {
+  filter: drop-shadow(0 12px 24px rgba(19, 19, 22, 0.08));
+}
+
+.signIn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 16px 18px;
+  margin: -1px -1px 0;
+  border: 1px solid var(--card-border);
+  background: var(--card);
+  border-radius: 14px;
+  gap: 8px;
+}
+
+.appLogo {
+  width: 22px;
+  height: 22px;
+  margin-bottom: 4px;
+  background: #6c47ff;
+  border-radius: 6px;
+}
+
+.title,
+.subtitle {
+  height: 6px;
+  background: var(--skeleton);
+  border-radius: 3px;
+}
+
+.title {
+  width: 60%;
+}
+
+.subtitle {
+  width: 42%;
+  background: var(--skeleton-soft);
+}
+
+.socials {
+  display: grid;
+  width: 100%;
+  margin-top: 6px;
+  gap: 6px;
+  grid-template-columns: repeat(3, 1fr);
+
+  > span {
+    height: 22px;
+    border: 1px solid var(--card-border);
+    border-radius: 6px;
+  }
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  margin: 4px 0;
+  background: var(--card-border);
+}
+
+.field {
+  display: flex;
+  width: 100%;
+  height: 24px;
+  align-items: center;
+  padding: 0 8px;
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+}
+
+.typed {
+  width: 70%;
+  height: 5px;
+  background: var(--skeleton);
+  border-radius: 3px;
+  transform-origin: left;
+}
+
+.submit {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 24px;
+  background: #6c47ff;
+  border-radius: 6px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.shine {
+  position: absolute;
+  width: 45%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  inset-block: 0;
+}
+
+.secured {
+  display: block;
+  width: 36%;
+  height: 5px;
+  margin: 12px auto 13px;
+  background: var(--skeleton-soft);
+  border-radius: 3px;
+}
+
+.pill {
+  position: absolute;
+  top: 7%;
+  right: 4%;
+  display: flex;
+  align-items: center;
+  padding: 6px 12px 6px 6px;
+  border: 1px solid var(--card-border);
+  background: var(--card);
+  border-radius: 999px;
+  gap: 8px;
+  rotate: 4deg;
+}
+
+.dark .pill {
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.45));
+}
+
+.light .pill {
+  filter: drop-shadow(0 8px 20px rgba(19, 19, 22, 0.08));
+}
+
+.avatar {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  background: linear-gradient(135deg, #6c47ff, #5de3ff);
   border-radius: 50%;
 
   &::after {
     position: absolute;
-    bottom: -3px;
-    left: 50%;
-    width: 6px;
-    height: 6px;
+    right: -1px;
+    bottom: -1px;
+    width: 8px;
+    height: 8px;
+    border: 2px solid var(--card);
+    background: #22c543;
     border-radius: 50%;
-    margin-left: -3px;
-    background: #6c47ff;
-    filter: drop-shadow(0 0 10px rgba(108, 71, 255, 0.8));
     content: "";
   }
 }
 
-.light .ring {
-  border: 1px solid rgba(108, 71, 255, 0.14);
-}
-
-.dark .ring {
-  border: 1px solid rgba(186, 177, 255, 0.1);
-}
-
-.card {
+.presence {
   position: absolute;
-  display: grid;
-  width: 168px;
-  height: 104px;
-  align-content: start;
-  padding: 14px;
-  border-radius: 12px;
-  gap: 8px;
-  grid-template-columns: 20px 1fr;
-}
-
-.light .card {
-  background: #ffffff;
-  border: 1px solid rgba(19, 19, 22, 0.06);
-  filter: drop-shadow(0 1px 2px rgba(19, 19, 22, 0.06)) drop-shadow(0 10px 24px rgba(108, 71, 255, 0.1));
-}
-
-.dark .card {
-  background: #212126;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.5));
-}
-
-.avatar {
-  width: 20px;
-  height: 20px;
+  right: -1px;
+  bottom: -1px;
+  width: 8px;
+  height: 8px;
+  background: #22c543;
   border-radius: 50%;
-  background: linear-gradient(135deg, #6c47ff, #5de3ff);
-  grid-row: span 2;
 }
 
-.lineWide,
-.lineShort {
-  height: 6px;
-  border-radius: 3px;
-}
-
-.lineWide {
-  width: 80%;
-}
-
-.lineShort {
-  width: 50%;
-}
-
-.light .lineWide,
-.light .lineShort {
-  background: rgba(19, 19, 22, 0.1);
-}
-
-.dark .lineWide,
-.dark .lineShort {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.button {
-  height: 22px;
-  border-radius: 6px;
-  margin-top: 10px;
-  background: #6c47ff;
-  grid-column: 1 / -1;
-}
-
-.dark .button {
-  opacity: 0.85;
-}
-
-.chip {
-  position: absolute;
+.pillLines {
   display: flex;
-  width: 32px;
-  height: 32px;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
+  flex-direction: column;
+  gap: 5px;
+
+  > span {
+    height: 5px;
+    background: var(--skeleton);
+    border-radius: 3px;
+  }
+
+  > span:first-child {
+    width: 56px;
+  }
+
+  > span:last-child {
+    width: 36px;
+    background: var(--skeleton-soft);
+  }
 }
 
-.light .chip {
-  background: #ffffff;
-  border: 1px solid rgba(108, 71, 255, 0.14);
-  filter: drop-shadow(0 6px 16px rgba(108, 71, 255, 0.12));
-  color: #6c47ff;
-}
-
-.dark .chip {
-  background: #212126;
-  border: 1px solid rgba(186, 177, 255, 0.14);
-  filter: drop-shadow(0 0 18px rgba(108, 71, 255, 0.25));
-  color: #bab1ff;
+.chevron {
+  width: 6px;
+  height: 6px;
+  border-right: 1.5px solid var(--skeleton);
+  border-bottom: 1.5px solid var(--skeleton);
+  margin-top: -3px;
+  rotate: 45deg;
 }
 
 .window {
@@ -192,7 +298,7 @@
 .dark .window {
   --line-number: #42434d;
   background: #212126;
-  border: 1px solid rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   filter: drop-shadow(0 0 60px rgba(108, 71, 255, 0.12)) drop-shadow(0 24px 72px rgba(0, 0, 0, 0.6));
 }
 
