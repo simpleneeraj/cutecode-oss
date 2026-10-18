@@ -18,6 +18,7 @@ import { ArrowDown01Icon, Search01Icon, SourceCodeIcon } from "@hugeicons/core-f
 import { useAtomValue, useSetAtom } from "jotai";
 import { currentElementAtom, updateSlideElementAtom } from "@/store/editor/editor";
 import { trackEditor } from "@/lib/analytics";
+import { findSnippet, isSnippetLanguage, snippetPatch } from "@/components/presets/snippets";
 import { dockLabel, dockPopup, dockTrigger } from "../dock-styles";
 
 type LanguageItem = {
@@ -62,11 +63,11 @@ const LanguageControl: React.FC = () => {
         value={currentValue}
         onValueChange={(item) => {
           if (item) {
-            updateSlideElement({
-              properties: {
-                language: item.language?.name,
-              },
-            });
+            const name = item.language?.name;
+            const snippet = findSnippet(elementState?.content);
+            updateSlideElement(
+              snippet && isSnippetLanguage(name) ? snippetPatch(snippet, name) : { properties: { language: name } },
+            );
             trackEditor.languageChanged(item.language?.name ?? "auto");
           }
         }}

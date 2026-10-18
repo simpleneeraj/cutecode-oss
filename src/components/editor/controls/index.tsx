@@ -6,6 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { usePlanStyleGuard } from "@/hooks/use-plan-style-guard";
 import ThemeControl from "./themes";
 import LanguageControl from "./language";
+import SnippetsPopover from "./snippets-popover";
 import OptionsControl from "./options";
 import FontFaceControl from "./font-face";
 import CanvasSizePopover from "./canvas-size/canvas-size-popover";
@@ -39,6 +40,7 @@ export default function Controls() {
           <FontFaceControl />
           <Separator orientation="vertical" className={dockDivider()} />
           <LanguageControl />
+          <SnippetsPopover />
           <Separator orientation="vertical" className={dockDivider()} />
           <CanvasSizePopover />
           <Separator orientation="vertical" className={dockDivider()} />
