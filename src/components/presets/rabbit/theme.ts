@@ -12,6 +12,12 @@ export const rabbit: Theme = {
   font: "geist-mono",
   partner: true,
   group: "Brands",
+  sample: {
+    language: "TypeScript",
+    fileName: "evil-rabbit.ts",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/typescript.svg",
+    code: 'type Key = "w" | "a" | "s" | "d";\n\nconst moves: Record<Key, [number, number]> = {\n  w: [0, -1], a: [-1, 0], s: [0, 1], d: [1, 0],\n};\n\nexport function hop([x, y]: [number, number], key: Key) {\n  const [dx, dy] = moves[key];\n  return [x + dx, y + dy];\n}',
+  },
   hidden: true,
   syntax: {
     light: convertToShikiTheme({

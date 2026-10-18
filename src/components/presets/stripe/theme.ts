@@ -11,6 +11,12 @@ export const stripe: Theme = {
   icon: { type: IconType.IMAGE, source: "/editor/assets/stripe/logo.svg" },
   partner: true,
   group: "Brands",
+  sample: {
+    language: "JavaScript",
+    fileName: "checkout.js",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/javascript.svg",
+    code: 'const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);\n\nconst session = await stripe.checkout.sessions.create({\n  success_url: "https://example.com/success",\n  line_items: [{ price: "price_gold_plan", quantity: 1 }],\n  mode: "subscription",\n});\n\nconsole.log(session.url);',
+  },
   font: "source-code-pro",
   lineNumbers: true,
   syntax: {

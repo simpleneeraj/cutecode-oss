@@ -11,6 +11,12 @@ export const supabase: Theme = {
   icon: { type: IconType.IMAGE, source: "/editor/assets/supabase/logo.svg" },
   partner: true,
   group: "Brands",
+  sample: {
+    language: "TypeScript",
+    fileName: "todos.ts",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/supabase.svg",
+    code: 'import { createClient } from "@supabase/supabase-js";\n\nconst supabase = createClient(\n  "https://xyzcompany.supabase.co",\n  "your-publishable-key",\n);\n\nconst { data, error } = await supabase\n  .from("todos")\n  .select();',
+  },
   lineNumbers: true,
   font: "jetbrains-mono",
   syntax: {

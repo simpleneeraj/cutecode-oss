@@ -250,4 +250,5 @@ export type Theme = {
 
   syntax: { light: CSSProperties; dark?: CSSProperties } | { light?: CSSProperties; dark: CSSProperties };
   tags?: string[];
+  sample?: { language: string; fileName: string; icon: string; code: string };
 };

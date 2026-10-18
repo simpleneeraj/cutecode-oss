@@ -18,7 +18,7 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowDown01Icon, Search01Icon, Fire02Icon, CrownIcon } from "@hugeicons/core-free-icons";
 import { Theme, IconType, BadgeVariant } from "@/typings/editor";
-import { elementThemeAtom, updateSlideElementAtom } from "@/store/editor/editor";
+import { elementContentAtom, elementThemeAtom, updateSlideElementAtom } from "@/store/editor/editor";
 import { motion } from "motion/react";
 import { cn } from "@/utils/cn";
 import { useSetAtom } from "jotai";
@@ -28,6 +28,7 @@ import { Button } from "@/components/ui/button";
 import { themes } from "@/components/presets/themes";
 import { usePremiumAccess } from "@/hooks/use-premium-access";
 import { groupThemes } from "@/components/presets/themes/shared";
+import { isPristineCode, sampleUpdate } from "@/components/presets/themes/samples";
 import { AccessLevel } from "@/typings/enums";
 import { trackEditor } from "@/lib/analytics";
 import { dockPopup, dockTrigger } from "../dock-styles";
@@ -88,6 +89,7 @@ function Badges({ tags, access }: { tags?: Theme["tags"]; access: AccessLevel })
 const ThemeControl: React.FC = () => {
   const update = useSetAtom(updateSlideElementAtom);
   const themeId = useAtomValue(elementThemeAtom);
+  const content = useAtomValue(elementContentAtom);
 
   const groupedThemes = useMemo(() => groupThemes(themes), []);
   const allThemes = useMemo(() => Object.values(themes), []);
@@ -100,7 +102,12 @@ const ThemeControl: React.FC = () => {
     const isPremium = theme.tags?.includes(BadgeVariant.PREMIUM) ?? false;
     const access = checkAccess("premiumThemes", isPremium);
     withAccess(access, () => {
-      update({ properties: { theme: theme.id } });
+      if (theme.sample && isPristineCode(content)) {
+        const sample = sampleUpdate(theme);
+        update({ ...sample, properties: { ...sample.properties, theme: theme.id } });
+      } else {
+        update({ properties: { theme: theme.id } });
+      }
       trackEditor.themeChanged(theme.id, isPremium);
     });
   };

@@ -12,6 +12,12 @@ export const gemini: Theme = {
   font: "google-sans-code",
   partner: true,
   group: "Brands",
+  sample: {
+    language: "TypeScript",
+    fileName: "ask-gemini.ts",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/gemini-ai.svg",
+    code: 'import { GoogleGenAI } from "@google/genai";\n\nconst ai = new GoogleGenAI({});\n\nconst response = await ai.models.generateContent({\n  model: "gemini-3.8-flash",\n  contents: "How does AI work?",\n});\n\nconsole.log(response.text);',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#37474f",

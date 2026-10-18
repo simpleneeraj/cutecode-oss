@@ -12,6 +12,12 @@ export const elevenlabs: Theme = {
   font: "roboto-mono",
   partner: true,
   group: "Brands",
+  sample: {
+    language: "TypeScript",
+    fileName: "speak.ts",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/typescript.svg",
+    code: 'import { ElevenLabsClient, play } from "@elevenlabs/elevenlabs-js";\n\nconst elevenlabs = new ElevenLabsClient();\n\nconst audio = await elevenlabs.textToSpeech.convert("JBFqnCBsd6RMkjVDRZzb", {\n  text: "The first move is what sets everything in motion.",\n  modelId: "eleven_v4",\n  outputFormat: "mp3_44100_128",\n});\n\nawait play(audio);',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#1c1c1c",

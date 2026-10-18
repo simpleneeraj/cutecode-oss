@@ -12,6 +12,12 @@ export const vercel: Theme = {
   font: "geist-mono",
   partner: true,
   group: "Brands",
+  sample: {
+    language: "TypeScript",
+    fileName: "stream-story.ts",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/vercel.svg",
+    code: 'import { streamText } from "ai";\n\nconst result = streamText({\n  model: "anthropic/claude-sonnet-5.5",\n  prompt: "Write a haiku about shipping on Fridays.",\n});\n\nfor await (const textPart of result.textStream) {\n  console.log(textPart);\n}',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "hsla(0, 0%, 9%,1)",

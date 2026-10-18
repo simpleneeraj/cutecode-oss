@@ -12,6 +12,12 @@ export const cloudflare: Theme = {
   font: "ibm-plex-mono",
   partner: true,
   group: "Brands",
+  sample: {
+    language: "JavaScript",
+    fileName: "worker.js",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/javascript.svg",
+    code: 'export default {\n  async fetch(request, env, ctx) {\n    const url = new URL(request.url);\n    if (url.pathname === "/hello") {\n      return new Response("Hello from the edge!");\n    }\n    return new Response("Not found", { status: 404 });\n  },\n};',
+  },
   lineNumbers: true,
   lineNumbersToggleable: true,
   syntax: {

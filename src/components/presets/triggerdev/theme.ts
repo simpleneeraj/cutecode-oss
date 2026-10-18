@@ -12,6 +12,12 @@ export const triggerdev: Theme = {
   font: "geist-mono",
   partner: true,
   group: "Brands",
+  sample: {
+    language: "TypeScript",
+    fileName: "hello-world.ts",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/trigger.svg",
+    code: 'import { task } from "@trigger.dev/sdk";\n\nexport const helloWorld = task({\n  id: "hello-world",\n  run: async (payload: { message: string }) => {\n    console.log(payload.message);\n    return { delivered: true };\n  },\n});',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#2E2E4B",

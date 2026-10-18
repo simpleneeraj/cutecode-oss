@@ -10,6 +10,12 @@ export const claude: Theme = {
   },
   icon: { type: IconType.IMAGE, source: "/editor/assets/claude/logo.svg" },
   group: "Brands",
+  sample: {
+    language: "TypeScript",
+    fileName: "ask-claude.ts",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/typescript.svg",
+    code: 'import Anthropic from "@anthropic-ai/sdk";\n\nconst client = new Anthropic();\nconst message = await client.messages.create({\n  model: "claude-opus-5-5",\n  max_tokens: 1024,\n  messages: [{ role: "user", content: "Hello, Claude" }],\n});\n\nfor (const block of message.content) {\n  if (block.type === "text") console.log(block.text);\n}',
+  },
   font: "soehne-mono",
   tags: [BadgeVariant.NEW],
   syntax: {

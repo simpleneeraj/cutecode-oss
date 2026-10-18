@@ -11,6 +11,12 @@ export const openai: Theme = {
   icon: { type: IconType.IMAGE, source: "/editor/assets/openai/logo.svg" },
   partner: true,
   group: "Brands",
+  sample: {
+    language: "TypeScript",
+    fileName: "bedtime-story.ts",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/typescript.svg",
+    code: 'import OpenAI from "openai";\n\nconst client = new OpenAI();\n\nconst response = await client.responses.create({\n  model: "gpt-6-astra",\n  input: "Write a one-sentence bedtime story about a unicorn.",\n});\n\nconsole.log(response.output_text);',
+  },
   font: "soehne-mono",
   lineNumbers: true,
   syntax: {

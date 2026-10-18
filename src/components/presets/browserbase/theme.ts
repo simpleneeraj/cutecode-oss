@@ -11,6 +11,12 @@ export const browserbase: Theme = {
   icon: { type: IconType.IMAGE, source: "/editor/assets/browserbase/logo.svg" },
   partner: true,
   group: "Brands",
+  sample: {
+    language: "TypeScript",
+    fileName: "browse.ts",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/playwright.svg",
+    code: 'import Browserbase from "@browserbasehq/sdk";\nimport { chromium } from "playwright-core";\n\nconst bb = new Browserbase({ apiKey: process.env.BROWSERBASE_API_KEY });\nconst session = await bb.sessions.create({ timeout: 60, keepAlive: false });\n\nconst browser = await chromium.connectOverCDP(session.connectUrl);\nconst page = browser.contexts()[0].pages()[0];\n\nawait page.goto("https://www.browserbase.com/", { waitUntil: "domcontentloaded" });\nconsole.log(await page.title());\nawait browser.close();',
+  },
   font: "space-mono",
   lineNumbers: true,
   syntax: {

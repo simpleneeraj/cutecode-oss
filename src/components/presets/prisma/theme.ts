@@ -11,6 +11,12 @@ export const prisma: Theme = {
   icon: { type: IconType.IMAGE, source: "/editor/assets/prisma/logo.svg" },
   partner: true,
   group: "Brands",
+  sample: {
+    language: "TypeScript",
+    fileName: "users.ts",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/prisma.svg",
+    code: 'import { PrismaClient } from "./generated/prisma/client";\n\nconst prisma = new PrismaClient();\n\nconst posts = await prisma.post.findMany({\n  where: { published: true },\n  include: { author: true },\n  orderBy: { createdAt: "desc" },\n  take: 20,\n});',
+  },
   lineNumbers: false,
   syntax: {
     light: convertToShikiTheme({

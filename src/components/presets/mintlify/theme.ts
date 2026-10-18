@@ -11,6 +11,12 @@ export const mintlify: Theme = {
   icon: { type: IconType.IMAGE, source: "/editor/assets/mintlify/logo.svg" },
   partner: true,
   group: "Brands",
+  sample: {
+    language: "JSON",
+    fileName: "docs.json",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/json.svg",
+    code: '{\n  "$schema": "https://mintlify.com/docs.json",\n  "theme": "mint",\n  "name": "Acme Docs",\n  "colors": { "primary": "#0D9373" },\n  "navigation": {\n    "groups": [\n      { "group": "Get started", "pages": ["index", "quickstart"] }\n    ]\n  }\n}',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#171717",

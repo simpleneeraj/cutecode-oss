@@ -12,6 +12,12 @@ export const resend: Theme = {
   font: "commit-mono",
   partner: true,
   group: "Brands",
+  sample: {
+    language: "TypeScript",
+    fileName: "send-welcome.ts",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/typescript.svg",
+    code: 'import { Resend } from "resend";\n\nconst resend = new Resend(process.env.RESEND_API_KEY);\n\nconst { data, error } = await resend.emails.send({\n  from: "Acme <onboarding@resend.dev>",\n  to: ["delivered@resend.dev"],\n  subject: "Welcome aboard",\n  html: "<strong>It works!</strong>",\n});\n\nconsole.log(error ?? data);',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#111111",

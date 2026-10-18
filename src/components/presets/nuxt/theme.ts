@@ -12,6 +12,12 @@ export const nuxt: Theme = {
   font: "geist-mono",
   partner: true,
   group: "Brands",
+  sample: {
+    language: "Vue",
+    fileName: "modules.vue",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/nuxt.svg",
+    code: '<script setup lang="ts">\nconst { data, status, error, refresh } = await useFetch("/api/modules", {\n  pick: ["title"],\n});\n</script>\n\n<template>\n  <p v-if="status === \'pending\'">Loading...</p>\n  <p v-else-if="error">{{ error.message }}</p>\n  <h1 v-else>{{ data?.title }}</h1>\n  <button @click="refresh()">Refresh</button>\n</template>',
+  },
   lineNumbers: true,
   syntax: {
     light: convertToShikiTheme({

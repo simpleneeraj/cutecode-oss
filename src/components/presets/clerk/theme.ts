@@ -11,6 +11,12 @@ export const clerk: Theme = {
   icon: { type: IconType.IMAGE, source: "/editor/assets/clerk/logo.svg" },
   partner: true,
   group: "Brands",
+  sample: {
+    language: "TypeScript",
+    fileName: "proxy.ts",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/typescript.svg",
+    code: 'import { clerkMiddleware } from "@clerk/nextjs/server";\n\nexport default clerkMiddleware();\n\nexport const config = {\n  matcher: [\n    "/((?!_next|[^?]*\\\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",\n    "/(api|trpc)(.*)",\n    "/__clerk/(.*)",\n  ],\n};',
+  },
   lineNumbers: true,
   font: "geist-mono",
   syntax: {
