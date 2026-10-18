@@ -17,7 +17,9 @@
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
     "db:seed": "tsx src/db/seed.ts",
-    "dodo:products": "tsx scripts/dodo/products.ts"
+    "dodo:products": "tsx scripts/dodo/products.ts",
+    "env:pull": "tsx scripts/env.ts pull",
+    "env:check": "tsx scripts/env.ts check"
   },
   "dependencies": {
     "@astral-sh/ruff-wasm-web": "0.15.9",
