@@ -89,13 +89,13 @@
 
 .light .snapshot {
   border-color: #fffdf8;
-  box-shadow: 0 4px 12px rgba(120, 72, 40, 0.16);
+  filter: drop-shadow(0 4px 12px rgba(120, 72, 40, 0.16));
   opacity: 0.85;
 }
 
 .dark .snapshot {
   border-color: #e8dfcf;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.5));
   opacity: 0.55;
 }
 
@@ -115,12 +115,12 @@
 
 .light .mote {
   background: rgba(255, 250, 240, 0.95);
-  box-shadow: 0 0 4px rgba(251, 191, 36, 0.5);
+  filter: drop-shadow(0 0 4px rgba(251, 191, 36, 0.5));
 }
 
 .dark .mote {
   background: rgba(253, 230, 190, 0.8);
-  box-shadow: 0 0 5px rgba(251, 191, 36, 0.45);
+  filter: drop-shadow(0 0 5px rgba(251, 191, 36, 0.45));
 }
 
 .grain {
@@ -152,19 +152,13 @@
 .light .window {
   border-color: #fffdf8;
   background: #f7f1e7;
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.9),
-    0 14px 40px rgba(120, 72, 40, 0.18),
-    0 2px 6px rgba(120, 72, 40, 0.08);
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.9)) drop-shadow(0 14px 40px rgba(120, 72, 40, 0.18)) drop-shadow(0 2px 6px rgba(120, 72, 40, 0.08));
 }
 
 .dark .window {
   border-color: #e8dfcf;
   background: #1b1713;
-  box-shadow:
-    0 0 50px rgba(217, 119, 6, 0.08),
-    0 24px 70px rgba(0, 0, 0, 0.7),
-    0 2px 6px rgba(0, 0, 0, 0.4);
+  filter: drop-shadow(0 0 50px rgba(217, 119, 6, 0.08)) drop-shadow(0 24px 70px rgba(0, 0, 0, 0.7)) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
 }
 
 .topEdge {

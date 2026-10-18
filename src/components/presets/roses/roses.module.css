@@ -87,12 +87,12 @@
 
 .light .petal {
   background: linear-gradient(135deg, #fecdd6 0%, #f17891 60%, #d9465f 100%);
-  box-shadow: 0 2px 6px rgba(190, 18, 60, 0.18);
+  filter: drop-shadow(0 2px 6px rgba(190, 18, 60, 0.18));
 }
 
 .dark .petal {
   background: linear-gradient(135deg, #fb7185 0%, #be123c 60%, #7f1d1d 100%);
-  box-shadow: 0 0 8px rgba(244, 63, 94, 0.35);
+  filter: drop-shadow(0 0 8px rgba(244, 63, 94, 0.35));
 }
 
 .leaf {
@@ -119,20 +119,15 @@
 }
 
 .light .window {
+  border: 1px solid rgba(192, 48, 74, 0.14);
   background: rgba(255, 250, 251, 0.95);
-  box-shadow:
-    0 0 0 1px rgba(192, 48, 74, 0.14),
-    0 14px 44px rgba(159, 18, 57, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.98);
+  filter: drop-shadow(0 14px 44px rgba(159, 18, 57, 0.12));
 }
 
 .dark .window {
+  border: 1px solid rgba(255, 110, 136, 0.14);
   background: #16060a;
-  box-shadow:
-    0 0 0 1px rgba(255, 110, 136, 0.14),
-    0 0 60px rgba(190, 18, 60, 0.12),
-    0 24px 75px rgba(0, 0, 0, 0.8),
-    inset 0 1px 0 rgba(255, 180, 195, 0.06);
+  filter: drop-shadow(0 0 60px rgba(190, 18, 60, 0.12)) drop-shadow(0 24px 75px rgba(0, 0, 0, 0.8));
 }
 
 .topEdge {
@@ -204,17 +199,17 @@
 
 .dot:nth-child(1) {
   background: radial-gradient(circle at 35% 35%, #fda4af, #be123c);
-  box-shadow: 0 1px 4px rgba(190, 18, 60, 0.45);
+  filter: drop-shadow(0 1px 4px rgba(190, 18, 60, 0.45));
 }
 
 .dot:nth-child(2) {
   background: radial-gradient(circle at 35% 35%, #fecdd3, #e11d48);
-  box-shadow: 0 1px 4px rgba(225, 29, 72, 0.4);
+  filter: drop-shadow(0 1px 4px rgba(225, 29, 72, 0.4));
 }
 
 .dot:nth-child(3) {
   background: radial-gradient(circle at 35% 35%, #f5d0c5, #c2786a);
-  box-shadow: 0 1px 4px rgba(194, 120, 106, 0.45);
+  filter: drop-shadow(0 1px 4px rgba(194, 120, 106, 0.45));
 }
 
 .fileName {

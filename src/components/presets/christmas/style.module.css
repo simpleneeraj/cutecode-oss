@@ -184,8 +184,8 @@
 }
 
 .light .flake {
+  border: 0.5px solid rgba(47, 90, 69, 0.18);
   background: radial-gradient(circle, #ffffff 35%, rgba(255, 255, 255, 0) 75%);
-  box-shadow: 0 0 0 0.5px rgba(47, 90, 69, 0.18);
 }
 
 .dark .flake {
@@ -200,20 +200,15 @@
 }
 
 .light .window {
+  border: 1px solid rgba(47, 90, 69, 0.14);
   background: rgba(255, 253, 248, 0.95);
-  box-shadow:
-    0 0 0 1px rgba(47, 90, 69, 0.14),
-    0 14px 44px rgba(15, 46, 34, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.98);
+  filter: drop-shadow(0 14px 44px rgba(15, 46, 34, 0.12));
 }
 
 .dark .window {
+  border: 1px solid rgba(110, 231, 183, 0.1);
   background: #0a1a13;
-  box-shadow:
-    0 0 0 1px rgba(110, 231, 183, 0.1),
-    0 0 55px rgba(245, 158, 11, 0.08),
-    0 24px 75px rgba(0, 0, 0, 0.75),
-    inset 0 1px 0 rgba(254, 243, 199, 0.05);
+  filter: drop-shadow(0 0 55px rgba(245, 158, 11, 0.08)) drop-shadow(0 24px 75px rgba(0, 0, 0, 0.75));
 }
 
 .topEdge {
@@ -285,17 +280,17 @@
 
 .dot:nth-child(1) {
   background: radial-gradient(circle at 35% 35%, #fda4af, #be123c);
-  box-shadow: 0 1px 4px rgba(190, 18, 60, 0.45);
+  filter: drop-shadow(0 1px 4px rgba(190, 18, 60, 0.45));
 }
 
 .dot:nth-child(2) {
   background: radial-gradient(circle at 35% 35%, #fde68a, #d97706);
-  box-shadow: 0 1px 4px rgba(217, 119, 6, 0.45);
+  filter: drop-shadow(0 1px 4px rgba(217, 119, 6, 0.45));
 }
 
 .dot:nth-child(3) {
   background: radial-gradient(circle at 35% 35%, #86efac, #166534);
-  box-shadow: 0 1px 4px rgba(22, 101, 52, 0.45);
+  filter: drop-shadow(0 1px 4px rgba(22, 101, 52, 0.45));
 }
 
 .fileName {

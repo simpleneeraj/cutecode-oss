@@ -105,7 +105,7 @@
 
 .light .bean {
   background: radial-gradient(circle at 35% 30%, #a0673a, #5c3317);
-  box-shadow: 0 2px 6px rgba(92, 51, 23, 0.25);
+  filter: drop-shadow(0 2px 6px rgba(92, 51, 23, 0.25));
   opacity: 0.55;
 }
 
@@ -116,7 +116,7 @@
 
 .dark .bean {
   background: radial-gradient(circle at 35% 30%, #b07a48, #4a2a14);
-  box-shadow: 0 0 8px rgba(212, 163, 115, 0.2);
+  filter: drop-shadow(0 0 8px rgba(212, 163, 115, 0.2));
   opacity: 0.45;
 }
 
@@ -132,20 +132,15 @@
 }
 
 .light .window {
+  border: 1px solid rgba(139, 90, 43, 0.12);
   background: rgba(255, 252, 245, 0.95);
-  box-shadow:
-    0 0 0 1px rgba(139, 90, 43, 0.12),
-    0 14px 44px rgba(92, 51, 23, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.98);
+  filter: drop-shadow(0 14px 44px rgba(92, 51, 23, 0.12));
 }
 
 .dark .window {
+  border: 1px solid rgba(212, 163, 115, 0.14);
   background: #1e130c;
-  box-shadow:
-    0 0 0 1px rgba(212, 163, 115, 0.14),
-    0 0 55px rgba(139, 90, 43, 0.1),
-    0 24px 75px rgba(0, 0, 0, 0.75),
-    inset 0 1px 0 rgba(250, 237, 205, 0.05);
+  filter: drop-shadow(0 0 55px rgba(139, 90, 43, 0.1)) drop-shadow(0 24px 75px rgba(0, 0, 0, 0.75));
 }
 
 .topEdge {
@@ -217,17 +212,17 @@
 
 .dot:nth-child(1) {
   background: radial-gradient(circle at 35% 35%, #a0673a, #4a2a14);
-  box-shadow: 0 1px 4px rgba(74, 42, 20, 0.5);
+  filter: drop-shadow(0 1px 4px rgba(74, 42, 20, 0.5));
 }
 
 .dot:nth-child(2) {
   background: radial-gradient(circle at 35% 35%, #e0b483, #a0673a);
-  box-shadow: 0 1px 4px rgba(160, 103, 58, 0.45);
+  filter: drop-shadow(0 1px 4px rgba(160, 103, 58, 0.45));
 }
 
 .dot:nth-child(3) {
   background: radial-gradient(circle at 35% 35%, #fefae0, #d4a373);
-  box-shadow: 0 1px 4px rgba(212, 163, 115, 0.45);
+  filter: drop-shadow(0 1px 4px rgba(212, 163, 115, 0.45));
 }
 
 .fileName {
