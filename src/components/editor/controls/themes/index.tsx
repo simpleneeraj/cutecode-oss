@@ -31,36 +31,51 @@ import { groupThemes } from "@/components/presets/themes/shared";
 import { isPristineCode, sampleUpdate } from "@/components/presets/themes/samples";
 import { AccessLevel } from "@/typings/enums";
 import { trackEditor } from "@/lib/analytics";
-import { dockPopup, dockTrigger } from "../dock-styles";
+import { dockLabel, dockPopup, dockTrigger } from "../dock-styles";
 
 interface ThemeIconProps {
   theme: Theme;
   className?: string;
 }
 
+const isTileGlyph = (source: string) => source.endsWith("/glyph.svg");
+
+function ThemeTile({ className, children }: { className?: string; children: React.ReactNode }) {
+  return (
+    <span className={cn("shrink-0 p-px", className)}>
+      <span className="grid size-full place-items-center overflow-hidden rounded-md bg-muted ring-1 ring-border ring-inset">
+        {children}
+      </span>
+    </span>
+  );
+}
+
 function ThemeIcon({ theme, className }: ThemeIconProps) {
   if (!theme.icon) {
     return (
-      <div
-        className={cn("rounded-full", className)}
-        style={{
-          backgroundImage: `linear-gradient(140deg, ${theme?.background?.from}, ${theme?.background?.to})`,
-        }}
-      />
+      <ThemeTile className={className}>
+        <span
+          className="size-full"
+          style={{ backgroundImage: `linear-gradient(140deg, ${theme.background?.from}, ${theme.background?.to})` }}
+        />
+      </ThemeTile>
     );
+  }
+  if (theme.icon.type === IconType.IMAGE && isTileGlyph(theme.icon.source)) {
+    return <img src={theme.icon.source} alt="" loading="lazy" decoding="async" className={cn("shrink-0", className)} />;
   }
   if (theme.icon.type === IconType.IMAGE) {
     return (
-      <img
-        src={theme.icon.source}
-        alt={`${theme.name} icon`}
-        loading="lazy"
-        decoding="async"
-        className={cn("shrink-0", className)}
-      />
+      <ThemeTile className={className}>
+        <img src={theme.icon.source} alt="" loading="lazy" decoding="async" className="size-3/5 object-contain" />
+      </ThemeTile>
     );
   }
-  return <Icon icon={theme.icon.source} className={className} />;
+  return (
+    <ThemeTile className={className}>
+      <Icon icon={theme.icon.source} className="size-3/5" />
+    </ThemeTile>
+  );
 }
 
 function Badges({ tags, access }: { tags?: Theme["tags"]; access: AccessLevel }) {
@@ -137,7 +152,8 @@ const ThemeControl: React.FC = () => {
               </span>
             )}
           </ComboboxValue>
-          <HugeiconsIcon icon={ArrowDown01Icon} className="size-3.5 text-muted-foreground" aria-hidden="true" />
+          <HugeiconsIcon icon={ArrowDown01Icon} className="hidden size-3.5 text-muted-foreground sm:block" aria-hidden="true" />
+          <span className={dockLabel()}>Theme</span>
         </ComboboxTrigger>
         <ComboboxPopup side="top" align="center" sideOffset={8} className={dockPopup()} aria-label="Select theme">
           <div className="border-b p-2">

@@ -9,7 +9,7 @@ export default function Watermark() {
   return (
     <div className={styles.watermark} aria-hidden="true" data-export-overlay>
       <span className={styles.watermarkMark} />
-      coolsnippets.fun
+      cutecode.app
     </div>
   );
 }

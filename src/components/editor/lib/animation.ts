@@ -48,8 +48,8 @@ function drawTiledWatermark(canvas: HTMLCanvasElement, pixelRatio: number) {
   for (let y = -reach / 2, row = 0; y < reach / 2; y += step.y, row += 1) {
     const shift = row % 2 === 0 ? 0 : step.x / 2;
     for (let x = -reach / 2 + shift; x < reach / 2; x += step.x) {
-      context.strokeText("coolsnippets.fun", x, y);
-      context.fillText("coolsnippets.fun", x, y);
+      context.strokeText("cutecode.app", x, y);
+      context.fillText("cutecode.app", x, y);
     }
   }
 

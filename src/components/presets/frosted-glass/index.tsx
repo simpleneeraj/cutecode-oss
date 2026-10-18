@@ -36,10 +36,7 @@ function TwinklingGlint({ glint }: { glint: Glint }) {
   const rotate = useLoop([0, 90]);
 
   return (
-    <motion.span
-      className={styles.glint}
-      style={{ left: `${glint.x}%`, top: `${glint.y}%`, opacity, scale, rotate }}
-    >
+    <motion.span className={styles.glint} style={{ left: `${glint.x}%`, top: `${glint.y}%`, opacity, scale, rotate }}>
       <Icon icon="solar:stars-minimalistic-bold-duotone" width={glint.size} height={glint.size} />
     </motion.span>
   );
@@ -76,7 +73,5 @@ const background = <FrostedGlassScene />;
 const accent = <FrostPane />;
 
 export default function FrostedGlassFrame(props: BaseFrameProps) {
-  return (
-    <SceneFrame {...props} themeStyles={styles} background={background} accent={accent} />
-  );
+  return <SceneFrame {...props} themeStyles={styles} background={background} accent={accent} />;
 }

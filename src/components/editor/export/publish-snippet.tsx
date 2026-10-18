@@ -10,18 +10,18 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Field, FieldLabel } from "@/components/ui/field";
+import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { OTPField, OTPFieldInput } from "@/components/ui/otp-field";
 import { Spinner } from "@/components/ui/spinner";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Share01Icon, CancelCircleIcon } from "@hugeicons/core-free-icons";
+import { Share01Icon, Cancel01Icon } from "@hugeicons/core-free-icons";
 import { useAtomValue, useSetAtom } from "jotai";
 import { dispatchPublishSnippetAtom, publishSnippetAtom } from "./store";
 import { Visibility } from "./types";
 import { AnimatePresence, motion } from "motion/react";
-import { usePublish, usePublishQuota, type PublishQuota } from "@/hooks/use-publish";
+import { usePublish, usePublishQuota } from "@/hooks/use-publish";
 import {
   currentElementIdAtom,
   currentSlideIdAtom,
@@ -36,36 +36,18 @@ import React, { useState } from "react";
 import SuccessDialog from "./success-dialog";
 import { useSubscription } from "@/hooks/use-subscription";
 import { plansDialogOpenAtom } from "@/store/editor/plans";
-import { PLANS } from "@/lib/billing/plans";
 import { Plan } from "@/db/schema";
 import { trackSnippet } from "@/lib/analytics";
 import { isForbiddenError } from "@/lib/trpc-error";
 import VisibilitySelect from "./visibility-select";
 import { visibilityConfig } from "./visibility-config";
+import PublishQuota from "./publish-quota";
 
 const OTP_LENGTH = 6;
 const OTP_SLOTS = Array.from({ length: OTP_LENGTH }, (_, i) => `otp-slot-${i}`);
 
-function formatResetTime(iso: string) {
-  return new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" }).format(new Date(iso));
-}
-
-function describeQuota({ dailyLimit, dailyRemaining, dailyResetsAt, liveLimit, liveRemaining }: PublishQuota) {
-  const daily = dailyLimit === null ? "" : `${dailyRemaining} of ${dailyLimit} publishes left today`;
-  const live = liveLimit === null ? "" : `${liveRemaining} of ${liveLimit} live snippets left`;
-  const reset = dailyRemaining === 0 && dailyResetsAt ? `Next publish at ${formatResetTime(dailyResetsAt)}` : "";
-  return [[daily, live].filter(Boolean).join(", "), reset].filter(Boolean).join(". ");
-}
-
-function upgradeHint(plan: Plan) {
-  if (plan === Plan.FREE) return `Pro raises this to ${PLANS.PRO.dailyPublishes} a day with no live limit.`;
-  if (plan === Plan.PRO) return `Premium raises this to ${PLANS.PREMIUM.dailyPublishes} a day.`;
-  return null;
-}
-
 const PublishSnippet: React.FC = () => {
   const [open, setOpen] = useState(false);
-  const [isPending, setIsPending] = useState(false);
 
   const { title, tags, description, visibility, passcode, isSuccessOpen, publishedUrl } =
     useAtomValue(publishSnippetAtom);
@@ -79,7 +61,7 @@ const PublishSnippet: React.FC = () => {
   const fileName = useAtomValue(fileNameAtom);
 
   const { isSignedIn, isLoaded } = useUser();
-  const { publish } = usePublish();
+  const { trigger: publish, isMutating: isPending } = usePublish();
   const { can, plan, isFree } = useSubscription();
   const { data: quota, mutate: refreshQuota } = usePublishQuota(!!isSignedIn);
   const activePlan = isFree ? Plan.FREE : plan;
@@ -112,7 +94,6 @@ const PublishSnippet: React.FC = () => {
       return;
     }
 
-    setIsPending(true);
     try {
       const { slug } = await publish({
         name: fileName || "Untitled Presentation",
@@ -147,12 +128,25 @@ const PublishSnippet: React.FC = () => {
       } else {
         toast.error("Failed to publish snippet.");
       }
-    } finally {
-      setIsPending(false);
     }
   };
 
   const isPublishDisabled = isPending || (visibility === Visibility.PASSCODE && passcode.length < OTP_LENGTH);
+
+  const onTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key !== "Enter" && e.key !== ",") return;
+    e.preventDefault();
+    const val = e.currentTarget.value.trim();
+    if (val && !tags.includes(val) && tags.length < 10) {
+      dispatch({ tags: [...tags, val] });
+      e.currentTarget.value = "";
+    }
+  };
+
+  const onUpgrade = () => {
+    setOpen(false);
+    setPlansOpen(true);
+  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -168,107 +162,77 @@ const PublishSnippet: React.FC = () => {
         )}
       </div>
 
-      <DialogPopup className="sm:max-w-md overflow-hidden rounded-2xl p-0">
-        <DialogHeader className="relative px-5 pt-5 pb-4">
-          <DialogTitle className="flex items-center gap-2.5 text-base">
-            <span className="flex size-8 items-center justify-center rounded-xl bg-foreground text-background">
-              <HugeiconsIcon icon={Share01Icon} className="size-4" aria-hidden="true" />
-            </span>
-            Publish Snippet
-          </DialogTitle>
-          <DialogDescription className="mt-1 text-xs text-muted-foreground">
-            Share your snippet publicly, protect it with a passcode, or keep it private.
-            {quota?.dailyLimit != null && (
-              <span className="mt-1 block text-muted-foreground">
-                {describeQuota(quota)}. {upgradeHint(activePlan)}
-              </span>
-            )}
-          </DialogDescription>
+      <DialogPopup className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle className="font-medium text-base">Publish snippet</DialogTitle>
+          <DialogDescription>Share a link to this snippet with anyone.</DialogDescription>
         </DialogHeader>
 
-        <DialogPanel className="flex flex-col gap-4 px-5">
-          {/* Title */}
+        <DialogPanel className="flex flex-col gap-4">
           <Field>
-            <FieldLabel className="text-muted-foreground text-xs">Title</FieldLabel>
+            <FieldLabel>Title</FieldLabel>
             <Input
               placeholder={fileName || "Untitled Snippet"}
               value={title}
               onChange={(e) => dispatch({ title: e.target.value })}
-              className="text-sm"
             />
           </Field>
 
-          {/* Description */}
           <Field>
-            <FieldLabel className="text-muted-foreground text-xs">Description</FieldLabel>
+            <FieldLabel>Description</FieldLabel>
             <Textarea
-              placeholder="What does this snippet do? Any usage notes…"
+              placeholder="What does this snippet do?"
               value={description}
               onChange={(e) => dispatch({ description: e.target.value })}
               rows={3}
-              className="resize-none text-sm"
+              className="resize-none"
             />
           </Field>
 
-          {/* Tags */}
           <Field>
-            <FieldLabel className="text-muted-foreground text-xs">Tags</FieldLabel>
-            <div className="flex flex-col gap-2">
-              <div className="flex flex-wrap gap-2">
+            <FieldLabel>Tags</FieldLabel>
+            <Input placeholder="Add tags" onKeyDown={onTagKeyDown} />
+            {tags.length > 0 && (
+              <div className="flex flex-wrap gap-1">
                 {tags.map((tag) => (
                   <span
                     key={tag}
-                    className="inline-flex items-center gap-1 bg-secondary text-secondary-foreground text-xs px-2 py-1 rounded-md"
+                    className="inline-flex h-6 items-center gap-1 rounded-md bg-secondary ps-2 pe-1 text-secondary-foreground text-xs"
                   >
                     {tag}
                     <button
                       type="button"
+                      aria-label={`Remove ${tag}`}
                       onClick={() => dispatch({ tags: tags.filter((t) => t !== tag) })}
-                      className="hover:text-destructive focus:outline-none"
+                      className="flex size-4 items-center justify-center rounded-sm text-muted-foreground hover:text-foreground"
                     >
-                      <HugeiconsIcon icon={CancelCircleIcon} className="size-3" aria-hidden="true" />
+                      <HugeiconsIcon icon={Cancel01Icon} className="size-3" aria-hidden="true" />
                     </button>
                   </span>
                 ))}
               </div>
-              <Input
-                placeholder="Add tags (press Enter or comma)"
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === ",") {
-                    e.preventDefault();
-                    const val = e.currentTarget.value.trim();
-                    if (val && !tags.includes(val) && tags.length < 10) {
-                      dispatch({ tags: [...tags, val] });
-                      e.currentTarget.value = "";
-                    }
-                  }
-                }}
-                className="text-sm"
-              />
-            </div>
+            )}
+            <FieldDescription>Press Enter or comma to add. Up to 10.</FieldDescription>
           </Field>
 
-          {/* Visibility */}
           <Field>
-            <FieldLabel className="text-muted-foreground text-xs">Visibility</FieldLabel>
+            <FieldLabel>Visibility</FieldLabel>
             <VisibilitySelect />
           </Field>
 
-          {/* Passcode field */}
-          <AnimatePresence>
+          <AnimatePresence initial={false}>
             {visibility === Visibility.PASSCODE && (
               <motion.div
                 key="passcode-field"
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-                style={{ overflow: "hidden" }}
+                transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+                className="overflow-hidden"
               >
-                <Field className="items-center rounded-xl border border-border bg-muted/50 p-6">
-                  <FieldLabel className="text-muted-foreground text-xs">Set a 6-digit passcode</FieldLabel>
+                <Field>
+                  <FieldLabel>Passcode</FieldLabel>
                   <OTPField
-                    size="lg"
                     value={passcode}
                     length={OTP_LENGTH}
                     aria-label="6-digit passcode"
@@ -278,28 +242,21 @@ const PublishSnippet: React.FC = () => {
                       <OTPFieldInput key={key} aria-label={`Digit ${i + 1} of ${OTP_LENGTH}`} />
                     ))}
                   </OTPField>
-                  <p className="text-xs text-muted-foreground mt-2 text-center">
-                    Share this code with anyone you want to grant access.
-                  </p>
+                  <FieldDescription>Viewers enter this 6-digit code to open the snippet.</FieldDescription>
                 </Field>
               </motion.div>
             )}
           </AnimatePresence>
         </DialogPanel>
 
-        <DialogFooter className="px-5 pb-5 pt-3 gap-2">
-          <DialogClose render={<Button className="flex-1" variant="outline" disabled={isPending} />}>
-            Cancel
-          </DialogClose>
-          <Button className="flex-1" onClick={publishSnippet} disabled={isPublishDisabled}>
-            {isPending ? (
-              <>
-                <Spinner />
-                Publishing…
-              </>
-            ) : (
-              "Publish"
-            )}
+        <DialogFooter>
+          {quota?.dailyLimit != null && (
+            <PublishQuota quota={quota} canUpgrade={activePlan !== Plan.PREMIUM} onUpgrade={onUpgrade} />
+          )}
+          <DialogClose render={<Button variant="ghost" disabled={isPending} />}>Cancel</DialogClose>
+          <Button type="button" onClick={publishSnippet} disabled={isPublishDisabled}>
+            {isPending && <Spinner />}
+            {isPending ? "Publishing…" : "Publish"}
           </Button>
         </DialogFooter>
 

@@ -1,7 +1,5 @@
-import React, { MouseEventHandler, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useAtomValue, useSetAtom } from "jotai";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { ArrowDown01Icon, Download02Icon } from "@hugeicons/core-free-icons";
 import { trackExport } from "@/lib/analytics";
 import { isSceneTheme, sceneExportTimeAtom } from "@/components/presets/scene";
 import useHotkeys from "@/utils/useHotkeys";
@@ -16,10 +14,6 @@ import {
   typingModeAtom,
 } from "@/store/editor/editor";
 import { useEditorContext } from "@/store/editor/context/editor";
-import { Popover, PopoverPopup, PopoverTrigger } from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { Group } from "@/components/ui/group";
-import { Separator } from "@/components/ui/separator";
 import { toast } from "@/components/toast";
 import { usePremiumAccess } from "@/hooks/use-premium-access";
 import { AccessLevel } from "@/typings/enums";
@@ -30,7 +24,7 @@ import { withFrozenScene, type VideoSize } from "../lib/animation";
 import { VideoEncoderChoice, encodeGif, encodeVideo, pickVideoEncoder } from "../lib/encoders";
 import ExportProgress from "./export-progress";
 import ExportPanel from "./panel";
-import { dockPopup } from "../controls/dock-styles";
+import ExportDockItem from "./export-dock-item";
 import { VideoFormat } from "./panel/enums";
 import type { VideoFormatOption } from "./panel/types";
 import useExportScale from "./panel/use-export-scale";
@@ -108,7 +102,7 @@ const ExportButton: React.FC = () => {
 
   const isVideoAvailable = isSceneTheme(theme.id) || typingMode !== TypingMode.Off;
   const videoFormats = getVideoFormats(videoEncoder, canvasSize);
-  const baseName = customFileName.replace(/\.[^.]+$/, "").replaceAll(" ", "-") || "coolsnippets";
+  const baseName = customFileName.replace(/\.[^.]+$/, "").replaceAll(" ", "-") || "cutecode";
   const uniqueFileName = (extension: string) => `${baseName}-${createFileStamp()}.${extension}`;
 
   const notifyPlanLoading = () => {
@@ -209,11 +203,6 @@ const ExportButton: React.FC = () => {
     }
   };
 
-  const handleExportClick: MouseEventHandler = (event) => {
-    event.preventDefault();
-    savePng();
-  };
-
   useHotkeys("ctrl+s,cmd+s", (event) => {
     event.preventDefault();
     savePng();
@@ -235,35 +224,20 @@ const ExportButton: React.FC = () => {
 
   return (
     <>
-      <Group aria-label="Export actions">
-        <Button variant="outline" aria-label="Export" onClick={handleExportClick}>
-          <HugeiconsIcon icon={Download02Icon} className="size-4" aria-hidden="true" />
-          <span className="hidden sm:inline">Export</span>
-        </Button>
-        <Separator orientation="vertical" />
-        <Popover onOpenChange={detectVideoEncoder}>
-          <PopoverTrigger render={<Button aria-label="Export options" size="icon" variant="outline" />}>
-            <HugeiconsIcon icon={ArrowDown01Icon} className="size-4" aria-hidden="true" />
-          </PopoverTrigger>
-
-          <PopoverPopup tooltipStyle className={dockPopup({ className: "w-80 rounded-2xl text-sm text-wrap" })}>
-            <div className="flex flex-col gap-2 py-1">
-              <ExportPanel
-                onDownloadPng={savePng}
-                onCopyPng={copyPng}
-                onDownloadSvg={saveSvg}
-                onExportVideo={saveAnimation}
-                videoFormats={videoFormats}
-                isVideoAvailable={isVideoAvailable}
-                isExporting={animatedExport !== null}
-              />
-              {isVideoAvailable && videoEncoder === null && (
-                <p className="px-1 text-muted-foreground text-xs">Use Chrome or Safari for video</p>
-              )}
-            </div>
-          </PopoverPopup>
-        </Popover>
-      </Group>
+      <ExportDockItem onExport={savePng} onOpenChange={detectVideoEncoder}>
+        <ExportPanel
+          onDownloadPng={savePng}
+          onCopyPng={copyPng}
+          onDownloadSvg={saveSvg}
+          onExportVideo={saveAnimation}
+          videoFormats={videoFormats}
+          isVideoAvailable={isVideoAvailable}
+          isExporting={animatedExport !== null}
+        />
+        {isVideoAvailable && videoEncoder === null && (
+          <p className="px-1 text-muted-foreground text-xs">Use Chrome or Safari for video</p>
+        )}
+      </ExportDockItem>
       <ExportProgress
         label={animatedExport?.label ?? null}
         slideLabel={animatedExport?.slideLabel ?? null}

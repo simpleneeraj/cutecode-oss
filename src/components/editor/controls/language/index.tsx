@@ -18,7 +18,7 @@ import { ArrowDown01Icon, Search01Icon, SourceCodeIcon } from "@hugeicons/core-f
 import { useAtomValue, useSetAtom } from "jotai";
 import { currentElementAtom, updateSlideElementAtom } from "@/store/editor/editor";
 import { trackEditor } from "@/lib/analytics";
-import { dockPopup, dockTrigger } from "../dock-styles";
+import { dockLabel, dockPopup, dockTrigger } from "../dock-styles";
 
 type LanguageItem = {
   id: string;
@@ -77,7 +77,7 @@ const LanguageControl: React.FC = () => {
           render={
             <Button
               variant="ghost"
-              className={dockTrigger({ shape: "label", className: "w-9 justify-center px-0 sm:w-auto sm:max-w-36 sm:justify-between sm:px-2.5" })}
+              className={dockTrigger({ shape: "label", className: "sm:max-w-36 sm:justify-between" })}
               render={<motion.button whileTap={{ scale: 0.96 }} />}
             />
           }
@@ -87,6 +87,7 @@ const LanguageControl: React.FC = () => {
             <ComboboxValue>{(value) => value?.name ?? "Auto-Detect"}</ComboboxValue>
           </span>
           <HugeiconsIcon icon={ArrowDown01Icon} className="hidden size-3.5 text-muted-foreground sm:block" aria-hidden="true" />
+          <span className={dockLabel()}>Code</span>
         </ComboboxTrigger>
         <ComboboxPopup side="top" align="center" sideOffset={8} className={dockPopup()}>
           <div className="border-b p-2">

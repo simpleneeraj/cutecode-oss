@@ -47,11 +47,11 @@
 
 .outerFrame[data-canvas-size="portrait"] {
   > :first-child:not(.safeZones, .watermark) {
-    padding: 14cqh 6cqw 22cqh !important;
+    padding: 18cqh 6cqw !important;
   }
 
   .watermark {
-    bottom: calc(22cqh + 10px);
+    bottom: calc(18cqh + 10px);
   }
 }
 
@@ -72,13 +72,13 @@
 
 .safeZoneTop {
   top: 0;
-  height: 14%;
+  height: 18%;
   border-bottom: 1px dashed rgb(255 255 255 / 0.35);
 }
 
 .safeZoneBottom {
   bottom: 0;
-  height: 22%;
+  height: 18%;
   border-top: 1px dashed rgb(255 255 255 / 0.35);
 }
 

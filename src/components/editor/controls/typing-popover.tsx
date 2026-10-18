@@ -11,6 +11,7 @@ export default function TypingPopover() {
   return (
     <DockPopover
       label="Typing animation"
+      mobileLabel="Type"
       icon={CursorTextIcon}
       hasDot={isOn}
     >

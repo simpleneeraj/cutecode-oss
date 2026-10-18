@@ -4,17 +4,25 @@ import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverPopup, PopoverTrigger } from "@/components/ui/popover";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "@/components/ui/tooltip";
-import { dockPopup, dockTrigger } from "./dock-styles";
+import { dockLabel, dockPopup, dockTrigger } from "./dock-styles";
 
 type DockPopoverProps = {
   label: string;
   icon: IconSvgElement;
   caption?: string;
+  mobileLabel?: string;
   hasDot?: boolean;
   children: ReactNode;
 };
 
-export default function DockPopover({ label, icon, caption, hasDot = false, children }: DockPopoverProps) {
+export default function DockPopover({
+  label,
+  icon,
+  caption,
+  mobileLabel,
+  hasDot = false,
+  children,
+}: DockPopoverProps) {
   return (
     <Popover>
       <Tooltip>
@@ -34,8 +42,16 @@ export default function DockPopover({ label, icon, caption, hasDot = false, chil
           }
         >
           <HugeiconsIcon icon={icon} className="size-4.5" aria-hidden="true" />
-          {caption && <span className="text-xs text-muted-foreground tabular-nums">{caption}</span>}
-          {hasDot && <span aria-hidden="true" className="absolute top-2 right-2 size-1.5 rounded-full bg-primary ring-2 ring-popover" />}
+          {caption && (
+            <span className="text-xs text-muted-foreground tabular-nums max-sm:text-[10px] max-sm:leading-none">{caption}</span>
+          )}
+          {!caption && mobileLabel && <span className={dockLabel()}>{mobileLabel}</span>}
+          {hasDot && (
+            <span
+              aria-hidden="true"
+              className="absolute top-2 right-2 size-1.5 rounded-full bg-primary ring-2 ring-popover max-sm:top-1.5 max-sm:right-2.5"
+            />
+          )}
         </PopoverTrigger>
         <TooltipPopup sideOffset={8}>{label}</TooltipPopup>
       </Tooltip>

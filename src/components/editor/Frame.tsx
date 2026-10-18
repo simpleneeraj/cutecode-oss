@@ -1,12 +1,13 @@
 import Presets from "../presets";
 import { cn } from "@/utils/cn";
-import React, { useContext, useLayoutEffect, useRef, useState } from "react";
+import React, { useContext } from "react";
 import { useAtomValue } from "jotai";
 import ToolbarParticle from "./Toolbar";
 import ResizableFrame from "./ResizableFrame";
 import styles from "@/styles/editor/Frame.module.css";
 import { EditorContext } from "@/store/editor/context/editor";
-import { motion, AnimatePresence, Variants, useMotionValue } from "motion/react";
+import { motion, AnimatePresence, Variants } from "motion/react";
+import { useFitScale } from "@/hooks/use-fit-scale";
 import Watermark from "./Watermark";
 import SafeZones from "./SafeZones";
 import CanvasViewport from "./CanvasViewport";
@@ -43,24 +44,6 @@ const frameInnerVariants: Variants = {
 
 const FIT_GUTTER = 32;
 
-function useFitScale() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [content, setContent] = useState<HTMLDivElement | null>(null);
-  const scale = useMotionValue(1);
-
-  useLayoutEffect(() => {
-    const container = containerRef.current;
-    if (!container || !content) return;
-    const fit = () => scale.set(Math.min(1, (container.clientWidth - FIT_GUTTER) / content.offsetWidth));
-    const observer = new ResizeObserver(fit);
-    observer.observe(container);
-    observer.observe(content);
-    return () => observer.disconnect();
-  }, [content, scale]);
-
-  return { containerRef, contentRef: setContent, scale };
-}
-
 const Frame = () => {
   const { frameRefs } = useContext(EditorContext);
 
@@ -74,7 +57,7 @@ const Frame = () => {
   const codeFont = fonts.find((font) => font.name === fontFamily);
   const frameStyle: Record<string, string> = codeFont ? { "--code-font": `var(${codeFont.variable})` } : {};
   const isAutoSize = canvasSize === CanvasSize.Auto;
-  const { containerRef, contentRef, scale } = useFitScale();
+  const { containerRef, contentRef, scale } = useFitScale(FIT_GUTTER);
 
   const refCallback = React.useCallback(
     (el: HTMLDivElement) => {

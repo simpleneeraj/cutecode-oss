@@ -32,10 +32,7 @@ function FloatingKeepsake({ keepsake, index }: { keepsake: Keepsake; index: numb
   const rotate = useLoop([keepsake.tilt, -keepsake.tilt, keepsake.tilt], { phase, ease: easeInOut });
 
   return (
-    <motion.span
-      className={styles.keepsake}
-      style={{ left: `${keepsake.x}%`, top: `${keepsake.y}%`, y, rotate }}
-    >
+    <motion.span className={styles.keepsake} style={{ left: `${keepsake.x}%`, top: `${keepsake.y}%`, y, rotate }}>
       <Icon icon={keepsake.icon} width={keepsake.size} height={keepsake.size} />
     </motion.span>
   );

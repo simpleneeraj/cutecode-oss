@@ -64,14 +64,34 @@
 
 .light .mullions {
   background:
-    linear-gradient(90deg, transparent calc(50% - 2px), rgba(71, 85, 117, 0.12) calc(50% - 2px) calc(50% + 2px), transparent calc(50% + 2px)),
-    linear-gradient(180deg, transparent calc(42% - 2px), rgba(71, 85, 117, 0.12) calc(42% - 2px) calc(42% + 2px), transparent calc(42% + 2px));
+    linear-gradient(
+      90deg,
+      transparent calc(50% - 2px),
+      rgba(71, 85, 117, 0.12) calc(50% - 2px) calc(50% + 2px),
+      transparent calc(50% + 2px)
+    ),
+    linear-gradient(
+      180deg,
+      transparent calc(42% - 2px),
+      rgba(71, 85, 117, 0.12) calc(42% - 2px) calc(42% + 2px),
+      transparent calc(42% + 2px)
+    );
 }
 
 .dark .mullions {
   background:
-    linear-gradient(90deg, transparent calc(50% - 2px), rgba(5, 7, 14, 0.7) calc(50% - 2px) calc(50% + 2px), transparent calc(50% + 2px)),
-    linear-gradient(180deg, transparent calc(42% - 2px), rgba(5, 7, 14, 0.7) calc(42% - 2px) calc(42% + 2px), transparent calc(42% + 2px));
+    linear-gradient(
+      90deg,
+      transparent calc(50% - 2px),
+      rgba(5, 7, 14, 0.7) calc(50% - 2px) calc(50% + 2px),
+      transparent calc(50% + 2px)
+    ),
+    linear-gradient(
+      180deg,
+      transparent calc(42% - 2px),
+      rgba(5, 7, 14, 0.7) calc(42% - 2px) calc(42% + 2px),
+      transparent calc(42% + 2px)
+    );
 }
 
 .streak {

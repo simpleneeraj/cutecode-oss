@@ -23,7 +23,7 @@ import { usePremiumAccess } from "@/hooks/use-premium-access";
 import { Badge } from "@/components/ui/badge";
 import View from "@/components/view";
 import { trackEditor } from "@/lib/analytics";
-import { dockPopup, dockTrigger } from "../dock-styles";
+import { dockLabel, dockPopup, dockTrigger } from "../dock-styles";
 
 type FontFaceItem = {
   name: string;
@@ -74,6 +74,7 @@ export default function FontFaceControl() {
           }
         >
           <HugeiconsIcon icon={TextFontIcon} className="size-4.5" aria-hidden="true" />
+          <span className={dockLabel()}>Font</span>
         </ComboboxTrigger>
         <TooltipPopup sideOffset={8}>Font</TooltipPopup>
       </Tooltip>

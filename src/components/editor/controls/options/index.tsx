@@ -12,7 +12,7 @@ import {
 import useHotkeys from "@/utils/useHotkeys";
 import { motion } from "motion/react";
 import OptionToggle from "./option-toggle";
-import { dockPopup, dockTrigger } from "../dock-styles";
+import { dockLabel, dockPopup, dockTrigger } from "../dock-styles";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { SlidersHorizontalIcon, Image01Icon, HashtagIcon, Delete02Icon } from "@hugeicons/core-free-icons";
 
@@ -56,6 +56,7 @@ const OptionsControl: React.FC = () => {
           }
         >
           <HugeiconsIcon icon={SlidersHorizontalIcon} className="size-4.5" aria-hidden="true" />
+          <span className={dockLabel()}>More</span>
         </MenuTrigger>
         <TooltipPopup sideOffset={8}>Display options</TooltipPopup>
       </Tooltip>

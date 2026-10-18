@@ -10,6 +10,7 @@ import OptionsControl from "./options";
 import FontFaceControl from "./font-face";
 import CanvasSizePopover from "./canvas-size/canvas-size-popover";
 import TypingPopover from "./typing-popover";
+import ExportButton from "../export";
 
 const entrance = { type: "spring", stiffness: 380, damping: 32, delay: 0.1 } as const;
 
@@ -20,8 +21,8 @@ const dock = tv({
       "scrollbar-hide w-full overflow-x-auto overscroll-x-contain border-t bg-background/70 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl",
       "sm:w-auto sm:max-w-full sm:rounded-2xl sm:border sm:border-border/60 sm:bg-popover/90 sm:pb-0 sm:shadow-lg",
     ],
-    track: "flex h-14 w-max min-w-full items-center justify-evenly gap-1 px-2 sm:h-auto sm:min-w-0 sm:justify-start sm:p-1.5",
-    divider: "mx-1 h-5 w-px bg-border",
+    track: "flex h-16 w-max min-w-full items-center gap-0 px-1 sm:h-auto sm:min-w-0 sm:justify-start sm:gap-1 sm:p-1.5",
+    divider: "mx-1 hidden h-5 w-px bg-border sm:block",
   },
 });
 
@@ -42,6 +43,8 @@ export default function Controls() {
           <CanvasSizePopover />
           <Separator orientation="vertical" className={divider()} />
           <TypingPopover />
+          <Separator orientation="vertical" className={divider()} />
+          <ExportButton />
           <OptionsControl />
         </div>
       </div>
