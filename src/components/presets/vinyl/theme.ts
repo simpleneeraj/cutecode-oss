@@ -12,6 +12,12 @@ export const vinyl: Theme = {
   group: "Lofi",
   font: "geist-mono",
   tags: [BadgeVariant.NEW, BadgeVariant.PREMIUM],
+  sample: {
+    language: "Rust",
+    fileName: "turntable.rs",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/rust.svg",
+    code: 'fn groove_seconds(rpm: f64, rotations: u32) -> f64 {\n    rotations as f64 * 60.0 / rpm\n}\n\nfn main() {\n    let sides = [("Side A", 33.3), ("Side B", 45.0)];\n    for (label, rpm) in sides {\n        let minutes = groove_seconds(rpm, 700) / 60.0;\n        println!("{label} at {rpm} rpm plays {minutes:.1} min");\n    }\n}',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#3b2a1e",

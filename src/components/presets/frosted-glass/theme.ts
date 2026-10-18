@@ -12,6 +12,12 @@ export const frostedGlass: Theme = {
   group: "Cozy",
   font: "geist-mono",
   tags: [BadgeVariant.NEW, BadgeVariant.PREMIUM],
+  sample: {
+    language: "SCSS",
+    fileName: "frosted.scss",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/sass.svg",
+    code: "$frost: rgba(255, 255, 255, 0.45);\n\n@mixin glass($blur: 18px) {\n  background: $frost;\n  backdrop-filter: blur($blur) saturate(160%);\n  border: 1px solid rgba(255, 255, 255, 0.6);\n}\n\n.frosted-panel {\n  @include glass(24px);\n  border-radius: 20px;\n}",
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#1e1b4b",

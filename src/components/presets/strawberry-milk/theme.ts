@@ -12,6 +12,12 @@ export const strawberryMilk: Theme = {
   group: "Romantic",
   font: "fira-code",
   tags: [BadgeVariant.NEW, BadgeVariant.PREMIUM],
+  sample: {
+    language: "TSX",
+    fileName: "StrawberryMilk.tsx",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/react_ts.svg",
+    code: 'import { useState } from "react";\n\nexport function StrawberryMilk() {\n  const [sips, setSips] = useState(0);\n  const left = Math.max(0, 100 - sips * 20);\n\n  return (\n    <button onClick={() => setSips(sips + 1)} disabled={left === 0}>\n      {left > 0 ? `Sip (${left}% left)` : "All gone, refill?"}\n    </button>\n  );\n}',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#3d0015",

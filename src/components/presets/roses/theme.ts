@@ -11,6 +11,12 @@ export const roses: Theme = {
   group: "Romantic",
   icon: { type: IconType.IMAGE, source: "/editor/assets/roses/glyph.svg" },
   tags: [BadgeVariant.PREMIUM],
+  sample: {
+    language: "Elixir",
+    fileName: "bouquet.ex",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/elixir.svg",
+    code: 'defmodule Bouquet do\n  @colors ~w(red blush ivory)\n\n  def arrange(count) do\n    @colors\n    |> Stream.cycle()\n    |> Enum.take(count)\n    |> Enum.frequencies()\n  end\nend\n\nIO.inspect(Bouquet.arrange(12), label: "a dozen roses")',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#5c1a26",

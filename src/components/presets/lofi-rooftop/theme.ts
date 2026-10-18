@@ -12,6 +12,12 @@ export const lofiRooftop: Theme = {
   group: "Lofi",
   font: "geist-mono",
   tags: [BadgeVariant.NEW, BadgeVariant.PREMIUM],
+  sample: {
+    language: "Go",
+    fileName: "rooftop.go",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/go.svg",
+    code: 'package main\n\nimport "fmt"\n\nfunc main() {\n\tsunset := 18*60 + 42\n\tfor _, mins := range []int{30, 15, 5} {\n\t\tt := sunset - mins\n\t\tfmt.Printf("Rooftop beats at %02d:%02d\\n", t/60, t%60)\n\t}\n}',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#33284a",

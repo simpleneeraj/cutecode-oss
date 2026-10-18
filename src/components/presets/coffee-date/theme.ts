@@ -12,6 +12,12 @@ export const coffeeDate: Theme = {
   group: "Cozy",
   font: "fira-code",
   tags: [BadgeVariant.PREMIUM],
+  sample: {
+    language: "TypeScript",
+    fileName: "coffee-order.ts",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/typescript.svg",
+    code: 'type Size = "small" | "medium" | "large";\n\ntype CoffeeOrder = {\n  drink: "latte" | "cortado" | "flat white";\n  size: Size;\n  oatMilk: boolean;\n  forTwo?: boolean;\n};\n\nconst order: CoffeeOrder = { drink: "cortado", size: "small", oatMilk: true, forTwo: true };\n\nconsole.log(`${order.forTwo ? 2 : 1} ${order.size} ${order.drink}, oat milk: ${order.oatMilk}`);',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#3d2616",

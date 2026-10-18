@@ -12,6 +12,12 @@ export const lofiRain: Theme = {
   group: "Lofi",
   font: "geist-mono",
   tags: [BadgeVariant.NEW, BadgeVariant.PREMIUM],
+  sample: {
+    language: "Python",
+    fileName: "rain_playlist.py",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/python.svg",
+    code: 'import random\n\nplaylist = ["rain on glass", "slow tram", "warm tea", "window fog", "midnight study"]\n\ndef shuffle_queue(tracks, seed=None):\n    queue = tracks[:]\n    random.Random(seed).shuffle(queue)\n    return queue\n\nfor position, track in enumerate(shuffle_queue(playlist), start=1):\n    print(f"{position:02d}. {track}")',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#2b3445",

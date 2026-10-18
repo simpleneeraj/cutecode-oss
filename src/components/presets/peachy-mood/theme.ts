@@ -12,6 +12,12 @@ export const peachyMood: Theme = {
   group: "Cozy",
   font: "fira-code",
   tags: [BadgeVariant.NEW],
+  sample: {
+    language: "Lua",
+    fileName: "peachy.lua",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/lua.svg",
+    code: 'local moods = { "sweet", "fuzzy", "sunny", "mellow" }\n\nlocal function peachy(name)\n  local mood = moods[math.random(#moods)]\n  return string.format("%s is feeling %s today", name, mood)\nend\n\nmath.randomseed(os.time())\nfor _, friend in ipairs({ "Mia", "Leo", "Ava" }) do\n  print(peachy(friend))\nend',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#7c2d12",

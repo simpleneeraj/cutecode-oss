@@ -12,6 +12,12 @@ export const starryNight: Theme = {
   group: "Night",
   font: "jetbrains-mono",
   tags: [BadgeVariant.NEW, BadgeVariant.PREMIUM],
+  sample: {
+    language: "JavaScript",
+    fileName: "starfield.js",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/javascript.svg",
+    code: "function starField(count, width, height) {\n  return Array.from({ length: count }, () => ({\n    x: Math.random() * width,\n    y: Math.random() * height,\n    brightness: 0.3 + Math.random() * 0.7,\n  }));\n}\n\nconst sky = starField(200, 1920, 1080);\nconst brightest = sky.reduce((a, b) => (a.brightness > b.brightness ? a : b));\nconsole.log(`${sky.length} stars, brightest at (${brightest.x | 0}, ${brightest.y | 0})`);",
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#0f172a",

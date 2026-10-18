@@ -12,6 +12,12 @@ export const sunsetChill: Theme = {
   group: "Cozy",
   font: "fira-code",
   tags: [BadgeVariant.PREMIUM],
+  sample: {
+    language: "SQL",
+    fileName: "sunsets.sql",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/database.svg",
+    code: "SELECT\n  city,\n  sunset_at,\n  sky_color\nFROM sunsets\nWHERE sunset_at::date = CURRENT_DATE\n  AND cloud_cover < 30\nORDER BY sunset_at\nLIMIT 5;",
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#2A1B38",

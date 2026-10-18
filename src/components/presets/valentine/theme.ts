@@ -12,6 +12,12 @@ export const valentine: Theme = {
   group: "Romantic",
   font: "fira-code",
   tags: [BadgeVariant.PREMIUM],
+  sample: {
+    language: "Haskell",
+    fileName: "Valentine.hs",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/haskell.svg",
+    code: 'module Main where\n\ndata Card = Card { to :: String, from :: String, note :: String }\n\nrender :: Card -> String\nrender c = "To " ++ to c ++ ",\\n" ++ note c ++ "\\nLove, " ++ from c\n\nmain :: IO ()\nmain = putStrLn . render $ Card "Sam" "Alex" "Be my valentine?"',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#3b0a18",

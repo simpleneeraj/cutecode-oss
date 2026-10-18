@@ -12,6 +12,12 @@ export const goldenHour: Theme = {
   group: "Cozy",
   font: "geist-mono",
   tags: [BadgeVariant.NEW],
+  sample: {
+    language: "Dart",
+    fileName: "golden_hour.dart",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/dart.svg",
+    code: "DateTime goldenHourStart(DateTime sunset) =>\n    sunset.subtract(const Duration(hours: 1));\n\nvoid main() {\n  final sunset = DateTime(2026, 10, 18, 18, 42);\n  final start = goldenHourStart(sunset);\n  final minutes = sunset.difference(start).inMinutes;\n  print('Golden hour starts at ${start.hour}:${start.minute}');\n  print('Soft light for $minutes minutes');\n}",
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#78350f",

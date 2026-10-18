@@ -12,6 +12,12 @@ export const auroraNights: Theme = {
   group: "Night",
   font: "fira-code",
   tags: [BadgeVariant.NEW, BadgeVariant.PREMIUM],
+  sample: {
+    language: "Kotlin",
+    fileName: "Aurora.kt",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/kotlin.svg",
+    code: 'data class Aurora(val kp: Int, val color: String)\n\nfun visibility(aurora: Aurora): String = when {\n    aurora.kp >= 7 -> "overhead, ${aurora.color} curtains"\n    aurora.kp >= 4 -> "on the horizon, faint ${aurora.color}"\n    else -> "stay in, sip cocoa"\n}\n\nfun main() {\n    listOf(Aurora(8, "green"), Aurora(5, "violet"), Aurora(2, "teal"))\n        .forEach { println("Kp ${it.kp}: ${visibility(it)}") }\n}',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#064e3b",

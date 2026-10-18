@@ -12,6 +12,12 @@ export const love: Theme = {
   group: "Romantic",
   font: "fira-code",
   tags: [BadgeVariant.PREMIUM],
+  sample: {
+    language: "Java",
+    fileName: "LoveLetter.java",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/java.svg",
+    code: 'import java.util.List;\n\npublic class LoveLetter {\n    public static void main(String[] args) {\n        List<String> reasons = List.of("your laugh", "late talks", "the way you stay");\n        for (int i = 0; i < reasons.size(); i++) {\n            System.out.printf("Reason %d I love you: %s%n", i + 1, reasons.get(i));\n        }\n    }\n}',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#2d1f3d",

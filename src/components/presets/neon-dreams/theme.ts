@@ -12,6 +12,12 @@ export const neonDreams: Theme = {
   group: "Night",
   font: "fira-code",
   tags: [BadgeVariant.NEW, BadgeVariant.PREMIUM],
+  sample: {
+    language: "Swift",
+    fileName: "NeonSign.swift",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/swift.svg",
+    code: 'struct NeonSign {\n    let text: String\n\n    func flicker(times: Int) -> [String] {\n        (0..<times).map { $0.isMultiple(of: 2) ? text.uppercased() : text.lowercased() }\n    }\n}\n\nlet sign = NeonSign(text: "Open All Night")\nsign.flicker(times: 4).forEach { print($0) }',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#1a0028",

@@ -12,6 +12,12 @@ export const cassette: Theme = {
   group: "Lofi",
   font: "geist-mono",
   tags: [BadgeVariant.NEW, BadgeVariant.PREMIUM],
+  sample: {
+    language: "Ruby",
+    fileName: "mixtape.rb",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/ruby.svg",
+    code: 'Track = Struct.new(:title, :seconds)\n\ntracks = [\n  Track.new("Late Bus Home", 184),\n  Track.new("Tape Hiss", 212),\n  Track.new("Rewind", 167),\n  Track.new("Side B Sunrise", 238)\n]\n\nside_a, side_b = tracks.partition.with_index { |_, i| i.even? }\nputs "Side A: #{side_a.sum(&:seconds) / 60} min"\nputs "Side B: #{side_b.sum(&:seconds) / 60} min"',
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#2a2342",

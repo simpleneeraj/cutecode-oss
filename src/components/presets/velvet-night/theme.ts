@@ -12,6 +12,12 @@ export const velvetNight: Theme = {
   group: "Night",
   font: "geist-mono",
   tags: [BadgeVariant.NEW, BadgeVariant.PREMIUM],
+  sample: {
+    language: "CSS",
+    fileName: "velvet.css",
+    icon: "https://raw.githubusercontent.com/simpleneeraj/vscode-material-icon-theme/main/icons/css.svg",
+    code: ":root {\n  --velvet: #2a0f4a;\n  --midnight: #0d0518;\n}\n\n.velvet-card {\n  background: radial-gradient(circle at 30% 20%, var(--velvet), var(--midnight));\n  color: #e9d5ff;\n  border-radius: 24px;\n  box-shadow: 0 0 48px rgb(167 139 250 / 0.35);\n}",
+  },
   syntax: {
     light: convertToShikiTheme({
       foreground: "#2d1b69",
