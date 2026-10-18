@@ -10,7 +10,7 @@ const divider = tv({
   slots: {
     root: "flex items-center gap-3",
     line: "flex-1",
-    label: "text-xs font-medium uppercase tracking-widest text-muted-foreground",
+    label: "text-xs text-muted-foreground",
   },
 });
 
@@ -61,7 +61,7 @@ export function SocialAuthButtons({
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex flex-col gap-2">
+      <div className="grid grid-cols-2 gap-2">
         <Button
           variant="outline"
           size="lg"
@@ -71,7 +71,7 @@ export function SocialAuthButtons({
           onClick={() => signInWith("github")}
         >
           {github.isMutating ? <Spinner /> : <GitHubIcon />}
-          Continue with GitHub
+          GitHub
         </Button>
         <Button
           variant="outline"
@@ -82,7 +82,7 @@ export function SocialAuthButtons({
           onClick={() => signInWith("google")}
         >
           {google.isMutating ? <Spinner /> : <GoogleIcon />}
-          Continue with Google
+          Google
         </Button>
       </div>
 

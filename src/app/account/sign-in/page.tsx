@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSignIn } from "@/hooks/use-auth-mutations";
@@ -20,10 +20,8 @@ const rememberLabel = tv({
   variants: { disabled: { true: "cursor-not-allowed opacity-64" } },
 });
 
-export default function SignInPage() {
+function SignInForm({ redirectedFrom }: { redirectedFrom: string }) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const redirectedFrom = safeRedirectPath(searchParams.get("redirectedFrom"));
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -53,8 +51,10 @@ export default function SignInPage() {
   return (
     <Card className="w-full">
       <CardHeader className="justify-items-center text-center">
-        <CardTitle render={<h1 />}>Welcome back</CardTitle>
-        <CardDescription>Sign in to your account to continue</CardDescription>
+        <CardTitle render={<h1 />} className="font-heading text-xl tracking-tight">
+          Welcome back
+        </CardTitle>
+        <CardDescription>Sign in to continue to CuteCode.</CardDescription>
       </CardHeader>
 
       <CardPanel className="flex flex-col gap-6">
@@ -66,7 +66,7 @@ export default function SignInPage() {
           </Alert>
         )}
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <Field name="email">
             <FieldLabel>Email address</FieldLabel>
             <Input
@@ -125,5 +125,18 @@ export default function SignInPage() {
         </Link>
       </CardFooter>
     </Card>
+  );
+}
+
+function SignInFormWithRedirect() {
+  const searchParams = useSearchParams();
+  return <SignInForm redirectedFrom={safeRedirectPath(searchParams.get("redirectedFrom"))} />;
+}
+
+export default function SignInPage() {
+  return (
+    <Suspense fallback={<SignInForm redirectedFrom="/" />}>
+      <SignInFormWithRedirect />
+    </Suspense>
   );
 }

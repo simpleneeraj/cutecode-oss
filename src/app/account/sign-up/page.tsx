@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useResendVerification, useSignUp } from "@/hooks/use-auth-mutations";
@@ -27,10 +27,8 @@ const sentState = tv({
   },
 });
 
-export default function SignUpPage() {
+function SignUpForm({ redirectedFrom }: { redirectedFrom: string }) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const redirectedFrom = safeRedirectPath(searchParams.get("redirectedFrom"));
 
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -121,8 +119,10 @@ export default function SignUpPage() {
       ) : (
         <>
           <CardHeader className="justify-items-center text-center">
-            <CardTitle render={<h1 />}>Create your account</CardTitle>
-            <CardDescription>Start creating beautiful code screenshots</CardDescription>
+            <CardTitle render={<h1 />} className="font-heading text-xl tracking-tight">
+              Create your account
+            </CardTitle>
+            <CardDescription>Start sharing beautiful code in seconds.</CardDescription>
           </CardHeader>
 
           <CardPanel className="flex flex-col gap-6">
@@ -134,7 +134,7 @@ export default function SignUpPage() {
               </Alert>
             )}
 
-            <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
               <Field name="fullName">
                 <FieldLabel>Full name</FieldLabel>
                 <Input
@@ -202,5 +202,18 @@ export default function SignUpPage() {
         </Link>
       </CardFooter>
     </Card>
+  );
+}
+
+function SignUpFormWithRedirect() {
+  const searchParams = useSearchParams();
+  return <SignUpForm redirectedFrom={safeRedirectPath(searchParams.get("redirectedFrom"))} />;
+}
+
+export default function SignUpPage() {
+  return (
+    <Suspense fallback={<SignUpForm redirectedFrom="/" />}>
+      <SignUpFormWithRedirect />
+    </Suspense>
   );
 }
