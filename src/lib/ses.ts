@@ -44,7 +44,7 @@ export async function sendVerificationEmail(params: { user: { email: string; nam
   logDevLink("verify email", user.email, url);
   await sendEmail(
     user.email,
-    "Verify your email — Cool Snippets",
+    "Verify your email — CuteCode",
     `<p>Hi ${escapeHtml(user.name || "there")},</p><p>Verify your email by clicking the link below:</p><p><a href="${escapeHtml(url)}">${escapeHtml(url)}</a></p>`,
   );
 }
@@ -54,7 +54,7 @@ export async function sendResetPassword(params: { user: { email: string; name?: 
   logDevLink("reset password", user.email, url);
   await sendEmail(
     user.email,
-    "Reset your password — Cool Snippets",
+    "Reset your password — CuteCode",
     `<p>Hi ${escapeHtml(user.name || "there")},</p><p>Reset your password by clicking the link below:</p><p><a href="${escapeHtml(url)}">${escapeHtml(url)}</a></p>`,
   );
 }

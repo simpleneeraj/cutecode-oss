@@ -11,6 +11,7 @@ import { PRODUCT_LIST } from "@/lib/billing/products";
 import { assertNoEntitledSubscription, assertSlugOnlyCheckout, isCheckoutPath } from "@/lib/billing/checkout-guard";
 import { dodoClient } from "@/lib/dodo";
 import { CLIENT_IP_HEADER } from "@/lib/client-ip";
+import { kv } from "@/lib/kv";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, { provider: "pg", schema, usePlural: true }),
@@ -36,9 +37,20 @@ export const auth = betterAuth({
       ? { google: { clientId: process.env.GOOGLE_CLIENT_ID, clientSecret: process.env.GOOGLE_CLIENT_SECRET } }
       : {}),
   } as never,
+  secondaryStorage: {
+    get: (key) => kv().get(key),
+    set: (key, value, ttl) => kv().set(key, value, ttl),
+    delete: (key) => kv().del(key),
+    getAndDelete: (key) => kv().getAndDelete(key),
+    increment: (key, ttl) => kv().incr(key, ttl),
+  },
+  session: {
+    storeSessionInDatabase: true,
+    cookieCache: { enabled: true, maxAge: 5 * 60 },
+  },
   rateLimit: {
     enabled: true,
-    storage: "database",
+    storage: "secondary-storage",
     window: 60,
     max: 100,
     customRules: {

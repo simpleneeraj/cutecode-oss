@@ -9,16 +9,16 @@ export type ParameterReader = {
 };
 
 declare global {
-  var __coolSnippetsSecretsLoaded: boolean | undefined;
+  var __cutecodeSecretsLoaded: boolean | undefined;
 }
 
 let pendingLoad: Promise<void> | undefined;
 
 export function ensureRuntimeSecrets(): Promise<void> {
-  if (globalThis.__coolSnippetsSecretsLoaded) return Promise.resolve();
+  if (globalThis.__cutecodeSecretsLoaded) return Promise.resolve();
   pendingLoad ??= loadRuntimeSecrets()
     .then(() => {
-      globalThis.__coolSnippetsSecretsLoaded = true;
+      globalThis.__cutecodeSecretsLoaded = true;
     })
     .catch((error: unknown) => {
       logger.error({ err: error }, "[secrets] load failed");

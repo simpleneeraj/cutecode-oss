@@ -1,13 +1,15 @@
-import { CfnOutput, CfnParameter, SecretValue, Stack, type StackProps } from "aws-cdk-lib";
+import { CfnOutput, CfnParameter, Duration, RemovalPolicy, SecretValue, Stack, type StackProps } from "aws-cdk-lib";
+import * as cloudwatch from "aws-cdk-lib/aws-cloudwatch";
 import * as cognito from "aws-cdk-lib/aws-cognito";
+import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 import * as events from "aws-cdk-lib/aws-events";
 import * as targets from "aws-cdk-lib/aws-events-targets";
 import * as iam from "aws-cdk-lib/aws-iam";
 import * as rum from "aws-cdk-lib/aws-rum";
 import type { Construct } from "constructs";
 
-const PREFIX = "cool-snippets";
-const SECRETS_PATH = "/cool-snippets/";
+const PREFIX = "cutecode-main";
+const SECRETS_PATH = "/cutecode/";
 const RUM_APP_MONITOR = `${PREFIX}-web`;
 
 export class MainStack extends Stack {
@@ -19,11 +21,15 @@ export class MainStack extends Stack {
     const sesFromEmail = this.requiredContext("sesFromEmail");
 
     const computeRole = this.computeRole(sesFromEmail);
+    const kvTable = this.kvTable();
+    this.grantKv(computeRole, kvTable);
+    this.kvAlarms(kvTable);
     this.buildSecretsPolicy(serviceRoleArn);
     this.billingCron(domain);
     const monitor = this.rumAppMonitor(domain);
 
     new CfnOutput(this, "ComputeRoleArn", { value: computeRole.roleArn });
+    new CfnOutput(this, "KvTableName", { value: kvTable.tableName });
     new CfnOutput(this, "RumAppMonitorId", { value: monitor.appMonitor.attrId });
     new CfnOutput(this, "RumIdentityPoolId", { value: monitor.identityPoolId });
     new CfnOutput(this, "RumRegion", { value: this.region });
@@ -59,6 +65,54 @@ export class MainStack extends Stack {
       }),
     );
     return role;
+  }
+
+  private kvTable(): dynamodb.Table {
+    return new dynamodb.Table(this, "KvTable", {
+      tableName: `${PREFIX}-kv`,
+      partitionKey: { name: "pk", type: dynamodb.AttributeType.STRING },
+      sortKey: { name: "sk", type: dynamodb.AttributeType.STRING },
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      timeToLiveAttribute: "expiresAt",
+      pointInTimeRecoverySpecification: { pointInTimeRecoveryEnabled: true },
+      deletionProtection: true,
+      removalPolicy: RemovalPolicy.RETAIN,
+    });
+  }
+
+  private grantKv(role: iam.Role, table: dynamodb.Table): void {
+    role.addToPolicy(
+      new iam.PolicyStatement({
+        actions: ["dynamodb:GetItem", "dynamodb:PutItem", "dynamodb:UpdateItem", "dynamodb:DeleteItem"],
+        resources: [table.tableArn],
+      }),
+    );
+  }
+
+  private kvAlarms(table: dynamodb.Table): void {
+    const period = Duration.minutes(5);
+    const alarm = (id: string, metric: cloudwatch.IMetric) =>
+      new cloudwatch.Alarm(this, id, {
+        alarmName: `${PREFIX}-${id}`,
+        metric,
+        threshold: 1,
+        evaluationPeriods: 1,
+        comparisonOperator: cloudwatch.ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD,
+        treatMissingData: cloudwatch.TreatMissingData.NOT_BREACHING,
+      });
+    alarm("kv-throttled-requests", table.metric("ThrottledRequests", { statistic: "Sum", period }));
+    alarm(
+      "kv-system-errors",
+      table.metricSystemErrorsForOperations({
+        operations: [
+          dynamodb.Operation.GET_ITEM,
+          dynamodb.Operation.PUT_ITEM,
+          dynamodb.Operation.UPDATE_ITEM,
+          dynamodb.Operation.DELETE_ITEM,
+        ],
+        period,
+      }),
+    );
   }
 
   private buildSecretsPolicy(serviceRoleArn: string): void {

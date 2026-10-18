@@ -1,4 +1,5 @@
 import { beforeEach } from "vitest";
+import { clearMemoryStore } from "@/lib/kv/memory-store";
 import { databaseName, TEMPLATE_NAME, workerDatabaseUrl } from "./database-url";
 import { recreateDatabase } from "./admin";
 import { resetDatabase } from "../support/db";
@@ -12,4 +13,5 @@ if (!worker.testDatabaseReady) {
 
 beforeEach(async () => {
   await resetDatabase();
+  clearMemoryStore();
 });

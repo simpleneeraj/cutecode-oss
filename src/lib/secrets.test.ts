@@ -24,17 +24,17 @@ describe("loadRuntimeSecrets", () => {
   });
 
   it("loads every page, keeps existing values and skips invalid names", async () => {
-    process.env.SSM_SECRETS_PATH = "/cool-snippets/main/";
+    process.env.SSM_SECRETS_PATH = "/cutecode/main/";
     process.env.CS_TEST_KEEP = "local";
     const loaded = await loadRuntimeSecrets(
       reader([
         [
-          { Name: "/cool-snippets/main/CS_TEST_A", Value: "a" },
-          { Name: "/cool-snippets/main/lower", Value: "x" },
+          { Name: "/cutecode/main/CS_TEST_A", Value: "a" },
+          { Name: "/cutecode/main/lower", Value: "x" },
         ],
         [
-          { Name: "/cool-snippets/main/CS_TEST_B", Value: "b" },
-          { Name: "/cool-snippets/main/CS_TEST_KEEP", Value: "remote" },
+          { Name: "/cutecode/main/CS_TEST_B", Value: "b" },
+          { Name: "/cutecode/main/CS_TEST_KEEP", Value: "remote" },
         ],
       ]),
     );
@@ -44,12 +44,12 @@ describe("loadRuntimeSecrets", () => {
   });
 
   it("wraps reader failures with the path", async () => {
-    process.env.SSM_SECRETS_PATH = "/cool-snippets/main/";
+    process.env.SSM_SECRETS_PATH = "/cutecode/main/";
     const failing: ParameterReader = {
       send: async () => {
         throw new Error("denied");
       },
     };
-    await expect(loadRuntimeSecrets(failing)).rejects.toThrow("/cool-snippets/main/");
+    await expect(loadRuntimeSecrets(failing)).rejects.toThrow("/cutecode/main/");
   });
 });

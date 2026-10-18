@@ -1,5 +1,5 @@
 # Next.js SSR on Amplify Hosting (WEB_COMPUTE). Non-secret config goes to .env.production via RUNTIME_VARS;
-# secrets come from SSM /cool-snippets/<branch>/ (build: service role, runtime: compute role). See docs/deploy-aws.md.
+# secrets come from SSM /cutecode/<branch>/ (build: service role, runtime: compute role). See docs/deploy-aws.md.
 version: 1
 
 frontend:
@@ -15,14 +15,14 @@ frontend:
       commands:
         - |
           REQUIRED_VARS="NEXT_PUBLIC_BASE_URL BETTER_AUTH_URL DODO_PAYMENTS_ENVIRONMENT SES_FROM_EMAIL"
-          RUNTIME_VARS="NEXT_PUBLIC_BASE_URL BETTER_AUTH_URL DODO_PAYMENTS_ENVIRONMENT GITHUB_CLIENT_ID GOOGLE_CLIENT_ID SES_FROM_EMAIL LOG_LEVEL NEXT_PUBLIC_DODO_PRODUCT_PRO_MONTHLY NEXT_PUBLIC_DODO_PRODUCT_PRO_YEARLY NEXT_PUBLIC_DODO_PRODUCT_PREMIUM_MONTHLY NEXT_PUBLIC_DODO_PRODUCT_PREMIUM_YEARLY NEXT_PUBLIC_DODO_PRODUCT_PREMIUM"
+          RUNTIME_VARS="NEXT_PUBLIC_BASE_URL BETTER_AUTH_URL DODO_PAYMENTS_ENVIRONMENT GITHUB_CLIENT_ID GOOGLE_CLIENT_ID SES_FROM_EMAIL LOG_LEVEL NEXT_PUBLIC_DODO_PRODUCT_PRO_MONTHLY NEXT_PUBLIC_DODO_PRODUCT_PRO_YEARLY NEXT_PUBLIC_DODO_PRODUCT_PREMIUM_MONTHLY NEXT_PUBLIC_DODO_PRODUCT_PREMIUM_YEARLY NEXT_PUBLIC_DODO_PRODUCT_PREMIUM KV_TABLE"
           for name in $REQUIRED_VARS; do
             if [ -z "${!name:-}" ]; then
               echo "amplify.yml: $name is not set for branch '${AWS_BRANCH}'. Set it under Hosting > Environment variables."
               exit 1
             fi
           done
-          export SSM_SECRETS_PATH="${SSM_SECRETS_PATH:-/cool-snippets/${AWS_BRANCH}/}"
+          export SSM_SECRETS_PATH="${SSM_SECRETS_PATH:-/cutecode/${AWS_BRANCH}/}"
           : > .env.production
           for name in $RUNTIME_VARS SSM_SECRETS_PATH AWS_REGION; do
             value="${!name:-}"
@@ -38,7 +38,7 @@ frontend:
           echo "Wrote $(wc -l < .env.production | tr -d ' ') variables to .env.production:"
           cut -d= -f1 .env.production
         - |
-          SSM_SECRETS_PATH="${SSM_SECRETS_PATH:-/cool-snippets/${AWS_BRANCH}/}"
+          SSM_SECRETS_PATH="${SSM_SECRETS_PATH:-/cutecode/${AWS_BRANCH}/}"
           SECRET_ROWS="$(aws ssm get-parameters-by-path --path "$SSM_SECRETS_PATH" --with-decryption --query 'Parameters[].[Name,Value]' --output text)" || {
             echo "amplify.yml: could not read SSM parameters under $SSM_SECRETS_PATH. Check the service role's ssm:GetParametersByPath permission."
             exit 1

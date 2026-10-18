@@ -3,7 +3,7 @@
   "watch": { "exclude": ["node_modules", "cdk.out"] },
   "context": {
     "serviceRoleArn": "arn:aws:iam::ACCOUNT_ID:role/REPLACE_WITH_AMPLIFY_SERVICE_ROLE",
-    "domain": "coolsnippets.fun",
+    "domain": "cutecode.app",
     "sesFromEmail": "no-reply@cutecode.app"
   }
 }

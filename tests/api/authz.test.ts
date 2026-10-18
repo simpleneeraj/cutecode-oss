@@ -18,6 +18,7 @@ const PROTECTED: [string, unknown][] = [
   ["snippet.create", { presentationId: "x", elementId: "x" }],
   ["snippet.update", { id: "x", data: {} }],
   ["snippet.delete", { id: "x" }],
+  ["snippet.togglePin", { id: "x" }],
   ["snippet.toggleUpvote", { snippetId: "x" }],
   ["snippet.toggleBookmark", { snippetId: "x" }],
   ["snippet.addComment", { snippetId: "x", content: "hi" }],
@@ -36,6 +37,7 @@ const PROTECTED: [string, unknown][] = [
   ["publish.publish", publishInput()],
   ["billing.status", undefined],
   ["dashboard.summary", undefined],
+  ["dashboard.viewsByDay", undefined],
 ];
 
 describe("unauthenticated access", () => {
@@ -158,6 +160,22 @@ describe("ownership", () => {
     const { owner, asIntruder } = await twoUsers();
     const profile = await asIntruder.user.profile({ userId: owner.id });
     expect(JSON.stringify(profile)).not.toContain(owner.email);
+  });
+
+  it("snippet.togglePin cannot pin another user's snippet", async () => {
+    const { snippet, asIntruder } = await twoUsers();
+    await expect(asIntruder.snippet.togglePin({ id: snippet.id })).rejects.toMatchObject({ code: "NOT_FOUND" });
+    const row = await db.query.snippets.findFirst({ where: eq(snippets.id, snippet.id) });
+    expect(row?.pinnedAt).toBeNull();
+  });
+
+  it("snippet.togglePin toggles the owner's pin and caps pins at three", async () => {
+    const { owner, snippet, asOwner } = await twoUsers();
+    await expect(asOwner.snippet.togglePin({ id: snippet.id })).resolves.toEqual({ pinned: true });
+    await expect(asOwner.snippet.togglePin({ id: snippet.id })).resolves.toEqual({ pinned: false });
+    const seeded = await Promise.all([1, 2, 3, 4].map(() => insertShare(owner.id)));
+    for (const { snippet: pinned } of seeded.slice(0, 3)) await asOwner.snippet.togglePin({ id: pinned.id });
+    await expect(asOwner.snippet.togglePin({ id: seeded[3].snippet.id })).rejects.toMatchObject({ code: "BAD_REQUEST" });
   });
 
   it("user.toggleFollow refuses to follow yourself", async () => {

@@ -6,7 +6,7 @@ export const PRODUCT = {
   LEGACY_PREMIUM: "pdt_test_legacy_premium",
 } as const;
 
-export const WEBHOOK_SECRET = `whsec_${Buffer.from("cool-snippets-test-webhook-secret").toString("base64")}`;
+export const WEBHOOK_SECRET = `whsec_${Buffer.from("cutecode-test-webhook-secret").toString("base64")}`;
 
 export const CRON_SECRET = "test-cron-secret";
 
