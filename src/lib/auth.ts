@@ -93,7 +93,7 @@ export const auth = betterAuth({
       use: [
         checkout({
           products: PRODUCT_LIST.flatMap(({ productId, slug }) => (productId ? [{ productId, slug }] : [])),
-          successUrl: "/checkout/success",
+          successUrl: `${process.env.BETTER_AUTH_URL}/checkout/success`,
           authenticatedUsersOnly: true,
         }),
         portal(),

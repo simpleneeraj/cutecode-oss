@@ -7,7 +7,11 @@ import { CLIENT_IP_HEADER } from "@/lib/client-ip";
 import { apiRateLimit, checkRateLimit } from "@/lib/in-memory-store";
 import { logger } from "@/lib/logger";
 
-const ALLOWED_HOSTS = new Set(["localhost", "cutecode.app", "www.cutecode.app"]);
+const ALLOWED_HOSTS = new Set([
+  "cutecode.app",
+  "www.cutecode.app",
+  ...(process.env.NODE_ENV === "development" ? ["localhost"] : []),
+]);
 
 function isUniqueViolation(error: unknown): boolean {
   const code = (e: unknown) => (e && typeof e === "object" && "code" in e ? e.code : undefined);
@@ -34,8 +38,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Invalid URL" }, { status: 400 });
   }
 
-  const allowed = ALLOWED_HOSTS.has(target.hostname) || target.hostname === req.nextUrl.hostname;
-  if (!allowed) {
+  if (!ALLOWED_HOSTS.has(target.hostname)) {
     return NextResponse.json({ error: "Unable to shorten this link" }, { status: 400 });
   }
 
