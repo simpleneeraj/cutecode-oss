@@ -1,6 +1,7 @@
 import { motion, easeInOut } from "motion/react";
 import { useLoop } from "../scene";
 import Dune, { type DuneLayer } from "./dune";
+import PixelCritter from "./pixel-critter";
 import Sparkle, { type Star } from "./sparkle";
 import styles from "./claude.module.css";
 
@@ -15,7 +16,6 @@ const STARS: Star[] = [
   { id: "top-left", x: 8, y: 18, size: 10 },
   { id: "mid-right", x: 92, y: 58, size: 12 },
   { id: "low-right", x: 82, y: 86, size: 18 },
-  { id: "low-left", x: 10, y: 78, size: 12 },
   { id: "low-center", x: 46, y: 92, size: 8 },
 ];
 
@@ -31,6 +31,7 @@ export default function ClaudeScene() {
           <Dune key={layer.id} layer={layer} />
         ))}
       </div>
+      <PixelCritter />
       <div className={styles.grain} />
       {STARS.map((star, index) => (
         <Sparkle key={star.id} star={star} phase={index / STARS.length} />

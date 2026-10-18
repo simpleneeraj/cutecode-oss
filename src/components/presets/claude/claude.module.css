@@ -113,6 +113,36 @@
   color: #f0c4a8;
 }
 
+.critter {
+  position: absolute;
+  bottom: 18%;
+  left: 10%;
+  display: block;
+  width: 72px;
+  height: 32px;
+}
+
+.critterEyes {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.light .critter {
+  fill: #c96442;
+}
+
+.light .critterEyes {
+  fill: #1f1a17;
+}
+
+.dark .critter {
+  fill: #e08a6c;
+}
+
+.dark .critterEyes {
+  fill: #141110;
+}
+
 .window {
   position: relative;
   z-index: 10;
