@@ -1,6 +1,5 @@
 # CuteCode — Agent Conventions
 
-Source of truth for the productionization plan: `.kilo/plans/1790519214215-productionize-single-sub-aws-betterauth.md`.
 
 ## Stack
 - **Framework:** Next.js 16 App Router, React 19. TypeScript (strict).
@@ -46,7 +45,6 @@ Only `.env.development` and `.env.production`. `.env.example` is deleted. Produc
 - `yarn db:migrate` — `drizzle-kit migrate`
 - `yarn db:studio` — `drizzle-kit studio`
 - `yarn test` — Vitest (unit + integration)
-- `yarn test:e2e` — Playwright
 
 <!-- BEGIN:nextjs-agent-rules -->
 

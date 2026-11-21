@@ -4,7 +4,7 @@ The record of the first production deploy of CuteCode, finished 2026-10-18. No s
 
 - **Live:** https://www.cutecode.app. The bare domain https://cutecode.app redirects there with a 301 via GoDaddy forwarding.
 - **Account:** AWS 489675988367, region us-east-1.
-- **Repo:** simpleneeraj/cool-snippets, branch `main`. Every push deploys.
+- **Repo:** simpleneeraj/cutecode-classic, branch `main`. Every push deploys.
 
 ## What exists
 

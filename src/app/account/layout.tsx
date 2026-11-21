@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Link } from "@/components/link";
 import { BrandMark } from "@/components/brand-mark";
-import siteConfig from "@/contstant/site-config";
+import siteConfig from "@/constants/site-config";
 import { AuthShowcase } from "./components/auth-showcase";
 
 export const metadata: Metadata = {

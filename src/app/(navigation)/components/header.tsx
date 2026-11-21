@@ -4,7 +4,7 @@ import AuthControls from "./controls";
 import Navigations from "./navigation";
 import { Link } from "@/components/link";
 import { usePathname } from "next/navigation";
-import siteConfig from "@/contstant/site-config";
+import siteConfig from "@/constants/site-config";
 import { AnimatePresence, motion, Transition } from "motion/react";
 import { BrandMark } from "@/components/brand-mark";
 

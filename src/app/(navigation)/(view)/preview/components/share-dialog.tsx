@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/components/toast";
 import { Icon } from "@/components/ui/icon";
 import { shortenUrl } from "@/utils/common";
-import siteConfig from "@/contstant/site-config";
+import siteConfig from "@/constants/site-config";
 
 type ShareDialogProps = {
   slug: string;

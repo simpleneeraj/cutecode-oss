@@ -7,7 +7,7 @@
 - [Homepage](https://www.cutecode.app): Create beautiful code screenshots with the online editor
 - [Snippets](https://www.cutecode.app/snippets): View and manage your saved code snippets
 - [Pricing](https://www.cutecode.app/pricing): Free, Pro and Premium plans: higher-resolution exports, premium themes and fonts, watermark-free images and video
-- [GitHub Repository](https://github.com/simpleneeraj/cool-snippets): Source code, issues, and contribution guidelines
+- [GitHub Repository](https://github.com/simpleneeraj/cutecode-oss): Source code, issues, and contribution guidelines
 
 ## Features
 

@@ -33,7 +33,7 @@ done
 
 ## 2. Create the Amplify app
 
-1. In the Amplify console, choose **Create new app > GitHub**, then pick the `cool-snippets` repo and branch `main`.
+1. In the Amplify console, choose **Create new app > GitHub**, then pick the `cutecode-classic` repo and branch `main`.
 2. Keep the detected `amplify.yml`. Let Amplify create the service role and note its ARN.
 3. Under **Hosting > Environment variables**, add:
 

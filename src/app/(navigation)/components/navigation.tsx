@@ -1,7 +1,7 @@
 "use client";
 
 import { Link } from "@/components/link";
-import siteConfig from "@/contstant/site-config";
+import siteConfig from "@/constants/site-config";
 import { usePathname } from "next/navigation";
 import { Tabs, TabsList, TabsTab } from "@/components/ui/tabs";
 

@@ -9,7 +9,7 @@
 CuteCode lets developers and designers turn code into stunning, shareable images and videos. Choose from 65+ curated themes, including brand themes inspired by companies like Vercel, Stripe, and OpenAI, paste your code, and export a pixel-perfect screenshot in seconds. Every snippet can be published to a unique URL and remixed by anyone.
 
 **Website:** https://www.cutecode.app
-**GitHub:** https://github.com/simpleneeraj/cool-snippets
+**GitHub:** https://github.com/simpleneeraj/cutecode-oss
 **Author:** simpleneeraj
 **License:** MIT
 
@@ -138,8 +138,8 @@ Handcrafted palettes for artistic and creative code screenshots:
 
 ```bash
 # Clone the repository
-git clone https://github.com/simpleneeraj/cool-snippets.git
-cd cool-snippets
+git clone https://github.com/simpleneeraj/cutecode-oss.git
+cd cutecode-oss
 
 # Install dependencies
 npm install
@@ -170,7 +170,7 @@ npm start
 ## Project Structure
 
 ```
-cool-snippets/
+cutecode-oss/
 ├── public/              # Static assets, llms.txt, llms-full.txt
 ├── drizzle/             # SQL migrations
 ├── src/
@@ -288,7 +288,7 @@ Yes. Screenshots you create are yours. The tool itself is MIT-licensed.
 ## Links
 
 - **Website:** https://www.cutecode.app
-- **GitHub:** https://github.com/simpleneeraj/cool-snippets
+- **GitHub:** https://github.com/simpleneeraj/cutecode-oss
 - **Pricing:** https://www.cutecode.app/pricing
 
 ---

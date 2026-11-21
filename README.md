@@ -34,8 +34,8 @@
 Requirements: Node.js 22 or later, Yarn and PostgreSQL.
 
 ```bash
-git clone git@github.com:simpleneeraj/cool-snippets.git
-cd cool-snippets
+git clone git@github.com:simpleneeraj/cutecode-oss.git
+cd cutecode-oss
 yarn install
 ```
 
@@ -111,7 +111,7 @@ docs/             deploy runbook, launch plan
 
 ## Credits
 
-CuteCode started from [ray.so](https://ray.so) by [Raycast](https://raycast.com), used under the MIT License. Fonts, libraries and icons are credited at [/legal/credits](https://cutecode.app/legal/credits) and in [CREDITS.md](CREDITS.md).
+CuteCode started from [ray.so](https://ray.so) by [Raycast](https://raycast.com), used under the MIT License. Fonts, libraries and icons are credited at [/legal/credits](https://cutecode.app/legal/credits).
 
 ## License
 

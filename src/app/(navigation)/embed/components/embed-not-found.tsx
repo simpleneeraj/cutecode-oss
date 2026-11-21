@@ -1,6 +1,6 @@
 import { HugeiconsIcon } from "@hugeicons/react";
 import { FileNotFoundIcon, LinkSquare02Icon } from "@hugeicons/core-free-icons";
-import siteConfig from "@/contstant/site-config";
+import siteConfig from "@/constants/site-config";
 import { Button } from "@/components/ui/button";
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 

@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "./mask-wallpaper.css";
 @plugin "@tailwindcss/typography";
 /* ============================================================
    Tailwind v4 Theme Configuration
