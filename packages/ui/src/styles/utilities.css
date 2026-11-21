@@ -1,13 +1,23 @@
 @utility glass {
   background-color: var(--glass);
+  background-image: var(--glass-sheen);
   -webkit-backdrop-filter: blur(var(--surface-blur)) saturate(var(--surface-saturate));
   backdrop-filter: blur(var(--surface-blur)) saturate(var(--surface-saturate));
 
   @media (prefers-reduced-transparency: reduce) {
     background-color: var(--glass-solid);
+    background-image: none;
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
   }
+}
+
+@utility wallpaper {
+  background-color: var(--wallpaper-bottom);
+  background-image:
+    radial-gradient(70% 60% at 50% 0%, var(--glow), transparent 72%),
+    linear-gradient(180deg, var(--wallpaper-top), var(--wallpaper-bottom));
+  box-shadow: inset 0 0 0 0.5px color-mix(in oklab, var(--foreground) 8%, transparent);
 }
 
 @utility edge {
@@ -133,6 +143,10 @@
   --fade-bottom: calc(100% - min(var(--fade-size), var(--scroll-area-overflow-y-end)));
   --fade-left: calc(100% - min(var(--fade-size), var(--scroll-area-overflow-x-start)));
   --fade-right: calc(100% - min(var(--fade-size), var(--scroll-area-overflow-x-end)));
+}
+
+@utility scroll-arrow-fade {
+  --arrow-fade: calc(100% - 1.75rem);
 }
 
 @utility toast-viewport {
@@ -278,4 +292,39 @@
 
 @utility pb-safe-inset {
   padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@utility opacity-drawer-swipe {
+  opacity: calc(1 - var(--drawer-swipe-progress));
+}
+
+@utility duration-drawer-swipe {
+  transition-duration: calc(var(--drawer-swipe-strength) * 400ms);
+}
+
+:root {
+  view-transition-name: none;
+}
+
+::view-transition {
+  pointer-events: none;
+}
+
+::view-transition-group(.folder-front) {
+  animation-duration: var(--transition-duration-snappy);
+  animation-timing-function: var(--ease-snappy);
+}
+
+::view-transition-old(.folder-front),
+::view-transition-new(.folder-front) {
+  animation-duration: 150ms;
+  animation-timing-function: ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(.folder-front),
+  ::view-transition-old(.folder-front),
+  ::view-transition-new(.folder-front) {
+    animation: none;
+  }
 }

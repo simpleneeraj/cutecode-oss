@@ -6,7 +6,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "../lib/cn";
 
 const toggleVariants = cva(
-  "hit-area press relative inline-flex shrink-0 cursor-pointer select-none items-center justify-center gap-1.5 whitespace-nowrap rounded-control font-medium text-subheadline text-foreground outline-none hover:bg-muted focus-visible:shadow-focus disabled:pointer-events-none disabled:opacity-40 data-pressed:bg-brand-soft data-pressed:text-brand-ink in-data-[slot=toggle-group]:hover:bg-transparent in-data-[slot=toggle-group]:data-pressed:bg-segment-thumb in-data-[slot=toggle-group]:data-pressed:text-foreground in-data-[slot=toggle-group]:data-pressed:shadow-thumb in-data-[slot=toggle-group]:focus-visible:shadow-focus [&_svg:not([class*='size-'])]:size-5 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+  "hit-area press relative inline-flex shrink-0 cursor-pointer select-none items-center justify-center gap-1.5 whitespace-nowrap rounded-density-control font-medium text-density-subheadline text-foreground outline-none hover:bg-muted focus-visible:shadow-focus disabled:pointer-events-none disabled:opacity-40 data-pressed:bg-brand-soft data-pressed:text-brand-ink in-data-[slot=toggle-group]:rounded-control in-data-[slot=toggle-group]:font-semibold in-data-[slot=toggle-group]:text-footnote in-data-[slot=toggle-group]:hover:bg-transparent in-data-[slot=toggle-group]:data-pressed:bg-transparent in-data-[slot=toggle-group]:data-pressed:text-foreground in-data-[slot=toggle-group]:focus-visible:shadow-focus [&_svg:not([class*='size-'])]:size-5 [&_svg]:pointer-events-none [&_svg]:shrink-0",
   {
     defaultVariants: {
       size: "default",
@@ -14,9 +14,9 @@ const toggleVariants = cva(
     },
     variants: {
       size: {
-        default: "h-11 min-w-11 px-3 in-data-[slot=toggle-group]:h-9.5 in-data-[slot=toggle-group]:min-w-9.5",
-        lg: "h-12.5 min-w-12.5 px-4 in-data-[slot=toggle-group]:h-11 in-data-[slot=toggle-group]:min-w-11",
-        sm: "h-8.5 min-w-8.5 px-2.5 in-data-[slot=toggle-group]:h-7.5 in-data-[slot=toggle-group]:min-w-7.5 [&_svg:not([class*='size-'])]:size-4.25",
+        default: "h-control-medium min-w-control-medium px-3 in-data-[slot=toggle-group]:h-8 in-data-[slot=toggle-group]:min-w-8",
+        lg: "h-control-large min-w-control-large px-4 in-data-[slot=toggle-group]:h-10 in-data-[slot=toggle-group]:min-w-10",
+        sm: "h-control-small min-w-control-small px-2.5 in-data-[slot=toggle-group]:h-7 in-data-[slot=toggle-group]:min-w-7 [&_svg:not([class*='size-'])]:size-4.25",
       },
       variant: {
         default: "",

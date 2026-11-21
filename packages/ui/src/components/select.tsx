@@ -12,11 +12,12 @@ import { Fragment } from "react";
 import type * as React from "react";
 
 import { cn } from "../lib/cn";
+import { popupClassNames } from "./popup-classes";
 
 const Select = SelectPrimitive.Root;
 
 const selectTriggerVariants = cva(
-  "relative inline-flex min-h-11 w-full min-w-36 cursor-pointer select-none items-center justify-between gap-2 rounded-field edge bg-card px-3.5 text-left text-body text-foreground outline-none inset-ring inset-ring-input transition-shadow in-data-[slot=toolbar]:rounded-control focus-visible:shadow-focus aria-invalid:inset-ring-2 aria-invalid:inset-ring-destructive-foreground data-disabled:pointer-events-none data-disabled:opacity-40 [&_svg:not([class*='size-'])]:size-5 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+  "relative inline-flex min-h-field w-full min-w-36 cursor-pointer select-none items-center justify-between gap-2 rounded-density-field edge bg-card px-row-inset text-left text-density-body text-foreground outline-none inset-ring inset-ring-input transition-shadow in-data-[slot=toolbar]:rounded-control focus-visible:shadow-focus aria-invalid:inset-ring-2 aria-invalid:inset-ring-destructive-foreground data-disabled:pointer-events-none data-disabled:opacity-40 [&_svg:not([class*='size-'])]:size-5 [&_svg]:pointer-events-none [&_svg]:shrink-0",
   {
     defaultVariants: {
       size: "default",
@@ -24,8 +25,8 @@ const selectTriggerVariants = cva(
     variants: {
       size: {
         default: "",
-        lg: "min-h-12 px-4",
-        sm: "gap-1.5 px-3",
+        lg: "min-h-control-large px-control-inset-small",
+        sm: "gap-1.5",
       },
     },
   },
@@ -44,7 +45,7 @@ function SelectButton({ className, size, render, children, ...props }: SelectBut
     children: (
       <Fragment>
         <span className="flex-1 truncate in-data-placeholder:text-muted-foreground">{children}</span>
-        <SortVerticalIcon className={selectTriggerIconClassName} />
+        <SortVerticalIcon aria-hidden="true" className={selectTriggerIconClassName} />
       </Fragment>
     ),
     className: cn(selectTriggerVariants({ size }), "min-w-0", className),
@@ -73,7 +74,7 @@ function SelectTrigger({
     >
       {children}
       <SelectPrimitive.Icon data-slot="select-icon">
-        <SortVerticalIcon className={selectTriggerIconClassName} />
+        <SortVerticalIcon aria-hidden="true" className={selectTriggerIconClassName} />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
   );
@@ -89,6 +90,31 @@ function SelectValue({ className, ...props }: SelectPrimitive.Value.Props) {
   );
 }
 
+function SelectScrollUpArrow() {
+  return (
+    <SelectPrimitive.ScrollUpArrow
+      className="top-0 z-50 flex h-7 w-full cursor-default items-center justify-center"
+      data-slot="select-scroll-up-arrow"
+    >
+      <AltArrowUpIcon aria-hidden="true" className="size-4" />
+    </SelectPrimitive.ScrollUpArrow>
+  );
+}
+
+function SelectScrollDownArrow() {
+  return (
+    <SelectPrimitive.ScrollDownArrow
+      className="bottom-0 z-50 flex h-7 w-full cursor-default items-center justify-center"
+      data-slot="select-scroll-down-arrow"
+    >
+      <AltArrowDownIcon aria-hidden="true" className="size-4" />
+    </SelectPrimitive.ScrollDownArrow>
+  );
+}
+
+type SelectPopupProps = SelectPrimitive.Popup.Props &
+  Pick<SelectPrimitive.Positioner.Props, "side" | "sideOffset" | "align" | "alignOffset" | "alignItemWithTrigger" | "anchor">;
+
 function SelectPopup({
   className,
   children,
@@ -99,14 +125,7 @@ function SelectPopup({
   alignItemWithTrigger = true,
   anchor,
   ...props
-}: SelectPrimitive.Popup.Props & {
-  side?: SelectPrimitive.Positioner.Props["side"];
-  sideOffset?: SelectPrimitive.Positioner.Props["sideOffset"];
-  align?: SelectPrimitive.Positioner.Props["align"];
-  alignOffset?: SelectPrimitive.Positioner.Props["alignOffset"];
-  alignItemWithTrigger?: SelectPrimitive.Positioner.Props["alignItemWithTrigger"];
-  anchor?: SelectPrimitive.Positioner.Props["anchor"];
-}) {
+}: SelectPopupProps) {
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Positioner
@@ -120,30 +139,23 @@ function SelectPopup({
         sideOffset={sideOffset}
       >
         <SelectPrimitive.Popup
-          className="origin-(--transform-origin) text-foreground"
+          className="group/select-popup origin-(--transform-origin) text-foreground"
           data-slot="select-popup"
           {...props}
         >
-          <SelectPrimitive.ScrollUpArrow
-            className="top-0 z-50 flex h-7 w-full cursor-default items-center justify-center before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-full before:rounded-t-overlay before:bg-linear-to-b before:from-50% before:from-popover"
-            data-slot="select-scroll-up-arrow"
-          >
-            <AltArrowUpIcon className="relative size-4" />
-          </SelectPrimitive.ScrollUpArrow>
-          <div className="relative h-full min-w-(--anchor-width) overflow-hidden rounded-overlay edge bg-popover text-popover-foreground shadow-raised">
+          <SelectScrollUpArrow />
+          <div className={cn("relative h-full min-w-(--anchor-width) overflow-hidden", popupClassNames.glass)}>
             <SelectPrimitive.List
-              className={cn("max-h-(--available-height) overflow-y-auto p-1.5", className)}
+              className={cn(
+                "scroll-arrow-fade max-h-(--available-height) overflow-y-auto p-1.5 group-has-data-[slot=select-scroll-down-arrow]/select-popup:mask-b-from-(--arrow-fade) group-has-data-[slot=select-scroll-up-arrow]/select-popup:mask-t-from-(--arrow-fade)",
+                className,
+              )}
               data-slot="select-list"
             >
               {children}
             </SelectPrimitive.List>
           </div>
-          <SelectPrimitive.ScrollDownArrow
-            className="bottom-0 z-50 flex h-7 w-full cursor-default items-center justify-center before:pointer-events-none before:absolute before:inset-x-0 before:bottom-0 before:h-full before:rounded-b-overlay before:bg-linear-to-t before:from-50% before:from-popover"
-            data-slot="select-scroll-down-arrow"
-          >
-            <AltArrowDownIcon className="relative size-4" />
-          </SelectPrimitive.ScrollDownArrow>
+          <SelectScrollDownArrow />
         </SelectPrimitive.Popup>
       </SelectPrimitive.Positioner>
     </SelectPrimitive.Portal>
@@ -154,14 +166,14 @@ function SelectItem({ className, children, ...props }: SelectPrimitive.Item.Prop
   return (
     <SelectPrimitive.Item
       className={cn(
-        "relative flex min-h-11 in-data-[side=none]:min-w-anchor-inset cursor-default items-center rounded-surface py-2.5 ps-10 pe-3.5 text-body outline-none data-disabled:pointer-events-none data-highlighted:bg-muted data-disabled:opacity-40 [&_svg:not([class*='size-'])]:size-5 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        "relative flex min-h-row in-data-[side=none]:min-w-anchor-inset cursor-default items-center rounded-density-surface py-1.5 ps-10 pe-row-inset text-density-body outline-none data-disabled:pointer-events-none data-highlighted:bg-foreground/7 data-disabled:opacity-40 [&_svg:not([class*='size-'])]:size-5 [&_svg]:pointer-events-none [&_svg]:shrink-0",
         className,
       )}
       data-slot="select-item"
       {...props}
     >
-      <SelectPrimitive.ItemIndicator className="absolute start-3.5 text-brand">
-        <CheckIcon strokeWidth={2} />
+      <SelectPrimitive.ItemIndicator className="absolute start-row-inset text-foreground">
+        <CheckIcon aria-hidden="true" strokeWidth={2} />
       </SelectPrimitive.ItemIndicator>
       <SelectPrimitive.ItemText className="min-w-0">{children}</SelectPrimitive.ItemText>
     </SelectPrimitive.Item>
@@ -171,7 +183,7 @@ function SelectItem({ className, children, ...props }: SelectPrimitive.Item.Prop
 function SelectSeparator({ className, ...props }: SelectPrimitive.Separator.Props) {
   return (
     <SelectPrimitive.Separator
-      className={cn("mx-3.5 my-1.5 h-px bg-border", className)}
+      className={cn("mx-row-inset my-1.5 h-px bg-border", className)}
       data-slot="select-separator"
       {...props}
     />
@@ -185,7 +197,7 @@ function SelectGroup(props: SelectPrimitive.Group.Props) {
 function SelectGroupLabel(props: SelectPrimitive.GroupLabel.Props) {
   return (
     <SelectPrimitive.GroupLabel
-      className="px-3.5 pt-2 pb-1 font-semibold text-footnote text-muted-foreground"
+      className="px-row-inset pt-2 pb-1 font-semibold text-density-footnote text-muted-foreground"
       data-slot="select-group-label"
       {...props}
     />

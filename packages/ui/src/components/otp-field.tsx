@@ -32,7 +32,7 @@ export function OTPFieldInput({
   return (
     <OTPFieldPrimitive.Input
       className={cn(
-        "relative size-11 min-w-0 rounded-field edge bg-card text-center text-body text-foreground outline-none inset-ring inset-ring-input transition-shadow in-[[data-slot=otp-field][data-size=lg]]:size-12 in-[[data-slot=otp-field][data-size=lg]]:text-title3 focus-visible:z-10 focus-visible:shadow-focus aria-invalid:inset-ring-2 aria-invalid:inset-ring-destructive-foreground",
+        "relative size-field min-w-0 rounded-density-field edge bg-card text-center text-density-body text-foreground outline-none inset-ring inset-ring-input transition-shadow in-[[data-slot=otp-field][data-size=lg]]:size-control-large in-[[data-slot=otp-field][data-size=lg]]:text-title3 focus-visible:z-10 focus-visible:shadow-focus aria-invalid:inset-ring-2 aria-invalid:inset-ring-destructive-foreground",
         className,
       )}
       data-slot="otp-field-input"

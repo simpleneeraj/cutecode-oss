@@ -1,6 +1,7 @@
 ---
 title: Components
 description: Every part, live. Change the style, palette, font or appearance from the switcher in the nav and the whole page follows.
+icon: Widget5
 ---
 
 import { Button } from "@cutecode/ui/components/button";
@@ -25,6 +26,7 @@ import { CardStack } from "@cutecode/ui/tactile/card-stack";
 import { Chip } from "@cutecode/ui/tactile/chip";
 import { CodeBlock } from "@cutecode/ui/tactile/code-block";
 import { Folder } from "@cutecode/ui/tactile/folder";
+import { FolderBadge } from "@cutecode/ui/tactile/folder-badge";
 import { FolderItems } from "@cutecode/ui/tactile/folder-items";
 import { FolderItem } from "@cutecode/ui/tactile/folder-items/style";
 import { FolderSticker } from "@cutecode/ui/tactile/folder-sticker";
@@ -173,10 +175,10 @@ import { ToastPreview } from "@/components/gallery/toast-preview";
 <Preview>
   <PreviewRow>
     <AppIcon icon={CameraIcon} size={AppIconSize.ExtraSmall} tone={Tone.Gray} />
-    <AppIcon icon={MusicNoteIcon} size={AppIconSize.Small} tone={Tone.Pink} />
-    <AppIcon icon={ChatRoundIcon} size={AppIconSize.Medium} tone={Tone.Green} />
-    <AppIcon icon={CloudIcon} size={AppIconSize.Large} tone={Tone.Blue} />
-    <AppIcon icon={StarIcon} label="Favorites" size={AppIconSize.ExtraLarge} tone={Tone.Yellow} />
+    <AppIcon icon={MusicNoteIcon} size={AppIconSize.Small} tone={Tone.Neutral} />
+    <AppIcon icon={ChatRoundIcon} size={AppIconSize.Medium} tone={Tone.Neutral} />
+    <AppIcon icon={CloudIcon} size={AppIconSize.Large} tone={Tone.Gray} />
+    <AppIcon icon={StarIcon} label="Favorites" size={AppIconSize.ExtraLarge} tone={Tone.Accent} />
   </PreviewRow>
 </Preview>
 
@@ -185,9 +187,9 @@ import { ToastPreview } from "@/components/gallery/toast-preview";
 <Preview>
   <AvatarStack
     people={[
-      { id: "ada", initials: "AL", tone: Tone.Purple },
-      { id: "grace", initials: "GH", tone: Tone.Teal },
-      { id: "linus", initials: "LT", tone: Tone.Orange },
+      { id: "ada", initials: "AL", tone: Tone.Accent },
+      { id: "grace", initials: "GH", tone: Tone.Gray },
+      { id: "linus", initials: "LT", tone: Tone.Neutral },
       { id: "margaret", initials: "MH" },
     ]}
   />
@@ -204,11 +206,11 @@ import { ToastPreview } from "@/components/gallery/toast-preview";
 <Preview>
   <PreviewRow>
     <Chip>Draft</Chip>
-    <Chip icon={StarIcon} tone={Tone.Yellow}>
+    <Chip icon={StarIcon} tone={Tone.Accent}>
       Starred
     </Chip>
-    <Chip tone={Tone.Green}>Published</Chip>
-    <Chip tone={Tone.Indigo}>TypeScript</Chip>
+    <Chip tone={Tone.Neutral}>Published</Chip>
+    <Chip tone={Tone.Gray}>TypeScript</Chip>
   </PreviewRow>
 </Preview>
 
@@ -216,8 +218,8 @@ import { ToastPreview } from "@/components/gallery/toast-preview";
 
 <Preview>
   <PreviewRow>
-    <StatusBadge tone={Tone.Green}>Deployed</StatusBadge>
-    <StatusBadge icon={BellIcon} tone={Tone.Orange}>
+    <StatusBadge tone={Tone.Accent}>Deployed</StatusBadge>
+    <StatusBadge icon={BellIcon} tone={Tone.Gray}>
       Needs review
     </StatusBadge>
   </PreviewRow>
@@ -233,7 +235,7 @@ import { ToastPreview } from "@/components/gallery/toast-preview";
 
 <Preview>
   <PreviewTile>
-    <PocketCard caption="Updated today" chips={["React", "Hooks"]} meta="12 snippets" title="Frontend" tone={Tone.Blue} />
+    <PocketCard caption="Updated today" chips={["React", "Hooks"]} meta="12 snippets" title="Frontend" tone={Tone.Accent} />
   </PreviewTile>
 </Preview>
 
@@ -242,9 +244,9 @@ import { ToastPreview } from "@/components/gallery/toast-preview";
 <Preview>
   <CardStack
     cards={[
-      { id: "backend", title: "Backend", meta: "8 snippets", caption: "Last week", tone: Tone.Green },
-      { id: "design", title: "Design", meta: "5 snippets", caption: "Yesterday", tone: Tone.Pink },
-      { id: "frontend", title: "Frontend", meta: "12 snippets", caption: "Today", tone: Tone.Blue, chips: ["React"] },
+      { id: "backend", title: "Backend", meta: "8 snippets", caption: "Last week", tone: Tone.Neutral },
+      { id: "design", title: "Design", meta: "5 snippets", caption: "Yesterday", tone: Tone.Gray },
+      { id: "frontend", title: "Frontend", meta: "12 snippets", caption: "Today", tone: Tone.Accent, chips: ["React"] },
     ]}
   />
 </Preview>
@@ -255,11 +257,12 @@ import { ToastPreview } from "@/components/gallery/toast-preview";
   <PreviewTile>
     <Folder
       count="12 items"
-      front={<FolderSticker icon={GalleryIcon} tone={Tone.Purple} />}
+      front={<FolderSticker icon={GalleryIcon} tone={Tone.Neutral} />}
       title="Screenshots"
-      tone={Tone.Orange}
+      tone={Tone.Neutral}
     >
-      <FolderItems items={[FolderItem.Paper, FolderItem.Sunset, FolderItem.Bloom]} />
+      <FolderItems items={[FolderItem.Paper, FolderItem.Photo, FolderItem.AccentPhoto]} />
+      <FolderBadge value={3} />
     </Folder>
   </PreviewTile>
 </Preview>
@@ -268,8 +271,8 @@ import { ToastPreview } from "@/components/gallery/toast-preview";
 
 <Preview>
   <PreviewRow>
-    <FolderSticker icon={StarIcon} tone={Tone.Yellow} />
-    <FolderSticker icon={CodeIcon} tone={Tone.Indigo} />
+    <FolderSticker icon={StarIcon} tone={Tone.Accent} />
+    <FolderSticker icon={CodeIcon} tone={Tone.Neutral} />
   </PreviewRow>
 </Preview>
 
@@ -277,7 +280,7 @@ import { ToastPreview } from "@/components/gallery/toast-preview";
 
 <Preview>
   <PreviewTile>
-    <Notification body="Grace left a comment on your snippet." icon={ChatRoundIcon} time="now" title="Messages" tone={Tone.Green} />
+    <Notification body="Grace left a comment on your snippet." icon={ChatRoundIcon} time="now" title="Messages" tone={Tone.Accent} />
   </PreviewTile>
 </Preview>
 
@@ -287,9 +290,9 @@ import { ToastPreview } from "@/components/gallery/toast-preview";
   <PreviewTile>
     <NotificationStack
       notifications={[
-        { id: "build", icon: CodeIcon, tone: Tone.Indigo, title: "Build", time: "5m ago", body: "Your export finished." },
-        { id: "calendar", icon: CalendarIcon, tone: Tone.Pink, title: "Calendar", time: "2m ago", body: "Review starts soon." },
-        { id: "messages", icon: ChatRoundIcon, tone: Tone.Green, title: "Messages", time: "now", body: "Ada sent a snippet." },
+        { id: "build", icon: CodeIcon, tone: Tone.Neutral, title: "Build", time: "5m ago", body: "Your export finished." },
+        { id: "calendar", icon: CalendarIcon, tone: Tone.Gray, title: "Calendar", time: "2m ago", body: "Review starts soon." },
+        { id: "messages", icon: ChatRoundIcon, tone: Tone.Accent, title: "Messages", time: "now", body: "Ada sent a snippet." },
       ]}
     />
   </PreviewTile>
@@ -318,7 +321,7 @@ import { ToastPreview } from "@/components/gallery/toast-preview";
 ### Ticket
 
 <Preview>
-  <Ticket code="CUTE2026" stub="Admit one" tone={Tone.Teal}>
+  <Ticket code="CUTE2026" stub="Admit one" tone={Tone.Accent}>
     Launch party
   </Ticket>
 </Preview>
@@ -381,12 +384,12 @@ import { ToastPreview } from "@/components/gallery/toast-preview";
     <Orbit
       items={[
         { id: "camera", icon: CameraIcon, ring: OrbitRing.Inner, angle: 30, tone: Tone.Gray },
-        { id: "music", icon: MusicNoteIcon, ring: OrbitRing.Middle, angle: 150, tone: Tone.Pink },
-        { id: "cloud", icon: CloudIcon, ring: OrbitRing.Outer, angle: 260, tone: Tone.Blue },
-        { id: "star", icon: StarIcon, ring: OrbitRing.Outer, angle: 20, tone: Tone.Yellow },
+        { id: "music", icon: MusicNoteIcon, ring: OrbitRing.Middle, angle: 150, tone: Tone.Neutral },
+        { id: "cloud", icon: CloudIcon, ring: OrbitRing.Outer, angle: 260, tone: Tone.Neutral },
+        { id: "star", icon: StarIcon, ring: OrbitRing.Outer, angle: 20, tone: Tone.Gray },
       ]}
     >
-      <AppIcon icon={CodeIcon} size={AppIconSize.Medium} tone={Tone.Indigo} />
+      <AppIcon icon={CodeIcon} size={AppIconSize.Medium} tone={Tone.Accent} />
     </Orbit>
   </PreviewTile>
 </Preview>

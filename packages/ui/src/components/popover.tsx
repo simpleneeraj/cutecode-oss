@@ -3,6 +3,7 @@
 import { Popover as PopoverPrimitive } from "@base-ui/react/popover";
 
 import { cn } from "../lib/cn";
+import { popupClassNames } from "./popup-classes";
 
 const PopoverCreateHandle = PopoverPrimitive.createHandle;
 
@@ -49,8 +50,9 @@ function PopoverPopup({
       >
         <PopoverPrimitive.Popup
           className={cn(
-            "relative flex h-(--popup-height,auto) w-(--popup-width,auto) origin-(--transform-origin) rounded-overlay edge bg-popover text-popover-foreground shadow-raised outline-none transition-popup data-starting-style:scale-95 data-starting-style:opacity-0 motion-reduce:transition-none",
-            tooltipStyle && "w-fit text-balance text-footnote",
+            popupClassNames.glass,
+            "relative flex h-(--popup-height,auto) w-(--popup-width,auto) origin-(--transform-origin) outline-none transition-popup data-starting-style:scale-95 data-starting-style:opacity-0 motion-reduce:transition-none",
+            tooltipStyle && "w-fit text-balance text-density-footnote",
             className,
           )}
           data-slot="popover-popup"
@@ -78,7 +80,7 @@ function PopoverClose({ ...props }: PopoverPrimitive.Close.Props) {
 function PopoverTitle({ className, ...props }: PopoverPrimitive.Title.Props) {
   return (
     <PopoverPrimitive.Title
-      className={cn("font-semibold text-body", className)}
+      className={cn("font-semibold text-density-body", className)}
       data-slot="popover-title"
       {...props}
     />
@@ -88,7 +90,7 @@ function PopoverTitle({ className, ...props }: PopoverPrimitive.Title.Props) {
 function PopoverDescription({ className, ...props }: PopoverPrimitive.Description.Props) {
   return (
     <PopoverPrimitive.Description
-      className={cn("text-muted-foreground text-subheadline", className)}
+      className={cn("text-muted-foreground text-density-subheadline", className)}
       data-slot="popover-description"
       {...props}
     />

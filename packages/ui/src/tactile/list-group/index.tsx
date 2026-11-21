@@ -52,7 +52,7 @@ function ListGroupRows({ children }: ListGroupProps) {
 
 function ListGroupRow({ icon: Glyph, tone, render, children }: ListGroupRowProps) {
   const glyph = Glyph ? (
-    <span className={listGroupGlyphStyles({ tone })}>
+    <span className={listGroupGlyphStyles({ look: tone })}>
       <Glyph aria-hidden="true" className={styles.glyphIcon()} />
     </span>
   ) : null;

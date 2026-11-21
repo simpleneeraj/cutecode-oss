@@ -53,6 +53,7 @@
   --color-warning-foreground: var(--warning-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
+  --color-destructive-soft: var(--destructive-soft);
   --color-info: var(--info);
   --color-info-foreground: var(--info-foreground);
   --color-glass: var(--glass);
@@ -63,10 +64,7 @@
   --color-orbit-line: var(--orbit-line);
   --color-note: var(--note);
   --color-note-ink: var(--note-ink);
-  --color-traffic-red: var(--traffic-red);
-  --color-traffic-yellow: var(--traffic-yellow);
-  --color-traffic-green: var(--traffic-green);
-  --color-syntax-keyword: var(--syntax-keyword);
+  --color-window-light: var(--window-light);
   --color-syntax-type: var(--syntax-type);
   --color-syntax-string: var(--syntax-string);
   --color-syntax-comment: var(--syntax-comment);
@@ -96,10 +94,51 @@
   --font-mono: var(--font-mono);
 }
 
+@theme inline reference {
+  --spacing-control-small: var(--control-height-small);
+  --spacing-control-medium: var(--control-height-medium);
+  --spacing-control-large: var(--control-height-large);
+  --spacing-field: var(--field-height);
+  --spacing-field-inner: calc(var(--field-height) - 0.5rem);
+  --spacing-row: var(--row-height);
+  --spacing-control-inset-small: var(--control-inset-small);
+  --spacing-control-inset-medium: var(--control-inset-medium);
+  --spacing-control-inset-large: var(--control-inset-large);
+  --spacing-row-inset: var(--row-inset);
+
+  --radius-density-control: max(0px, calc(var(--radius-control) - var(--radius-step)));
+  --radius-density-field: max(0px, calc(var(--radius-field) - var(--radius-step)));
+  --radius-density-surface: max(0px, calc(var(--radius-surface) - var(--radius-step)));
+  --radius-density-overlay: max(0px, calc(var(--radius-overlay) - var(--radius-step)));
+
+  --text-density-body: var(--body-size);
+  --text-density-body--line-height: var(--body-leading);
+  --text-density-body--letter-spacing: var(--body-tracking);
+  --text-density-callout: var(--callout-size);
+  --text-density-callout--line-height: var(--callout-leading);
+  --text-density-callout--letter-spacing: var(--callout-tracking);
+  --text-density-subheadline: var(--subheadline-size);
+  --text-density-subheadline--line-height: var(--subheadline-leading);
+  --text-density-subheadline--letter-spacing: var(--subheadline-tracking);
+  --text-density-footnote: var(--footnote-size);
+  --text-density-footnote--line-height: var(--footnote-leading);
+  --text-density-footnote--letter-spacing: var(--footnote-tracking);
+  --text-density-caption: var(--caption-size);
+  --text-density-caption--line-height: var(--caption-leading);
+  --text-density-caption--letter-spacing: var(--caption-tracking);
+}
+
 @theme {
   --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
   --transition-duration-drawer: 450ms;
+  --ease-snappy: linear(0, 0.052, 0.171, 0.317, 0.46, 0.596, 0.712, 0.804, 0.877, 0.931, 0.968, 0.992, 1.007, 1.015, 1.019, 1.019, 1.017, 1.015, 1.012, 1.009, 1.007, 1.005, 1.003, 1.002, 1);
+  --transition-duration-snappy: 405ms;
+  --transition-duration-fade: 150ms;
+  --transition-duration-color: 200ms;
 
+  --text-price: 2.75rem;
+  --text-price--line-height: 3rem;
+  --text-price--letter-spacing: -0.035em;
   --text-title3: 1.25rem;
   --text-title3--line-height: 1.5625rem;
   --text-title3--letter-spacing: -0.017em;
@@ -115,4 +154,7 @@
   --text-caption1: 0.75rem;
   --text-caption1--line-height: 1rem;
   --text-caption1--letter-spacing: 0em;
+  --text-caption2: 0.6875rem;
+  --text-caption2--line-height: 0.8125rem;
+  --text-caption2--letter-spacing: 0.01em;
 }

@@ -13,7 +13,7 @@ const buttonTones = {
   tinted: "bg-brand-soft text-brand-ink hover:bg-brand-soft/80 data-pressed:bg-brand-soft/80",
   plain: "text-brand-ink hover:bg-muted data-pressed:bg-muted",
   glass: "glass text-foreground shadow-glass",
-  destructive: "bg-pink text-destructive-foreground hover:bg-pink/80 data-pressed:bg-pink/80",
+  destructive: "bg-destructive-soft text-destructive-foreground hover:bg-destructive-soft/80 data-pressed:bg-destructive-soft/80",
 };
 
 const buttonVariants = cva(
@@ -48,7 +48,7 @@ const buttonVariants = cva(
         link: "text-brand-ink underline-offset-4 hover:underline data-pressed:underline",
         glass: buttonTones.glass,
         destructive: buttonTones.destructive,
-        "destructive-outline": "text-destructive-foreground hover:bg-pink data-pressed:bg-pink",
+        "destructive-outline": "text-destructive-foreground hover:bg-destructive-soft data-pressed:bg-destructive-soft",
       },
     },
   },

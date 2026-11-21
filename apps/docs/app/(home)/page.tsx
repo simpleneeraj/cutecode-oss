@@ -1,22 +1,21 @@
 import type { Metadata, Viewport } from "next";
 
-import { FloatingObjects } from "@/components/home/floating-objects";
-import { Foundations } from "@/components/home/foundations";
+import { AgentTeaser } from "@/components/home/agent-teaser";
+import { CalendarTeaser } from "@/components/home/calendar-teaser";
+import { DocsTeaser } from "@/components/home/docs-teaser";
 import { Hero } from "@/components/home/hero";
-import { HomeTabBar } from "@/components/home/home-tab-bar";
-import { LayerLadder } from "@/components/home/layer-ladder";
-import { PartsGrid } from "@/components/home/parts-grid";
+import { InstallSection } from "@/components/home/install-section";
+import { ObjectsBento } from "@/components/home/objects-bento";
 import { PricingTeaser } from "@/components/home/pricing-teaser";
 import { SiteFooter } from "@/components/home/site-footer";
-import { StudioTeaser } from "@/components/home/studio-teaser";
-import { SiteHeader } from "@/components/site-header";
+import { ThemeSection } from "@/components/home/theme-section";
 
 import { homePageStyles } from "./style";
 
 export const metadata: Metadata = {
   title: "CuteUI",
   description:
-    "A React component library where folders, stacks and app icons feel like real objects. Built on Base UI, with Solar icons, following Apple's Human Interface Guidelines.",
+    "React components that feel like real objects. Folders open, cards fan out, glass catches the light. Built on Base UI, with Solar icons, following Apple's guidelines.",
 };
 
 export const viewport: Viewport = {
@@ -28,21 +27,17 @@ const styles = homePageStyles();
 export default function HomePage() {
   return (
     <div className={styles.root()}>
-      <SiteHeader />
-      <main className={styles.main()}>
-        <Hero>
-          <FloatingObjects />
-        </Hero>
-        <PartsGrid />
-        <LayerLadder />
-        <Foundations />
-        <StudioTeaser />
+      <div className={styles.sections()}>
+        <Hero />
+        <InstallSection />
+        <ObjectsBento />
+        <ThemeSection />
+        <CalendarTeaser />
+        <AgentTeaser />
+        <DocsTeaser />
         <PricingTeaser />
-      </main>
-      <SiteFooter />
-      <div className={styles.dock()}>
-        <HomeTabBar />
       </div>
+      <SiteFooter />
     </div>
   );
 }

@@ -13,7 +13,7 @@ function Field({ className, ...props }: FieldPrimitive.Root.Props) {
 function FieldLabel({ className, ...props }: FieldPrimitive.Label.Props) {
   return (
     <FieldPrimitive.Label
-      className={cn("inline-flex items-center gap-2 font-semibold text-subheadline text-foreground", className)}
+      className={cn("inline-flex items-center gap-2 font-semibold text-density-subheadline text-foreground", className)}
       data-slot="field-label"
       {...props}
     />
@@ -27,7 +27,7 @@ function FieldItem({ className, ...props }: FieldPrimitive.Item.Props) {
 function FieldDescription({ className, ...props }: FieldPrimitive.Description.Props) {
   return (
     <FieldPrimitive.Description
-      className={cn("text-footnote text-muted-foreground", className)}
+      className={cn("text-density-footnote text-muted-foreground", className)}
       data-slot="field-description"
       {...props}
     />
@@ -37,7 +37,7 @@ function FieldDescription({ className, ...props }: FieldPrimitive.Description.Pr
 function FieldError({ className, ...props }: FieldPrimitive.Error.Props) {
   return (
     <FieldPrimitive.Error
-      className={cn("text-footnote text-destructive-foreground", className)}
+      className={cn("text-density-footnote text-destructive-foreground", className)}
       data-slot="field-error"
       {...props}
     />

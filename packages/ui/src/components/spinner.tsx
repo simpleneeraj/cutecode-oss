@@ -4,7 +4,7 @@ import { LoaderIcon } from "@solar-icons/react/linear/loader";
 import type { IconProps } from "@solar-icons/react/lib/types";
 import { motion, type Transition, useReducedMotion } from "motion/react";
 
-const spinTransition = { duration: 1, ease: "linear", repeat: Infinity } satisfies Transition;
+const spinTransition = { duration: 0.8, ease: "linear", repeat: Infinity } satisfies Transition;
 
 function Spinner(props: IconProps) {
   const isReducedMotion = useReducedMotion();

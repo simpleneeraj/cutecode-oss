@@ -2,23 +2,32 @@
 
 import { TabBar, TabBarTab } from "@cutecode/ui/tactile/tab-bar";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-import { homeTabs } from "./constants";
+import { dockTabs } from "@/components/site-header/constants";
+
+import { homeTabBarStyles } from "./style";
+
+const styles = homeTabBarStyles();
 
 export function HomeTabBar() {
+  const pathname = usePathname();
+
   return (
-    <TabBar label="Sections">
-      {homeTabs.map((tab) => (
-        <TabBarTab
-          href={tab.href}
-          icon={tab.icon}
-          isCurrent={tab.isCurrent}
-          key={tab.href}
-          render={<Link href={tab.href} />}
-        >
-          {tab.label}
-        </TabBarTab>
-      ))}
-    </TabBar>
+    <span className={styles.root()}>
+      <TabBar label="Sections">
+        {dockTabs.map((tab) => (
+          <TabBarTab
+            href={tab.href}
+            icon={tab.icon}
+            isCurrent={tab.href === pathname}
+            key={tab.href}
+            render={<Link href={tab.href} />}
+          >
+            {tab.label}
+          </TabBarTab>
+        ))}
+      </TabBar>
+    </span>
   );
 }

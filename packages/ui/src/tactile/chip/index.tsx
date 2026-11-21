@@ -11,7 +11,7 @@ type ChipProps = {
 };
 
 function Chip({ tone, icon: Glyph, children }: ChipProps) {
-  const styles = chipStyles({ tone });
+  const styles = chipStyles({ look: tone });
 
   return (
     <span className={styles.base()} data-slot="chip">

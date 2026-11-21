@@ -45,6 +45,8 @@ const inkColors = {
 
 const noShadow = "0 0 0 0 transparent";
 
+const noSheen = { light: "none", dark: "none" } satisfies AppearanceValue;
+
 const focusRings = {
   onWhite: {
     light: "0 0 0 2px #ffffff, 0 0 0 4px var(--ring)",
@@ -158,7 +160,7 @@ export const styles = {
     card: { light: "#fffcf5", dark: "#221f18" },
     popover: { light: "#fffcf5", dark: "#2b271f" },
     secondary: { light: "#f1e7cf", dark: "#38332a" },
-    muted: { light: "#efe5ce", dark: "#35302a" },
+    muted: { light: "#efe5ce", dark: "#37322b" },
     mutedForeground: { light: "#5e5847", dark: "#b9b1a0" },
     accent: { light: "#f6eddb", dark: "#2b271f" },
     border: { light: "#d6ccb4", dark: "#4d473b" },
@@ -166,6 +168,7 @@ export const styles = {
     glass: { light: "#fffcf5", dark: "#221f18" },
     glassEdge: inkColors.pop,
     glassSolid: { light: "#fffcf5", dark: "#221f18" },
+    glassSheen: noSheen,
     radiusControl: "14px",
     radiusSurface: "16px",
     radiusOverlay: "16px",
@@ -242,7 +245,7 @@ export const styles = {
     card: { light: "#ffffff", dark: "#1f1e1b" },
     popover: { light: "#ffffff", dark: "#292724" },
     secondary: { light: "#e4dfd4", dark: "#36332e" },
-    muted: { light: "#e7e2d8", dark: "#33302c" },
+    muted: { light: "#e7e2d8", dark: "#35322e" },
     mutedForeground: { light: "#5c5850", dark: "#b5afa4" },
     accent: { light: "#f5f2ec", dark: "#292724" },
     border: { light: "#cdc6b8", dark: "#47443e" },
@@ -250,6 +253,7 @@ export const styles = {
     glass: { light: "#ffffff", dark: "#1f1e1b" },
     glassEdge: inkColors.paper,
     glassSolid: { light: "#ffffff", dark: "#1f1e1b" },
+    glassSheen: noSheen,
     radiusControl: "9999px",
     radiusSurface: "16px",
     radiusOverlay: "18px",

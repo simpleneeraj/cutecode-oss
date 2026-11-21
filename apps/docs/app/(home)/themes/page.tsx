@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { cookies } from "next/headers";
 
 import { SiteFooter } from "@/components/home/site-footer";
-import { SiteHeader } from "@/components/site-header";
 import { ThemeBuilder } from "@/components/theme-builder";
 
 import { themesPageStyles } from "./style";
@@ -26,8 +25,7 @@ export default async function ThemesPage({ searchParams }: ThemesPageProps) {
 
   return (
     <div className={styles.root()}>
-      <SiteHeader />
-      <main className={styles.main()}>
+      <div className={styles.main()}>
         <div className={styles.heading()}>
           <h1 className={styles.title()}>Theme Builder</h1>
           <p className={styles.description()}>
@@ -35,7 +33,7 @@ export default async function ThemesPage({ searchParams }: ThemesPageProps) {
           </p>
         </div>
         <ThemeBuilder initialSettings={initialSettings} />
-      </main>
+      </div>
       <SiteFooter />
     </div>
   );

@@ -32,7 +32,7 @@ function AccordionTrigger({ className, children, ...props }: AccordionPrimitive.
       >
         {children}
         <AltArrowDownIcon
-          className="pointer-events-none size-5 shrink-0 translate-y-px text-muted-foreground transition-transform duration-200 ease-out motion-reduce:transition-none"
+          className="pointer-events-none size-5 shrink-0 translate-y-px text-muted-foreground transition-transform duration-snappy ease-snappy motion-reduce:transition-none"
           data-slot="accordion-indicator"
         />
       </AccordionPrimitive.Trigger>

@@ -3,39 +3,66 @@
 import type { Toggle as TogglePrimitive } from "@base-ui/react/toggle";
 import { ToggleGroup as ToggleGroupPrimitive } from "@base-ui/react/toggle-group";
 import type { VariantProps } from "class-variance-authority";
+import { motion, useReducedMotion } from "motion/react";
 import * as React from "react";
 
 import { cn } from "../lib/cn";
+import { motion as motionTokens } from "../tokens/motion";
 import { Separator } from "./separator";
 import { Toggle as ToggleComponent, type toggleVariants } from "./toggle";
 
-const ToggleGroupContext = React.createContext<VariantProps<typeof toggleVariants>>({
+type ToggleGroupContextValue = VariantProps<typeof toggleVariants> & {
+  thumbId?: string;
+};
+
+const ToggleGroupContext = React.createContext<ToggleGroupContextValue>({
   size: "default",
   variant: "default",
 });
+
+const instantTransition = { duration: 0 };
+
+function SegmentThumb({ thumbId }: { thumbId?: string }) {
+  const isReducedMotion = useReducedMotion();
+  const transition = isReducedMotion ? instantTransition : motionTokens.springSnappy;
+
+  return (
+    <motion.span
+      aria-hidden="true"
+      className="-z-10 pointer-events-none absolute inset-0 rounded-control bg-segment-thumb shadow-thumb"
+      layoutId={thumbId}
+      transition={transition}
+    />
+  );
+}
 
 function ToggleGroup({
   className,
   variant = "default",
   size = "default",
   orientation = "horizontal",
+  multiple,
   children,
   ...props
 }: ToggleGroupPrimitive.Props & VariantProps<typeof toggleVariants>) {
+  const groupId = React.useId();
+  const thumbId = multiple ? undefined : `${groupId}-thumb`;
+
   return (
     <ToggleGroupPrimitive
       className={cn(
-        "flex w-fit items-center gap-0.5 rounded-control bg-muted p-0.75",
+        "isolate flex w-fit items-center gap-0.5 rounded-control bg-secondary p-0.5",
         orientation === "vertical" && "flex-col rounded-surface",
         className,
       )}
       data-size={size}
       data-slot="toggle-group"
       data-variant={variant}
+      multiple={multiple}
       orientation={orientation}
       {...props}
     >
-      <ToggleGroupContext.Provider value={{ size, variant }}>{children}</ToggleGroupContext.Provider>
+      <ToggleGroupContext.Provider value={{ size, variant, thumbId }}>{children}</ToggleGroupContext.Provider>
     </ToggleGroupPrimitive>
   );
 }
@@ -57,6 +84,12 @@ function Toggle({
       className={className}
       data-size={resolvedSize}
       data-variant={resolvedVariant}
+      render={(buttonProps, state) => (
+        <button {...buttonProps} type="button">
+          {state.pressed ? <SegmentThumb thumbId={context.thumbId} /> : null}
+          {buttonProps.children}
+        </button>
+      )}
       size={resolvedSize}
       variant={resolvedVariant}
       {...props}

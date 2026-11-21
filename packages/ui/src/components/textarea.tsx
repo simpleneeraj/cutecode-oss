@@ -17,7 +17,7 @@ function Textarea({ className, size = "default", unstyled = false, ...props }: T
       className={
         cn(
           !unstyled &&
-            "relative inline-flex w-full rounded-field edge bg-card text-body text-foreground inset-ring inset-ring-input transition-shadow has-focus-visible:shadow-focus has-aria-invalid:inset-ring-2 has-aria-invalid:inset-ring-destructive-foreground has-disabled:opacity-40",
+            "relative inline-flex w-full rounded-density-field edge bg-card text-density-body text-foreground inset-ring inset-ring-input transition-shadow has-focus-visible:shadow-focus has-aria-invalid:inset-ring-2 has-aria-invalid:inset-ring-destructive-foreground has-disabled:opacity-40",
           className,
         ) || undefined
       }
@@ -28,9 +28,9 @@ function Textarea({ className, size = "default", unstyled = false, ...props }: T
         render={(defaultProps) => (
           <textarea
             className={cn(
-              "field-sizing-content min-h-24 w-full rounded-inherit bg-transparent px-3.5 py-3 outline-none placeholder:text-muted-foreground",
-              size === "sm" && "min-h-20 px-3 py-2.5",
-              size === "lg" && "min-h-28 px-4 py-3.5",
+              "field-sizing-content min-h-24 w-full rounded-inherit bg-transparent px-row-inset py-3 outline-none placeholder:text-muted-foreground",
+              size === "sm" && "min-h-20 py-2.5",
+              size === "lg" && "min-h-28 px-control-inset-small py-3.5",
             )}
             data-slot="textarea"
             {...mergeProps(defaultProps, props)}

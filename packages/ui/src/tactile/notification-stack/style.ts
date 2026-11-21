@@ -14,8 +14,9 @@ export const notificationStackStyles = tv(
     slots: {
       root: "relative grid justify-items-center pb-4",
       front: "relative z-10 col-start-1 row-start-1 flex w-full justify-center",
+      item: "contents",
       plate:
-        "glass pointer-events-none col-start-1 row-start-1 w-90 max-w-full origin-bottom rounded-surface edge shadow-glass",
+        "glass pointer-events-none col-start-1 row-start-1 w-90 max-w-full origin-bottom rounded-surface squircle edge shadow-glass",
     },
     variants: {
       depth: {

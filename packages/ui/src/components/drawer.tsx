@@ -15,7 +15,7 @@ function DrawerBackdrop({ className, ...props }: DrawerPrimitive.Backdrop.Props)
   return (
     <DrawerPrimitive.Backdrop
       className={cn(
-        "fixed inset-0 z-50 bg-scrim opacity-[calc(1-var(--drawer-swipe-progress))] transition-opacity duration-drawer ease-drawer data-ending-style:opacity-0 data-starting-style:opacity-0 data-swiping:duration-0 data-ending-style:duration-[calc(var(--drawer-swipe-strength)*400ms)] motion-reduce:transition-none",
+        "fixed inset-0 z-50 bg-scrim opacity-drawer-swipe transition-opacity duration-drawer ease-drawer data-ending-style:opacity-0 data-starting-style:opacity-0 data-swiping:duration-0 data-ending-style:duration-drawer-swipe motion-reduce:transition-none",
         className,
       )}
       data-slot="drawer-backdrop"
@@ -35,7 +35,7 @@ function DrawerPopup({ className, children, ...props }: DrawerPrimitive.Popup.Pr
         >
           <DrawerPrimitive.Popup
             className={cn(
-              "relative row-start-2 flex max-h-full min-h-0 w-full min-w-0 touch-none flex-col rounded-t-overlay edge bg-popover pt-2 pb-safe-inset text-popover-foreground shadow-raised outline-none transition-transform duration-drawer ease-drawer will-change-transform translate-y-(--drawer-swipe-movement-y) data-swiping:select-none data-ending-style:translate-y-full data-starting-style:translate-y-full data-ending-style:duration-[calc(var(--drawer-swipe-strength)*400ms)] motion-reduce:transition-none",
+              "relative row-start-2 flex max-h-full min-h-0 w-full min-w-0 touch-none flex-col squircle rounded-t-overlay edge bg-popover pt-2 pb-safe-inset text-popover-foreground shadow-raised outline-none transition-transform duration-drawer ease-drawer will-change-transform translate-y-(--drawer-swipe-movement-y) data-swiping:select-none data-ending-style:translate-y-full data-starting-style:translate-y-full data-ending-style:duration-drawer-swipe motion-reduce:transition-none",
               className,
             )}
             data-slot="drawer-popup"

@@ -4,7 +4,7 @@ import type * as React from "react";
 import { cn } from "../lib/cn";
 
 const alertVariants = cva(
-  "relative grid w-full items-start gap-x-3 gap-y-0.5 rounded-surface px-4 py-3.5 text-foreground text-subheadline has-[>svg]:has-data-[slot=alert-action]:grid-cols-icon-fill-auto has-[>svg]:grid-cols-icon-fill has-data-[slot=alert-action]:grid-cols-fill-auto [&>svg]:h-lh [&>svg]:w-5",
+  "squircle relative grid w-full items-start gap-x-3 gap-y-0.5 rounded-surface edge px-4 py-3.5 text-foreground text-subheadline has-[>svg]:has-data-[slot=alert-action]:grid-cols-icon-fill-auto has-[>svg]:grid-cols-icon-fill has-data-[slot=alert-action]:grid-cols-fill-auto [&>svg]:h-lh [&>svg]:w-5",
   {
     defaultVariants: {
       variant: "default",
@@ -12,10 +12,10 @@ const alertVariants = cva(
     variants: {
       variant: {
         default: "bg-card shadow-rest [&>svg]:text-muted-foreground",
-        error: "bg-pink [&>svg]:text-destructive-foreground",
-        info: "bg-blue [&>svg]:text-blue-ink",
-        success: "bg-green [&>svg]:text-green-ink",
-        warning: "bg-orange [&>svg]:text-orange-ink",
+        error: "bg-destructive-soft [&>svg]:text-destructive-foreground",
+        info: "bg-card shadow-rest [&>svg]:text-brand-ink",
+        success: "bg-card shadow-rest [&>svg]:text-success-foreground",
+        warning: "bg-card shadow-rest [&>svg]:text-warning-foreground",
       },
     },
   },

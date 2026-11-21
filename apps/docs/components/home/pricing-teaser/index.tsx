@@ -8,32 +8,39 @@ import {
 } from "@cutecode/ui/tactile/price-card";
 import Link from "next/link";
 
+import { homeSectionStyles } from "@/components/home/section/style";
 import { SectionHeading } from "@/components/home/section-heading";
 import { siteLinks } from "@/components/site-header/constants";
 
 import { planFeatures } from "./constants";
 import { pricingTeaserStyles } from "./style";
 
+const section = homeSectionStyles();
 const styles = pricingTeaserStyles();
 
 export function PricingTeaser() {
   return (
-    <section className={styles.root()} id="pricing">
-      <SectionHeading isCentered title="Free to start" />
+    <section className={section.root()} id="pricing">
+      <SectionHeading
+        eyebrow="Pricing"
+        isCentered
+        lead="Every component is free and MIT licensed. Pro adds ready-made blocks and templates built from them."
+        title="Free to start. Pro when you need more."
+      />
       <div className={styles.plans()}>
         <PriceCard>
           <PriceCardHeader name="Free" />
-          <PriceCardAmount period="forever" price="$0" />
+          <PriceCardAmount period="MIT license" price="$0" />
           <PriceCardNote>Every component, MIT licensed.</PriceCardNote>
-          <PriceCardAction render={<Link href={siteLinks.components} />}>Browse Components</PriceCardAction>
+          <PriceCardAction render={<Link href={siteLinks.components} />}>Browse components</PriceCardAction>
           <PriceCardFeatures features={planFeatures.free} />
         </PriceCard>
         <PriceCard isFeatured>
           <PriceCardHeader name="Pro" />
-          <PriceCardAmount period="per year" price="[PRICE]" />
-          <PriceCardNote>Blocks and templates, built from the components.</PriceCardNote>
+          <PriceCardAmount period="Blocks and templates" price="Soon" />
+          <PriceCardNote>Ready-made blocks and templates, built from the components.</PriceCardNote>
           <PriceCardAction isFeatured render={<button disabled type="button" />}>
-            Coming Soon
+            Coming soon
           </PriceCardAction>
           <PriceCardFeatures features={planFeatures.pro} />
         </PriceCard>

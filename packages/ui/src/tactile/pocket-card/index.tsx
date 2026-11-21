@@ -1,7 +1,6 @@
 import { Chip } from "../chip";
 import { Tone } from "../tone";
-import { toneTint } from "../tone/style";
-import { pocketCardStyles } from "./style";
+import { pocketCardStyles, pocketChipTones } from "./style";
 
 type PocketCardProps = {
   title: string;
@@ -11,17 +10,17 @@ type PocketCardProps = {
   chips?: string[];
 };
 
-function PocketCard({ title, meta, caption, tone = Tone.Gray, chips = [] }: PocketCardProps) {
-  const styles = pocketCardStyles();
+function PocketCard({ title, meta, caption, tone = Tone.Neutral, chips = [] }: PocketCardProps) {
+  const styles = pocketCardStyles({ look: tone });
 
   return (
-    <article className={styles.root({ class: toneTint[tone] })} data-slot="pocket-card">
+    <article className={styles.root()} data-slot="pocket-card">
       <div className={styles.face()}>
         <p className={styles.title()}>{title}</p>
         <p className={styles.meta()}>{meta}</p>
         <div className={styles.chips()}>
           {chips.map((chip) => (
-            <Chip key={chip} tone={tone}>
+            <Chip key={chip} tone={pocketChipTones[tone]}>
               {chip}
             </Chip>
           ))}

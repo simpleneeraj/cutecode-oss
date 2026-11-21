@@ -76,7 +76,7 @@ function SheetPopup({
       <SheetViewport side={side} variant={variant}>
         <SheetPrimitive.Popup
           className={cn(
-            "relative flex max-h-full min-h-0 w-full min-w-0 flex-col edge bg-popover text-popover-foreground shadow-raised transition duration-200 ease-out will-change-transform data-ending-style:opacity-0 data-starting-style:opacity-0 motion-reduce:transition-none",
+            "squircle relative flex max-h-full min-h-0 w-full min-w-0 flex-col edge bg-popover text-popover-foreground shadow-raised transition duration-200 ease-out will-change-transform data-ending-style:opacity-0 data-starting-style:opacity-0 motion-reduce:transition-none",
             side === "bottom" &&
               "row-start-2 rounded-t-overlay data-ending-style:translate-y-8 data-starting-style:translate-y-8",
             side === "top" && "rounded-b-overlay data-ending-style:-translate-y-8 data-starting-style:-translate-y-8",
@@ -105,7 +105,7 @@ function SheetPopup({
               render={<Button size="icon-sm" variant="gray" />}
               {...closeProps}
             >
-              <CloseIcon />
+              <CloseIcon aria-hidden="true" />
             </SheetPrimitive.Close>
           )}
         </SheetPrimitive.Popup>

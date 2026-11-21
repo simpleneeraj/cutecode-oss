@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 
-import { Tone } from "../tone";
-import { toneTint } from "../tone/style";
+import type { Tone } from "../tone";
 import { barWidths, ticketStyles } from "./style";
 
 type TicketProps = {
@@ -18,12 +17,12 @@ function barsFromCode(code: string) {
   }));
 }
 
-function Ticket({ code, stub, tone = Tone.Gray, children }: TicketProps) {
-  const styles = ticketStyles();
+function Ticket({ code, stub, tone, children }: TicketProps) {
+  const styles = ticketStyles({ look: tone });
 
   return (
     <div className={styles.root()} data-slot="ticket">
-      <div className={styles.main({ class: toneTint[tone] })}>{children}</div>
+      <div className={styles.main()}>{children}</div>
       <div aria-hidden="true" className={styles.join()}>
         <span className={styles.perforation()} />
         <span className={styles.leftNotch()} />

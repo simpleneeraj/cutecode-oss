@@ -50,7 +50,7 @@ function AlertDialogPopup({
       <AlertDialogViewport className={cn(bottomStickOnMobile && "max-sm:grid-rows-end max-sm:p-0 max-sm:pt-12")}>
         <AlertDialogPrimitive.Popup
           className={cn(
-            "opacity-nested relative row-start-2 flex max-h-full min-h-0 w-full min-w-0 max-w-xs origin-center flex-col rounded-overlay edge bg-popover text-popover-foreground shadow-raised transition duration-200 ease-out will-change-transform data-ending-style:opacity-0 data-starting-style:opacity-0 sm:scale-nested sm:data-ending-style:scale-95 sm:data-starting-style:scale-95 motion-reduce:transition-none",
+            "opacity-nested relative row-start-2 flex max-h-full min-h-0 w-full min-w-0 max-w-xs origin-center flex-col squircle rounded-overlay edge bg-popover text-popover-foreground shadow-raised transition duration-200 ease-out will-change-transform data-ending-style:opacity-0 data-starting-style:opacity-0 sm:scale-nested sm:data-ending-style:scale-95 sm:data-starting-style:scale-95 motion-reduce:transition-none",
             bottomStickOnMobile &&
               "max-sm:max-w-none max-sm:origin-bottom max-sm:rounded-b-none max-sm:data-ending-style:translate-y-8 max-sm:data-starting-style:translate-y-8",
             className,

@@ -7,7 +7,7 @@ import { cn } from "../lib/cn";
 
 function Label({ className, render, ...props }: useRender.ComponentProps<"label">) {
   const defaultProps = {
-    className: cn("inline-flex items-center gap-2 font-semibold text-subheadline text-foreground", className),
+    className: cn("inline-flex items-center gap-2 font-semibold text-density-subheadline text-foreground", className),
     "data-slot": "label",
   };
 

@@ -29,8 +29,8 @@ function TabsList({
       className={cn(
         "relative z-0 flex w-fit items-center justify-center gap-0.5 text-foreground data-[orientation=vertical]:flex-col",
         variant === "default"
-          ? "rounded-control bg-muted p-0.75 data-[orientation=vertical]:rounded-surface"
-          : "data-[orientation=vertical]:px-1 data-[orientation=horizontal]:py-1 *:data-[slot=tabs-tab]:hover:bg-muted",
+          ? "rounded-control bg-secondary p-0.5 data-[orientation=vertical]:rounded-surface"
+          : "data-[orientation=vertical]:px-1 data-[orientation=horizontal]:py-1 *:data-[slot=tabs-tab]:hover:bg-foreground/7",
         className,
       )}
       data-slot="tabs-list"
@@ -39,7 +39,7 @@ function TabsList({
       {children}
       <TabsPrimitive.Indicator
         className={cn(
-          "-translate-y-(--active-tab-bottom) absolute bottom-0 left-0 h-(--active-tab-height) w-(--active-tab-width) translate-x-(--active-tab-left) transition-all duration-200 ease-out motion-reduce:transition-none",
+          "-translate-y-(--active-tab-bottom) absolute bottom-0 left-0 h-(--active-tab-height) w-(--active-tab-width) translate-x-(--active-tab-left) transition-all duration-snappy ease-snappy motion-reduce:transition-none",
           variant === "underline"
             ? "data-[orientation=vertical]:-translate-x-px z-10 rounded-control bg-brand data-[orientation=horizontal]:h-0.5 data-[orientation=vertical]:w-0.5 data-[orientation=horizontal]:translate-y-px"
             : "-z-1 rounded-control bg-segment-thumb shadow-thumb",
@@ -54,7 +54,7 @@ function TabsTab({ className, ...props }: TabsPrimitive.Tab.Props) {
   return (
     <TabsPrimitive.Tab
       className={cn(
-        "hit-area relative flex h-9.5 min-w-16 shrink-0 grow cursor-pointer items-center justify-center gap-1.5 whitespace-nowrap rounded-control px-4 font-medium text-subheadline text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:shadow-focus data-disabled:pointer-events-none data-[orientation=vertical]:w-full data-[orientation=vertical]:justify-start data-active:text-foreground data-disabled:opacity-40 [&_svg:not([class*='size-'])]:size-5 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        "hit-area relative flex h-8 min-w-16 shrink-0 grow cursor-pointer items-center justify-center gap-1.5 whitespace-nowrap rounded-control px-control-inset-small font-semibold text-footnote text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:shadow-focus data-disabled:pointer-events-none data-[orientation=vertical]:w-full data-[orientation=vertical]:justify-start data-active:text-foreground data-disabled:opacity-40 [&_svg:not([class*='size-'])]:size-5 [&_svg]:pointer-events-none [&_svg]:shrink-0",
         className,
       )}
       data-slot="tabs-tab"

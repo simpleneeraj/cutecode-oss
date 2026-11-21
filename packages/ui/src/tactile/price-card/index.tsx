@@ -50,7 +50,7 @@ function PriceCardHeader({ name, badge }: PriceCardHeaderProps) {
   return (
     <div className={styles.header()} data-slot="price-card-header">
       <h3 className={styles.name()}>{name}</h3>
-      {badge ? <Chip tone={Tone.Blue}>{badge}</Chip> : null}
+      {badge ? <Chip tone={Tone.Accent}>{badge}</Chip> : null}
     </div>
   );
 }

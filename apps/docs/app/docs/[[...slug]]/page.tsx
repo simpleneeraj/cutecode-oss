@@ -1,11 +1,18 @@
-import { DocsBody, DocsDescription, DocsPage, DocsTitle } from "fumadocs-ui/layouts/docs/page";
+import { DocsBody, DocsDescription, DocsTitle } from "fumadocs-ui/layouts/docs/page";
+import { createRelativeLink } from "fumadocs-ui/mdx";
 import { notFound } from "next/navigation";
+import { getMDXComponents } from "@/components/mdx";
 import { source } from "@/lib/source";
-import { getMdxComponents } from "@/mdx-components";
+
+import { CopyPageButton } from "../_chrome/copy-page-button";
+import { DocsPageShell } from "../_chrome/docs-page-shell";
+import { chromeStyles } from "../_chrome/style";
 
 type DocsPageProps = {
   params: Promise<{ slug?: string[] }>;
 };
+
+const styles = chromeStyles();
 
 export default async function Page({ params }: DocsPageProps) {
   const { slug } = await params;
@@ -16,15 +23,19 @@ export default async function Page({ params }: DocsPageProps) {
   }
 
   const Content = page.data.body;
+  const markdown = await page.data.getText("processed");
 
   return (
-    <DocsPage toc={page.data.toc}>
+    <DocsPageShell isFull={page.data.full ?? false} toc={page.data.toc}>
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
+      <div className={styles.links()}>
+        <CopyPageButton markdown={markdown} />
+      </div>
       <DocsBody>
-        <Content components={getMdxComponents()} />
+        <Content components={getMDXComponents({ a: createRelativeLink(source, page) })} />
       </DocsBody>
-    </DocsPage>
+    </DocsPageShell>
   );
 }
 

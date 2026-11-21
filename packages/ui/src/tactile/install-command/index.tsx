@@ -57,7 +57,8 @@ function CopyCommandButton({ command }: CopyCommandButtonProps) {
 
 function InstallCommand({ item }: InstallCommandProps) {
   const [packageManager, setPackageManager] = useState<PackageManager>(PackageManager.Npm);
-  const command = `${installCommand.runners[packageManager]} ${item}`;
+  const runner = installCommand.runners[packageManager];
+  const command = `${runner} ${item}`;
 
   function selectPackageManager(values: string[]) {
     const selected = packageManagers.find((manager) => values.includes(manager));
@@ -68,20 +69,24 @@ function InstallCommand({ item }: InstallCommandProps) {
 
   return (
     <div className={styles.root()} data-slot="install-command">
-      <ToggleGroup aria-label="Package manager" onValueChange={selectPackageManager} size="sm" value={[packageManager]}>
-        {packageManagers.map((manager) => (
-          <ToggleGroupItem key={manager} value={manager}>
-            {manager}
-          </ToggleGroupItem>
-        ))}
-      </ToggleGroup>
-      <div className={styles.row()}>
+      <div className={styles.top()}>
+        <ToggleGroup aria-label="Package manager" onValueChange={selectPackageManager} size="sm" value={[packageManager]}>
+          {packageManagers.map((manager) => (
+            <ToggleGroupItem key={manager} value={manager}>
+              {manager}
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
+        <CopyCommandButton command={command} key={command} />
+      </div>
+      <p className={styles.line()}>
         <span aria-hidden="true" className={styles.prompt()}>
           $
         </span>
-        <code className={styles.command()}>{command}</code>
-        <CopyCommandButton command={command} key={command} />
-      </div>
+        <code className={styles.command()}>
+          {runner} <span className={styles.item()}>{item}</span>
+        </code>
+      </p>
     </div>
   );
 }

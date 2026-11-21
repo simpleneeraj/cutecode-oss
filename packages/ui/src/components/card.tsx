@@ -8,7 +8,7 @@ import { cn } from "../lib/cn";
 function Card({ className, render, ...props }: useRender.ComponentProps<"div">) {
   const defaultProps = {
     className: cn(
-      "relative flex flex-col rounded-surface edge bg-card text-card-foreground shadow-rest",
+      "squircle relative flex flex-col rounded-surface edge bg-card text-card-foreground shadow-rest",
       className,
     ),
     "data-slot": "card",
@@ -24,7 +24,7 @@ function Card({ className, render, ...props }: useRender.ComponentProps<"div">) 
 function CardFrame({ className, render, ...props }: useRender.ComponentProps<"div">) {
   const defaultProps = {
     className: cn(
-      "relative flex flex-col gap-1.5 rounded-overlay edge bg-muted p-1.5 text-card-foreground shadow-rest *:data-[slot=card]:shadow-none",
+      "squircle relative flex flex-col gap-1.5 rounded-overlay edge bg-muted p-1.5 text-card-foreground shadow-rest *:data-[slot=card]:shadow-none",
       className,
     ),
     "data-slot": "card-frame",

@@ -3,16 +3,16 @@ import { tv } from "tailwind-variants";
 export const priceCardStyles = tv(
   {
     slots: {
-      root: "flex w-full flex-col gap-4.5 rounded-surface edge bg-card p-7 text-card-foreground",
+      root: "flex w-full flex-col gap-4 rounded-overlay squircle edge bg-card p-5.5 text-card-foreground md:p-7",
       header: "flex items-center justify-between gap-2",
       name: "font-semibold text-title3",
       amount: "flex flex-wrap items-baseline gap-2",
-      price: "font-bold text-5xl tracking-tight",
+      price: "font-semibold text-price tabular-nums",
       period: "text-muted-foreground text-subheadline",
-      note: "text-muted-foreground text-subheadline",
+      note: "text-footnote text-muted-foreground",
       features: "flex flex-col gap-2.5 text-subheadline",
       feature: "flex items-start gap-2.5",
-      featureIcon: "size-5 shrink-0 text-brand",
+      featureIcon: "size-5 shrink-0 text-foreground",
     },
     variants: {
       isFeatured: {

@@ -15,7 +15,7 @@ const toastManager = Toast.createToastManager();
 const anchoredToastManager = Toast.createToastManager();
 
 const toastIconClassName =
-  "in-data-[type=error]:text-destructive-foreground in-data-[type=info]:text-brand in-data-[type=success]:text-success-foreground in-data-[type=warning]:text-warning-foreground";
+  "in-data-[type=error]:text-destructive-foreground in-data-[type=info]:text-brand-ink in-data-[type=success]:text-success-foreground in-data-[type=warning]:text-warning-foreground";
 
 const toastIcons = new Map<string, ReactNode>([
   ["error", <DangerCircleIcon key="error" className={toastIconClassName} />],
@@ -39,6 +39,10 @@ function readSwipeDirections(position: ToastPosition): Toast.Root.Props["swipeDi
     return ["left", verticalDirection];
   }
   return ["right", verticalDirection];
+}
+
+function readTooltipStyle(data: unknown) {
+  return typeof data === "object" && data !== null && "tooltipStyle" in data && data.tooltipStyle === true;
 }
 
 function ToastProvider({ children, position = "bottom-right", ...props }: ToastProviderProps) {
@@ -79,7 +83,7 @@ function Toasts({ position = "bottom-right" }: { position: ToastPosition }) {
         {toasts.map((toast) => {
           return (
             <Toast.Root
-              className="toast-stack glass rounded-surface edge text-foreground shadow-glass"
+              className="toast-stack glass squircle rounded-surface edge text-foreground shadow-glass"
               data-position={position}
               key={toast.id}
               swipeDirection={readSwipeDirections(position)}
@@ -124,7 +128,7 @@ function AnchoredToasts() {
     <Toast.Portal data-slot="toast-portal-anchored">
       <Toast.Viewport className="outline-none" data-slot="toast-viewport-anchored">
         {toasts.map((toast) => {
-          const tooltipStyle = (toast.data as { tooltipStyle?: boolean })?.tooltipStyle ?? false;
+          const tooltipStyle = readTooltipStyle(toast.data);
           const positionerProps = toast.positionerProps;
 
           if (!positionerProps?.anchor) {
@@ -143,8 +147,8 @@ function AnchoredToasts() {
                 className={cn(
                   "relative text-balance text-footnote transition-popup data-ending-style:scale-95 data-starting-style:scale-95 data-ending-style:opacity-0 data-starting-style:opacity-0 motion-reduce:transition-none",
                   tooltipStyle
-                    ? "rounded-overlay edge bg-popover text-popover-foreground shadow-raised"
-                    : "glass rounded-surface edge text-foreground shadow-glass",
+                    ? "glass rounded-density-overlay edge text-foreground shadow-raised"
+                    : "glass squircle rounded-surface edge text-foreground shadow-glass",
                 )}
                 data-slot="toast-popup"
                 toast={toast}

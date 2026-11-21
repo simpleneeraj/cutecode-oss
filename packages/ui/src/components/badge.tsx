@@ -16,18 +16,18 @@ const badgeVariants = cva(
     variants: {
       size: {
         default: "h-6 min-w-6 px-2.5 text-caption1",
-        lg: "h-8 min-w-8 gap-1.5 px-3.5 text-subheadline",
+        lg: "h-7 min-w-7 gap-1.5 px-2.75 text-footnote",
         sm: "h-5 min-w-5 px-2 text-caption1",
       },
       variant: {
         default: "bg-primary text-primary-foreground [button&,a&]:hover:bg-primary/90",
         destructive: "bg-destructive text-on-fill [button&,a&]:hover:bg-destructive/90",
-        error: "bg-pink text-destructive-foreground",
-        info: "bg-blue text-blue-ink",
+        error: "bg-destructive-soft text-destructive-foreground",
+        info: "bg-brand-soft text-brand-ink",
         outline: "bg-card text-foreground shadow-rest [button&,a&]:hover:bg-accent",
         secondary: "bg-secondary text-secondary-foreground [button&,a&]:hover:bg-secondary/80",
-        success: "bg-green text-green-ink",
-        warning: "bg-orange text-orange-ink",
+        success: "bg-card text-success-foreground shadow-rest",
+        warning: "bg-card text-warning-foreground shadow-rest",
       },
     },
   },

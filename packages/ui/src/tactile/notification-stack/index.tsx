@@ -11,7 +11,9 @@ type NotificationStackProps = {
 
 function NotificationStack({ notifications }: NotificationStackProps) {
   const front = notifications.at(-1);
-  if (!front) return null;
+  if (!front) {
+    return null;
+  }
 
   const { id, ...notification } = front;
   const plateCount = Math.min(notifications.length - 1, maxPlates);
@@ -33,7 +35,7 @@ function NotificationStack({ notifications }: NotificationStackProps) {
         />
       ))}
       <ol className={styles.front()}>
-        <li className="contents" key={id}>
+        <li className={styles.item()} key={id}>
           <Notification {...notification} />
         </li>
       </ol>

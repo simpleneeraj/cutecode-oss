@@ -22,9 +22,9 @@ function Checkbox({ className, ...props }: CheckboxPrimitive.Root.Props) {
         render={(props, state) => (
           <span {...props}>
             {state.indeterminate ? (
-              <MinusIcon className="size-3.5" strokeWidth={3} />
+              <MinusIcon aria-hidden="true" className="size-3.5" strokeWidth={3} />
             ) : (
-              <CheckIcon className="size-3.5" strokeWidth={3} />
+              <CheckIcon aria-hidden="true" className="size-3.5" strokeWidth={3} />
             )}
           </span>
         )}

@@ -1,7 +1,8 @@
 import { tv } from "tailwind-variants";
 
 import { Tone } from "../tone";
-import { toneTint } from "../tone/style";
+
+const neutralFace = "bg-secondary text-foreground";
 
 export const avatarStackStyles = tv(
   {
@@ -17,10 +18,14 @@ export const avatarStackFallbackStyles = tv(
   {
     base: "font-semibold text-caption1 tracking-tight",
     variants: {
-      tone: toneTint,
+      look: {
+        [Tone.Neutral]: neutralFace,
+        [Tone.Gray]: neutralFace,
+        [Tone.Accent]: "bg-brand-soft text-brand-ink",
+      },
     },
     defaultVariants: {
-      tone: Tone.Gray,
+      look: Tone.Neutral,
     },
   },
   { twMerge: false },

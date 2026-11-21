@@ -20,11 +20,11 @@ export function ListGroupPreview() {
     <ListGroup>
       <ListGroupHeader>Account</ListGroupHeader>
       <ListGroupRows>
-        <ListGroupRow icon={UserIcon} tone={Tone.Blue}>
+        <ListGroupRow icon={UserIcon} tone={Tone.Accent}>
           <ListGroupTitle subtitle="ada@example.com">Profile</ListGroupTitle>
           <ListGroupChevron />
         </ListGroupRow>
-        <ListGroupRow icon={BellIcon} tone={Tone.Pink}>
+        <ListGroupRow icon={BellIcon} tone={Tone.Gray}>
           <ListGroupTitle>Notifications</ListGroupTitle>
           <ListGroupValue>On</ListGroupValue>
         </ListGroupRow>

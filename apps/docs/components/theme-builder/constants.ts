@@ -37,26 +37,26 @@ export const previewStats = [
 ];
 
 export const previewSwitches = [
-  { id: "alerts", icon: BellIcon, tone: Tone.Pink, title: "Alerts", isChecked: true },
-  { id: "backups", icon: CloudUploadIcon, tone: Tone.Teal, title: "Nightly backups", isChecked: true },
-  { id: "dark", icon: MoonIcon, tone: Tone.Indigo, title: "Dark mode", isChecked: false },
+  { id: "alerts", icon: BellIcon, tone: Tone.Accent, title: "Alerts", isChecked: true },
+  { id: "backups", icon: CloudUploadIcon, tone: Tone.Gray, title: "Nightly backups", isChecked: true },
+  { id: "dark", icon: MoonIcon, tone: Tone.Gray, title: "Dark mode", isChecked: false },
 ];
 
 export const previewFolders = [
   { id: "designs", title: "Designs", count: "32 items", tone: undefined, items: [FolderItem.Sunset, FolderItem.Bloom] },
-  { id: "notes", title: "Notes", count: "14 items", tone: Tone.Blue, items: [FolderItem.Paper, FolderItem.Meadow] },
-  { id: "assets", title: "Assets", count: "88 items", tone: Tone.Orange, items: [FolderItem.Bloom, FolderItem.Paper] },
+  { id: "notes", title: "Notes", count: "14 items", tone: Tone.Gray, items: [FolderItem.Paper, FolderItem.Meadow] },
+  { id: "assets", title: "Assets", count: "88 items", tone: Tone.Accent, items: [FolderItem.Bloom, FolderItem.Paper] },
 ];
 
 export const previewNotifications = [
-  { id: "calendar", icon: CalendarIcon, tone: Tone.Pink, title: "Calendar", time: "2h", body: "Design review at 3 PM" },
-  { id: "message", icon: ChatRoundDotsIcon, tone: Tone.Green, title: "Maya", time: "20m", body: "The new theme looks great" },
-  { id: "deploy", icon: Widget5Icon, tone: Tone.Blue, title: "Deploys", time: "now", body: "Preview is live" },
+  { id: "calendar", icon: CalendarIcon, tone: Tone.Accent, title: "Calendar", time: "2h", body: "Design review at 3 PM" },
+  { id: "message", icon: ChatRoundDotsIcon, tone: Tone.Gray, title: "Maya", time: "20m", body: "The new theme looks great" },
+  { id: "deploy", icon: Widget5Icon, tone: Tone.Gray, title: "Deploys", time: "now", body: "Preview is live" },
 ];
 
 export const previewPlan = {
   name: "Team",
-  badge: "Popular",
+  badge: "Sample",
   price: "$12",
   period: "per seat / month",
   features: ["Unlimited projects", "Shared folders", "Priority support"],

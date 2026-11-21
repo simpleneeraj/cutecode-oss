@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { windowStyles } from "./style";
+import { windowLights, windowStyles } from "./style";
 
 type WindowProps = {
   title: string;
@@ -14,9 +14,9 @@ function Window({ title, children }: WindowProps) {
     <div className={styles.root()} data-slot="window">
       <div className={styles.bar()}>
         <span aria-hidden="true" className={styles.lights()}>
-          <span className={styles.closeLight()} />
-          <span className={styles.minimizeLight()} />
-          <span className={styles.zoomLight()} />
+          {windowLights.map((light) => (
+            <span className={styles.light()} key={light} />
+          ))}
         </span>
         <span className={styles.title()}>{title}</span>
       </div>

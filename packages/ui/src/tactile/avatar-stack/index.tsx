@@ -21,7 +21,7 @@ function AvatarStack({ people }: AvatarStackProps) {
     <span aria-label={`${people.length} ${noun}`} className={styles.root()} data-slot="avatar-stack" role="img">
       {people.map((person) => (
         <Avatar aria-hidden="true" className={styles.avatar()} key={person.id}>
-          <AvatarFallback className={avatarStackFallbackStyles({ tone: person.tone })}>
+          <AvatarFallback className={avatarStackFallbackStyles({ look: person.tone })}>
             {person.initials}
           </AvatarFallback>
         </Avatar>

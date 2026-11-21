@@ -1,19 +1,22 @@
 import { tv } from "tailwind-variants";
 
 import { Tone } from "../tone";
-import { toneTint } from "../tone/style";
 
 export const chipStyles = tv(
   {
     slots: {
-      base: "inline-flex h-6 shrink-0 items-center gap-1 whitespace-nowrap rounded-control px-2.5 font-semibold text-caption1",
-      icon: "size-3.25 shrink-0",
+      base: "inline-flex h-7 shrink-0 items-center gap-1.25 whitespace-nowrap rounded-control px-2.75 font-semibold text-footnote",
+      icon: "size-3.75 shrink-0",
     },
     variants: {
-      tone: toneTint,
+      look: {
+        [Tone.Neutral]: { base: "bg-card text-foreground shadow-rest" },
+        [Tone.Gray]: { base: "bg-secondary text-muted-foreground" },
+        [Tone.Accent]: { base: "bg-brand-soft text-brand-ink" },
+      },
     },
     defaultVariants: {
-      tone: Tone.Gray,
+      look: Tone.Neutral,
     },
   },
   { twMerge: false },

@@ -16,7 +16,7 @@ function StatusBadge({ tone, icon: Glyph = CheckCircleIcon, children }: StatusBa
 
   return (
     <span className={styles.root()} data-slot="status-badge">
-      <span className={statusBadgeGlyphStyles({ tone })}>
+      <span className={statusBadgeGlyphStyles({ look: tone })}>
         <Glyph aria-hidden="true" className={styles.icon()} />
       </span>
       {children}

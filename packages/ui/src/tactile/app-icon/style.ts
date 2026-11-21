@@ -1,5 +1,9 @@
 import { tv } from "tailwind-variants";
 
+import { Tone } from "../tone";
+
+const whiteTile = "from-icon-top to-icon-bottom text-foreground";
+
 export enum AppIconSize {
   ExtraSmall = "extra-small",
   Small = "small",
@@ -11,10 +15,15 @@ export enum AppIconSize {
 export const appIconStyles = tv(
   {
     slots: {
-      tile: "grid shrink-0 place-items-center rounded-icon squircle bg-linear-to-b from-icon-top shadow-icon",
+      tile: "grid shrink-0 place-items-center rounded-icon squircle bg-linear-to-b shadow-icon",
       glyph: "shrink-0",
     },
     variants: {
+      look: {
+        [Tone.Neutral]: { tile: whiteTile },
+        [Tone.Gray]: { tile: whiteTile },
+        [Tone.Accent]: { tile: "bg-brand from-on-fill/22 to-transparent text-on-fill" },
+      },
       size: {
         [AppIconSize.ExtraSmall]: { tile: "size-6", glyph: "size-3.5" },
         [AppIconSize.Small]: { tile: "size-10", glyph: "size-5.5" },
@@ -24,6 +33,7 @@ export const appIconStyles = tv(
       },
     },
     defaultVariants: {
+      look: Tone.Neutral,
       size: AppIconSize.Medium,
     },
   },
