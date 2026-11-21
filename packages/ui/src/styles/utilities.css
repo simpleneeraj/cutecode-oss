@@ -41,7 +41,7 @@
   transition-duration: 120ms;
   transition-timing-function: ease-out;
 
-  &:active:not(:disabled, [data-disabled]) {
+  &:active:not(:disabled, [data-disabled], [aria-disabled="true"]) {
     scale: var(--press-scale);
     translate: var(--press-shift-x) var(--press-shift-y);
     opacity: 0.85;
@@ -50,7 +50,7 @@
   @media (prefers-reduced-motion: reduce) {
     transition-property: color, background-color, box-shadow;
 
-    &:active:not(:disabled, [data-disabled]) {
+    &:active:not(:disabled, [data-disabled], [aria-disabled="true"]) {
       scale: none;
       translate: none;
     }
@@ -270,4 +270,12 @@
 
 @utility pb-safe {
   padding-bottom: max(calc(var(--spacing) * 6), env(safe-area-inset-bottom));
+}
+
+@utility pt-safe {
+  padding-top: max(calc(var(--spacing) * 12), env(safe-area-inset-top));
+}
+
+@utility pb-safe-inset {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }

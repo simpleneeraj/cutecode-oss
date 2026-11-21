@@ -2,6 +2,7 @@ import { FontPairing, Palette, Style } from "@cutecode/ui/provider";
 import { MonitorIcon } from "@solar-icons/react/linear/monitor";
 import { MoonIcon } from "@solar-icons/react/linear/moon";
 import { SunIcon } from "@solar-icons/react/linear/sun";
+import type { Transition } from "motion/react";
 
 export enum ThemePreference {
   Light = "light",
@@ -9,10 +10,19 @@ export enum ThemePreference {
   System = "system",
 }
 
+export enum CustomizerOverlay {
+  Closed = "closed",
+  Sheet = "sheet",
+  Drawer = "drawer",
+}
+
 export const customizer = {
+  title: "Customize",
+  description: "Pick how CuteUI looks on every page of this site.",
   phoneQuery: "(max-width: 767px)",
   themeBuilderHref: "/themes",
   fontSampleText: "Quick brown fox jumps over the lazy dog.",
+  swapShift: 4,
   styleOptions: {
     [Style.Tactile]: { name: "Tactile", feel: "Soft objects that lift and press" },
     [Style.Glass]: { name: "Glass", feel: "Frosted layers with a bright rim" },
@@ -52,3 +62,10 @@ export const customizer = {
     [ThemePreference.System]: MonitorIcon,
   },
 };
+
+export const customizerMotion = {
+  swap: { duration: 0.14, ease: "easeOut" },
+  pop: { type: "spring", stiffness: 640, damping: 30, mass: 0.6 },
+  fade: { duration: 0.12, ease: "easeOut" },
+  reveal: { duration: 0.3, ease: [0.32, 0.72, 0, 1] },
+} satisfies Record<string, Transition>;

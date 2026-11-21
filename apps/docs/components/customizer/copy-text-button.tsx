@@ -5,6 +5,8 @@ import type { Icon } from "@solar-icons/react/lib/types";
 import { CheckCircleIcon } from "@solar-icons/react/linear/check-circle";
 import { useCopyButton } from "fumadocs-ui/utils/use-copy-button";
 
+import { SwapLabel } from "./swap-label";
+
 type CopyTextButtonProps = {
   readText: () => string;
   label: string;
@@ -15,11 +17,14 @@ type CopyTextButtonProps = {
 export function CopyTextButton({ readText, label, copiedLabel, icon: LabelIcon }: CopyTextButtonProps) {
   const [isCopied, copyText] = useCopyButton(() => navigator.clipboard.writeText(readText()));
   const ShownIcon = isCopied ? CheckCircleIcon : LabelIcon;
+  const shownLabel = isCopied ? copiedLabel : label;
 
   return (
     <Button aria-live="polite" onClick={copyText} variant="gray">
-      <ShownIcon aria-hidden="true" />
-      {isCopied ? copiedLabel : label}
+      <SwapLabel swapKey={shownLabel}>
+        <ShownIcon aria-hidden="true" />
+        {shownLabel}
+      </SwapLabel>
     </Button>
   );
 }

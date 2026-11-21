@@ -97,6 +97,9 @@
 }
 
 @theme {
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --transition-duration-drawer: 450ms;
+
   --text-title3: 1.25rem;
   --text-title3--line-height: 1.5625rem;
   --text-title3--letter-spacing: -0.017em;

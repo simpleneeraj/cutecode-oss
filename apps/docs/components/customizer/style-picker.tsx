@@ -21,7 +21,7 @@ export function StylePicker({ style, onStyleChange }: StylePickerProps) {
     <PickerSection title="Style">
       <RadioGroupPrimitive aria-label="Style" className={styles.strip()} onValueChange={onStyleChange} value={style}>
         {styleValues.map((option) => (
-          <OptionRadio key={option} shape={styles.styleOption()} value={option}>
+          <OptionRadio isSelected={option === style} key={option} shape={styles.styleOption()} value={option}>
             <span aria-hidden="true" className={styles.styleSample()} data-style={option}>
               <span className={styles.sampleCard()}>
                 <span className={styles.sampleLine()} />

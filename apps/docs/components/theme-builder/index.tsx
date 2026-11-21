@@ -1,11 +1,13 @@
 "use client";
 
-import type { StyleSettings } from "@cutecode/ui/provider";
+import { defaultStyleSettings, type StyleSettings } from "@cutecode/ui/provider";
 import { useState } from "react";
 
 import { CustomizerControls } from "@/components/customizer/controls";
 
+import { EditThemeDrawer } from "./edit-theme-drawer";
 import { ExportActions } from "./export-actions";
+import { ExportCode } from "./export-code";
 import { PreviewApp } from "./preview-app";
 import { themeBuilderStyles } from "./style";
 
@@ -22,13 +24,21 @@ export function ThemeBuilder({ initialSettings }: ThemeBuilderProps) {
     setSettings((current) => ({ ...current, ...changes }));
   }
 
+  function resetSettings() {
+    setSettings(defaultStyleSettings);
+  }
+
   return (
     <div className={styles.root()}>
       <div className={styles.panel()}>
+        <ExportActions onReset={resetSettings} settings={settings} />
         <CustomizerControls onSettingsChange={changeSettings} settings={settings} />
-        <ExportActions settings={settings} />
       </div>
-      <PreviewApp settings={settings} />
+      <div className={styles.stage()}>
+        <PreviewApp settings={settings} />
+        <ExportCode settings={settings} />
+      </div>
+      <EditThemeDrawer onReset={resetSettings} onSettingsChange={changeSettings} settings={settings} />
     </div>
   );
 }

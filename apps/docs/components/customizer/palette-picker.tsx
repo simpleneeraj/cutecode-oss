@@ -26,7 +26,7 @@ export function PalettePicker({ palette, onPaletteChange }: PalettePickerProps) 
         value={palette}
       >
         {paletteValues.map((option) => (
-          <OptionRadio key={option} shape={styles.paletteOption()} value={option}>
+          <OptionRadio isSelected={option === palette} key={option} shape={styles.paletteOption()} value={option}>
             <span aria-hidden="true" className={styles.swatch()} data-palette={option} />
             <span className={styles.paletteName()}>{customizer.paletteLabels[option]}</span>
           </OptionRadio>

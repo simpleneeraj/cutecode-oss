@@ -7,9 +7,20 @@ import { CalendarIcon } from "@solar-icons/react/bold-duotone/calendar";
 import { ChatRoundDotsIcon } from "@solar-icons/react/bold-duotone/chat-round-dots";
 import { Widget5Icon } from "@solar-icons/react/bold-duotone/widget-5";
 
+export enum ExportFormat {
+  Css = "css",
+  Html = "html",
+  Cookie = "cookie",
+}
+
 export const themeBuilder = {
   path: "/themes",
   previewId: "theme-preview",
+  actionsHint: "Changes here only touch the preview. Apply to Site saves them for every CuteUI page.",
+  editTitle: "Edit theme",
+  editDescription: "Pick a style, palette and font, then close to see the preview.",
+  collapsedCodeHeight: 264,
+  collapsedCodeLines: 12,
   codeTokens: ["--brand:", "--radius-control:", "--radius-surface:", "--edge-width:", "--font-heading:"],
 };
 
@@ -50,3 +61,15 @@ export const previewPlan = {
   period: "per seat / month",
   features: ["Unlimited projects", "Shared folders", "Priority support"],
 };
+
+export const exportFormats = {
+  [ExportFormat.Css]: { label: "CSS", hint: "Every token for this theme, light and dark. Paste it after importing @cutecode/ui/globals.css." },
+  [ExportFormat.Html]: {
+    label: "HTML",
+    hint: "Or skip the CSS and set these on your html tag. globals.css already ships every style, palette and font.",
+  },
+  [ExportFormat.Cookie]: {
+    label: "Cookie",
+    hint: "What this site saves. Read it on the server with readStyleSettings.",
+  },
+} satisfies Record<ExportFormat, { label: string; hint: string }>;
