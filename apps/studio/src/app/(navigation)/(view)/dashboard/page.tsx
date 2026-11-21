@@ -6,7 +6,7 @@ import { resetEditorAtom } from "@/store/editor/editor";
 import { useDashboard } from "@/hooks/use-dashboard";
 import { useSubscription } from "@/hooks/use-subscription";
 import { Button } from "@cutecode/ui/components/button";
-import { Icon } from "@cutecode/ui/components/icon";
+import { AddSquareIcon } from "@solar-icons/react/linear/add-square";
 import { StatCards } from "./components/stat-cards";
 import { SnippetsTable } from "./components/snippets-table";
 import { AccountCard } from "./components/account-card";
@@ -30,7 +30,7 @@ export default function DashboardPage() {
           <p className="text-sm text-muted-foreground">Welcome back{data.userName ? `, ${data.userName}` : ""}</p>
         </div>
         <Button onClick={resetEditor} render={<Link href="/" />}>
-          <Icon icon="solar:add-square-linear" className="size-4" aria-hidden="true" />
+          <AddSquareIcon className="size-4" aria-hidden="true" />
           New snippet
         </Button>
       </div>

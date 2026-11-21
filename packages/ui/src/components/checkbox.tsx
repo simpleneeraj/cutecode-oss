@@ -1,8 +1,8 @@
 "use client";
 
 import { Checkbox as CheckboxPrimitive } from "@base-ui/react/checkbox";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { MinusSignIcon, Tick02Icon } from "@hugeicons/core-free-icons";
+import { CheckIcon } from "@solar-icons/react/linear/check";
+import { MinusIcon } from "@solar-icons/react/linear/minus";
 
 import { cn } from "../lib/cn";
 
@@ -22,9 +22,9 @@ function Checkbox({ className, ...props }: CheckboxPrimitive.Root.Props) {
         render={(props, state) => (
           <span {...props}>
             {state.indeterminate ? (
-              <HugeiconsIcon icon={MinusSignIcon} className="size-3.5" strokeWidth={3} />
+              <MinusIcon className="size-3.5" strokeWidth={3} />
             ) : (
-              <HugeiconsIcon icon={Tick02Icon} className="size-3.5" strokeWidth={3} />
+              <CheckIcon className="size-3.5" strokeWidth={3} />
             )}
           </span>
         )}

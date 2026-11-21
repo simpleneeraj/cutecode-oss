@@ -1,7 +1,13 @@
 "use client";
 
 import { useAtomValue, useSetAtom } from "jotai";
-import { ArrowLeft01Icon, ArrowRight01Icon, Copy01Icon, AddSquareIcon, Delete02Icon, Moon02Icon, Sun03Icon } from "@hugeicons/core-free-icons";
+import { AddSquareIcon } from "@solar-icons/react/linear/add-square";
+import { AltArrowLeftIcon } from "@solar-icons/react/linear/alt-arrow-left";
+import { AltArrowRightIcon } from "@solar-icons/react/linear/alt-arrow-right";
+import { CopyIcon } from "@solar-icons/react/linear/copy";
+import { MoonIcon } from "@solar-icons/react/linear/moon";
+import { SunIcon } from "@solar-icons/react/linear/sun";
+import { TrashBinMinimalisticIcon } from "@solar-icons/react/linear/trash-bin-minimalistic";
 import { Toolbar, ToolbarGroup, ToolbarSeparator } from "@cutecode/ui/components/toolbar";
 import { TooltipProvider } from "@cutecode/ui/components/tooltip";
 import {
@@ -71,7 +77,7 @@ export default function ToolbarParticle() {
     <TooltipProvider>
       <Toolbar className="rounded-full bg-card/80 px-1.5 shadow-sm/5 backdrop-blur-xl">
         <ToolbarGroup>
-          <ToolbarAction label="Previous slide" icon={ArrowLeft01Icon} keys={["Shift", "←"]} onClick={previousSlide} disabled={isFirst} />
+          <ToolbarAction label="Previous slide" icon={AltArrowLeftIcon} keys={["Shift", "←"]} onClick={previousSlide} disabled={isFirst} />
           {canDelete && (
             <span className="px-1 text-xs text-muted-foreground tabular-nums select-none" aria-live="polite">
               {currentIndex + 1}/{slides.length}
@@ -79,19 +85,19 @@ export default function ToolbarParticle() {
           )}
           <ToolbarSeparator orientation="vertical" />
           <ToolbarAction label="Add slide" icon={AddSquareIcon} keys={["A"]} onClick={addSlide} />
-          <ToolbarAction label="Duplicate slide" icon={Copy01Icon} keys={["⇧", "D"]} onClick={copySlide} />
+          <ToolbarAction label="Duplicate slide" icon={CopyIcon} keys={["⇧", "D"]} onClick={copySlide} />
           {canDelete && (
-            <ToolbarAction label="Delete slide" icon={Delete02Icon} keys={["Shift", "⌫"]} onClick={removeSlide} isDestructive />
+            <ToolbarAction label="Delete slide" icon={TrashBinMinimalisticIcon} keys={["Shift", "⌫"]} onClick={removeSlide} isDestructive />
           )}
           <ToolbarSeparator orientation="vertical" />
           <ToolbarAction
             label={darkMode ? "Light mode" : "Dark mode"}
-            icon={darkMode ? Sun03Icon : Moon02Icon}
+            icon={darkMode ? SunIcon : MoonIcon}
             keys={["D"]}
             onClick={toggleDarkMode}
           />
           <ToolbarSeparator orientation="vertical" />
-          <ToolbarAction label="Next slide" icon={ArrowRight01Icon} keys={["Shift", "→"]} onClick={nextSlide} disabled={isLast} />
+          <ToolbarAction label="Next slide" icon={AltArrowRightIcon} keys={["Shift", "→"]} onClick={nextSlide} disabled={isLast} />
         </ToolbarGroup>
       </Toolbar>
     </TooltipProvider>

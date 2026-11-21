@@ -1,5 +1,5 @@
 import { motion, easeInOut } from "motion/react";
-import { Icon } from "@cutecode/ui/components/icon";
+import { LeafIcon } from "@solar-icons/react/bold-duotone/leaf";
 import { BaseFrameProps } from "@/typings/presets";
 import { SceneFrame, useLoop } from "../scene";
 import styles from "./roses.module.css";
@@ -44,7 +44,7 @@ function SwayingLeaf({ leaf, index }: { leaf: Leaf; index: number }) {
 
   return (
     <motion.span className={styles.leaf} style={{ left: `${leaf.x}%`, top: `${leaf.y}%`, rotate }}>
-      <Icon icon="solar:leaf-bold-duotone" width={leaf.size} height={leaf.size} />
+      <LeafIcon size={leaf.size} />
     </motion.span>
   );
 }

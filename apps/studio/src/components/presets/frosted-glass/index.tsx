@@ -1,5 +1,5 @@
 import { motion, easeInOut } from "motion/react";
-import { Icon } from "@cutecode/ui/components/icon";
+import { StarsMinimalisticIcon } from "@solar-icons/react/bold-duotone/stars-minimalistic";
 import { BaseFrameProps } from "@/typings/presets";
 import { SceneFrame, useLoop } from "../scene";
 import styles from "./frosted-glass.module.css";
@@ -37,7 +37,7 @@ function TwinklingGlint({ glint }: { glint: Glint }) {
 
   return (
     <motion.span className={styles.glint} style={{ left: `${glint.x}%`, top: `${glint.y}%`, opacity, scale, rotate }}>
-      <Icon icon="solar:stars-minimalistic-bold-duotone" width={glint.size} height={glint.size} />
+      <StarsMinimalisticIcon size={glint.size} />
     </motion.span>
   );
 }

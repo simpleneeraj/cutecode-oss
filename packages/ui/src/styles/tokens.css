@@ -34,6 +34,15 @@
   --indigo-ink: #3634a3;
   --blue: #d6eaff;
   --blue-ink: #0040dd;
+  --gray-fill: #8e8e93;
+  --orange-fill: #ce7800;
+  --purple-fill: #af52de;
+  --yellow-fill: #ab8900;
+  --green-fill: #2aa248;
+  --pink-fill: #ff2d55;
+  --teal-fill: #2a9aae;
+  --indigo-fill: #5856d6;
+  --blue-fill: #007aff;
   --success: #34c759;
   --success-foreground: #1d7334;
   --warning: #ff9500;
@@ -81,9 +90,11 @@
   --surface-blur: 30px;
   --surface-saturate: 180%;
   --press-scale: 0.97;
-  --press-shift: 0px;
+  --press-shift-x: 0px;
+  --press-shift-y: 0px;
   --heading-weight: 600;
   --heading-tracking: -0.01em;
+  --font-heading: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Segoe UI", system-ui, sans-serif;
   --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Inter", "Segoe UI", system-ui, sans-serif;
   --font-serif: "New York", ui-serif, "Instrument Serif", Georgia, serif;
   --font-mono: ui-monospace, "SF Mono", "Geist Mono", Menlo, monospace;
@@ -118,6 +129,14 @@
   --indigo-ink: #9796ff;
   --blue: #18314b;
   --blue-ink: #409cff;
+  --orange-fill: #d17f00;
+  --purple-fill: #bf5af2;
+  --yellow-fill: #ad9000;
+  --green-fill: #25a846;
+  --pink-fill: #ff375f;
+  --teal-fill: #1ea0b7;
+  --indigo-fill: #5e5ce6;
+  --blue-fill: #0a84ff;
   --success: #30d158;
   --success-foreground: #30db5b;
   --warning: #ff9f0a;
@@ -296,7 +315,8 @@
   --surface-blur: 30px;
   --surface-saturate: 180%;
   --press-scale: 0.97;
-  --press-shift: 0px;
+  --press-shift-x: 0px;
+  --press-shift-y: 0px;
   --heading-weight: 600;
   --heading-tracking: -0.01em;
 }
@@ -313,8 +333,295 @@
   --focus-ring: 0 0 0 2px #000000, 0 0 0 4px var(--ring);
 }
 
+[data-style="glass"] {
+  --glass: rgba(255, 255, 255, 0.5);
+  --glass-edge: rgba(255, 255, 255, 0.95);
+  --radius-control: 9999px;
+  --radius-surface: 26px;
+  --radius-overlay: 30px;
+  --radius-field: 14px;
+  --radius-icon: 22.37%;
+  --edge-width: 1px;
+  --edge-color: rgba(255, 255, 255, 0.7);
+  --edge-highlight: rgba(255, 255, 255, 0.95);
+  --elevation-rest: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px -6px rgba(0, 0, 0, 0.10);
+  --elevation-raised: inset 0 1px 0 rgba(255, 255, 255, 0.85), 0 2px 8px rgba(0, 0, 0, 0.05), 0 24px 56px -12px rgba(0, 0, 0, 0.20);
+  --elevation-press: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 1px 3px rgba(0, 0, 0, 0.06);
+  --elevation-icon: inset 0 1px 0 rgba(255, 255, 255, 0.95), inset 0 0 0 0.5px rgba(255, 255, 255, 0.6), 0 1px 2px rgba(0, 0, 0, 0.08), 0 8px 18px -8px rgba(0, 0, 0, 0.26);
+  --elevation-thumb: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 3px 10px rgba(0, 0, 0, 0.14), 0 0 0 0.5px rgba(0, 0, 0, 0.04);
+  --elevation-glass: inset 0 1px 0 rgba(255, 255, 255, 0.95), inset 0 -1px 0 rgba(255, 255, 255, 0.35), inset 0 0 0 0.5px rgba(255, 255, 255, 0.7), 0 10px 36px -10px rgba(0, 0, 0, 0.20);
+  --focus-ring: 0 0 0 2px #ffffff, 0 0 0 4px var(--ring);
+  --surface-blur: 30px;
+  --surface-saturate: 180%;
+  --press-scale: 0.97;
+  --press-shift-x: 0px;
+  --press-shift-y: 0px;
+  --heading-weight: 600;
+  --heading-tracking: -0.015em;
+}
+
+.dark[data-style="glass"], .dark [data-style="glass"] {
+  --glass: rgba(40, 40, 44, 0.46);
+  --glass-edge: rgba(255, 255, 255, 0.2);
+  --edge-color: rgba(255, 255, 255, 0.14);
+  --edge-highlight: rgba(255, 255, 255, 0.28);
+  --elevation-rest: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 0 0 1px rgba(255, 255, 255, 0.08), 0 8px 24px -6px rgba(0, 0, 0, 0.6);
+  --elevation-raised: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 0 0 1px rgba(255, 255, 255, 0.10), 0 24px 56px -12px rgba(0, 0, 0, 0.85);
+  --elevation-press: inset 0 1px 0 rgba(255, 255, 255, 0.10), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  --elevation-icon: inset 0 1px 0 rgba(255, 255, 255, 0.18), inset 0 0 0 0.5px rgba(255, 255, 255, 0.10), 0 1px 2px rgba(0, 0, 0, 0.6), 0 8px 18px -8px rgba(0, 0, 0, 0.9);
+  --elevation-thumb: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 3px 10px rgba(0, 0, 0, 0.5);
+  --elevation-glass: inset 0 1px 0 rgba(255, 255, 255, 0.18), inset 0 -1px 0 rgba(255, 255, 255, 0.06), inset 0 0 0 0.5px rgba(255, 255, 255, 0.12), 0 10px 36px -10px rgba(0, 0, 0, 0.75);
+  --focus-ring: 0 0 0 2px #000000, 0 0 0 4px var(--ring);
+}
+
+[data-style="pop"] {
+  --background: #fbf4e4;
+  --card: #fffcf5;
+  --popover: #fffcf5;
+  --secondary: #f1e7cf;
+  --muted: #efe5ce;
+  --muted-foreground: #5e5847;
+  --accent: #f6eddb;
+  --border: #d6ccb4;
+  --segment-thumb: #fffcf5;
+  --glass: #fffcf5;
+  --glass-edge: #16130d;
+  --glass-solid: #fffcf5;
+  --radius-control: 14px;
+  --radius-surface: 16px;
+  --radius-overlay: 16px;
+  --radius-field: 14px;
+  --radius-icon: 22.37%;
+  --edge-width: 2px;
+  --edge-color: #16130d;
+  --edge-highlight: rgba(255, 255, 255, 0.7);
+  --elevation-rest: 4px 4px 0 #16130d;
+  --elevation-raised: 6px 6px 0 #16130d;
+  --elevation-press: 1px 1px 0 #16130d;
+  --elevation-icon: 3px 3px 0 #16130d;
+  --elevation-thumb: 2px 2px 0 #16130d;
+  --elevation-glass: 4px 4px 0 #16130d;
+  --focus-ring: 0 0 0 2px var(--background), 0 0 0 4px var(--ring);
+  --surface-blur: 0px;
+  --surface-saturate: 100%;
+  --press-scale: 1;
+  --press-shift-x: 3px;
+  --press-shift-y: 3px;
+  --heading-weight: 800;
+  --heading-tracking: -0.02em;
+}
+
+.dark[data-style="pop"], .dark [data-style="pop"] {
+  --background: #17150f;
+  --card: #221f18;
+  --popover: #2b271f;
+  --secondary: #38332a;
+  --muted: #35302a;
+  --muted-foreground: #b9b1a0;
+  --accent: #2b271f;
+  --border: #4d473b;
+  --segment-thumb: #5c564a;
+  --glass: #221f18;
+  --glass-edge: #f6efdf;
+  --glass-solid: #221f18;
+  --edge-color: #f6efdf;
+  --edge-highlight: rgba(255, 255, 255, 0.12);
+  --elevation-rest: 4px 4px 0 #f6efdf;
+  --elevation-raised: 6px 6px 0 #f6efdf;
+  --elevation-press: 1px 1px 0 #f6efdf;
+  --elevation-icon: 3px 3px 0 #f6efdf;
+  --elevation-thumb: 2px 2px 0 #f6efdf;
+  --elevation-glass: 4px 4px 0 #f6efdf;
+  --focus-ring: 0 0 0 2px var(--background), 0 0 0 4px var(--ring);
+}
+
+[data-style="clay"] {
+  --radius-control: 9999px;
+  --radius-surface: 24px;
+  --radius-overlay: 30px;
+  --radius-field: 16px;
+  --radius-icon: 28%;
+  --edge-width: 0px;
+  --edge-color: rgba(0, 0, 0, 0);
+  --edge-highlight: rgba(255, 255, 255, 0.9);
+  --elevation-rest: inset 0 2px 4px rgba(255, 255, 255, 0.9), inset 0 -4px 8px rgba(0, 0, 0, 0.06), 0 2px 4px rgba(0, 0, 0, 0.05), 0 8px 18px -6px rgba(0, 0, 0, 0.14);
+  --elevation-raised: inset 0 3px 6px rgba(255, 255, 255, 0.9), inset 0 -6px 12px rgba(0, 0, 0, 0.07), 0 4px 10px rgba(0, 0, 0, 0.06), 0 20px 44px -12px rgba(0, 0, 0, 0.22);
+  --elevation-press: inset 0 3px 6px rgba(0, 0, 0, 0.10), inset 0 -1px 2px rgba(255, 255, 255, 0.7), 0 1px 2px rgba(0, 0, 0, 0.05);
+  --elevation-icon: inset 0 2px 3px rgba(255, 255, 255, 0.95), inset 0 -3px 6px rgba(0, 0, 0, 0.08), 0 6px 14px -6px rgba(0, 0, 0, 0.26);
+  --elevation-thumb: inset 0 2px 3px rgba(255, 255, 255, 0.95), inset 0 -2px 4px rgba(0, 0, 0, 0.06), 0 4px 10px rgba(0, 0, 0, 0.15);
+  --elevation-glass: inset 0 2px 4px rgba(255, 255, 255, 0.85), inset 0 -4px 10px rgba(0, 0, 0, 0.05), 0 12px 32px -10px rgba(0, 0, 0, 0.20);
+  --focus-ring: 0 0 0 2px #ffffff, 0 0 0 4px var(--ring);
+  --surface-blur: 24px;
+  --surface-saturate: 160%;
+  --press-scale: 0.97;
+  --press-shift-x: 0px;
+  --press-shift-y: 1px;
+  --heading-weight: 700;
+  --heading-tracking: -0.01em;
+}
+
+.dark[data-style="clay"], .dark [data-style="clay"] {
+  --edge-color: rgba(255, 255, 255, 0);
+  --edge-highlight: rgba(255, 255, 255, 0.10);
+  --elevation-rest: inset 0 2px 4px rgba(255, 255, 255, 0.08), inset 0 -4px 8px rgba(0, 0, 0, 0.45), 0 2px 4px rgba(0, 0, 0, 0.5), 0 8px 18px -6px rgba(0, 0, 0, 0.7);
+  --elevation-raised: inset 0 3px 6px rgba(255, 255, 255, 0.10), inset 0 -6px 12px rgba(0, 0, 0, 0.5), 0 4px 10px rgba(0, 0, 0, 0.5), 0 20px 44px -12px rgba(0, 0, 0, 0.85);
+  --elevation-press: inset 0 3px 6px rgba(0, 0, 0, 0.55), inset 0 -1px 2px rgba(255, 255, 255, 0.06), 0 1px 2px rgba(0, 0, 0, 0.5);
+  --elevation-icon: inset 0 2px 3px rgba(255, 255, 255, 0.12), inset 0 -3px 6px rgba(0, 0, 0, 0.5), 0 6px 14px -6px rgba(0, 0, 0, 0.9);
+  --elevation-thumb: inset 0 2px 3px rgba(255, 255, 255, 0.14), inset 0 -2px 4px rgba(0, 0, 0, 0.4), 0 4px 10px rgba(0, 0, 0, 0.6);
+  --elevation-glass: inset 0 2px 4px rgba(255, 255, 255, 0.10), inset 0 -4px 10px rgba(0, 0, 0, 0.45), 0 12px 32px -10px rgba(0, 0, 0, 0.8);
+  --focus-ring: 0 0 0 2px #000000, 0 0 0 4px var(--ring);
+}
+
+[data-style="paper"] {
+  --background: #f6f3ec;
+  --card: #ffffff;
+  --popover: #ffffff;
+  --secondary: #e4dfd4;
+  --muted: #e7e2d8;
+  --muted-foreground: #5c5850;
+  --accent: #f5f2ec;
+  --border: #cdc6b8;
+  --segment-thumb: #ffffff;
+  --glass: #ffffff;
+  --glass-edge: #1c1b19;
+  --glass-solid: #ffffff;
+  --radius-control: 9999px;
+  --radius-surface: 16px;
+  --radius-overlay: 18px;
+  --radius-field: 12px;
+  --radius-icon: 22.37%;
+  --edge-width: 1px;
+  --edge-color: #1c1b19;
+  --edge-highlight: rgba(255, 255, 255, 0);
+  --elevation-rest: 0 0 0 0 transparent;
+  --elevation-raised: 1px 1px 0 #1c1b19;
+  --elevation-press: 0 0 0 0 transparent;
+  --elevation-icon: 0 0 0 0 transparent;
+  --elevation-thumb: 0 0 0 1px #1c1b19;
+  --elevation-glass: 1px 1px 0 #1c1b19;
+  --focus-ring: 0 0 0 2px var(--background), 0 0 0 4px var(--ring);
+  --surface-blur: 0px;
+  --surface-saturate: 100%;
+  --press-scale: 0.98;
+  --press-shift-x: 0px;
+  --press-shift-y: 0px;
+  --heading-weight: 600;
+  --heading-tracking: -0.02em;
+}
+
+.dark[data-style="paper"], .dark [data-style="paper"] {
+  --background: #141311;
+  --card: #1f1e1b;
+  --popover: #292724;
+  --secondary: #36332e;
+  --muted: #33302c;
+  --muted-foreground: #b5afa4;
+  --accent: #292724;
+  --border: #47443e;
+  --segment-thumb: #5e5a52;
+  --glass: #1f1e1b;
+  --glass-edge: #e9e5db;
+  --glass-solid: #1f1e1b;
+  --edge-color: #e9e5db;
+  --edge-highlight: rgba(255, 255, 255, 0);
+  --elevation-rest: 0 0 0 0 transparent;
+  --elevation-raised: 1px 1px 0 #e9e5db;
+  --elevation-press: 0 0 0 0 transparent;
+  --elevation-icon: 0 0 0 0 transparent;
+  --elevation-thumb: 0 0 0 1px #e9e5db;
+  --elevation-glass: 1px 1px 0 #e9e5db;
+  --focus-ring: 0 0 0 2px var(--background), 0 0 0 4px var(--ring);
+}
+
+[data-style="minimal"] {
+  --radius-control: 10px;
+  --radius-surface: 12px;
+  --radius-overlay: 14px;
+  --radius-field: 10px;
+  --radius-icon: 22.37%;
+  --edge-width: 1px;
+  --edge-color: rgba(0, 0, 0, 0.10);
+  --edge-highlight: rgba(255, 255, 255, 0.6);
+  --elevation-rest: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --elevation-raised: 0 0 0 1px rgba(0, 0, 0, 0.04), 0 8px 24px -8px rgba(0, 0, 0, 0.14);
+  --elevation-press: 0 0 0 0 transparent;
+  --elevation-icon: inset 0 0 0 0.5px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.08);
+  --elevation-thumb: 0 1px 3px rgba(0, 0, 0, 0.12), 0 0 0 0.5px rgba(0, 0, 0, 0.06);
+  --elevation-glass: inset 0 0 0 0.5px rgba(0, 0, 0, 0.06), 0 4px 16px -4px rgba(0, 0, 0, 0.12);
+  --focus-ring: 0 0 0 2px #ffffff, 0 0 0 4px var(--ring);
+  --surface-blur: 20px;
+  --surface-saturate: 150%;
+  --press-scale: 0.98;
+  --press-shift-x: 0px;
+  --press-shift-y: 0px;
+  --heading-weight: 600;
+  --heading-tracking: -0.01em;
+}
+
+.dark[data-style="minimal"], .dark [data-style="minimal"] {
+  --edge-color: rgba(255, 255, 255, 0.12);
+  --edge-highlight: rgba(255, 255, 255, 0.08);
+  --elevation-rest: 0 0 0 1px rgba(255, 255, 255, 0.06);
+  --elevation-raised: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 8px 24px -8px rgba(0, 0, 0, 0.7);
+  --elevation-press: 0 0 0 0 transparent;
+  --elevation-icon: inset 0 0 0 0.5px rgba(255, 255, 255, 0.10), 0 1px 2px rgba(0, 0, 0, 0.5);
+  --elevation-thumb: 0 1px 3px rgba(0, 0, 0, 0.5);
+  --elevation-glass: inset 0 0 0 0.5px rgba(255, 255, 255, 0.10), 0 4px 16px -4px rgba(0, 0, 0, 0.7);
+  --focus-ring: 0 0 0 2px #000000, 0 0 0 4px var(--ring);
+}
+
 [data-font="system"] {
+  --font-heading: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Segoe UI", system-ui, sans-serif;
   --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Inter", "Segoe UI", system-ui, sans-serif;
   --font-serif: "New York", ui-serif, "Instrument Serif", Georgia, serif;
   --font-mono: ui-monospace, "SF Mono", "Geist Mono", Menlo, monospace;
+}
+
+[data-font="editorial"] {
+  --font-heading: "Fraunces", "Iowan Old Style", "Palatino Linotype", Palatino, "New York", ui-serif, Georgia, serif;
+  --font-sans: "Source Sans 3", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-serif: "Fraunces", "Iowan Old Style", "Palatino Linotype", Palatino, "New York", ui-serif, Georgia, serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+[data-font="grotesk"] {
+  --font-heading: "Space Grotesk", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-serif: "Instrument Serif", "New York", ui-serif, Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+[data-font="rounded"] {
+  --font-heading: "Nunito", ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-sans: "Nunito Sans", "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-serif: "Fraunces", "New York", ui-serif, Georgia, serif;
+  --font-mono: "Fira Code", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+[data-font="pop"] {
+  --font-heading: "Archivo Black", "Archivo", "Arial Black", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-sans: "Archivo", "Helvetica Neue", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-serif: "Zilla Slab", "Roboto Slab", Rockwell, "New York", ui-serif, Georgia, serif;
+  --font-mono: "Space Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+[data-font="slab"] {
+  --font-heading: "Zilla Slab", "Roboto Slab", Rockwell, "Rockwell Nova", "New York", ui-serif, Georgia, serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-serif: "Zilla Slab", "Roboto Slab", Rockwell, "Rockwell Nova", "New York", ui-serif, Georgia, serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+[data-font="geometric"] {
+  --font-heading: "Outfit", "DM Sans", Futura, "Century Gothic", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-sans: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-serif: "DM Serif Display", "New York", ui-serif, Georgia, serif;
+  --font-mono: "DM Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+[data-font="tech"] {
+  --font-heading: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-serif: "IBM Plex Serif", "New York", ui-serif, Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }

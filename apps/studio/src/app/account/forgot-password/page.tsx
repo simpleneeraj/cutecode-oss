@@ -4,8 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { useForgotPassword } from "@/hooks/use-auth-mutations";
 import { tv } from "tailwind-variants";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { ArrowLeft01Icon, Mail01Icon } from "@hugeicons/core-free-icons";
+import { LetterIcon } from "@solar-icons/react/bold-duotone/letter";
+import { AltArrowLeftIcon } from "@solar-icons/react/linear/alt-arrow-left";
 import { Card, CardDescription, CardFooter, CardHeader, CardPanel, CardTitle } from "@cutecode/ui/components/card";
 import { Button } from "@cutecode/ui/components/button";
 import { Input } from "@cutecode/ui/components/input";
@@ -56,7 +56,7 @@ export default function ForgotPasswordPage() {
       {step === "sent" ? (
         <CardPanel className={sent.root()}>
           <span className={sent.badge()}>
-            <HugeiconsIcon icon={Mail01Icon} className="size-6" aria-hidden="true" />
+            <LetterIcon className="size-6" aria-hidden="true" />
           </span>
           <div className={sent.copy()}>
             <h1 className={sent.title()}>Check your inbox</h1>
@@ -116,7 +116,7 @@ export default function ForgotPasswordPage() {
           href="/account/sign-in"
           className="inline-flex items-center gap-1.5 font-medium text-foreground hover:underline"
         >
-          <HugeiconsIcon icon={ArrowLeft01Icon} className="size-3.5" aria-hidden="true" />
+          <AltArrowLeftIcon className="size-3.5" aria-hidden="true" />
           Back to sign in
         </Link>
       </CardFooter>

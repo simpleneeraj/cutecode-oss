@@ -1,16 +1,21 @@
 import { motion, easeInOut } from "motion/react";
-import { Icon } from "@cutecode/ui/components/icon";
+import { GiftIcon } from "@solar-icons/react/bold-duotone/gift";
+import { HeartAngleIcon } from "@solar-icons/react/bold-duotone/heart-angle";
+import { HeartShineIcon } from "@solar-icons/react/bold-duotone/heart-shine";
+import { LetterIcon } from "@solar-icons/react/bold-duotone/letter";
+import { StarsIcon } from "@solar-icons/react/bold-duotone/stars";
+import { HeartIcon } from "@solar-icons/react/bold/heart";
 import { BaseFrameProps } from "@/typings/presets";
 import { SceneFrame, useLoop } from "../scene";
 import styles from "./valentine.module.css";
 
 const KEEPSAKES = [
-  { id: "letter-top-left", icon: "solar:letter-bold-duotone", x: 6, y: 9, size: 24, tilt: -10 },
-  { id: "gift-top-right", icon: "solar:gift-bold-duotone", x: 88, y: 8, size: 20, tilt: 8 },
-  { id: "heart-right", icon: "solar:heart-angle-bold-duotone", x: 91, y: 52, size: 18, tilt: 12 },
-  { id: "letter-bottom-right", icon: "solar:letter-bold-duotone", x: 84, y: 84, size: 20, tilt: 14 },
-  { id: "heart-left", icon: "solar:heart-shine-bold-duotone", x: 4, y: 56, size: 18, tilt: -12 },
-  { id: "stars-bottom-left", icon: "solar:stars-bold-duotone", x: 14, y: 88, size: 16, tilt: 0 },
+  { id: "letter-top-left", icon: LetterIcon, x: 6, y: 9, size: 24, tilt: -10 },
+  { id: "gift-top-right", icon: GiftIcon, x: 88, y: 8, size: 20, tilt: 8 },
+  { id: "heart-right", icon: HeartAngleIcon, x: 91, y: 52, size: 18, tilt: 12 },
+  { id: "letter-bottom-right", icon: LetterIcon, x: 84, y: 84, size: 20, tilt: 14 },
+  { id: "heart-left", icon: HeartShineIcon, x: 4, y: 56, size: 18, tilt: -12 },
+  { id: "stars-bottom-left", icon: StarsIcon, x: 14, y: 88, size: 16, tilt: 0 },
 ];
 
 const CONFETTI = Array.from({ length: 20 }, (_, index) => ({
@@ -33,7 +38,7 @@ function FloatingKeepsake({ keepsake, index }: { keepsake: Keepsake; index: numb
 
   return (
     <motion.span className={styles.keepsake} style={{ left: `${keepsake.x}%`, top: `${keepsake.y}%`, y, rotate }}>
-      <Icon icon={keepsake.icon} width={keepsake.size} height={keepsake.size} />
+      <keepsake.icon size={keepsake.size} />
     </motion.span>
   );
 }
@@ -47,7 +52,7 @@ function FallingConfetti({ confetti }: { confetti: Confetti }) {
 
   return (
     <motion.span className={styles.confetti} style={{ left: confetti.left, top: 0, x, y, rotate, opacity }}>
-      <Icon icon="solar:heart-bold" width={confetti.size} height={confetti.size} />
+      <HeartIcon size={confetti.size} />
     </motion.span>
   );
 }

@@ -1,8 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { UserGroupIcon } from "@hugeicons/core-free-icons";
+import { UsersGroupRoundedIcon } from "@solar-icons/react/linear/users-group-rounded";
 import { useUserProfile, useToggleFollow } from "@/hooks/use-user";
 import { useSnippetExplore } from "@/hooks/use-snippet";
 import { Button } from "@cutecode/ui/components/button";
@@ -81,7 +80,7 @@ export default function ProfilePageClient({ userId }: ProfilePageClientProps) {
                 {profile.plan.toLowerCase()}
               </Badge>
               <span className="flex items-center gap-1">
-                <HugeiconsIcon icon={UserGroupIcon} className="size-3.5" aria-hidden="true" />
+                <UsersGroupRoundedIcon className="size-3.5" aria-hidden="true" />
                 {profile._count.followers}{" "}
                 {profile._count.followers === 1 ? "follower" : "followers"}
               </span>

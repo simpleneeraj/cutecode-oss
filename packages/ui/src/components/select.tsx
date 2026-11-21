@@ -4,8 +4,10 @@ import { mergeProps } from "@base-ui/react/merge-props";
 import { Select as SelectPrimitive } from "@base-ui/react/select";
 import { useRender } from "@base-ui/react/use-render";
 import { cva, type VariantProps } from "class-variance-authority";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { ArrowDown01Icon, ArrowUp01Icon, Tick02Icon, UnfoldMoreIcon } from "@hugeicons/core-free-icons";
+import { AltArrowDownIcon } from "@solar-icons/react/linear/alt-arrow-down";
+import { AltArrowUpIcon } from "@solar-icons/react/linear/alt-arrow-up";
+import { CheckIcon } from "@solar-icons/react/linear/check";
+import { SortVerticalIcon } from "@solar-icons/react/linear/sort-vertical";
 import { Fragment } from "react";
 import type * as React from "react";
 
@@ -14,7 +16,7 @@ import { cn } from "../lib/cn";
 const Select = SelectPrimitive.Root;
 
 const selectTriggerVariants = cva(
-  "relative inline-flex min-h-11 w-full min-w-36 cursor-pointer select-none items-center justify-between gap-2 rounded-field bg-card px-3.5 text-left text-body text-foreground outline-none inset-ring inset-ring-input transition-shadow in-data-[slot=toolbar]:rounded-control focus-visible:shadow-focus aria-invalid:inset-ring-2 aria-invalid:inset-ring-destructive-foreground data-disabled:pointer-events-none data-disabled:opacity-40 [&_svg:not([class*='size-'])]:size-5 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+  "relative inline-flex min-h-11 w-full min-w-36 cursor-pointer select-none items-center justify-between gap-2 rounded-field edge bg-card px-3.5 text-left text-body text-foreground outline-none inset-ring inset-ring-input transition-shadow in-data-[slot=toolbar]:rounded-control focus-visible:shadow-focus aria-invalid:inset-ring-2 aria-invalid:inset-ring-destructive-foreground data-disabled:pointer-events-none data-disabled:opacity-40 [&_svg:not([class*='size-'])]:size-5 [&_svg]:pointer-events-none [&_svg]:shrink-0",
   {
     defaultVariants: {
       size: "default",
@@ -42,7 +44,7 @@ function SelectButton({ className, size, render, children, ...props }: SelectBut
     children: (
       <Fragment>
         <span className="flex-1 truncate in-data-placeholder:text-muted-foreground">{children}</span>
-        <HugeiconsIcon icon={UnfoldMoreIcon} className={selectTriggerIconClassName} />
+        <SortVerticalIcon className={selectTriggerIconClassName} />
       </Fragment>
     ),
     className: cn(selectTriggerVariants({ size }), "min-w-0", className),
@@ -71,7 +73,7 @@ function SelectTrigger({
     >
       {children}
       <SelectPrimitive.Icon data-slot="select-icon">
-        <HugeiconsIcon icon={UnfoldMoreIcon} className={selectTriggerIconClassName} />
+        <SortVerticalIcon className={selectTriggerIconClassName} />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
   );
@@ -126,9 +128,9 @@ function SelectPopup({
             className="top-0 z-50 flex h-7 w-full cursor-default items-center justify-center before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-full before:rounded-t-overlay before:bg-linear-to-b before:from-50% before:from-popover"
             data-slot="select-scroll-up-arrow"
           >
-            <HugeiconsIcon icon={ArrowUp01Icon} className="relative size-4" />
+            <AltArrowUpIcon className="relative size-4" />
           </SelectPrimitive.ScrollUpArrow>
-          <div className="relative h-full min-w-(--anchor-width) overflow-hidden rounded-overlay bg-popover text-popover-foreground shadow-raised">
+          <div className="relative h-full min-w-(--anchor-width) overflow-hidden rounded-overlay edge bg-popover text-popover-foreground shadow-raised">
             <SelectPrimitive.List
               className={cn("max-h-(--available-height) overflow-y-auto p-1.5", className)}
               data-slot="select-list"
@@ -140,7 +142,7 @@ function SelectPopup({
             className="bottom-0 z-50 flex h-7 w-full cursor-default items-center justify-center before:pointer-events-none before:absolute before:inset-x-0 before:bottom-0 before:h-full before:rounded-b-overlay before:bg-linear-to-t before:from-50% before:from-popover"
             data-slot="select-scroll-down-arrow"
           >
-            <HugeiconsIcon icon={ArrowDown01Icon} className="relative size-4" />
+            <AltArrowDownIcon className="relative size-4" />
           </SelectPrimitive.ScrollDownArrow>
         </SelectPrimitive.Popup>
       </SelectPrimitive.Positioner>
@@ -159,7 +161,7 @@ function SelectItem({ className, children, ...props }: SelectPrimitive.Item.Prop
       {...props}
     >
       <SelectPrimitive.ItemIndicator className="absolute start-3.5 text-brand">
-        <HugeiconsIcon icon={Tick02Icon} strokeWidth={2} />
+        <CheckIcon strokeWidth={2} />
       </SelectPrimitive.ItemIndicator>
       <SelectPrimitive.ItemText className="min-w-0">{children}</SelectPrimitive.ItemText>
     </SelectPrimitive.Item>

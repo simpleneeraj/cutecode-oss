@@ -41,7 +41,7 @@ const buttonVariants = cva(
         filled: buttonTones.filled,
         secondary: buttonTones.gray,
         gray: buttonTones.gray,
-        outline: "bg-card text-foreground shadow-rest hover:bg-accent data-pressed:bg-accent",
+        outline: "bg-card edge text-foreground shadow-rest hover:bg-accent data-pressed:bg-accent",
         tinted: buttonTones.tinted,
         plain: buttonTones.plain,
         ghost: "text-foreground hover:bg-muted data-pressed:bg-muted",

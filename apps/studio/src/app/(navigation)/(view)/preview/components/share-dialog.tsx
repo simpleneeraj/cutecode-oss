@@ -15,7 +15,10 @@ import { Button } from "@cutecode/ui/components/button";
 import { Group, GroupSeparator } from "@cutecode/ui/components/group";
 import { Input } from "@cutecode/ui/components/input";
 import { toast } from "@/components/toast";
-import { Icon } from "@cutecode/ui/components/icon";
+import { ShareIcon } from "@solar-icons/react/linear/share";
+import { CheckCircleIcon } from "@solar-icons/react/linear/check-circle";
+import { CopyIcon } from "@solar-icons/react/linear/copy";
+import { Brand, BrandIcon } from "@cutecode/ui/components/brand-icon";
 import { shortenUrl } from "@/utils/common";
 import siteConfig from "@/constants/site-config";
 
@@ -29,19 +32,19 @@ function buildShareLinks(url: string) {
   return [
     {
       label: "X",
-      icon: "ri:twitter-x-fill",
+      brand: Brand.X,
       href: `https://twitter.com/intent/tweet?url=${shareUrl}&text=${encodeURIComponent(baseText)}&via=iamsimpleneeraj`,
     },
     {
       label: "LinkedIn",
-      icon: "ri:linkedin-fill",
+      brand: Brand.LinkedIn,
       href: `https://www.linkedin.com/shareArticle?mini=true&url=${shareUrl}&title=${encodeURIComponent(
         `Code Snippet on ${siteConfig.name}`,
       )}&summary=${encodeURIComponent(`${baseText} @simpleneeraj`)}`,
     },
     {
       label: "Facebook",
-      icon: "ri:facebook-circle-fill",
+      brand: Brand.Facebook,
       href: `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}&quote=${encodeURIComponent(
         `${baseText} @simpleneeraj`,
       )}`,
@@ -68,7 +71,7 @@ export function ShareDialog({ slug }: ShareDialogProps) {
   return (
     <Dialog>
       <DialogTrigger render={<Button variant="ghost" size="sm" aria-label="Share" />}>
-        <Icon icon="solar:share-linear" />
+        <ShareIcon />
         <span className="max-sm:hidden">Share</span>
       </DialogTrigger>
 
@@ -83,7 +86,7 @@ export function ShareDialog({ slug }: ShareDialogProps) {
             <Input readOnly value={url} placeholder="Loading..." aria-label="Snippet link" className="font-mono" />
             <GroupSeparator />
             <Button variant="outline" onClick={handleCopy} disabled={!url}>
-              <Icon icon={copied ? "solar:check-circle-linear" : "solar:copy-linear"} />
+              {copied ? <CheckCircleIcon /> : <CopyIcon />}
               {copied ? "Copied" : "Copy"}
             </Button>
           </Group>
@@ -95,7 +98,7 @@ export function ShareDialog({ slug }: ShareDialogProps) {
                 variant="outline"
                 render={<a href={link.href} target="_blank" rel="noopener noreferrer" />}
               >
-                <Icon icon={link.icon} />
+                <BrandIcon brand={link.brand} className="size-4" />
                 {link.label}
               </Button>
             ))}

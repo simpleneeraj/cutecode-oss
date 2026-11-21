@@ -1,8 +1,8 @@
 "use client";
 
 import { Autocomplete as AutocompletePrimitive } from "@base-ui/react/autocomplete";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Cancel01Icon, UnfoldMoreIcon } from "@hugeicons/core-free-icons";
+import { CloseIcon } from "@solar-icons/react/linear/close";
+import { SortVerticalIcon } from "@solar-icons/react/linear/sort-vertical";
 
 import { cn } from "../lib/cn";
 import { Input } from "./input";
@@ -63,7 +63,7 @@ function AutocompleteInput({
           {...triggerProps}
         >
           <AutocompletePrimitive.Icon data-slot="autocomplete-icon">
-            <HugeiconsIcon icon={UnfoldMoreIcon} />
+            <SortVerticalIcon />
           </AutocompletePrimitive.Icon>
         </AutocompleteTrigger>
       )}
@@ -75,7 +75,7 @@ function AutocompleteInput({
           )}
           {...clearProps}
         >
-          <HugeiconsIcon icon={Cancel01Icon} />
+          <CloseIcon />
         </AutocompleteClear>
       )}
     </div>
@@ -111,7 +111,7 @@ function AutocompletePopup({
       >
         <span
           className={cn(
-            "relative flex max-h-full min-w-(--anchor-width) max-w-(--available-width) origin-(--transform-origin) overflow-hidden rounded-overlay bg-popover text-popover-foreground shadow-raised",
+            "relative flex max-h-full min-w-(--anchor-width) max-w-(--available-width) origin-(--transform-origin) overflow-hidden rounded-overlay edge bg-popover text-popover-foreground shadow-raised",
             className,
           )}
         >
@@ -213,7 +213,7 @@ function AutocompleteClear({ className, ...props }: AutocompletePrimitive.Clear.
       data-slot="autocomplete-clear"
       {...props}
     >
-      <HugeiconsIcon icon={Cancel01Icon} />
+      <CloseIcon />
     </AutocompletePrimitive.Clear>
   );
 }

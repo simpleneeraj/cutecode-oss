@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useAtomValue } from "jotai";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Video01Icon } from "@hugeicons/core-free-icons";
+import { VideocameraIcon } from "@solar-icons/react/linear/videocamera";
 import { slidesAtom, videoDurationMsAtom } from "@/store/editor/editor";
 import { MAX_VIDEO_MS } from "@/components/editor/lib/animation";
 import { usePremiumAccess } from "@/hooks/use-premium-access";
@@ -46,7 +45,7 @@ export default function VideoSection({ formats, isExporting, onExportVideo }: Vi
       <FileNameField />
       <div className="flex flex-col gap-2">
         <Button disabled={isExporting || isOverLimit} onClick={() => onExportVideo(format.value, isReel)}>
-          {isExporting ? <Spinner /> : <HugeiconsIcon icon={Video01Icon} aria-hidden="true" />}
+          {isExporting ? <Spinner /> : <VideocameraIcon aria-hidden="true" />}
           {isExporting ? "Exporting…" : `Export ${format.label}`}
         </Button>
         <VideoSummary format={format} isHd={isHd} clipCount={isReel ? slideCount : 1} isOverLimit={isOverLimit} />

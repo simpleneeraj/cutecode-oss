@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import copy from "copy-to-clipboard";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Copy01Icon, MagicWandIcon, Tick02Icon } from "@hugeicons/core-free-icons";
+import { CheckIcon } from "@solar-icons/react/linear/check";
+import { CopyIcon } from "@solar-icons/react/linear/copy";
+import { MagicWandIcon } from "@solar-icons/react/linear/magic-wand";
 import siteConfig from "@/constants/site-config";
 import { BrandMark } from "@/components/brand-mark";
 import { Button } from "@cutecode/ui/components/button";
@@ -35,7 +36,7 @@ export function EmbedFooter({ slug, code }: EmbedFooterProps) {
       </Button>
       {code && (
         <Button size="xs" variant="ghost" className="text-muted-foreground" onClick={handleCopy}>
-          <HugeiconsIcon icon={copied ? Tick02Icon : Copy01Icon} aria-hidden="true" />
+          {copied ? <CheckIcon aria-hidden="true" /> : <CopyIcon aria-hidden="true" />}
           {copied ? "Copied" : "Copy"}
         </Button>
       )}
@@ -45,7 +46,7 @@ export function EmbedFooter({ slug, code }: EmbedFooterProps) {
         className="text-muted-foreground"
         render={<a href={`/remix/${slug}`} target="_blank" rel="noopener noreferrer" />}
       >
-        <HugeiconsIcon icon={MagicWandIcon} aria-hidden="true" />
+        <MagicWandIcon aria-hidden="true" />
         Remix
       </Button>
     </footer>

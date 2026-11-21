@@ -1,5 +1,5 @@
 import { motion, easeInOut } from "motion/react";
-import { Icon } from "@cutecode/ui/components/icon";
+import { GamepadIcon } from "@solar-icons/react/bold-duotone/gamepad";
 import { BaseFrameProps } from "@/typings/presets";
 import { SceneFrame, useLoop } from "../scene";
 import styles from "./ps6.module.css";
@@ -28,7 +28,7 @@ function FloatingController({ controller, index }: { controller: Controller; ind
 
   return (
     <motion.span className={styles.controller} style={{ left: `${controller.x}%`, top: `${controller.y}%`, y, rotate }}>
-      <Icon icon="solar:gamepad-bold-duotone" width={controller.size} height={controller.size} />
+      <GamepadIcon size={controller.size} />
     </motion.span>
   );
 }

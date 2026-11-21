@@ -52,6 +52,11 @@ const contrastPairs = [
     minimumContrast.text,
   ),
   ...pairEach(["input", "ring"], ["background", "card"], minimumContrast.nonText),
+  ...pairEach(
+    ["onFill"],
+    ["grayFill", "orangeFill", "purpleFill", "yellowFill", "greenFill", "pinkFill", "tealFill", "indigoFill", "blueFill"],
+    minimumContrast.nonText,
+  ),
 ];
 
 const themes = Object.values(Palette).flatMap((palette) =>

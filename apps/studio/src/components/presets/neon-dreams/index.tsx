@@ -1,5 +1,5 @@
 import { motion, easeInOut } from "motion/react";
-import { Icon } from "@cutecode/ui/components/icon";
+import { StarsMinimalisticIcon } from "@solar-icons/react/bold-duotone/stars-minimalistic";
 import { BaseFrameProps } from "@/typings/presets";
 import { SceneFrame, useLoop } from "../scene";
 import styles from "./neon-dreams.module.css";
@@ -20,7 +20,7 @@ function FlickeringSpark({ spark }: { spark: Spark }) {
 
   return (
     <motion.span className={styles.spark} style={{ left: `${spark.x}%`, top: `${spark.y}%`, opacity, y }}>
-      <Icon icon="solar:stars-minimalistic-bold-duotone" width={spark.size} height={spark.size} />
+      <StarsMinimalisticIcon size={spark.size} />
     </motion.span>
   );
 }

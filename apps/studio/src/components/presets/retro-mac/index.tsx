@@ -1,5 +1,8 @@
 import { motion, easeInOut } from "motion/react";
-import { Icon } from "@cutecode/ui/components/icon";
+import { CodeSquareIcon } from "@solar-icons/react/bold/code-square";
+import { HeartIcon } from "@solar-icons/react/bold/heart";
+import { MoonStarsIcon } from "@solar-icons/react/bold/moon-stars";
+import { StarsMinimalisticIcon } from "@solar-icons/react/bold/stars-minimalistic";
 import { BaseFrameProps } from "@/typings/presets";
 import { SceneFrame, useLoop } from "../scene";
 import styles from "./retro-mac.module.css";
@@ -13,10 +16,10 @@ const PIXELS = Array.from({ length: 14 }, (_, index) => ({
 }));
 
 const BADGES = [
-  { id: "heart-top-left", icon: "solar:heart-bold", x: 7, y: 11, size: 18 },
-  { id: "star-top-right", icon: "solar:stars-minimalistic-bold", x: 89, y: 9, size: 16 },
-  { id: "moon-bottom-right", icon: "solar:moon-stars-bold", x: 86, y: 84, size: 18 },
-  { id: "code-bottom-left", icon: "solar:code-square-bold", x: 9, y: 86, size: 17 },
+  { id: "heart-top-left", icon: HeartIcon, x: 7, y: 11, size: 18 },
+  { id: "star-top-right", icon: StarsMinimalisticIcon, x: 89, y: 9, size: 16 },
+  { id: "moon-bottom-right", icon: MoonStarsIcon, x: 86, y: 84, size: 18 },
+  { id: "code-bottom-left", icon: CodeSquareIcon, x: 9, y: 86, size: 17 },
 ];
 
 type Pixel = (typeof PIXELS)[number];
@@ -38,7 +41,7 @@ function BobbingBadge({ badge, index }: { badge: Badge; index: number }) {
 
   return (
     <motion.span className={styles.badge} style={{ left: `${badge.x}%`, top: `${badge.y}%`, y }}>
-      <Icon icon={badge.icon} width={badge.size} height={badge.size} />
+      <badge.icon size={badge.size} />
     </motion.span>
   );
 }

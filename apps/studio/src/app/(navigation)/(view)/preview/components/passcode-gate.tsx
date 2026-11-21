@@ -2,8 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import View from "@/components/view";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { SquareLock02Icon } from "@hugeicons/core-free-icons";
+import { LockKeyholeIcon } from "@solar-icons/react/bold-duotone/lock-keyhole";
 import { Button } from "@cutecode/ui/components/button";
 import { Spinner } from "@cutecode/ui/components/spinner";
 import { Field, FieldDescription, FieldLabel } from "@cutecode/ui/components/field";
@@ -66,7 +65,7 @@ export function PasscodeGate({ passcode, invalidPasscode, isLoading, onChange, o
         className="flex w-full max-w-xs flex-col items-center gap-6 text-center"
       >
         <div className="flex flex-col items-center gap-3">
-          <HugeiconsIcon icon={SquareLock02Icon} className="size-6 text-muted-foreground" aria-hidden="true" />
+          <LockKeyholeIcon className="size-6 text-muted-foreground" aria-hidden="true" />
           <h1 className="text-base font-medium text-foreground">This snippet is protected</h1>
         </div>
 

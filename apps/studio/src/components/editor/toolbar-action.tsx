@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
+import type { Icon } from "@solar-icons/react/lib/types";
 import { cn } from "@cutecode/ui/lib/cn";
 import { Button } from "@cutecode/ui/components/button";
 import { Kbd, KbdGroup } from "@cutecode/ui/components/kbd";
@@ -10,14 +10,14 @@ import { Tooltip, TooltipPopup, TooltipTrigger } from "@cutecode/ui/components/t
 
 type ToolbarActionProps = {
   label: string;
-  icon: IconSvgElement;
+  icon: Icon;
   keys: string[];
   onClick: () => void;
   disabled?: boolean;
   isDestructive?: boolean;
 };
 
-export default function ToolbarAction({ label, icon, keys, onClick, disabled, isDestructive }: ToolbarActionProps) {
+export default function ToolbarAction({ label, icon: Glyph, keys, onClick, disabled, isDestructive }: ToolbarActionProps) {
   return (
     <Tooltip>
       <TooltipTrigger
@@ -35,7 +35,7 @@ export default function ToolbarAction({ label, icon, keys, onClick, disabled, is
               />
             }
           >
-            <HugeiconsIcon icon={icon} className="size-4" aria-hidden="true" />
+            <Glyph className="size-4" aria-hidden="true" />
           </ToolbarButton>
         }
       />

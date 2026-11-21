@@ -1,5 +1,6 @@
 import { motion, easeInOut } from "motion/react";
-import { Icon } from "@cutecode/ui/components/icon";
+import { HeartIcon } from "@solar-icons/react/bold/heart";
+import { StarsMinimalisticIcon } from "@solar-icons/react/bold/stars-minimalistic";
 import { BaseFrameProps } from "@/typings/presets";
 import { SceneFrame, useLoop } from "../scene";
 import styles from "./love.module.css";
@@ -34,7 +35,7 @@ function RisingHeart({ heart }: { heart: Heart }) {
 
   return (
     <motion.span className={styles.heart} style={{ left: heart.left, top: 0, x, y, opacity, scale }}>
-      <Icon icon="solar:heart-bold" width={heart.size} height={heart.size} />
+      <HeartIcon size={heart.size} />
     </motion.span>
   );
 }
@@ -49,7 +50,7 @@ function TwinkleStar({ twinkle, index }: { twinkle: Twinkle; index: number }) {
       className={styles.twinkle}
       style={{ left: `${twinkle.x}%`, top: `${twinkle.y}%`, opacity, scale }}
     >
-      <Icon icon="solar:stars-minimalistic-bold" width={twinkle.size} height={twinkle.size} />
+      <StarsMinimalisticIcon size={twinkle.size} />
     </motion.span>
   );
 }

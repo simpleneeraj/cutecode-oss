@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { motion } from "motion/react";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Download02Icon, Film01Icon } from "@hugeicons/core-free-icons";
+import { ClapperboardPlayIcon } from "@solar-icons/react/linear/clapperboard-play";
+import { DownloadMinimalisticIcon } from "@solar-icons/react/linear/download-minimalistic";
 import { Button } from "@cutecode/ui/components/button";
 import { Separator } from "@cutecode/ui/components/separator";
 import { Popover, PopoverPopup, PopoverTrigger } from "@cutecode/ui/components/popover";
@@ -42,7 +42,7 @@ export default function ExportDockItem({
               />
             }
           >
-            <HugeiconsIcon icon={Download02Icon} className="size-4.5" aria-hidden="true" />
+            <DownloadMinimalisticIcon className="size-4.5" aria-hidden="true" />
             <span className={dockLabel()}>Image</span>
           </PopoverTrigger>
           <TooltipPopup sideOffset={8}>Export image</TooltipPopup>
@@ -71,7 +71,7 @@ export default function ExportDockItem({
               />
             }
           >
-            <HugeiconsIcon icon={Film01Icon} className="size-4.5" aria-hidden="true" />
+            <ClapperboardPlayIcon className="size-4.5" aria-hidden="true" />
             <span className={dockLabel()}>Video</span>
           </PopoverTrigger>
           <TooltipPopup sideOffset={8}>

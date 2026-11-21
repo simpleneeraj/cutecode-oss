@@ -1,7 +1,6 @@
 import { useAtomValue } from "jotai";
 import { motion } from "motion/react";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { RecordIcon } from "@hugeicons/core-free-icons";
+import { RecordCircleIcon } from "@solar-icons/react/linear/record-circle";
 import { Button } from "@cutecode/ui/components/button";
 import { currentSlideIdAtom, typingRecordingsAtom } from "@/store/editor/editor";
 import RecordedSummary from "./recorded-summary";
@@ -25,7 +24,7 @@ export default function RecordPanel() {
         Hit record, then type in the editor. Your exact keystrokes play back in the export.
       </p>
       <Button size="sm" variant="outline" className="self-start" onClick={start} render={<motion.button whileTap={{ scale: 0.96 }} />}>
-        <HugeiconsIcon icon={RecordIcon} className="text-destructive" aria-hidden="true" />
+        <RecordCircleIcon className="text-destructive" aria-hidden="true" />
         Start recording
       </Button>
     </div>

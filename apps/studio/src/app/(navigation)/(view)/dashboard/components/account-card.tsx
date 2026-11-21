@@ -4,7 +4,8 @@ import { useSetAtom } from "jotai";
 import { Card } from "@cutecode/ui/components/card";
 import { Badge } from "@cutecode/ui/components/badge";
 import { Button } from "@cutecode/ui/components/button";
-import { Icon } from "@cutecode/ui/components/icon";
+import { CardIcon } from "@solar-icons/react/linear/card";
+import { CrownIcon } from "@solar-icons/react/linear/crown";
 import { PLANS } from "@/lib/billing/plans";
 import useBilling from "@/hooks/use-billing";
 import { usePricing, type PricingResult } from "@/hooks/use-pricing";
@@ -96,13 +97,13 @@ export function AccountCard({ plan, renewsAt, cancelAtPeriodEnd, totalSnippets, 
 
       {nextPlan && (
         <Button size="lg" className="w-full" onClick={() => setPlansOpen(true)}>
-          <Icon icon="solar:crown-linear" className="size-4" aria-hidden="true" />
+          <CrownIcon className="size-4" aria-hidden="true" />
           {`Upgrade to ${PLANS[nextPlan].name}`}
         </Button>
       )}
       {!isFree && (
         <Button variant="outline" size="lg" className="w-full" disabled={isLoading} onClick={openPortal}>
-          <Icon icon="solar:card-linear" className="size-4" aria-hidden="true" />
+          <CardIcon className="size-4" aria-hidden="true" />
           Manage billing
         </Button>
       )}

@@ -1,8 +1,7 @@
 "use client";
 
 import { Dialog as SheetPrimitive } from "@base-ui/react/dialog";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Cancel01Icon } from "@hugeicons/core-free-icons";
+import { CloseIcon } from "@solar-icons/react/linear/close";
 import { cn } from "../lib/cn";
 import { Button } from "./button";
 import { ScrollArea } from "./scroll-area";
@@ -77,7 +76,7 @@ function SheetPopup({
       <SheetViewport side={side} variant={variant}>
         <SheetPrimitive.Popup
           className={cn(
-            "relative flex max-h-full min-h-0 w-full min-w-0 flex-col bg-popover text-popover-foreground shadow-raised transition duration-200 ease-out will-change-transform data-ending-style:opacity-0 data-starting-style:opacity-0 motion-reduce:transition-none",
+            "relative flex max-h-full min-h-0 w-full min-w-0 flex-col edge bg-popover text-popover-foreground shadow-raised transition duration-200 ease-out will-change-transform data-ending-style:opacity-0 data-starting-style:opacity-0 motion-reduce:transition-none",
             side === "bottom" &&
               "row-start-2 rounded-t-overlay data-ending-style:translate-y-8 data-starting-style:translate-y-8",
             side === "top" && "rounded-b-overlay data-ending-style:-translate-y-8 data-starting-style:-translate-y-8",
@@ -106,7 +105,7 @@ function SheetPopup({
               render={<Button size="icon-sm" variant="gray" />}
               {...closeProps}
             >
-              <HugeiconsIcon icon={Cancel01Icon} />
+              <CloseIcon />
             </SheetPrimitive.Close>
           )}
         </SheetPrimitive.Popup>

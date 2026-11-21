@@ -1,5 +1,4 @@
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Tick02Icon } from "@hugeicons/core-free-icons";
+import { CheckIcon } from "@solar-icons/react/linear/check";
 
 const INHERITED_PREFIX = "Everything in";
 
@@ -22,7 +21,7 @@ export default function PlanFeatures({ features }: PlanFeaturesProps) {
       <ul className="flex flex-col gap-2">
         {items.map((feature) => (
           <li key={feature} className="flex items-start gap-2 text-sm text-muted-foreground">
-            <HugeiconsIcon icon={Tick02Icon} className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
+            <CheckIcon className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
             {feature}
           </li>
         ))}

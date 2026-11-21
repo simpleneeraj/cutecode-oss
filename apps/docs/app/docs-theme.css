@@ -1,0 +1,314 @@
+@layer docs-theme {
+  #nd-subnav {
+    @apply glass shadow-glass edge rounded-control mx-3;
+    top: calc(var(--fd-docs-row-1) + var(--spacing) * 2);
+    margin-top: calc(var(--spacing) * 2);
+    height: calc(var(--fd-header-height) - var(--spacing) * 2);
+  }
+
+  [data-toc-popover] > header {
+    @apply glass;
+  }
+
+  [data-sidebar-panel] {
+    @apply glass shadow-glass edge rounded-control;
+  }
+
+  #nd-sidebar {
+    @apply bg-background border-e-0;
+  }
+
+  #nd-sidebar[data-collapsed="true"] {
+    @apply bg-popover shadow-raised edge rounded-surface squircle;
+  }
+
+  #nd-sidebar-mobile {
+    @apply bg-popover shadow-raised edge rounded-overlay squircle overflow-hidden;
+    inset-block: calc(var(--spacing) * 2);
+    inset-inline-end: calc(var(--spacing) * 2);
+  }
+
+  :is(#nd-sidebar, #nd-sidebar-mobile) [data-search-full] {
+    @apply min-h-9 rounded-field border-0 bg-muted px-3 text-subheadline text-muted-foreground;
+
+    & kbd {
+      @apply border-0 bg-card shadow-rest;
+    }
+  }
+
+  :is(#nd-sidebar, #nd-sidebar-mobile) [data-radix-scroll-area-viewport] {
+    & :is(a, button) {
+      @apply press min-h-9 rounded-field py-2 pe-3 text-subheadline text-foreground;
+
+      &:hover {
+        @apply bg-muted text-foreground;
+      }
+
+      &::before {
+        content: none;
+      }
+    }
+
+    & a[data-active="true"] {
+      @apply bg-brand-soft font-semibold text-brand-ink;
+    }
+
+    & p {
+      @apply mt-5 mb-1 text-footnote font-semibold text-muted-foreground;
+    }
+
+    & p:first-child {
+      @apply mt-0;
+    }
+  }
+
+  #nd-toc,
+  [data-toc-popover] {
+    --color-fd-primary: var(--brand-ink);
+
+    & a[data-active="true"] {
+      @apply font-medium;
+    }
+  }
+
+  #toc-title {
+    @apply text-footnote font-semibold;
+  }
+
+  #nd-page {
+    @apply max-w-3xl;
+
+    & > h1 {
+      @apply font-heading text-foreground;
+      font-size: 1.75rem;
+      line-height: 2.125rem;
+      font-weight: var(--heading-weight);
+      letter-spacing: var(--heading-tracking);
+    }
+
+    & > h1 + p {
+      @apply mb-6 text-muted-foreground;
+      font-size: 1.1875rem;
+      line-height: 1.6875rem;
+    }
+
+    & > .\@container.grid > a {
+      @apply press rounded-surface squircle edge bg-card p-5 shadow-rest;
+
+      &:hover {
+        @apply bg-card shadow-raised;
+      }
+
+      & > div {
+        @apply text-body font-semibold text-brand-ink;
+      }
+    }
+  }
+
+  #nd-page > .prose {
+    @apply text-body leading-relaxed;
+    --tw-prose-links: var(--brand-ink);
+
+    & :is(h2, h3, h4):not(.not-prose) {
+      @apply font-heading;
+      font-weight: var(--heading-weight);
+      letter-spacing: var(--heading-tracking);
+    }
+
+    & h2:not(.not-prose) {
+      font-size: 1.375rem;
+      line-height: 1.75rem;
+    }
+
+    & h3:not(.not-prose) {
+      @apply text-title3;
+      font-weight: var(--heading-weight);
+    }
+
+    & a:not([data-card], .not-prose *) {
+      text-decoration-color: color-mix(in oklab, var(--brand-ink) 35%, transparent);
+    }
+
+    & :not(pre) > code {
+      @apply border-0 bg-muted font-mono;
+      font-size: 0.875em;
+      padding: 0.125em 0.375em;
+      border-radius: calc(var(--radius-field) - 4px);
+    }
+
+    & table {
+      @apply edge rounded-surface squircle bg-card text-subheadline shadow-rest;
+    }
+
+    & th {
+      @apply bg-card text-footnote font-semibold text-muted-foreground;
+    }
+
+    & :is(th, td) {
+      @apply px-5 py-3;
+      border-inline-start: none;
+      border-bottom-width: 0;
+      border-bottom-color: var(--border);
+    }
+
+    & :is(thead :is(th, td), tbody tr:not(:last-child) > *) {
+      border-bottom-width: 0.5px;
+    }
+
+    & div:has(> table) {
+      @apply -mx-4 my-2 p-4;
+    }
+
+    & [data-card]:not(:is(h1, h2, h3, h4, h5, h6) > *) {
+      @apply edge rounded-surface squircle bg-card p-5 shadow-rest;
+
+      &[href] {
+        @apply press;
+      }
+
+      &[href]:hover {
+        @apply bg-card shadow-raised;
+      }
+
+      & > h3 {
+        @apply text-body font-semibold text-foreground;
+      }
+
+      & > div:first-child {
+        @apply rounded-field border-0 bg-brand-soft text-brand-ink shadow-none;
+      }
+    }
+
+    & [style*="--callout-color"] {
+      @apply edge rounded-surface squircle gap-3 px-4 py-3.5 text-subheadline text-foreground;
+      background-color: var(--callout-soft, var(--muted));
+
+      & > [role="none"] {
+        display: none;
+      }
+
+      & > div:last-child > div {
+        @apply text-foreground;
+      }
+    }
+
+    & [style*="--callout-color"][style*="--color-fd-info,"] {
+      --callout-soft: var(--brand-soft);
+    }
+
+    & [style*="--callout-color"][style*="--color-fd-warning,"] {
+      --callout-soft: var(--orange);
+    }
+
+    & [style*="--callout-color"][style*="--color-fd-error,"] {
+      --callout-soft: var(--pink);
+    }
+
+    & [style*="--callout-color"][style*="--color-fd-success,"] {
+      --callout-soft: var(--green);
+    }
+
+    & [style*="--callout-color"][style*="--color-fd-idea,"] {
+      --callout-soft: var(--yellow);
+    }
+
+    & div[data-orientation]:has(> [role="tablist"]) {
+      @apply edge rounded-surface squircle overflow-hidden bg-card shadow-rest;
+    }
+
+    & [role="tablist"] {
+      @apply m-3 inline-flex w-fit gap-0 rounded-control bg-secondary p-0.5;
+      max-width: calc(100% - var(--spacing) * 6);
+    }
+
+    & [role="tab"] {
+      @apply press min-h-7 rounded-control border-0 px-3.5 py-1 text-footnote font-semibold text-muted-foreground;
+
+      &[data-state="active"] {
+        @apply bg-segment-thumb text-foreground shadow-thumb;
+      }
+
+      & > div:empty {
+        display: none;
+      }
+    }
+
+    & [role="tabpanel"] {
+      @apply rounded-none bg-transparent;
+    }
+  }
+
+  #nd-page figure.shiki {
+    @apply font-mono;
+    --shiki-foreground: var(--foreground);
+    --shiki-background: transparent;
+    --shiki-token-keyword: var(--syntax-keyword);
+    --shiki-token-function: var(--syntax-type);
+    --shiki-token-constant: var(--syntax-type);
+    --shiki-token-parameter: var(--foreground);
+    --shiki-token-string: var(--syntax-string);
+    --shiki-token-string-expression: var(--syntax-string);
+    --shiki-token-comment: var(--syntax-comment);
+    --shiki-token-punctuation: var(--syntax-comment);
+    --shiki-token-link: var(--syntax-type);
+
+    &:not([role="tabpanel"] *) {
+      @apply edge rounded-surface squircle bg-card shadow-rest;
+    }
+
+    &:is([role="tabpanel"] *) {
+      @apply rounded-none border-0 bg-card;
+    }
+
+    & > div:first-child:has(figcaption) {
+      @apply text-footnote;
+      border-bottom-width: 0.5px;
+      border-bottom-color: var(--border);
+    }
+
+    & pre,
+    & code {
+      @apply font-mono;
+    }
+
+    & .highlighted {
+      --fd-counter-color: var(--brand-ink);
+      @apply bg-brand-soft;
+    }
+
+    & .highlighted::after {
+      @apply border-brand;
+    }
+
+    & .highlighted-word {
+      @apply border-transparent bg-brand-soft text-brand-ink;
+      border-radius: calc(var(--radius-field) / 2);
+    }
+
+    & [aria-live="polite"] {
+      @apply rounded-field;
+    }
+  }
+
+  .bg-fd-popover[role="dialog"] {
+    @apply glass shadow-raised edge rounded-overlay squircle;
+
+    & [role="option"] {
+      @apply rounded-field;
+
+      &[aria-selected="true"] {
+        @apply bg-brand-soft text-brand-ink;
+      }
+    }
+  }
+
+  :is(#nd-docs-layout, #nd-sidebar-mobile, .bg-fd-popover[role="dialog"]) :is(a, button):focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  #nd-page figure.shiki [tabindex="0"]:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 2px var(--ring);
+  }
+}

@@ -1,6 +1,6 @@
 import { useId } from "react";
 import { motion } from "motion/react";
-import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
+import type { Icon } from "@solar-icons/react/lib/types";
 import { Toggle, ToggleGroup } from "@cutecode/ui/components/toggle-group";
 
 const pillSpring = { type: "spring", stiffness: 500, damping: 38 } as const;
@@ -8,7 +8,7 @@ const pillSpring = { type: "spring", stiffness: 500, damping: 38 } as const;
 type SegmentedOption<T extends string> = {
   value: T;
   label: string;
-  icon?: IconSvgElement;
+  icon?: Icon;
   title?: string;
 };
 
@@ -53,7 +53,7 @@ export default function SegmentedControl<T extends string>({
               className="absolute inset-0 -z-1 rounded-md bg-background shadow-sm dark:bg-input"
             />
           )}
-          {option.icon && <HugeiconsIcon icon={option.icon} className="size-3.5" aria-hidden="true" />}
+          {option.icon && <option.icon className="size-3.5" aria-hidden="true" />}
           {option.label}
         </Toggle>
       ))}

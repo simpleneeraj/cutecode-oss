@@ -1,7 +1,8 @@
 "use client";
 
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Search01Icon, CrownIcon, TextFontIcon } from "@hugeicons/core-free-icons";
+import { CrownIcon } from "@solar-icons/react/linear/crown";
+import { MagnifierIcon } from "@solar-icons/react/linear/magnifier";
+import { TextFormatIcon } from "@solar-icons/react/linear/text-format";
 import { motion } from "motion/react";
 import { Button } from "@cutecode/ui/components/button";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "@cutecode/ui/components/tooltip";
@@ -73,7 +74,7 @@ export default function FontFaceControl() {
             />
           }
         >
-          <HugeiconsIcon icon={TextFontIcon} className="size-4.5" aria-hidden="true" />
+          <TextFormatIcon className="size-4.5" aria-hidden="true" />
           <span className={dockLabel()}>Font</span>
         </ComboboxTrigger>
         <TooltipPopup sideOffset={8}>Font</TooltipPopup>
@@ -84,7 +85,7 @@ export default function FontFaceControl() {
             className="rounded-md before:rounded-[calc(var(--radius-md)-1px)]"
             placeholder="Search fonts..."
             showTrigger={false}
-            startAddon={<HugeiconsIcon icon={Search01Icon} className="size-4" aria-hidden="true" />}
+            startAddon={<MagnifierIcon className="size-4" aria-hidden="true" />}
           />
         </div>
         <ComboboxEmpty>No fonts found.</ComboboxEmpty>
@@ -104,7 +105,7 @@ export default function FontFaceControl() {
                       className="text-xs"
                       variant={access === AccessLevel.ALLOWED ? "outline" : "warning"}
                     >
-                      <HugeiconsIcon icon={CrownIcon} className="size-3" aria-hidden="true" />
+                      <CrownIcon className="size-3" aria-hidden="true" />
                     </Badge>
                   )}
                 </View>

@@ -13,8 +13,10 @@ import useHotkeys from "@/utils/useHotkeys";
 import { motion } from "motion/react";
 import OptionToggle from "./option-toggle";
 import { dockLabel, dockPopup, dockTrigger } from "../dock-styles";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { SlidersHorizontalIcon, Image01Icon, HashtagIcon, Delete02Icon } from "@hugeicons/core-free-icons";
+import { GalleryIcon } from "@solar-icons/react/linear/gallery";
+import { HashtagIcon } from "@solar-icons/react/linear/hashtag";
+import { SliderHorizontalIcon } from "@solar-icons/react/linear/slider-horizontal";
+import { TrashBinMinimalisticIcon } from "@solar-icons/react/linear/trash-bin-minimalistic";
 
 const OptionsControl: React.FC = () => {
   const updateSlideElement = useSetAtom(updateSlideElementAtom);
@@ -55,7 +57,7 @@ const OptionsControl: React.FC = () => {
             />
           }
         >
-          <HugeiconsIcon icon={SlidersHorizontalIcon} className="size-4.5" aria-hidden="true" />
+          <SliderHorizontalIcon className="size-4.5" aria-hidden="true" />
           <span className={dockLabel()}>More</span>
         </MenuTrigger>
         <TooltipPopup sideOffset={8}>Display options</TooltipPopup>
@@ -64,7 +66,7 @@ const OptionsControl: React.FC = () => {
       <MenuPopup side="top" align="center" sideOffset={8} className={dockPopup({ className: "w-56" })}>
         <div className="flex flex-col gap-0.5">
           <OptionToggle
-            icon={Image01Icon}
+            icon={GalleryIcon}
             label="Background"
             checked={!transparent}
             onCheckedChange={(checked) => updateSlideElement({ properties: { transparent: !checked } })}
@@ -80,7 +82,7 @@ const OptionsControl: React.FC = () => {
         <MenuSeparator />
 
         <MenuItem variant="destructive" onClick={handleReset} className="min-h-8 rounded-md text-sm">
-          <HugeiconsIcon icon={Delete02Icon} className="size-4" aria-hidden="true" />
+          <TrashBinMinimalisticIcon className="size-4" aria-hidden="true" />
           Reset storage
         </MenuItem>
       </MenuPopup>

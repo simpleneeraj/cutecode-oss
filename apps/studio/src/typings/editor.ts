@@ -56,7 +56,6 @@ export enum HeaderInputType {
 
 export enum IconType {
   IMAGE = "image",
-  ICONIFY = "iconify",
 }
 
 /* ---------------------------------- */

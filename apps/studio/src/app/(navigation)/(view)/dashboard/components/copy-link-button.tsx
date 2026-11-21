@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { Button } from "@cutecode/ui/components/button";
-import { Icon } from "@cutecode/ui/components/icon";
+import { CheckCircleIcon } from "@solar-icons/react/bold/check-circle";
+import { LinkIcon } from "@solar-icons/react/bold/link";
 import { getShareUrl } from "@/lib/share/urls";
 
 export function CopyLinkButton({ slug }: { slug: string }) {
@@ -22,7 +23,7 @@ export function CopyLinkButton({ slug }: { slug: string }) {
       aria-label={copied ? "Copied" : "Copy share link"}
       title={copied ? "Copied" : "Copy share link"}
     >
-      <Icon icon={copied ? "solar:check-circle-bold" : "solar:link-bold"} className="size-3.5" />
+      {copied ? <CheckCircleIcon className="size-3.5" /> : <LinkIcon className="size-3.5" />}
     </Button>
   );
 }

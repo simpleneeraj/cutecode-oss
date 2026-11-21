@@ -1,5 +1,6 @@
 import { motion, easeInOut } from "motion/react";
-import { Icon } from "@cutecode/ui/components/icon";
+import { StarsIcon } from "@solar-icons/react/bold-duotone/stars";
+import { StarsMinimalisticIcon } from "@solar-icons/react/bold-duotone/stars-minimalistic";
 import { BaseFrameProps } from "@/typings/presets";
 import { SceneFrame, useLoop } from "../scene";
 import styles from "./velvet-night.module.css";
@@ -14,10 +15,10 @@ const STARS = Array.from({ length: 24 }, (_, index) => ({
 }));
 
 const FLOATERS = [
-  { id: "stars-left", icon: "solar:stars-minimalistic-bold-duotone", x: 6, y: 10, size: 18 },
-  { id: "stars-top", icon: "solar:stars-bold-duotone", x: 48, y: 4, size: 14 },
-  { id: "stars-right", icon: "solar:stars-minimalistic-bold-duotone", x: 92, y: 52, size: 14 },
-  { id: "stars-bottom", icon: "solar:stars-bold-duotone", x: 12, y: 86, size: 16 },
+  { id: "stars-left", icon: StarsMinimalisticIcon, x: 6, y: 10, size: 18 },
+  { id: "stars-top", icon: StarsIcon, x: 48, y: 4, size: 14 },
+  { id: "stars-right", icon: StarsMinimalisticIcon, x: 92, y: 52, size: 14 },
+  { id: "stars-bottom", icon: StarsIcon, x: 12, y: 86, size: 16 },
 ];
 
 type Star = (typeof STARS)[number];
@@ -41,7 +42,7 @@ function FloatingIcon({ floater, index }: { floater: Floater; index: number }) {
 
   return (
     <motion.span className={styles.floater} style={{ left: `${floater.x}%`, top: `${floater.y}%`, y, opacity }}>
-      <Icon icon={floater.icon} width={floater.size} height={floater.size} />
+      <floater.icon size={floater.size} />
     </motion.span>
   );
 }

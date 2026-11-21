@@ -2,16 +2,13 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { HugeiconsIcon } from "@hugeicons/react";
-import {
-  Delete02Icon,
-  Edit01Icon,
-  Globe02Icon,
-  MoreHorizontalIcon,
-  PinIcon,
-  PinOffIcon,
-  ViewOffIcon,
-} from "@hugeicons/core-free-icons";
+import { EyeClosedIcon } from "@solar-icons/react/linear/eye-closed";
+import { GlobalIcon } from "@solar-icons/react/linear/global";
+import { MenuDotsIcon } from "@solar-icons/react/linear/menu-dots";
+import { PenIcon } from "@solar-icons/react/linear/pen";
+import { PinIcon } from "@solar-icons/react/linear/pin";
+import { PinListIcon } from "@solar-icons/react/linear/pin-list";
+import { TrashBinMinimalisticIcon } from "@solar-icons/react/linear/trash-bin-minimalistic";
 import { Button } from "@cutecode/ui/components/button";
 import { Menu, MenuItem, MenuPopup, MenuSeparator, MenuTrigger } from "@cutecode/ui/components/menu";
 import { DeleteSnippetDialog } from "./delete-snippet-dialog";
@@ -31,25 +28,25 @@ export default function MoreOptions({ slug, snippet }: MoreOptionsProps) {
     <React.Fragment>
       <Menu>
         <MenuTrigger render={<Button variant="ghost" size="icon-sm" aria-label="More options" />}>
-          <HugeiconsIcon icon={MoreHorizontalIcon} aria-hidden="true" />
+          <MenuDotsIcon aria-hidden="true" />
         </MenuTrigger>
 
         <MenuPopup align="end">
           <MenuItem render={<Link href={`/edit/${slug}`} />}>
-            <HugeiconsIcon icon={Edit01Icon} aria-hidden="true" />
+            <PenIcon aria-hidden="true" />
             Edit snippet
           </MenuItem>
           <MenuItem onClick={toggleVisibility}>
-            <HugeiconsIcon icon={isPublic ? ViewOffIcon : Globe02Icon} aria-hidden="true" />
+            {isPublic ? <EyeClosedIcon aria-hidden="true" /> : <GlobalIcon aria-hidden="true" />}
             {isPublic ? "Make unlisted" : "Make public"}
           </MenuItem>
           <MenuItem onClick={togglePinned}>
-            <HugeiconsIcon icon={snippet.isPinned ? PinOffIcon : PinIcon} aria-hidden="true" />
+            {snippet.isPinned ? <PinListIcon aria-hidden="true" /> : <PinIcon aria-hidden="true" />}
             {snippet.isPinned ? "Unpin from profile" : "Pin to profile"}
           </MenuItem>
           <MenuSeparator />
           <MenuItem variant="destructive" onClick={() => setIsDeleteOpen(true)}>
-            <HugeiconsIcon icon={Delete02Icon} aria-hidden="true" />
+            <TrashBinMinimalisticIcon aria-hidden="true" />
             Delete snippet
           </MenuItem>
         </MenuPopup>

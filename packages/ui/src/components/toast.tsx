@@ -1,13 +1,11 @@
 "use client";
 
 import { Toast } from "@base-ui/react/toast";
-import {
-  Alert02Icon,
-  AlertCircleIcon,
-  CheckmarkCircle02Icon,
-  InformationCircleIcon,
-} from "@hugeicons/core-free-icons";
-import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
+import type { ReactNode } from "react";
+import { CheckCircleIcon } from "@solar-icons/react/linear/check-circle";
+import { DangerCircleIcon } from "@solar-icons/react/linear/danger-circle";
+import { DangerTriangleIcon } from "@solar-icons/react/linear/danger-triangle";
+import { InfoCircleIcon } from "@solar-icons/react/linear/info-circle";
 
 import { cn } from "../lib/cn";
 import { buttonVariants } from "./button";
@@ -16,11 +14,14 @@ import { Spinner } from "./spinner";
 const toastManager = Toast.createToastManager();
 const anchoredToastManager = Toast.createToastManager();
 
-const toastIcons = new Map<string, IconSvgElement>([
-  ["error", AlertCircleIcon],
-  ["info", InformationCircleIcon],
-  ["success", CheckmarkCircle02Icon],
-  ["warning", Alert02Icon],
+const toastIconClassName =
+  "in-data-[type=error]:text-destructive-foreground in-data-[type=info]:text-brand in-data-[type=success]:text-success-foreground in-data-[type=warning]:text-warning-foreground";
+
+const toastIcons = new Map<string, ReactNode>([
+  ["error", <DangerCircleIcon key="error" className={toastIconClassName} />],
+  ["info", <InfoCircleIcon key="info" className={toastIconClassName} />],
+  ["success", <CheckCircleIcon key="success" className={toastIconClassName} />],
+  ["warning", <DangerTriangleIcon key="warning" className={toastIconClassName} />],
 ]);
 
 type ToastPosition = "top-left" | "top-center" | "top-right" | "bottom-left" | "bottom-center" | "bottom-right";
@@ -60,14 +61,7 @@ function ToastIcon({ type }: { type?: string }) {
       className="flex h-lh shrink-0 items-center [&_svg]:pointer-events-none [&_svg]:size-5 [&_svg]:shrink-0"
       data-slot="toast-icon"
     >
-      {icon ? (
-        <HugeiconsIcon
-          icon={icon}
-          className="in-data-[type=error]:text-destructive-foreground in-data-[type=info]:text-brand in-data-[type=success]:text-success-foreground in-data-[type=warning]:text-warning-foreground"
-        />
-      ) : (
-        <Spinner aria-hidden="true" className="text-muted-foreground" />
-      )}
+      {icon ?? <Spinner aria-hidden="true" className="text-muted-foreground" />}
     </div>
   );
 }
@@ -85,7 +79,7 @@ function Toasts({ position = "bottom-right" }: { position: ToastPosition }) {
         {toasts.map((toast) => {
           return (
             <Toast.Root
-              className="toast-stack glass rounded-surface text-foreground shadow-glass"
+              className="toast-stack glass rounded-surface edge text-foreground shadow-glass"
               data-position={position}
               key={toast.id}
               swipeDirection={readSwipeDirections(position)}
@@ -149,8 +143,8 @@ function AnchoredToasts() {
                 className={cn(
                   "relative text-balance text-footnote transition-popup data-ending-style:scale-95 data-starting-style:scale-95 data-ending-style:opacity-0 data-starting-style:opacity-0 motion-reduce:transition-none",
                   tooltipStyle
-                    ? "rounded-overlay bg-popover text-popover-foreground shadow-raised"
-                    : "glass rounded-surface text-foreground shadow-glass",
+                    ? "rounded-overlay edge bg-popover text-popover-foreground shadow-raised"
+                    : "glass rounded-surface edge text-foreground shadow-glass",
                 )}
                 data-slot="toast-popup"
                 toast={toast}

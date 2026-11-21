@@ -2,8 +2,7 @@
 
 import { Link } from "@/components/link";
 import { motion } from "motion/react";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { PinIcon } from "@hugeicons/core-free-icons";
+import { PinIcon } from "@solar-icons/react/linear/pin";
 import { EASE_OUT } from "@/lib/motion";
 import { SnippetPreview } from "@/app/(navigation)/components/snippet-preview";
 
@@ -46,7 +45,7 @@ export function ExploreSnippetCard({ snippet, index, isPinned }: ExploreSnippetC
       <div className="flex min-w-0 flex-col gap-0.5 px-1">
         <span className="flex min-w-0 items-center gap-1.5 text-sm font-medium text-foreground">
           {isPinned && (
-            <HugeiconsIcon icon={PinIcon} className="size-3.5 shrink-0 text-muted-foreground" aria-label="Pinned" />
+            <PinIcon className="size-3.5 shrink-0 text-muted-foreground" aria-label="Pinned" />
           )}
           <span className="truncate">{title}</span>
         </span>

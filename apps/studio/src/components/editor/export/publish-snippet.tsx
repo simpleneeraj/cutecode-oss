@@ -15,8 +15,8 @@ import { Textarea } from "@cutecode/ui/components/textarea";
 import { Input } from "@cutecode/ui/components/input";
 import { OTPField, OTPFieldInput } from "@cutecode/ui/components/otp-field";
 import { Spinner } from "@cutecode/ui/components/spinner";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Share01Icon, Cancel01Icon } from "@hugeicons/core-free-icons";
+import { CloseIcon } from "@solar-icons/react/linear/close";
+import { ShareIcon } from "@solar-icons/react/linear/share";
 import { useAtomValue, useSetAtom } from "jotai";
 import { dispatchPublishSnippetAtom, publishSnippetAtom } from "./store";
 import { Visibility } from "./types";
@@ -151,7 +151,7 @@ const PublishSnippet: React.FC = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger render={<Button variant="outline" />} onClick={onTriggerClick}>
-        <HugeiconsIcon icon={Share01Icon} aria-hidden="true" />
+        <ShareIcon aria-hidden="true" />
         Publish
       </DialogTrigger>
 
@@ -198,7 +198,7 @@ const PublishSnippet: React.FC = () => {
                       onClick={() => dispatch({ tags: tags.filter((t) => t !== tag) })}
                       className="flex size-4 items-center justify-center rounded-sm text-muted-foreground hover:text-foreground"
                     >
-                      <HugeiconsIcon icon={Cancel01Icon} className="size-3" aria-hidden="true" />
+                      <CloseIcon className="size-3" aria-hidden="true" />
                     </button>
                   </span>
                 ))}

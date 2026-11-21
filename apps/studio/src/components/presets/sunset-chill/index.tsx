@@ -1,14 +1,17 @@
 import { motion, easeInOut } from "motion/react";
-import { Icon } from "@cutecode/ui/components/icon";
+import { LeafIcon } from "@solar-icons/react/bold-duotone/leaf";
+import { StarsIcon } from "@solar-icons/react/bold-duotone/stars";
+import { StarsMinimalisticIcon } from "@solar-icons/react/bold-duotone/stars-minimalistic";
+import { SunsetIcon } from "@solar-icons/react/bold-duotone/sunset";
 import { BaseFrameProps } from "@/typings/presets";
 import { SceneFrame, useLoop } from "../scene";
 import styles from "./style.module.css";
 
 const FLOATERS = [
-  { icon: "solar:sunset-bold-duotone", x: 6, y: 8, size: 22 },
-  { icon: "solar:stars-minimalistic-bold-duotone", x: 90, y: 10, size: 14 },
-  { icon: "solar:stars-bold-duotone", x: 84, y: 46, size: 16 },
-  { icon: "solar:leaf-bold-duotone", x: 4, y: 58, size: 15 },
+  { icon: SunsetIcon, x: 6, y: 8, size: 22 },
+  { icon: StarsMinimalisticIcon, x: 90, y: 10, size: 14 },
+  { icon: StarsIcon, x: 84, y: 46, size: 16 },
+  { icon: LeafIcon, x: 4, y: 58, size: 15 },
 ];
 
 const CLOUDS = [
@@ -36,7 +39,7 @@ function FloatingIcon({ floater, index }: { floater: Floater; index: number }) {
 
   return (
     <motion.span className={styles.floater} style={{ left: `${floater.x}%`, top: `${floater.y}%`, y, rotate }}>
-      <Icon icon={floater.icon} width={floater.size} height={floater.size} />
+      <floater.icon size={floater.size} />
     </motion.span>
   );
 }

@@ -1,8 +1,8 @@
 "use client";
 
 import { Menu as MenuPrimitive } from "@base-ui/react/menu";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { ArrowRight01Icon, Tick02Icon } from "@hugeicons/core-free-icons";
+import { AltArrowRightIcon } from "@solar-icons/react/linear/alt-arrow-right";
+import { CheckIcon } from "@solar-icons/react/linear/check";
 import { Fragment } from "react";
 import type * as React from "react";
 
@@ -51,7 +51,7 @@ function MenuPopup({
       >
         <MenuPrimitive.Popup
           className={cn(
-            "relative flex not-[class*='w-']:min-w-60 origin-(--transform-origin) overflow-hidden rounded-overlay bg-popover text-popover-foreground shadow-raised outline-none transition-popup data-ending-style:scale-95 data-starting-style:scale-95 data-ending-style:opacity-0 data-starting-style:opacity-0 motion-reduce:transition-none",
+            "relative flex not-[class*='w-']:min-w-60 origin-(--transform-origin) overflow-hidden rounded-overlay edge bg-popover text-popover-foreground shadow-raised outline-none transition-popup data-ending-style:scale-95 data-starting-style:scale-95 data-ending-style:opacity-0 data-starting-style:opacity-0 motion-reduce:transition-none",
             className,
           )}
           data-slot="menu-popup"
@@ -124,7 +124,7 @@ function MenuCheckboxItem({
       ) : (
         <Fragment>
           <MenuPrimitive.CheckboxItemIndicator className="absolute start-3.5 text-brand">
-            <HugeiconsIcon icon={Tick02Icon} strokeWidth={2} />
+            <CheckIcon strokeWidth={2} />
           </MenuPrimitive.CheckboxItemIndicator>
           <span>{children}</span>
         </Fragment>
@@ -148,7 +148,7 @@ function MenuRadioItem({ className, children, ...props }: MenuPrimitive.RadioIte
       {...props}
     >
       <MenuPrimitive.RadioItemIndicator className="absolute start-3.5 text-brand">
-        <HugeiconsIcon icon={Tick02Icon} strokeWidth={2} />
+        <CheckIcon strokeWidth={2} />
       </MenuPrimitive.RadioItemIndicator>
       <span>{children}</span>
     </MenuPrimitive.RadioItem>
@@ -218,7 +218,7 @@ function MenuSubTrigger({
       {...props}
     >
       {children}
-      <HugeiconsIcon icon={ArrowRight01Icon} className="ms-auto text-muted-foreground" />
+      <AltArrowRightIcon className="ms-auto text-muted-foreground" />
     </MenuPrimitive.SubmenuTrigger>
   );
 }

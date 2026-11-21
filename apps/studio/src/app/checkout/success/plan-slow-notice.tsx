@@ -1,5 +1,4 @@
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Refresh01Icon } from "@hugeicons/core-free-icons";
+import { RefreshIcon } from "@solar-icons/react/linear/refresh";
 import { Button } from "@cutecode/ui/components/button";
 import { Spinner } from "@cutecode/ui/components/spinner";
 
@@ -19,7 +18,7 @@ export default function PlanSlowNotice({ isRefreshing, onRefresh }: PlanSlowNoti
         if your plan doesn&apos;t appear.
       </p>
       <Button variant="outline" size="sm" disabled={isRefreshing} onClick={onRefresh}>
-        {isRefreshing ? <Spinner aria-hidden="true" /> : <HugeiconsIcon icon={Refresh01Icon} aria-hidden="true" />}
+        {isRefreshing ? <Spinner aria-hidden="true" /> : <RefreshIcon aria-hidden="true" />}
         Refresh
       </Button>
     </div>

@@ -1,5 +1,5 @@
 import { useSetAtom } from "jotai";
-import { CrownIcon } from "@hugeicons/core-free-icons";
+import { CrownIcon } from "@solar-icons/react/linear/crown";
 import { exportSizeAtom } from "@/store/editor/editor";
 import { usePremiumAccess } from "@/hooks/use-premium-access";
 import { useSubscription } from "@/hooks/use-subscription";

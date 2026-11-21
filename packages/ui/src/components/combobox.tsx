@@ -1,8 +1,9 @@
 "use client";
 
 import { Combobox as ComboboxPrimitive } from "@base-ui/react/combobox";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Cancel01Icon, Tick02Icon, UnfoldMoreIcon } from "@hugeicons/core-free-icons";
+import { CheckIcon } from "@solar-icons/react/linear/check";
+import { CloseIcon } from "@solar-icons/react/linear/close";
+import { SortVerticalIcon } from "@solar-icons/react/linear/sort-vertical";
 import * as React from "react";
 
 import { cn } from "../lib/cn";
@@ -106,7 +107,7 @@ function ComboboxInput({
           {...triggerProps}
         >
           <ComboboxPrimitive.Icon data-slot="combobox-icon">
-            <HugeiconsIcon icon={UnfoldMoreIcon} />
+            <SortVerticalIcon />
           </ComboboxPrimitive.Icon>
         </ComboboxTrigger>
       )}
@@ -118,7 +119,7 @@ function ComboboxInput({
           )}
           {...clearProps}
         >
-          <HugeiconsIcon icon={Cancel01Icon} />
+          <CloseIcon />
         </ComboboxClear>
       )}
     </div>
@@ -165,7 +166,7 @@ function ComboboxPopup({
       >
         <span
           className={cn(
-            "relative flex max-h-full min-w-(--anchor-width) max-w-(--available-width) origin-(--transform-origin) overflow-hidden rounded-overlay bg-popover text-popover-foreground shadow-raised",
+            "relative flex max-h-full min-w-(--anchor-width) max-w-(--available-width) origin-(--transform-origin) overflow-hidden rounded-overlay edge bg-popover text-popover-foreground shadow-raised",
             className,
           )}
         >
@@ -193,7 +194,7 @@ function ComboboxItem({ className, children, ...props }: ComboboxPrimitive.Item.
       {...props}
     >
       <ComboboxPrimitive.ItemIndicator className="absolute start-3.5 text-brand">
-        <HugeiconsIcon icon={Tick02Icon} strokeWidth={2} />
+        <CheckIcon strokeWidth={2} />
       </ComboboxPrimitive.ItemIndicator>
       <div className="min-w-0">{children}</div>
     </ComboboxPrimitive.Item>
@@ -291,7 +292,7 @@ function ComboboxChips({
   return (
     <ComboboxPrimitive.Chips
       className={cn(
-        "relative inline-flex min-h-11 w-full flex-wrap gap-1 rounded-field bg-card p-1.5 text-body text-foreground outline-none inset-ring inset-ring-input transition-shadow *:min-h-8 focus-within:shadow-focus has-disabled:pointer-events-none has-data-[size=lg]:min-h-12 has-aria-invalid:inset-ring-2 has-aria-invalid:inset-ring-destructive-foreground has-autofill:bg-foreground/4 has-disabled:opacity-40",
+        "relative inline-flex min-h-11 w-full flex-wrap gap-1 rounded-field edge bg-card p-1.5 text-body text-foreground outline-none inset-ring inset-ring-input transition-shadow *:min-h-8 focus-within:shadow-focus has-disabled:pointer-events-none has-data-[size=lg]:min-h-12 has-aria-invalid:inset-ring-2 has-aria-invalid:inset-ring-destructive-foreground has-autofill:bg-foreground/4 has-disabled:opacity-40",
         className,
       )}
       data-slot="combobox-chips"
@@ -339,7 +340,7 @@ function ComboboxChipRemove(props: ComboboxPrimitive.ChipRemove.Props) {
       data-slot="combobox-chip-remove"
       {...props}
     >
-      <HugeiconsIcon icon={Cancel01Icon} />
+      <CloseIcon />
     </ComboboxPrimitive.ChipRemove>
   );
 }

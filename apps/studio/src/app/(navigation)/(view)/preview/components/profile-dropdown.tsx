@@ -18,9 +18,13 @@ import { resetEditorAtom } from "@/store/editor/editor/reset";
 import { plansDialogOpenAtom } from "@/store/editor/plans";
 import useBilling from "@/hooks/use-billing";
 import { Button } from "@cutecode/ui/components/button";
-import { Icon } from "@cutecode/ui/components/icon";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Tag01Icon } from "@hugeicons/core-free-icons";
+import { CrownIcon as CrownBoldIcon } from "@solar-icons/react/bold/crown";
+import { CardIcon } from "@solar-icons/react/linear/card";
+import { CrownIcon } from "@solar-icons/react/linear/crown";
+import { Logout3Icon } from "@solar-icons/react/linear/logout-3";
+import { SettingsMinimalisticIcon } from "@solar-icons/react/linear/settings-minimalistic";
+import { TagIcon } from "@solar-icons/react/linear/tag";
+import { Widget2Icon } from "@solar-icons/react/linear/widget-2";
 import PremiumBadge from "./premium-badge";
 import AccountSettingsDialog from "./account-settings-dialog";
 
@@ -82,7 +86,7 @@ export default function ProfileDropdown({ className, ...props }: ProfileDropdown
 
               {!isFree && (
                 <span className="absolute -right-1 -bottom-1 flex size-4 items-center justify-center rounded-full bg-linear-to-b from-warning to-warning-foreground ring-2 ring-background">
-                  <Icon icon="solar:crown-bold" className="size-2.5 text-background" />
+                  <CrownBoldIcon className="size-2.5 text-background" />
                 </span>
               )}
             </Button>
@@ -107,30 +111,30 @@ export default function ProfileDropdown({ className, ...props }: ProfileDropdown
           <DropdownMenuSeparator />
 
           <DropdownMenuItem render={<Link href="/dashboard" />} className="cursor-pointer gap-2.5 px-2 py-2">
-            <Icon icon="solar:widget-2-linear" className="size-4" />
+            <Widget2Icon className="size-4" />
             Dashboard
           </DropdownMenuItem>
 
           {!isFree && (
             <DropdownMenuItem className="cursor-pointer gap-2.5 px-2 py-2" onClick={openPortal}>
-              <Icon icon="solar:card-linear" className="size-4" />
+              <CardIcon className="size-4" />
               Manage billing
             </DropdownMenuItem>
           )}
 
           <DropdownMenuItem render={<Link href="/pricing" />} className="cursor-pointer gap-2.5 px-2 py-2">
-            <HugeiconsIcon icon={Tag01Icon} className="size-4" aria-hidden="true" />
+            <TagIcon className="size-4" aria-hidden="true" />
             Plans & pricing
           </DropdownMenuItem>
 
           <DropdownMenuItem className="cursor-pointer gap-2.5 px-2 py-2" onClick={() => setIsAccountOpen(true)}>
-            <Icon icon="solar:settings-minimalistic-linear" className="size-4" />
+            <SettingsMinimalisticIcon className="size-4" />
             Manage account
           </DropdownMenuItem>
 
           {isFree && (
             <DropdownMenuItem className="cursor-pointer gap-2.5 px-2 py-2" onClick={() => setPlansOpen(true)}>
-              <Icon icon="solar:crown-linear" className="size-4" />
+              <CrownIcon className="size-4" />
               <div className="flex flex-col">
                 <span className="text-sm font-medium text-foreground">Upgrade plan</span>
                 <span className="text-xs text-muted-foreground">Pro and Premium plans</span>
@@ -141,7 +145,7 @@ export default function ProfileDropdown({ className, ...props }: ProfileDropdown
           <DropdownMenuSeparator />
 
           <DropdownMenuItem variant="destructive" className="cursor-pointer gap-2.5 px-2 py-2" onClick={onSignOut}>
-            <Icon icon="solar:logout-3-linear" className="size-4" />
+            <Logout3Icon className="size-4" />
             Sign out
           </DropdownMenuItem>
 

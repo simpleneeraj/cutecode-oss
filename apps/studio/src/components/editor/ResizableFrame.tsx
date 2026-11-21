@@ -3,8 +3,7 @@ import { useAtom } from "jotai";
 import { windowWidthAtom } from "@//store/editor/editor";
 import { motion, AnimatePresence } from "framer-motion";
 import { MAX_SLIDE_WIDTH, MIN_SLIDE_WIDTH } from "@/store/editor/editor/state";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { CancelCircleIcon } from "@hugeicons/core-free-icons";
+import { CloseCircleIcon } from "@solar-icons/react/linear/close-circle";
 import { tv } from "tailwind-variants";
 
 type Handle = "right" | "left";
@@ -112,7 +111,7 @@ const ResizableFrame: React.FC<PropsWithChildren> = ({ children }) => {
                 setWindowWidth(null);
               }}
             >
-              <HugeiconsIcon icon={CancelCircleIcon} className="size-5 opacity-75" aria-hidden="true" />
+              <CloseCircleIcon className="size-5 opacity-75" aria-hidden="true" />
               Set to auto width
             </a>
           </motion.div>

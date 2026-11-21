@@ -1,20 +1,20 @@
-import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
+import type { Icon } from "@solar-icons/react/lib/types";
 import { Button } from "@cutecode/ui/components/button";
 import { Kbd, KbdGroup } from "@cutecode/ui/components/kbd";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "@cutecode/ui/components/tooltip";
 
 type ShortcutIconButtonProps = {
   label: string;
-  icon: IconSvgElement;
+  icon: Icon;
   keys: readonly string[];
   onClick: () => void;
 };
 
-export default function ShortcutIconButton({ label, icon, keys, onClick }: ShortcutIconButtonProps) {
+export default function ShortcutIconButton({ label, icon: Glyph, keys, onClick }: ShortcutIconButtonProps) {
   return (
     <Tooltip>
       <TooltipTrigger render={<Button variant="outline" size="icon" aria-label={label} onClick={onClick} />}>
-        <HugeiconsIcon icon={icon} aria-hidden="true" />
+        <Glyph aria-hidden="true" />
       </TooltipTrigger>
       <TooltipPopup className="flex items-center gap-2">
         {label}

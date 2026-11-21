@@ -1,6 +1,6 @@
 import { useAtomValue, useSetAtom } from "jotai";
 import { Badge } from "@cutecode/ui/components/badge";
-import { Icon } from "@cutecode/ui/components/icon";
+import { CrownIcon } from "@solar-icons/react/bold/crown";
 import { Select, SelectItem, SelectPopup, SelectTrigger } from "@cutecode/ui/components/select";
 import { useSubscription } from "@/hooks/use-subscription";
 import { plansDialogOpenAtom } from "@/store/editor/plans";
@@ -34,7 +34,7 @@ export default function VisibilitySelect() {
       <SelectTrigger>
         <span className="flex items-center gap-2">
           <span className="flex size-5 items-center justify-center rounded-md bg-muted">
-            <Icon icon={current.icon} className="size-3 text-foreground" />
+            <current.icon className="size-3 text-foreground" />
           </span>
           {current.label}
         </span>
@@ -47,7 +47,7 @@ export default function VisibilitySelect() {
             <SelectItem key={value} value={value}>
               <span className="flex w-full items-center gap-2.5">
                 <span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-muted">
-                  <Icon icon={config.icon} className="size-3.5 text-muted-foreground" />
+                  <config.icon className="size-3.5 text-muted-foreground" />
                 </span>
                 <span className="flex flex-col">
                   <span className="text-sm font-medium leading-none">{config.label}</span>
@@ -55,7 +55,7 @@ export default function VisibilitySelect() {
                 </span>
                 {isLocked && (
                   <Badge variant="outline" className="ml-auto gap-1">
-                    <Icon icon="solar:crown-bold" className="size-3" />
+                    <CrownIcon className="size-3" />
                     Premium
                   </Badge>
                 )}

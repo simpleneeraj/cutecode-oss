@@ -1,5 +1,5 @@
-import { HugeiconsIcon } from "@hugeicons/react";
-import { ArrowLeft01Icon, ArrowRight01Icon } from "@hugeicons/core-free-icons";
+import { AltArrowLeftIcon } from "@solar-icons/react/linear/alt-arrow-left";
+import { AltArrowRightIcon } from "@solar-icons/react/linear/alt-arrow-right";
 import { Button } from "@cutecode/ui/components/button";
 
 /**
@@ -20,7 +20,7 @@ export function BrowsePagination({
   return (
     <div className="flex items-center justify-center gap-2 pt-2">
       <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => onPageChange(page - 1)}>
-        <HugeiconsIcon icon={ArrowLeft01Icon} className="size-4" aria-hidden="true" />
+        <AltArrowLeftIcon className="size-4" aria-hidden="true" />
         Previous
       </Button>
       <span className="px-2 text-xs tabular-nums text-muted-foreground">
@@ -28,7 +28,7 @@ export function BrowsePagination({
       </span>
       <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => onPageChange(page + 1)}>
         Next
-        <HugeiconsIcon icon={ArrowRight01Icon} className="size-4" aria-hidden="true" />
+        <AltArrowRightIcon className="size-4" aria-hidden="true" />
       </Button>
     </div>
   );

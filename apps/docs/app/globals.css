@@ -1,0 +1,37 @@
+@import "tailwindcss";
+@import "fumadocs-ui/css/lib/default-colors.css";
+@import "fumadocs-ui/css/preset.css";
+@import "@cutecode/ui/globals.css";
+@import "./docs-theme.css";
+@source "../../../packages/ui/src";
+@source "../../../node_modules/fumadocs-ui/dist";
+
+:root,
+.dark {
+  --color-fd-background: var(--background);
+  --color-fd-foreground: var(--foreground);
+  --color-fd-card: var(--card);
+  --color-fd-card-foreground: var(--card-foreground);
+  --color-fd-popover: var(--popover);
+  --color-fd-popover-foreground: var(--popover-foreground);
+  --color-fd-muted: var(--muted);
+  --color-fd-muted-foreground: var(--muted-foreground);
+  --color-fd-secondary: var(--secondary);
+  --color-fd-secondary-foreground: var(--secondary-foreground);
+  --color-fd-accent: var(--accent);
+  --color-fd-accent-foreground: var(--accent-foreground);
+  --color-fd-border: var(--border);
+  --color-fd-primary: var(--primary);
+  --color-fd-primary-foreground: var(--primary-foreground);
+  --color-fd-ring: var(--ring);
+  --color-fd-overlay: var(--scrim);
+  --color-fd-info: var(--info-foreground);
+  --color-fd-warning: var(--warning-foreground);
+  --color-fd-error: var(--destructive-foreground);
+  --color-fd-success: var(--success-foreground);
+  --color-fd-idea: var(--yellow-ink);
+  --color-fd-diff-add: var(--green);
+  --color-fd-diff-add-symbol: var(--green-ink);
+  --color-fd-diff-remove: var(--pink);
+  --color-fd-diff-remove-symbol: var(--pink-ink);
+}

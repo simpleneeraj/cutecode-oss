@@ -1,5 +1,7 @@
 import { motion, easeInOut, easeOut } from "motion/react";
-import { Icon } from "@cutecode/ui/components/icon";
+import { HeartIcon } from "@solar-icons/react/bold-duotone/heart";
+import { LeafIcon } from "@solar-icons/react/bold-duotone/leaf";
+import { SunIcon } from "@solar-icons/react/bold-duotone/sun";
 import { BaseFrameProps } from "@/typings/presets";
 import { SceneFrame, useLoop } from "../scene";
 import styles from "./peachy-mood.module.css";
@@ -20,10 +22,10 @@ const PETALS = Array.from({ length: 12 }, (_, index) => ({
 }));
 
 const FLOATERS = [
-  { id: "sun", icon: "solar:sun-bold-duotone", x: 6, y: 8, size: 20 },
-  { id: "heart", icon: "solar:heart-bold-duotone", x: 90, y: 10, size: 16 },
-  { id: "leaf-left", icon: "solar:leaf-bold-duotone", x: 3, y: 60, size: 15 },
-  { id: "leaf-bottom", icon: "solar:leaf-bold-duotone", x: 56, y: 92, size: 14 },
+  { id: "sun", icon: SunIcon, x: 6, y: 8, size: 20 },
+  { id: "heart", icon: HeartIcon, x: 90, y: 10, size: 16 },
+  { id: "leaf-left", icon: LeafIcon, x: 3, y: 60, size: 15 },
+  { id: "leaf-bottom", icon: LeafIcon, x: 56, y: 92, size: 14 },
 ];
 
 type Ripple = (typeof RIPPLES)[number];
@@ -58,7 +60,7 @@ function FloatingIcon({ floater, index }: { floater: Floater; index: number }) {
 
   return (
     <motion.span className={styles.floater} style={{ left: `${floater.x}%`, top: `${floater.y}%`, y, rotate }}>
-      <Icon icon={floater.icon} width={floater.size} height={floater.size} />
+      <floater.icon size={floater.size} />
     </motion.span>
   );
 }

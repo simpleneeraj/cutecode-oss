@@ -27,7 +27,7 @@ function Input({ className, size = "default", unstyled = false, nativeInput = fa
       className={
         cn(
           !unstyled &&
-            "relative inline-flex w-full rounded-field bg-card text-body text-foreground inset-ring inset-ring-input transition-shadow in-data-[slot=toolbar]:rounded-control has-focus-visible:shadow-focus has-aria-invalid:inset-ring-2 has-aria-invalid:inset-ring-destructive-foreground has-autofill:bg-foreground/4 has-disabled:opacity-40",
+            "relative inline-flex w-full rounded-field edge bg-card text-body text-foreground inset-ring inset-ring-input transition-shadow in-data-[slot=toolbar]:rounded-control has-focus-visible:shadow-focus has-aria-invalid:inset-ring-2 has-aria-invalid:inset-ring-destructive-foreground has-autofill:bg-foreground/4 has-disabled:opacity-40",
           !unstyled && props.type === "search" && "rounded-control bg-muted inset-ring-0",
           className,
         ) || undefined

@@ -10,6 +10,18 @@
   }
 }
 
+@utility edge {
+  border-style: solid;
+  border-width: var(--edge-width);
+  border-color: var(--edge-color);
+}
+
+@utility squircle {
+  @supports (corner-shape: squircle) {
+    corner-shape: squircle;
+  }
+}
+
 @utility hit-area {
   &::after {
     content: "";
@@ -31,7 +43,7 @@
 
   &:active:not(:disabled, [data-disabled]) {
     scale: var(--press-scale);
-    translate: 0 var(--press-shift);
+    translate: var(--press-shift-x) var(--press-shift-y);
     opacity: 0.85;
   }
 
@@ -254,4 +266,8 @@
   &[data-ending-style][data-swipe-direction="down"] {
     transform: translateY(calc(var(--toast-swipe-movement-y) + 100% + var(--toast-inset)));
   }
+}
+
+@utility pb-safe {
+  padding-bottom: max(calc(var(--spacing) * 6), env(safe-area-inset-bottom));
 }

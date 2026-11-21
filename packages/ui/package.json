@@ -6,7 +6,12 @@
   "exports": {
     "./globals.css": "./src/styles/globals.css",
     "./components/*": "./src/components/*.tsx",
-    "./lib/*": "./src/lib/*.ts"
+    "./lib/*": "./src/lib/*.ts",
+    "./provider": "./src/provider/index.ts",
+    "./provider/use-style-settings": "./src/provider/use-style-settings.ts",
+    "./tactile/tone": "./src/tactile/tone/index.ts",
+    "./tactile/*/style": "./src/tactile/*/style.ts",
+    "./tactile/*": "./src/tactile/*/index.tsx"
   },
   "scripts": {
     "tokens:build": "tsx scripts/build-tokens.ts",
@@ -16,12 +21,12 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
-    "@hugeicons/core-free-icons": "^4.4.0",
-    "@hugeicons/react": "^1.1.10",
+    "@solar-icons/react": "^2.7.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "motion": "^14.14.0",
-    "tailwind-merge": "^3.7.1"
+    "tailwind-merge": "^3.7.1",
+    "tailwind-variants": "4.0.2"
   },
   "peerDependencies": {
     "react": "^19",

@@ -3,7 +3,7 @@
 import { useSetAtom } from "jotai";
 import { Card } from "@cutecode/ui/components/card";
 import { Button } from "@cutecode/ui/components/button";
-import { Icon } from "@cutecode/ui/components/icon";
+import { CrownIcon } from "@solar-icons/react/linear/crown";
 import { plansDialogOpenAtom } from "@/store/editor/plans";
 import { ViewsArea } from "./views-area";
 
@@ -28,7 +28,7 @@ export function LockedAnalytics() {
         </div>
         <div className="absolute inset-0 flex items-center justify-center">
           <Button onClick={() => setPlansOpen(true)}>
-            <Icon icon="solar:crown-linear" className="size-4" aria-hidden="true" />
+            <CrownIcon className="size-4" aria-hidden="true" />
             Upgrade to Premium
           </Button>
         </div>

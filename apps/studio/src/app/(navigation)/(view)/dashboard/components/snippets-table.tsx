@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { Card } from "@cutecode/ui/components/card";
 import { Badge } from "@cutecode/ui/components/badge";
-import { Icon } from "@cutecode/ui/components/icon";
+import { GlobalIcon } from "@solar-icons/react/linear/global";
+import { LockPasswordIcon } from "@solar-icons/react/linear/lock-password";
 import { Button } from "@cutecode/ui/components/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@cutecode/ui/components/table";
 import { getShareUrl } from "@/lib/share/urls";
@@ -42,7 +43,7 @@ function SnippetTitle({ title, slug }: { title: string | null; slug: string | nu
 function VisibilityBadge({ isPublic }: { isPublic: boolean }) {
   return (
     <Badge variant={isPublic ? "secondary" : "outline"}>
-      <Icon icon={isPublic ? "solar:global-linear" : "solar:lock-password-linear"} className="size-3" aria-hidden="true" />
+      {isPublic ? <GlobalIcon className="size-3" aria-hidden="true" /> : <LockPasswordIcon className="size-3" aria-hidden="true" />}
       {isPublic ? "Public" : "Private"}
     </Badge>
   );

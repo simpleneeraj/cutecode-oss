@@ -5,8 +5,8 @@ import React, { useState } from "react";
 import { toast } from "@/components/toast";
 import { Button } from "@cutecode/ui/components/button";
 import { Spinner } from "@cutecode/ui/components/spinner";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { UserCheckIcon, UserAdd01Icon } from "@hugeicons/core-free-icons";
+import { UserCheckRoundedIcon } from "@solar-icons/react/linear/user-check-rounded";
+import { UserPlusRoundedIcon } from "@solar-icons/react/linear/user-plus-rounded";
 import { useToggleFollow, useUserProfile } from "@/hooks/use-user";
 
 interface FollowButtonProps {
@@ -89,9 +89,9 @@ export function FollowButton({
         {isFollowPending ? (
           <Spinner className="size-3.5" />
         ) : isFollowing ? (
-          <HugeiconsIcon icon={UserCheckIcon} className="size-3.5" aria-hidden="true" />
+          <UserCheckRoundedIcon className="size-3.5" aria-hidden="true" />
         ) : (
-          <HugeiconsIcon icon={UserAdd01Icon} className="size-3.5" aria-hidden="true" />
+          <UserPlusRoundedIcon className="size-3.5" aria-hidden="true" />
         )}
         {label}
       </Button>

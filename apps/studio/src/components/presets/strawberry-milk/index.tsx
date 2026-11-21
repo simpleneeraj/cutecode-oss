@@ -1,5 +1,5 @@
 import { motion, easeInOut } from "motion/react";
-import { Icon } from "@cutecode/ui/components/icon";
+import { HeartIcon } from "@solar-icons/react/bold/heart";
 import { BaseFrameProps } from "@/typings/presets";
 import { SceneFrame, useLoop } from "../scene";
 import styles from "./strawberry-milk.module.css";
@@ -75,7 +75,7 @@ function FloatingHeart({ heart, index }: { heart: Heart; index: number }) {
 
   return (
     <motion.span className={styles.heart} style={{ left: `${heart.x}%`, top: `${heart.y}%`, y, scale }}>
-      <Icon icon="solar:heart-bold" width={heart.size} height={heart.size} />
+      <HeartIcon size={heart.size} />
     </motion.span>
   );
 }

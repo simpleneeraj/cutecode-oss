@@ -1,6 +1,5 @@
 import { motion } from "motion/react";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { StopIcon } from "@hugeicons/core-free-icons";
+import { StopIcon } from "@solar-icons/react/linear/stop";
 import { Button } from "@cutecode/ui/components/button";
 import { formatClock } from "./format-duration";
 import useElapsedMs from "./use-elapsed-ms";
@@ -28,7 +27,7 @@ export default function RecordingStatus({ startedAt, onStop }: RecordingStatusPr
         <span className="tabular-nums text-muted-foreground">{formatClock(elapsedMs)}</span>
       </span>
       <Button size="sm" variant="destructive" onClick={onStop} render={<motion.button whileTap={{ scale: 0.95 }} />}>
-        <HugeiconsIcon icon={StopIcon} aria-hidden="true" />
+        <StopIcon aria-hidden="true" />
         Stop
       </Button>
     </div>

@@ -1,6 +1,5 @@
 import { useAtomValue } from "jotai";
 import React, { useMemo, useState } from "react";
-import { Icon } from "@cutecode/ui/components/icon";
 import {
   Combobox,
   ComboboxTrigger,
@@ -15,8 +14,10 @@ import {
   ComboboxCollection,
   ComboboxInput,
 } from "@cutecode/ui/components/combobox";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { ArrowDown01Icon, Search01Icon, Fire02Icon, CrownIcon } from "@hugeicons/core-free-icons";
+import { AltArrowDownIcon } from "@solar-icons/react/linear/alt-arrow-down";
+import { CrownIcon } from "@solar-icons/react/linear/crown";
+import { FireIcon } from "@solar-icons/react/linear/fire";
+import { MagnifierIcon } from "@solar-icons/react/linear/magnifier";
 import { Theme, IconType, BadgeVariant } from "@/typings/editor";
 import {
   elementContentAtom,
@@ -74,16 +75,9 @@ function ThemeIcon({ theme, className }: ThemeIconProps) {
   if (theme.icon.type === IconType.IMAGE && isTileGlyph(theme.icon.source)) {
     return <img src={theme.icon.source} alt="" loading="lazy" decoding="async" className={cn("shrink-0", className)} />;
   }
-  if (theme.icon.type === IconType.IMAGE) {
-    return (
-      <ThemeTile className={className}>
-        <img src={theme.icon.source} alt="" loading="lazy" decoding="async" className="size-3/5 object-contain" />
-      </ThemeTile>
-    );
-  }
   return (
     <ThemeTile className={className}>
-      <Icon icon={theme.icon.source} className="size-3/5" />
+      <img src={theme.icon.source} alt="" loading="lazy" decoding="async" className="size-3/5 object-contain" />
     </ThemeTile>
   );
 }
@@ -121,13 +115,13 @@ function Badges({ tags, access, sponsorBadge }: { tags?: Theme["tags"]; access: 
       )}
       {tags?.includes(BadgeVariant.POPULAR) && (
         <Badge className="text-xs" size="sm" variant="error">
-          <HugeiconsIcon icon={Fire02Icon} className="size-3" aria-hidden="true" />
+          <FireIcon className="size-3" aria-hidden="true" />
           {BadgeVariant.POPULAR}
         </Badge>
       )}
       {tags?.includes(BadgeVariant.PREMIUM) && (
         <Badge size="sm" variant={access === AccessLevel.ALLOWED ? "outline" : "warning"} title={BadgeVariant.PREMIUM}>
-          <HugeiconsIcon icon={CrownIcon} className="size-3" aria-hidden="true" />
+          <CrownIcon className="size-3" aria-hidden="true" />
         </Badge>
       )}
     </>
@@ -186,7 +180,7 @@ const ThemeControl: React.FC = () => {
               </span>
             )}
           </ComboboxValue>
-          <HugeiconsIcon icon={ArrowDown01Icon} className="hidden size-3.5 text-muted-foreground sm:block" aria-hidden="true" />
+          <AltArrowDownIcon className="hidden size-3.5 text-muted-foreground sm:block" aria-hidden="true" />
           <span className={dockLabel()}>Theme</span>
         </ComboboxTrigger>
         <ComboboxPopup side="top" align="center" sideOffset={8} className={dockPopup()} aria-label="Select theme">
@@ -195,7 +189,7 @@ const ThemeControl: React.FC = () => {
               className="rounded-md before:rounded-[calc(var(--radius-md)-1px)]"
               placeholder="Search themes..."
               showTrigger={false}
-              startAddon={<HugeiconsIcon icon={Search01Icon} className="size-4" aria-hidden="true" />}
+              startAddon={<MagnifierIcon className="size-4" aria-hidden="true" />}
             />
           </div>
           <ComboboxEmpty>No themes found.</ComboboxEmpty>

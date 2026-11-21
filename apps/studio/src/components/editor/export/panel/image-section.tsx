@@ -1,5 +1,6 @@
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Copy01Icon, Download04Icon, SvgIcon } from "@hugeicons/core-free-icons";
+import { CopyIcon } from "@solar-icons/react/linear/copy";
+import { DownloadIcon } from "@solar-icons/react/linear/download";
+import { FileCodeIcon } from "@solar-icons/react/linear/file-code";
 import { Button } from "@cutecode/ui/components/button";
 import usePngClipboardSupported from "../../util/usePngClipboardSupported";
 import FileNameField from "./file-name-field";
@@ -21,13 +22,13 @@ export default function ImageSection({ onDownloadPng, onCopyPng, onDownloadSvg }
       <FileNameField />
       <div className="flex gap-2">
         <Button className="flex-1" onClick={onDownloadPng}>
-          <HugeiconsIcon icon={Download04Icon} aria-hidden="true" />
+          <DownloadIcon aria-hidden="true" />
           Download
         </Button>
         {isClipboardSupported && (
-          <ShortcutIconButton label="Copy image" icon={Copy01Icon} keys={["⌘", "C"]} onClick={onCopyPng} />
+          <ShortcutIconButton label="Copy image" icon={CopyIcon} keys={["⌘", "C"]} onClick={onCopyPng} />
         )}
-        <ShortcutIconButton label="Download SVG" icon={SvgIcon} keys={["⌘", "⇧", "S"]} onClick={onDownloadSvg} />
+        <ShortcutIconButton label="Download SVG" icon={FileCodeIcon} keys={["⌘", "⇧", "S"]} onClick={onDownloadSvg} />
       </div>
     </div>
   );

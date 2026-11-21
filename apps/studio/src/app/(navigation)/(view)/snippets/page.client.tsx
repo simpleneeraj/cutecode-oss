@@ -4,8 +4,8 @@ import { useState } from "react";
 import { useSetAtom } from "jotai";
 import { resetEditorAtom } from "@/store/editor/editor";
 import { Link } from "@/components/link";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { AddSquareIcon, CodeSquareIcon } from "@hugeicons/core-free-icons";
+import { AddSquareIcon } from "@solar-icons/react/linear/add-square";
+import { CodeSquareIcon } from "@solar-icons/react/linear/code-square";
 import { useSnippetList } from "@/hooks/use-snippet";
 import { Button } from "@cutecode/ui/components/button";
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@cutecode/ui/components/empty";
@@ -22,7 +22,7 @@ function SnippetsEmpty() {
     <Empty className="py-24">
       <EmptyHeader>
         <EmptyMedia variant="icon">
-          <HugeiconsIcon icon={CodeSquareIcon} aria-hidden="true" />
+          <CodeSquareIcon aria-hidden="true" />
         </EmptyMedia>
         <EmptyTitle>No snippets yet</EmptyTitle>
         <EmptyDescription>Publish from the editor and your snippets will show up here.</EmptyDescription>
@@ -72,7 +72,7 @@ export default function SnippetsPageClient() {
           <p className="text-sm text-muted-foreground">Everything you have published.</p>
         </div>
         <Button onClick={resetEditor} render={<Link href="/" />}>
-          <HugeiconsIcon icon={AddSquareIcon} aria-hidden="true" />
+          <AddSquareIcon aria-hidden="true" />
           New snippet
         </Button>
       </div>

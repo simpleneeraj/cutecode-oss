@@ -1,0 +1,31 @@
+---
+title: Installation
+description: Add CuteUI parts to your app with the shadcn CLI.
+---
+
+CuteUI is distributed through the shadcn CLI as a registry. Parts are copied into your project, so you own the code.
+
+## Requirements
+
+- A Next.js app with Tailwind CSS 4
+- A `components.json` file (run `npx shadcn@latest init` if you have none)
+
+## Add the registry
+
+Add the `@cutecode` namespace to the `registries` field of your `components.json`.
+
+```json title="components.json"
+{
+  "registries": {
+    "@cutecode": "[REGISTRY URL]/{name}.json"
+  }
+}
+```
+
+## Add a part
+
+```bash
+npx shadcn@latest add @cutecode/button
+```
+
+The CLI copies the part and installs its dependencies.

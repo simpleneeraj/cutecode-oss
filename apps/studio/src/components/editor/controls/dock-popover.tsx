@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { motion } from "motion/react";
-import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
+import type { Icon } from "@solar-icons/react/lib/types";
 import { Button } from "@cutecode/ui/components/button";
 import { Popover, PopoverPopup, PopoverTrigger } from "@cutecode/ui/components/popover";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "@cutecode/ui/components/tooltip";
@@ -8,7 +8,7 @@ import { dockLabel, dockPopup, dockTrigger } from "./dock-styles";
 
 type DockPopoverProps = {
   label: string;
-  icon: IconSvgElement;
+  icon: Icon;
   caption?: string;
   mobileLabel?: string;
   hasDot?: boolean;
@@ -17,7 +17,7 @@ type DockPopoverProps = {
 
 export default function DockPopover({
   label,
-  icon,
+  icon: Glyph,
   caption,
   mobileLabel,
   hasDot = false,
@@ -41,7 +41,7 @@ export default function DockPopover({
             />
           }
         >
-          <HugeiconsIcon icon={icon} className="size-4.5" aria-hidden="true" />
+          <Glyph className="size-4.5" aria-hidden="true" />
           {caption && (
             <span className="text-xs text-muted-foreground tabular-nums max-sm:text-[10px] max-sm:leading-none">{caption}</span>
           )}

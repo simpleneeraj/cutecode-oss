@@ -1,5 +1,5 @@
 import { useAtomValue } from "jotai";
-import { LottiefilesIcon } from "@hugeicons/core-free-icons";
+import { KeyboardIcon } from "@solar-icons/react/linear/keyboard";
 import { TypingMode, typingModeAtom } from "@/store/editor/editor";
 import DockPopover from "./dock-popover";
 import TypingControl from "./typing";
@@ -12,7 +12,7 @@ export default function TypingPopover() {
     <DockPopover
       label="Typing animation"
       mobileLabel="Type"
-      icon={LottiefilesIcon}
+      icon={KeyboardIcon}
       hasDot={isOn}
     >
       <TypingControl />

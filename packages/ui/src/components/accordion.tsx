@@ -1,8 +1,7 @@
 "use client";
 
 import { Accordion as AccordionPrimitive } from "@base-ui/react/accordion";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { ArrowDown01Icon } from "@hugeicons/core-free-icons";
+import { AltArrowDownIcon } from "@solar-icons/react/linear/alt-arrow-down";
 
 import { cn } from "../lib/cn";
 
@@ -32,8 +31,7 @@ function AccordionTrigger({ className, children, ...props }: AccordionPrimitive.
         {...props}
       >
         {children}
-        <HugeiconsIcon
-          icon={ArrowDown01Icon}
+        <AltArrowDownIcon
           className="pointer-events-none size-5 shrink-0 translate-y-px text-muted-foreground transition-transform duration-200 ease-out motion-reduce:transition-none"
           data-slot="accordion-indicator"
         />

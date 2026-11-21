@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { Card } from "@cutecode/ui/components/card";
 import { Button } from "@cutecode/ui/components/button";
-import { Icon } from "@cutecode/ui/components/icon";
+import { CodeSquareIcon } from "@solar-icons/react/bold/code-square";
+import { AddSquareIcon } from "@solar-icons/react/linear/add-square";
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@cutecode/ui/components/empty";
 
 export function DashboardEmptyState() {
@@ -10,14 +11,14 @@ export function DashboardEmptyState() {
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <Icon icon="solar:code-square-bold" aria-hidden="true" />
+            <CodeSquareIcon aria-hidden="true" />
           </EmptyMedia>
           <EmptyTitle>No snippets yet</EmptyTitle>
           <EmptyDescription>Publish a snippet from the editor and its analytics will show up here.</EmptyDescription>
         </EmptyHeader>
         <EmptyContent>
           <Button render={<Link href="/" />}>
-            <Icon icon="solar:add-square-linear" className="size-4" aria-hidden="true" />
+            <AddSquareIcon className="size-4" aria-hidden="true" />
             Create a snippet
           </Button>
         </EmptyContent>

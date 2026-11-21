@@ -1,16 +1,19 @@
 import { motion, easeInOut } from "motion/react";
-import { Icon } from "@cutecode/ui/components/icon";
+import { LeafIcon } from "@solar-icons/react/bold-duotone/leaf";
+import { StarsIcon } from "@solar-icons/react/bold-duotone/stars";
+import { StarsMinimalisticIcon } from "@solar-icons/react/bold-duotone/stars-minimalistic";
+import { SunIcon } from "@solar-icons/react/bold-duotone/sun";
 import { BaseFrameProps } from "@/typings/presets";
 import { SceneFrame, useLoop } from "../scene";
 import styles from "./golden-hour.module.css";
 
 const FLOATERS = [
-  { icon: "solar:sun-bold-duotone", x: 7, y: 9, size: 22 },
-  { icon: "solar:stars-bold-duotone", x: 88, y: 8, size: 18 },
-  { icon: "solar:leaf-bold-duotone", x: 82, y: 84, size: 18 },
-  { icon: "solar:stars-minimalistic-bold-duotone", x: 4, y: 52, size: 14 },
-  { icon: "solar:leaf-bold-duotone", x: 20, y: 88, size: 15 },
-  { icon: "solar:stars-bold-duotone", x: 55, y: 92, size: 14 },
+  { icon: SunIcon, x: 7, y: 9, size: 22 },
+  { icon: StarsIcon, x: 88, y: 8, size: 18 },
+  { icon: LeafIcon, x: 82, y: 84, size: 18 },
+  { icon: StarsMinimalisticIcon, x: 4, y: 52, size: 14 },
+  { icon: LeafIcon, x: 20, y: 88, size: 15 },
+  { icon: StarsIcon, x: 55, y: 92, size: 14 },
 ];
 
 const MOTES = Array.from({ length: 18 }, (_, index) => ({
@@ -29,7 +32,7 @@ function FloatingIcon({ floater, index }: { floater: Floater; index: number }) {
 
   return (
     <motion.span className={styles.floater} style={{ left: `${floater.x}%`, top: `${floater.y}%`, y, rotate }}>
-      <Icon icon={floater.icon} width={floater.size} height={floater.size} />
+      <floater.icon size={floater.size} />
     </motion.span>
   );
 }

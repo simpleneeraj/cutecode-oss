@@ -1,5 +1,7 @@
 import { motion, easeInOut } from "motion/react";
-import { Icon } from "@cutecode/ui/components/icon";
+import { MoonStarsIcon } from "@solar-icons/react/bold-duotone/moon-stars";
+import { StarsIcon } from "@solar-icons/react/bold-duotone/stars";
+import { StarsMinimalisticIcon } from "@solar-icons/react/bold-duotone/stars-minimalistic";
 import { BaseFrameProps } from "@/typings/presets";
 import { SceneFrame, useLoop } from "../scene";
 import styles from "./aurora-nights.module.css";
@@ -26,9 +28,9 @@ const FLAKES = Array.from({ length: 16 }, (_, index) => ({
 }));
 
 const FLOATERS = [
-  { icon: "solar:moon-stars-bold-duotone", x: 88, y: 9, size: 22 },
-  { icon: "solar:stars-bold-duotone", x: 6, y: 14, size: 16 },
-  { icon: "solar:stars-minimalistic-bold-duotone", x: 70, y: 30, size: 12 },
+  { icon: MoonStarsIcon, x: 88, y: 9, size: 22 },
+  { icon: StarsIcon, x: 6, y: 14, size: 16 },
+  { icon: StarsMinimalisticIcon, x: 70, y: 30, size: 12 },
 ];
 
 type Floater = (typeof FLOATERS)[number];
@@ -74,7 +76,7 @@ function FloatingIcon({ floater, index }: { floater: Floater; index: number }) {
 
   return (
     <motion.span className={styles.floater} style={{ left: `${floater.x}%`, top: `${floater.y}%`, y }}>
-      <Icon icon={floater.icon} width={floater.size} height={floater.size} />
+      <floater.icon size={floater.size} />
     </motion.span>
   );
 }

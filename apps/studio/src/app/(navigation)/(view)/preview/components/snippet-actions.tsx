@@ -1,8 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { FavouriteIcon, Bookmark01Icon, ChatIcon, CodeSquareIcon, MagicWandIcon } from "@hugeicons/core-free-icons";
+import { BookmarkIcon } from "@solar-icons/react/linear/bookmark";
+import { ChatRoundDotsIcon } from "@solar-icons/react/linear/chat-round-dots";
+import { CodeSquareIcon } from "@solar-icons/react/linear/code-square";
+import { HeartIcon } from "@solar-icons/react/linear/heart";
+import { MagicWandIcon } from "@solar-icons/react/linear/magic-wand";
 import { Button } from "@cutecode/ui/components/button";
 import { Spinner } from "@cutecode/ui/components/spinner";
 import { Toggle } from "@cutecode/ui/components/toggle";
@@ -55,7 +58,7 @@ export function SnippetActions({
             onPressedChange={onUpvote}
             aria-label={upvoted ? "Remove upvote" : "Upvote"}
           >
-            <HugeiconsIcon icon={FavouriteIcon} aria-hidden="true" />
+            <HeartIcon aria-hidden="true" />
             <span className="tabular-nums">{upvoteCount}</span>
           </Toggle>
           <Toggle
@@ -65,7 +68,7 @@ export function SnippetActions({
             aria-label={commentsOpen ? "Hide comments" : "Show comments"}
             aria-expanded={commentsOpen}
           >
-            <HugeiconsIcon icon={ChatIcon} aria-hidden="true" />
+            <ChatRoundDotsIcon aria-hidden="true" />
             <span className="tabular-nums">{commentCount}</span>
           </Toggle>
           <Toggle
@@ -74,7 +77,7 @@ export function SnippetActions({
             onPressedChange={onBookmark}
             aria-label={bookmarked ? "Remove bookmark" : "Bookmark"}
           >
-            <HugeiconsIcon icon={Bookmark01Icon} aria-hidden="true" />
+            <BookmarkIcon aria-hidden="true" />
             <span className="tabular-nums">{bookmarkCount}</span>
           </Toggle>
         </div>
@@ -82,12 +85,12 @@ export function SnippetActions({
         <div className="flex items-center gap-1">
           <ShareDialog slug={slug} />
           <Button variant="ghost" size="sm" onClick={() => setEmbedOpen(true)} aria-label="Embed">
-            <HugeiconsIcon icon={CodeSquareIcon} aria-hidden="true" />
+            <CodeSquareIcon aria-hidden="true" />
             <span className="max-sm:hidden">Embed</span>
           </Button>
           {ownedSnippet && <MoreOptions slug={slug} snippet={ownedSnippet} />}
           <Button size="sm" className="ms-1" onClick={handleRemix} disabled={isRemixing} aria-label="Remix in editor">
-            {isRemixing ? <Spinner /> : <HugeiconsIcon icon={MagicWandIcon} aria-hidden="true" />}
+            {isRemixing ? <Spinner /> : <MagicWandIcon aria-hidden="true" />}
             {isRemixing ? "Remixing..." : "Remix"}
           </Button>
         </div>

@@ -13,8 +13,9 @@ import {
 } from "@cutecode/ui/components/combobox";
 import { motion } from "motion/react";
 import { Button } from "@cutecode/ui/components/button";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { ArrowDown01Icon, Search01Icon, SourceCodeIcon } from "@hugeicons/core-free-icons";
+import { AltArrowDownIcon } from "@solar-icons/react/linear/alt-arrow-down";
+import { CodeIcon } from "@solar-icons/react/linear/code";
+import { MagnifierIcon } from "@solar-icons/react/linear/magnifier";
 import { useAtomValue, useSetAtom } from "jotai";
 import { currentElementAtom, updateSlideElementAtom } from "@/store/editor/editor";
 import { trackEditor } from "@/lib/analytics";
@@ -83,11 +84,11 @@ const LanguageControl: React.FC = () => {
             />
           }
         >
-          <HugeiconsIcon icon={SourceCodeIcon} className="size-4.5 sm:hidden" aria-hidden="true" />
+          <CodeIcon className="size-4.5 sm:hidden" aria-hidden="true" />
           <span className="hidden truncate sm:inline">
             <ComboboxValue>{(value) => value?.name ?? "Auto-Detect"}</ComboboxValue>
           </span>
-          <HugeiconsIcon icon={ArrowDown01Icon} className="hidden size-3.5 text-muted-foreground sm:block" aria-hidden="true" />
+          <AltArrowDownIcon className="hidden size-3.5 text-muted-foreground sm:block" aria-hidden="true" />
           <span className={dockLabel()}>Code</span>
         </ComboboxTrigger>
         <ComboboxPopup side="top" align="center" sideOffset={8} className={dockPopup()}>
@@ -96,7 +97,7 @@ const LanguageControl: React.FC = () => {
               className="rounded-md before:rounded-[calc(var(--radius-md)-1px)]"
               placeholder="Search..."
               showTrigger={false}
-              startAddon={<HugeiconsIcon icon={Search01Icon} className="size-4" aria-hidden="true" />}
+              startAddon={<MagnifierIcon className="size-4" aria-hidden="true" />}
             />
           </div>
           <ComboboxEmpty>No languages found.</ComboboxEmpty>

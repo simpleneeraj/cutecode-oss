@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Copy01Icon, LinkSquare02Icon, Tick02Icon } from "@hugeicons/core-free-icons";
+import { CheckIcon } from "@solar-icons/react/linear/check";
+import { CopyIcon } from "@solar-icons/react/linear/copy";
+import { LinkSquareIcon } from "@solar-icons/react/linear/link-square";
 import { toast } from "@/components/toast";
 import { Button } from "@cutecode/ui/components/button";
 import {
@@ -74,7 +75,7 @@ export function EmbedDialog({ slug, open, onOpenChange }: EmbedDialogProps) {
                 <div className="flex items-center justify-between border-b py-1 ps-3 pe-1">
                   <span className="font-mono text-xs text-muted-foreground">HTML</span>
                   <Button size="xs" variant="ghost" onClick={handleCopy} aria-label="Copy embed code">
-                    <HugeiconsIcon icon={copied ? Tick02Icon : Copy01Icon} aria-hidden="true" />
+                    {copied ? <CheckIcon aria-hidden="true" /> : <CopyIcon aria-hidden="true" />}
                     {copied ? "Copied" : "Copy"}
                   </Button>
                 </div>
@@ -88,11 +89,11 @@ export function EmbedDialog({ slug, open, onOpenChange }: EmbedDialogProps) {
 
         <DialogFooter className="px-5 py-3 sm:justify-between">
           <Button variant="ghost" render={<a href={embedUrl} target="_blank" rel="noopener noreferrer" />}>
-            <HugeiconsIcon icon={LinkSquare02Icon} aria-hidden="true" />
+            <LinkSquareIcon aria-hidden="true" />
             Open in new tab
           </Button>
           <Button onClick={handleCopy}>
-            <HugeiconsIcon icon={copied ? Tick02Icon : Copy01Icon} aria-hidden="true" />
+            {copied ? <CheckIcon aria-hidden="true" /> : <CopyIcon aria-hidden="true" />}
             {copied ? "Copied" : "Copy code"}
           </Button>
         </DialogFooter>

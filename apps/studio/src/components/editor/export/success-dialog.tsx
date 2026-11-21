@@ -12,7 +12,10 @@ import {
 import { toast } from "@/components/toast";
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Icon } from "@cutecode/ui/components/icon";
+import { CheckCircleIcon } from "@solar-icons/react/bold/check-circle";
+import { CopyIcon } from "@solar-icons/react/bold/copy";
+import { LinkIcon } from "@solar-icons/react/bold/link";
+import { VerifiedCheckIcon } from "@solar-icons/react/bold/verified-check";
 
 export default function SuccessDialog({
   isSuccessOpen,
@@ -56,7 +59,7 @@ export default function SuccessDialog({
                 animate={{ scale: 1, rotate: 0 }}
                 transition={{ type: "spring", stiffness: 400, damping: 15, delay: 0.2 }}
               >
-                <Icon icon="solar:verified-check-bold" className="size-7" />
+                <VerifiedCheckIcon className="size-7" />
               </motion.div>
             </div>
           </motion.div>
@@ -81,7 +84,7 @@ export default function SuccessDialog({
             transition={{ delay: 0.35, duration: 0.25 }}
             className="flex items-center gap-1.5 rounded-xl border bg-muted/50 pl-3 pr-1 py-1.5"
           >
-            <Icon icon="solar:link-bold" className="size-3.5 shrink-0 text-muted-foreground" />
+            <LinkIcon className="size-3.5 shrink-0 text-muted-foreground" />
             <span className="flex-1 truncate font-mono text-xs text-muted-foreground select-all">{publishedUrl}</span>
             <Button
               variant="ghost"
@@ -99,7 +102,7 @@ export default function SuccessDialog({
                     exit={{ scale: 0.5, opacity: 0 }}
                     transition={{ duration: 0.15 }}
                   >
-                    <Icon icon="solar:check-circle-bold" className="size-3.5 text-foreground" />
+                    <CheckCircleIcon className="size-3.5 text-foreground" />
                   </motion.span>
                 ) : (
                   <motion.span
@@ -109,7 +112,7 @@ export default function SuccessDialog({
                     exit={{ scale: 0.5, opacity: 0 }}
                     transition={{ duration: 0.15 }}
                   >
-                    <Icon icon="solar:copy-bold" className="size-3.5" />
+                    <CopyIcon className="size-3.5" />
                   </motion.span>
                 )}
               </AnimatePresence>
@@ -119,7 +122,6 @@ export default function SuccessDialog({
 
         <DialogFooter className="px-5 pb-5 pt-3 gap-2 mt-2">
           <DialogClose render={<Button variant="outline" className="flex-1" />}>
-            {/* <Icon icon="solar:close-circle-bold" className="size-3.5" /> */}
             Close
           </DialogClose>
           <Button

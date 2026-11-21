@@ -1,5 +1,5 @@
 import { motion, easeInOut } from "motion/react";
-import { Icon } from "@cutecode/ui/components/icon";
+import { MoonStarsIcon } from "@solar-icons/react/bold-duotone/moon-stars";
 import { BaseFrameProps } from "@/typings/presets";
 import { SceneFrame, useLoop } from "../scene";
 import styles from "./starry-night.module.css";
@@ -70,7 +70,7 @@ function Moon() {
   return (
     <motion.div className={styles.moon} style={{ y }}>
       <motion.span className={styles.moonGlow} style={{ scale: glowScale }} />
-      <Icon icon="solar:moon-stars-bold-duotone" className="size-6.5" />
+      <MoonStarsIcon className="size-6.5" />
     </motion.div>
   );
 }

@@ -1,14 +1,11 @@
 import { Fragment } from "react";
 import { useAtomValue, useSetAtom } from "jotai";
 import { motion } from "motion/react";
-import { HugeiconsIcon } from "@hugeicons/react";
-import {
-  ArrowDown01Icon,
-  MessageProgrammingIcon,
-  Scissor01Icon,
-  Search01Icon,
-  SquareDashedBottomCodeIcon,
-} from "@hugeicons/core-free-icons";
+import { AltArrowDownIcon } from "@solar-icons/react/linear/alt-arrow-down";
+import { ChatRoundCodeIcon } from "@solar-icons/react/linear/chat-round-code";
+import { CodeScanIcon } from "@solar-icons/react/linear/code-scan";
+import { MagnifierIcon } from "@solar-icons/react/linear/magnifier";
+import { ScissorsIcon } from "@solar-icons/react/linear/scissors";
 import { elementContentAtom, elementLanguageAtom, updateSlideElementAtom } from "@/store/editor/editor";
 import { Button } from "@cutecode/ui/components/button";
 import {
@@ -51,9 +48,8 @@ export default function SnippetsPopover() {
           />
         }
       >
-        <HugeiconsIcon icon={SquareDashedBottomCodeIcon} className="size-4.5" aria-hidden="true" />
-        <HugeiconsIcon
-          icon={ArrowDown01Icon}
+        <CodeScanIcon className="size-4.5" aria-hidden="true" />
+        <AltArrowDownIcon
           className="hidden size-3.5 text-muted-foreground sm:block"
           aria-hidden="true"
         />
@@ -65,7 +61,7 @@ export default function SnippetsPopover() {
             className="rounded-md before:rounded-[calc(var(--radius-md)-1px)]"
             placeholder="Search snippets..."
             showTrigger={false}
-            startAddon={<HugeiconsIcon icon={Search01Icon} className="size-4" aria-hidden="true" />}
+            startAddon={<MagnifierIcon className="size-4" aria-hidden="true" />}
           />
         </div>
         <ComboboxEmpty>No snippets found.</ComboboxEmpty>

@@ -1,7 +1,6 @@
 import { useSetAtom } from "jotai";
 import { motion } from "motion/react";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { PlayIcon } from "@hugeicons/core-free-icons";
+import { PlayIcon } from "@solar-icons/react/linear/play";
 import { Button } from "@cutecode/ui/components/button";
 import { TypingMode, typingModeAtom } from "@/store/editor/editor";
 
@@ -20,7 +19,7 @@ export default function OffPanel() {
         onClick={() => setMode(TypingMode.Replay)}
         render={<motion.button whileTap={{ scale: 0.96 }} />}
       >
-        <HugeiconsIcon icon={PlayIcon} aria-hidden="true" />
+        <PlayIcon aria-hidden="true" />
         Turn on Replay
       </Button>
     </div>

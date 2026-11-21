@@ -1,5 +1,4 @@
-import { HugeiconsIcon } from "@hugeicons/react";
-import { CreditCardIcon } from "@hugeicons/core-free-icons";
+import { CardIcon } from "@solar-icons/react/bold-duotone/card";
 import { Link } from "@/components/link";
 import { Button } from "@cutecode/ui/components/button";
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@cutecode/ui/components/empty";
@@ -9,7 +8,7 @@ export default function CheckoutFailurePage() {
     <Empty>
       <EmptyHeader>
         <EmptyMedia variant="icon" className="text-muted-foreground">
-          <HugeiconsIcon icon={CreditCardIcon} aria-hidden="true" />
+          <CardIcon aria-hidden="true" />
         </EmptyMedia>
         <EmptyTitle render={<h1 />}>Payment didn&apos;t go through</EmptyTitle>
         <EmptyDescription>No charge was made and nothing changed on your account.</EmptyDescription>

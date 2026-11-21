@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Link } from "@/components/link";
 import { Button } from "@cutecode/ui/components/button";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { AddSquareIcon, Route01Icon } from "@hugeicons/core-free-icons";
+import { RouteIcon } from "@solar-icons/react/bold-duotone/route";
+import { AddSquareIcon } from "@solar-icons/react/linear/add-square";
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@cutecode/ui/components/empty";
 
 export const metadata: Metadata = {
@@ -15,14 +15,14 @@ export default function NotFound() {
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <HugeiconsIcon icon={Route01Icon} aria-hidden="true" />
+            <RouteIcon aria-hidden="true" />
           </EmptyMedia>
           <EmptyTitle render={<h1 />}>Page not found</EmptyTitle>
           <EmptyDescription>The page you are looking for doesn&apos;t exist.</EmptyDescription>
         </EmptyHeader>
         <EmptyContent>
           <Button render={<Link href="/" />}>
-            <HugeiconsIcon icon={AddSquareIcon} aria-hidden="true" />
+            <AddSquareIcon aria-hidden="true" />
             Create snippet
           </Button>
         </EmptyContent>

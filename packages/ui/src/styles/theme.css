@@ -38,6 +38,15 @@
   --color-indigo-ink: var(--indigo-ink);
   --color-blue: var(--blue);
   --color-blue-ink: var(--blue-ink);
+  --color-gray-fill: var(--gray-fill);
+  --color-orange-fill: var(--orange-fill);
+  --color-purple-fill: var(--purple-fill);
+  --color-yellow-fill: var(--yellow-fill);
+  --color-green-fill: var(--green-fill);
+  --color-pink-fill: var(--pink-fill);
+  --color-teal-fill: var(--teal-fill);
+  --color-indigo-fill: var(--indigo-fill);
+  --color-blue-fill: var(--blue-fill);
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
   --color-warning: var(--warning);
@@ -81,6 +90,7 @@
   --radius-field: var(--radius-field);
   --radius-inherit: inherit;
 
+  --font-heading: var(--font-heading);
   --font-sans: var(--font-sans);
   --font-serif: var(--font-serif);
   --font-mono: var(--font-mono);

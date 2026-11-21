@@ -49,7 +49,7 @@ function PopoverPopup({
       >
         <PopoverPrimitive.Popup
           className={cn(
-            "relative flex h-(--popup-height,auto) w-(--popup-width,auto) origin-(--transform-origin) rounded-overlay bg-popover text-popover-foreground shadow-raised outline-none transition-popup data-starting-style:scale-95 data-starting-style:opacity-0 motion-reduce:transition-none",
+            "relative flex h-(--popup-height,auto) w-(--popup-width,auto) origin-(--transform-origin) rounded-overlay edge bg-popover text-popover-foreground shadow-raised outline-none transition-popup data-starting-style:scale-95 data-starting-style:opacity-0 motion-reduce:transition-none",
             tooltipStyle && "w-fit text-balance text-footnote",
             className,
           )}

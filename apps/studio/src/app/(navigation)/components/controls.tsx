@@ -4,12 +4,13 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSetAtom } from "jotai";
-import { Icon } from "@cutecode/ui/components/icon";
+import { CrownIcon } from "@solar-icons/react/linear/crown";
+import { Login3Icon } from "@solar-icons/react/linear/login-3";
+import { MenuDotsVerticalIcon } from "@solar-icons/react/linear/menu-dots-vertical";
+import { TagIcon } from "@solar-icons/react/linear/tag";
 import { Button } from "@cutecode/ui/components/button";
 import { Spinner } from "@cutecode/ui/components/spinner";
 import { Menu, MenuItem, MenuPopup, MenuTrigger } from "@cutecode/ui/components/menu";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { MoreVerticalIcon, Tag01Icon } from "@hugeicons/core-free-icons";
 import { useUser } from "@/hooks/use-auth";
 import { useSubscription } from "@/hooks/use-subscription";
 import { plansDialogOpenAtom } from "@/store/editor/plans";
@@ -70,16 +71,16 @@ export default function AuthControls() {
               onClick={() => trackAuth.signInClicked("header")}
               render={<Link href={signInHref} />}
             >
-              <Icon icon="solar:login-3-linear" className="size-3.5" />
+              <Login3Icon className="size-3.5" />
               <span className="hidden sm:inline">Sign in</span>
             </Button>
             <Menu>
               <MenuTrigger render={<Button variant="ghost" size="icon" aria-label="More" className="sm:hidden" />}>
-                <HugeiconsIcon icon={MoreVerticalIcon} aria-hidden="true" />
+                <MenuDotsVerticalIcon aria-hidden="true" />
               </MenuTrigger>
               <MenuPopup align="end" sideOffset={8}>
                 <MenuItem render={<Link href="/pricing" />}>
-                  <HugeiconsIcon icon={Tag01Icon} aria-hidden="true" />
+                  <TagIcon aria-hidden="true" />
                   Plans & pricing
                 </MenuItem>
               </MenuPopup>
@@ -97,7 +98,7 @@ export default function AuthControls() {
                 setOpen(true);
               }}
             >
-              <Icon icon="solar:crown-linear" className="size-3.5" />
+              <CrownIcon className="size-3.5" />
               Upgrade to Premium
             </Button>
             <ProfileDropdown />

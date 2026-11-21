@@ -1,6 +1,6 @@
 import { Button } from "@cutecode/ui/components/button";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Copy01Icon, Tick02Icon } from "@hugeicons/core-free-icons";
+import { CheckIcon } from "@solar-icons/react/linear/check";
+import { CopyIcon } from "@solar-icons/react/linear/copy";
 
 type SnippetInfoProps = {
   language: string | null;
@@ -20,7 +20,7 @@ const SnippetInfo = ({ language, viewCount, copied, onCopy }: SnippetInfoProps) 
         </span>
       </span>
       <Button size="xs" variant="ghost" onClick={onCopy} aria-label={copied ? "Copied" : "Copy code"}>
-        <HugeiconsIcon icon={copied ? Tick02Icon : Copy01Icon} aria-hidden="true" />
+        {copied ? <CheckIcon aria-hidden="true" /> : <CopyIcon aria-hidden="true" />}
         {copied ? "Copied" : "Copy"}
       </Button>
     </div>

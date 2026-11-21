@@ -5,8 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useResendVerification, useSignUp } from "@/hooks/use-auth-mutations";
 import { tv } from "tailwind-variants";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Mail01Icon } from "@hugeicons/core-free-icons";
+import { LetterIcon } from "@solar-icons/react/bold-duotone/letter";
 import { Card, CardDescription, CardFooter, CardHeader, CardPanel, CardTitle } from "@cutecode/ui/components/card";
 import { Button } from "@cutecode/ui/components/button";
 import { Input } from "@cutecode/ui/components/input";
@@ -91,7 +90,7 @@ function SignUpForm({ redirectedFrom }: { redirectedFrom: string }) {
       {step === "sent" ? (
         <CardPanel className={sent.root()}>
           <span className={sent.badge()}>
-            <HugeiconsIcon icon={Mail01Icon} className="size-6" aria-hidden="true" />
+            <LetterIcon className="size-6" aria-hidden="true" />
           </span>
           <div className={sent.copy()}>
             <h1 className={sent.title()}>Check your inbox</h1>
