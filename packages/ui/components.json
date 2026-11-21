@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "new-york",
+  "rsc": true,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "../../packages/ui/src/styles/globals.css",
+    "baseColor": "neutral",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "iconLibrary": "hugeicons",
+  "rtl": false,
+  "aliases": {
+    "components": "@cutecode/ui/components",
+    "utils": "@cutecode/ui/lib/cn",
+    "ui": "@cutecode/ui/components",
+    "lib": "@cutecode/ui/lib",
+    "hooks": "@cutecode/ui/hooks"
+  },
+  "registries": {
+    "@coss": "https://coss.com/ui/r/{name}.json",
+    "@kokonutui": "https://kokonutui.com/r/{name}.json",
+    "@aceternity": "https://ui.aceternity.com/registry/{name}.json"
+  }
+}

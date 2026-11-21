@@ -3,7 +3,7 @@ import { useAtomValue } from "jotai";
 import type { MotionValue } from "motion/react";
 import type { ThemedToken } from "shiki";
 import { elementHighlightedLinesAtom } from "@/store/editor/editor";
-import { cn } from "@/utils/cn";
+import { cn } from "@cutecode/ui/lib/cn";
 import type { TypedLine } from "./slice-tokens";
 import TypingCaret from "./typing-caret";
 

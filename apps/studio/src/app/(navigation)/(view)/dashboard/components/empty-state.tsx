@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Icon } from "@/components/ui/icon";
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
+import { Card } from "@cutecode/ui/components/card";
+import { Button } from "@cutecode/ui/components/button";
+import { Icon } from "@cutecode/ui/components/icon";
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@cutecode/ui/components/empty";
 
 export function DashboardEmptyState() {
   return (

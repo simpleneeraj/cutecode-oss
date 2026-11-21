@@ -1,7 +1,7 @@
 "use client";
 
 import View from "@/components/view";
-import { cn } from "@/utils/cn";
+import { cn } from "@cutecode/ui/lib/cn";
 import { BaseFrameProps } from "@/typings/presets";
 import { PresetFrame } from "@/components/presets";
 import Editor from "@/components/editor/textarea";

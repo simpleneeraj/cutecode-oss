@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon } from "@/components/ui/icon";
+import { Icon } from "@cutecode/ui/components/icon";
 import { PLANS } from "@/lib/billing/plans";
 import type { Plan } from "@/db/schema";
 

@@ -1,4 +1,4 @@
-import { cn as classNames } from "@/utils/cn";
+import { cn as classNames } from "@cutecode/ui/lib/cn";
 import React, { useEffect, useState } from "react";
 import { Language, LANGUAGES } from "../util/languages";
 

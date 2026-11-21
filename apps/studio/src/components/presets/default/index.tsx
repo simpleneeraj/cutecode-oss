@@ -1,4 +1,4 @@
-import { cn } from "@/utils/cn";
+import { cn } from "@cutecode/ui/lib/cn";
 import { BaseFrameProps } from "@/typings/presets";
 import styles from "./default.module.css";
 

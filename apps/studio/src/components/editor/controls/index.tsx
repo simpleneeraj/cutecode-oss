@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react";
 import { tv } from "tailwind-variants";
-import { Separator } from "@/components/ui/separator";
+import { Separator } from "@cutecode/ui/components/separator";
 import { usePlanStyleGuard } from "@/hooks/use-plan-style-guard";
 import ThemeControl from "./themes";
 import LanguageControl from "./language";

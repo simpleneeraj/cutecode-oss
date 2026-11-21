@@ -1,5 +1,5 @@
-import { cn } from "@/utils/cn";
-import { Spinner } from "@/components/ui/spinner";
+import { cn } from "@cutecode/ui/lib/cn";
+import { Spinner } from "@cutecode/ui/components/spinner";
 import PreviewFrame from "./preview-frame";
 
 const WIDE_RATIO = 1.3;

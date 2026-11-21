@@ -2,17 +2,17 @@
 
 import React, { useState } from "react";
 import type { SWRInfiniteResponse } from "swr/infinite";
-import { Dialog, DialogTrigger, DialogPopup, DialogHeader, DialogTitle, DialogPanel } from "@/components/ui/dialog";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
+import { Dialog, DialogTrigger, DialogPopup, DialogHeader, DialogTitle, DialogPanel } from "@cutecode/ui/components/dialog";
+import { Avatar, AvatarFallback, AvatarImage } from "@cutecode/ui/components/avatar";
+import { Button } from "@cutecode/ui/components/button";
+import { Spinner } from "@cutecode/ui/components/spinner";
 import { useUserFollowers, useUserFollowing, type UserFollowersOutput } from "@/hooks/use-user";
 
 export type FollowUser = UserFollowersOutput["users"][number];
 import FollowButton from "@/components/follow-button";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@cutecode/ui/components/badge";
 import View from "./view";
-import { Tabs, TabsList, TabsPanel, TabsTab } from "./ui/tabs";
+import { Tabs, TabsList, TabsPanel, TabsTab } from "@cutecode/ui/components/tabs";
 import { Plan } from "@/db/schema";
 import { avatarUrl } from "@/lib/avatar";
 

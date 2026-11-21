@@ -1,7 +1,7 @@
 import { useId } from "react";
 import { motion } from "motion/react";
 import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
-import { Toggle, ToggleGroup } from "@/components/ui/toggle-group";
+import { Toggle, ToggleGroup } from "@cutecode/ui/components/toggle-group";
 
 const pillSpring = { type: "spring", stiffness: 500, damping: 38 } as const;
 

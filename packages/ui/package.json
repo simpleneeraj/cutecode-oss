@@ -1,0 +1,44 @@
+{
+  "name": "@cutecode/ui",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./globals.css": "./src/styles/globals.css",
+    "./components/*": "./src/components/*.tsx",
+    "./lib/*": "./src/lib/*.ts"
+  },
+  "scripts": {
+    "tokens:build": "tsx scripts/build-tokens.ts",
+    "typecheck": "node ../../node_modules/typescript-7/bin/tsc --noEmit",
+    "lint": "eslint .",
+    "test:unit": "vitest run"
+  },
+  "dependencies": {
+    "@base-ui/react": "^1.9.0",
+    "@hugeicons/core-free-icons": "^4.4.0",
+    "@hugeicons/react": "^1.1.10",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "motion": "^14.14.0",
+    "tailwind-merge": "^3.7.1"
+  },
+  "peerDependencies": {
+    "react": "^19",
+    "react-dom": "^19"
+  },
+  "devDependencies": {
+    "@cutecode/config": "*",
+    "@types/node": "^26",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "eslint": "^10",
+    "eslint-config-next": "16.4.6",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3",
+    "typescript-7": "npm:typescript@7.0.2",
+    "vitest": "^5.1.1"
+  }
+}

@@ -1,8 +1,8 @@
 import { HugeiconsIcon } from "@hugeicons/react";
 import { CreditCardIcon } from "@hugeicons/core-free-icons";
 import { Link } from "@/components/link";
-import { Button } from "@/components/ui/button";
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
+import { Button } from "@cutecode/ui/components/button";
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@cutecode/ui/components/empty";
 
 export default function CheckoutFailurePage() {
   return (

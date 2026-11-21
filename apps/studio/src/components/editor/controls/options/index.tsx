@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
-import { Menu, MenuItem, MenuPopup, MenuSeparator, MenuTrigger } from "@/components/ui/menu";
-import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipPopup, TooltipTrigger } from "@/components/ui/tooltip";
+import { Menu, MenuItem, MenuPopup, MenuSeparator, MenuTrigger } from "@cutecode/ui/components/menu";
+import { Button } from "@cutecode/ui/components/button";
+import { Tooltip, TooltipPopup, TooltipTrigger } from "@cutecode/ui/components/tooltip";
 import { useAtomValue, useSetAtom } from "jotai";
 import {
   elementShowLineNumbersAtom,

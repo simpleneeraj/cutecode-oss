@@ -3,8 +3,8 @@
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Search01Icon, CrownIcon, TextFontIcon } from "@hugeicons/core-free-icons";
 import { motion } from "motion/react";
-import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipPopup, TooltipTrigger } from "@/components/ui/tooltip";
+import { Button } from "@cutecode/ui/components/button";
+import { Tooltip, TooltipPopup, TooltipTrigger } from "@cutecode/ui/components/tooltip";
 import {
   Combobox,
   ComboboxEmpty,
@@ -13,14 +13,14 @@ import {
   ComboboxList,
   ComboboxPopup,
   ComboboxTrigger,
-} from "@/components/ui/combobox";
+} from "@cutecode/ui/components/combobox";
 import fonts from "@/fonts/editor/fonts";
 import { useAtomValue, useSetAtom } from "jotai";
 import { currentElementAtom, updateSlideElementAtom } from "@/store/editor/editor";
 import { BadgeVariant } from "@/typings/editor";
 import { AccessLevel } from "@/typings/enums";
 import { usePremiumAccess } from "@/hooks/use-premium-access";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@cutecode/ui/components/badge";
 import View from "@/components/view";
 import { trackEditor } from "@/lib/analytics";
 import { dockLabel, dockPopup, dockTrigger } from "../dock-styles";

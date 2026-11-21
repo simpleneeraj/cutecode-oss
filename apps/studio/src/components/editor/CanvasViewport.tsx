@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, useLayoutEffect, useRef } from "react";
 import { motion, useMotionValue } from "motion/react";
 import styles from "@/styles/editor/Frame.module.css";
-import { cn } from "@/utils/cn";
+import { cn } from "@cutecode/ui/lib/cn";
 import { CANVAS_DIMENSIONS, type FixedCanvasSize } from "@/store/editor/editor";
 
 type CanvasViewportProps = PropsWithChildren<{

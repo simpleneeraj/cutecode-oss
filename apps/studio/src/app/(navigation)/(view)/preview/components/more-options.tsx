@@ -12,8 +12,8 @@ import {
   PinOffIcon,
   ViewOffIcon,
 } from "@hugeicons/core-free-icons";
-import { Button } from "@/components/ui/button";
-import { Menu, MenuItem, MenuPopup, MenuSeparator, MenuTrigger } from "@/components/ui/menu";
+import { Button } from "@cutecode/ui/components/button";
+import { Menu, MenuItem, MenuPopup, MenuSeparator, MenuTrigger } from "@cutecode/ui/components/menu";
 import { DeleteSnippetDialog } from "./delete-snippet-dialog";
 import { useOwnerActions } from "../hooks/use-owner-actions";
 import type { OwnedSnippet } from "../hooks/use-snippet-preview";

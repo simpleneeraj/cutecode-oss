@@ -1,5 +1,5 @@
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsList, TabsTab } from "@/components/ui/tabs";
+import { Badge } from "@cutecode/ui/components/badge";
+import { Tabs, TabsList, TabsTab } from "@cutecode/ui/components/tabs";
 import { BillingInterval } from "@/lib/billing/products";
 
 const INTERVALS = Object.values(BillingInterval);

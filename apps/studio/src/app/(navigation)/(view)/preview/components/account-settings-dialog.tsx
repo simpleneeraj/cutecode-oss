@@ -4,10 +4,10 @@ import * as React from "react";
 import { useLinkedAccounts, useUser } from "@/hooks/use-auth";
 import { useChangePassword, useUpdateProfile } from "@/hooks/use-auth-mutations";
 import { toast } from "@/components/toast";
-import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
+import { Button } from "@cutecode/ui/components/button";
+import { Form } from "@cutecode/ui/components/form";
+import { Input } from "@cutecode/ui/components/input";
+import { Field, FieldDescription, FieldLabel } from "@cutecode/ui/components/field";
 import {
   Dialog,
   DialogClose,
@@ -17,7 +17,7 @@ import {
   DialogPanel,
   DialogPopup,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "@cutecode/ui/components/dialog";
 
 const CREDENTIAL_PROVIDER = "credential";
 

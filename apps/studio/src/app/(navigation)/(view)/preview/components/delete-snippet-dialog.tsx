@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
+import { Button } from "@cutecode/ui/components/button";
+import { Spinner } from "@cutecode/ui/components/spinner";
 import {
   AlertDialog,
   AlertDialogClose,
@@ -11,7 +11,7 @@ import {
   AlertDialogHeader,
   AlertDialogPopup,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+} from "@cutecode/ui/components/alert-dialog";
 
 type DeleteSnippetDialogProps = {
   open: boolean;

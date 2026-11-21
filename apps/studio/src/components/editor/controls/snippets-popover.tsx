@@ -10,7 +10,7 @@ import {
   SquareDashedBottomCodeIcon,
 } from "@hugeicons/core-free-icons";
 import { elementContentAtom, elementLanguageAtom, updateSlideElementAtom } from "@/store/editor/editor";
-import { Button } from "@/components/ui/button";
+import { Button } from "@cutecode/ui/components/button";
 import {
   Combobox,
   ComboboxCollection,
@@ -22,7 +22,7 @@ import {
   ComboboxList,
   ComboboxPopup,
   ComboboxTrigger,
-} from "@/components/ui/combobox";
+} from "@cutecode/ui/components/combobox";
 import { MOODS, SNIPPETS, Snippet, findSnippet, snippetPatch } from "@/components/presets/snippets";
 import { dockLabel, dockPopup, dockTrigger } from "./dock-styles";
 

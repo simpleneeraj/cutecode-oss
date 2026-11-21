@@ -1,7 +1,7 @@
 import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
-import { Button } from "@/components/ui/button";
-import { Kbd, KbdGroup } from "@/components/ui/kbd";
-import { Tooltip, TooltipPopup, TooltipTrigger } from "@/components/ui/tooltip";
+import { Button } from "@cutecode/ui/components/button";
+import { Kbd, KbdGroup } from "@cutecode/ui/components/kbd";
+import { Tooltip, TooltipPopup, TooltipTrigger } from "@cutecode/ui/components/tooltip";
 
 type ShortcutIconButtonProps = {
   label: string;

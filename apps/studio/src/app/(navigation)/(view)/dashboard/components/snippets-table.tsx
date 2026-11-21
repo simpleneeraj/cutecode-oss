@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Icon } from "@/components/ui/icon";
-import { Button } from "@/components/ui/button";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Card } from "@cutecode/ui/components/card";
+import { Badge } from "@cutecode/ui/components/badge";
+import { Icon } from "@cutecode/ui/components/icon";
+import { Button } from "@cutecode/ui/components/button";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@cutecode/ui/components/table";
 import { getShareUrl } from "@/lib/share/urls";
 import { useSubscription } from "@/hooks/use-subscription";
 import { CopyLinkButton } from "./copy-link-button";

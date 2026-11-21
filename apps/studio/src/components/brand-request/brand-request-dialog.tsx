@@ -13,12 +13,12 @@ import {
   type SponsorTier,
 } from "@/lib/brand-presets";
 import { toast } from "@/components/toast";
-import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Field, FieldError, FieldLabel } from "@/components/ui/field";
-import { RadioGroup, RadioPrimitive } from "@/components/ui/radio-group";
+import { Button } from "@cutecode/ui/components/button";
+import { Form } from "@cutecode/ui/components/form";
+import { Input } from "@cutecode/ui/components/input";
+import { Textarea } from "@cutecode/ui/components/textarea";
+import { Field, FieldError, FieldLabel } from "@cutecode/ui/components/field";
+import { RadioGroup, RadioPrimitive } from "@cutecode/ui/components/radio-group";
 import SegmentedControl from "@/components/editor/controls/segmented-control";
 import {
   Dialog,
@@ -29,7 +29,7 @@ import {
   DialogPanel,
   DialogPopup,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "@cutecode/ui/components/dialog";
 
 type BrandRequestDialogProps = {
   open: boolean;

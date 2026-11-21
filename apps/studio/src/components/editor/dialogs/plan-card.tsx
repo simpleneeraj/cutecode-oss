@@ -2,8 +2,8 @@
 
 import { tv } from "tailwind-variants";
 import type { PricingResult } from "@/hooks/use-pricing";
-import { Badge } from "@/components/ui/badge";
-import { Card } from "@/components/ui/card";
+import { Badge } from "@cutecode/ui/components/badge";
+import { Card } from "@cutecode/ui/components/card";
 import { Plan } from "@/db/schema";
 import { PLANS, type PlanKey } from "@/lib/billing/plans";
 import type { BillingInterval } from "@/lib/billing/products";

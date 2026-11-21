@@ -1,5 +1,5 @@
 import { motion, easeInOut } from "motion/react";
-import { cn } from "@/utils/cn";
+import { cn } from "@cutecode/ui/lib/cn";
 import { useLoop } from "../scene";
 import styles from "./triggerdev.module.css";
 

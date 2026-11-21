@@ -1,7 +1,7 @@
 import { useAtomValue, useSetAtom } from "jotai";
-import { Badge } from "@/components/ui/badge";
-import { Icon } from "@/components/ui/icon";
-import { Select, SelectItem, SelectPopup, SelectTrigger } from "@/components/ui/select";
+import { Badge } from "@cutecode/ui/components/badge";
+import { Icon } from "@cutecode/ui/components/icon";
+import { Select, SelectItem, SelectPopup, SelectTrigger } from "@cutecode/ui/components/select";
 import { useSubscription } from "@/hooks/use-subscription";
 import { plansDialogOpenAtom } from "@/store/editor/plans";
 import { dispatchPublishSnippetAtom, publishSnippetAtom } from "./store";

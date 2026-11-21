@@ -46,7 +46,7 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   experimental: { serverSourceMaps: false },
-  transpilePackages: ["highlight.js"],
+  transpilePackages: ["highlight.js", "@cutecode/ui"],
   serverExternalPackages: ["better-auth", "drizzle-orm", "pg", "shiki", "@aws-sdk/client-ses", "@aws-sdk/client-ssm"],
   async headers() {
     return [

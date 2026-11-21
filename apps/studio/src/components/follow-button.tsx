@@ -1,10 +1,10 @@
 "use client";
 
-import { cn } from "@/utils/cn";
+import { cn } from "@cutecode/ui/lib/cn";
 import React, { useState } from "react";
 import { toast } from "@/components/toast";
-import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
+import { Button } from "@cutecode/ui/components/button";
+import { Spinner } from "@cutecode/ui/components/spinner";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { UserCheckIcon, UserAdd01Icon } from "@hugeicons/core-free-icons";
 import { useToggleFollow, useUserProfile } from "@/hooks/use-user";

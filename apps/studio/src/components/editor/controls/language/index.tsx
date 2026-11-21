@@ -10,9 +10,9 @@ import {
   ComboboxEmpty,
   ComboboxPopup,
   ComboboxInput,
-} from "@/components/ui/combobox";
+} from "@cutecode/ui/components/combobox";
 import { motion } from "motion/react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@cutecode/ui/components/button";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowDown01Icon, Search01Icon, SourceCodeIcon } from "@hugeicons/core-free-icons";
 import { useAtomValue, useSetAtom } from "jotai";

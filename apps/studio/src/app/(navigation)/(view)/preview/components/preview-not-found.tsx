@@ -1,10 +1,10 @@
 "use client";
 
 import { Link } from "@/components/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "@cutecode/ui/components/button";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { AddSquareIcon, FileNotFoundIcon } from "@hugeicons/core-free-icons";
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@cutecode/ui/components/empty";
 
 export default function SnippetNotFound() {
   return (

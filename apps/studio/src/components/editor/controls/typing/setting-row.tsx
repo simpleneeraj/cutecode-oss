@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Field } from "@/components/ui/field";
+import { Field } from "@cutecode/ui/components/field";
 import ControlLabel from "../control-label";
 
 type SettingRowProps = {

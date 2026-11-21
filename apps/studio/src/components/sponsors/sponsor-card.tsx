@@ -1,4 +1,4 @@
-import { cn } from "@/utils/cn";
+import { cn } from "@cutecode/ui/lib/cn";
 import Image from "next/image";
 import { titleSponsor } from "@/lib/sponsors";
 import { sponsorTier } from "@/lib/brand-presets";

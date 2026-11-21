@@ -29,6 +29,7 @@
     "@aws-sdk/lib-dynamodb": "3.1175.0",
     "@base-ui/react": "^1.9.0",
     "@better-auth/drizzle-adapter": "^1.7.27",
+    "@cutecode/ui": "*",
     "@dodopayments/better-auth": "^1.6.7",
     "@hugeicons/core-free-icons": "^4.4.0",
     "@hugeicons/react": "^1.1.10",

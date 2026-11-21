@@ -1,6 +1,6 @@
 import { useAtom } from "jotai";
 import { VIDEO_LENGTH_OPTIONS, videoLengthMsAtom } from "@/store/editor/editor";
-import { Select, SelectItem, SelectPopup, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectItem, SelectPopup, SelectTrigger, SelectValue } from "@cutecode/ui/components/select";
 import { formatSeconds } from "./format-seconds";
 
 const LENGTH_ITEMS = VIDEO_LENGTH_OPTIONS.map((ms) => ({ value: ms, label: formatSeconds(ms) }));

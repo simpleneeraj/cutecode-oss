@@ -1,4 +1,4 @@
-import { cn as classNames } from "@/utils/cn";
+import { cn as classNames } from "@cutecode/ui/lib/cn";
 import { BaseFrameProps } from "@/typings/presets";
 import styles from "./candy.module.css";
 import sharedStyles from "../default/default.module.css";

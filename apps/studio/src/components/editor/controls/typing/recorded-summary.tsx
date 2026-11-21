@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Delete02Icon, RecordIcon } from "@hugeicons/core-free-icons";
-import { Button } from "@/components/ui/button";
+import { Button } from "@cutecode/ui/components/button";
 import { formatClock } from "./format-duration";
 
 type RecordedSummaryProps = {

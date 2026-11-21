@@ -1,0 +1,105 @@
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-segment-thumb: var(--segment-thumb);
+  --color-on-fill: var(--on-fill);
+  --color-scrim: var(--scrim);
+  --color-ring: var(--ring);
+  --color-brand: var(--brand);
+  --color-brand-ink: var(--brand-ink);
+  --color-brand-soft: var(--brand-soft);
+  --color-orange: var(--orange);
+  --color-orange-ink: var(--orange-ink);
+  --color-purple: var(--purple);
+  --color-purple-ink: var(--purple-ink);
+  --color-yellow: var(--yellow);
+  --color-yellow-ink: var(--yellow-ink);
+  --color-green: var(--green);
+  --color-green-ink: var(--green-ink);
+  --color-pink: var(--pink);
+  --color-pink-ink: var(--pink-ink);
+  --color-teal: var(--teal);
+  --color-teal-ink: var(--teal-ink);
+  --color-indigo: var(--indigo);
+  --color-indigo-ink: var(--indigo-ink);
+  --color-blue: var(--blue);
+  --color-blue-ink: var(--blue-ink);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-glass: var(--glass);
+  --color-glass-edge: var(--glass-edge);
+  --color-glass-solid: var(--glass-solid);
+  --color-icon-top: var(--icon-top);
+  --color-icon-bottom: var(--icon-bottom);
+  --color-orbit-line: var(--orbit-line);
+  --color-note: var(--note);
+  --color-note-ink: var(--note-ink);
+  --color-traffic-red: var(--traffic-red);
+  --color-traffic-yellow: var(--traffic-yellow);
+  --color-traffic-green: var(--traffic-green);
+  --color-syntax-keyword: var(--syntax-keyword);
+  --color-syntax-type: var(--syntax-type);
+  --color-syntax-string: var(--syntax-string);
+  --color-syntax-comment: var(--syntax-comment);
+  --color-edge: var(--edge-color);
+  --color-edge-highlight: var(--edge-highlight);
+
+  --shadow-rest: var(--elevation-rest);
+  --shadow-raised: var(--elevation-raised);
+  --shadow-press: var(--elevation-press);
+  --shadow-icon: var(--elevation-icon);
+  --shadow-thumb: var(--elevation-thumb);
+  --shadow-glass: var(--elevation-glass);
+  --shadow-focus: var(--focus-ring);
+}
+
+@theme inline reference {
+  --radius-control: var(--radius-control);
+  --radius-surface: var(--radius-surface);
+  --radius-overlay: var(--radius-overlay);
+  --radius-icon: var(--radius-icon);
+  --radius-field: var(--radius-field);
+  --radius-inherit: inherit;
+
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --font-mono: var(--font-mono);
+}
+
+@theme {
+  --text-title3: 1.25rem;
+  --text-title3--line-height: 1.5625rem;
+  --text-title3--letter-spacing: -0.017em;
+  --text-body: 1.0625rem;
+  --text-body--line-height: 1.375rem;
+  --text-body--letter-spacing: -0.024em;
+  --text-subheadline: 0.9375rem;
+  --text-subheadline--line-height: 1.25rem;
+  --text-subheadline--letter-spacing: -0.014em;
+  --text-footnote: 0.8125rem;
+  --text-footnote--line-height: 1.125rem;
+  --text-footnote--letter-spacing: -0.004em;
+  --text-caption1: 0.75rem;
+  --text-caption1--line-height: 1rem;
+  --text-caption1--letter-spacing: 0em;
+}

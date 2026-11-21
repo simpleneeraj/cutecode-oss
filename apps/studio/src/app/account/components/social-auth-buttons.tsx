@@ -1,8 +1,8 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
-import { Separator } from "@/components/ui/separator";
+import { Button } from "@cutecode/ui/components/button";
+import { Spinner } from "@cutecode/ui/components/spinner";
+import { Separator } from "@cutecode/ui/components/separator";
 import { useSocialSignIn, type SocialProvider } from "@/hooks/use-auth-mutations";
 import { tv } from "tailwind-variants";
 

@@ -1,6 +1,6 @@
 import { useId } from "react";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
+import { Label } from "@cutecode/ui/components/label";
+import { Switch } from "@cutecode/ui/components/switch";
 
 type ReelToggleProps = {
   isReel: boolean;

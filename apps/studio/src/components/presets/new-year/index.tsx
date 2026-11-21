@@ -1,5 +1,5 @@
 import { motion, easeInOut, useTransform } from "motion/react";
-import { cn } from "@/utils/cn";
+import { cn } from "@cutecode/ui/lib/cn";
 import { BaseFrameProps } from "@/typings/presets";
 import { SceneFrame, useLoop } from "../scene";
 import styles from "./style.module.css";

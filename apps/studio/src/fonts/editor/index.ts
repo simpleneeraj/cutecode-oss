@@ -1,4 +1,4 @@
-import { cn } from "@/utils/cn";
+import { cn } from "@cutecode/ui/lib/cn";
 import localFont from "next/font/local";
 import {
   Geist_Mono,

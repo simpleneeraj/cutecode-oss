@@ -1,5 +1,5 @@
 import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
-import { MenuCheckboxItem } from "@/components/ui/menu";
+import { MenuCheckboxItem } from "@cutecode/ui/components/menu";
 
 type OptionToggleProps = {
   icon: IconSvgElement;

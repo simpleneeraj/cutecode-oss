@@ -2,8 +2,8 @@
 
 import { useAtomValue, useSetAtom } from "jotai";
 import { ArrowLeft01Icon, ArrowRight01Icon, Copy01Icon, AddSquareIcon, Delete02Icon, Moon02Icon, Sun03Icon } from "@hugeicons/core-free-icons";
-import { Toolbar, ToolbarGroup, ToolbarSeparator } from "@/components/ui/toolbar";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toolbar, ToolbarGroup, ToolbarSeparator } from "@cutecode/ui/components/toolbar";
+import { TooltipProvider } from "@cutecode/ui/components/tooltip";
 import {
   createSlideAtom,
   currentSlideIdAtom,

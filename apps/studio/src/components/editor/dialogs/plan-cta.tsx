@@ -2,8 +2,8 @@
 
 import useBilling from "@/hooks/use-billing";
 import { Link } from "@/components/link";
-import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
+import { Button } from "@cutecode/ui/components/button";
+import { Spinner } from "@cutecode/ui/components/spinner";
 import { Plan } from "@/db/schema";
 import { PLANS, isPlanAtLeast, type PlanKey } from "@/lib/billing/plans";
 import { PRODUCTS, type BillingInterval } from "@/lib/billing/products";

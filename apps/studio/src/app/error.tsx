@@ -2,10 +2,10 @@
 
 import { useEffect } from "react";
 import { Link } from "@/components/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "@cutecode/ui/components/button";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Alert02Icon, Home01Icon, Refresh01Icon } from "@hugeicons/core-free-icons";
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@cutecode/ui/components/empty";
 
 type Props = {
   error: Error & { digest?: string };

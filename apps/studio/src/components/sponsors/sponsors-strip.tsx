@@ -1,4 +1,4 @@
-import { cn } from "@/utils/cn";
+import { cn } from "@cutecode/ui/lib/cn";
 import { featuredSponsors } from "@/lib/sponsors";
 
 export default function SponsorsStrip({ className }: { className?: string }) {

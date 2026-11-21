@@ -8,7 +8,6 @@ import RumMonitor from "@/components/rum-monitor";
 import type { Metadata, Viewport } from "next";
 import { TooltipProvider } from "@/components/tooltip";
 import { ThemeProvider } from "@/components/theme-switch/theme-provider";
-import { headingFontVariable } from "@/fonts/global";
 import SWRProvider from "@/providers/swr-provider";
 
 const geistSans = Geist({
@@ -95,7 +94,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} ${headingFontVariable}`}
+      className={`${geistSans.variable} ${geistMono.variable}`}
     >
       <head>
         <JsonLd />

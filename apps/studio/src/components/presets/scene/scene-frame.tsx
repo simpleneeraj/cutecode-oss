@@ -2,7 +2,7 @@
 
 import { useRef, type ReactNode } from "react";
 import { motion } from "motion/react";
-import { cn } from "@/utils/cn";
+import { cn } from "@cutecode/ui/lib/cn";
 import { BaseFrameProps } from "@/typings/presets";
 import defaultStyles from "../default/default.module.css";
 import { SceneClock } from "./clock";

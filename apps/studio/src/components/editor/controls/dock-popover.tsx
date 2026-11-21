@@ -1,9 +1,9 @@
 import type { ReactNode } from "react";
 import { motion } from "motion/react";
 import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
-import { Button } from "@/components/ui/button";
-import { Popover, PopoverPopup, PopoverTrigger } from "@/components/ui/popover";
-import { Tooltip, TooltipPopup, TooltipTrigger } from "@/components/ui/tooltip";
+import { Button } from "@cutecode/ui/components/button";
+import { Popover, PopoverPopup, PopoverTrigger } from "@cutecode/ui/components/popover";
+import { Tooltip, TooltipPopup, TooltipTrigger } from "@cutecode/ui/components/tooltip";
 import { dockLabel, dockPopup, dockTrigger } from "./dock-styles";
 
 type DockPopoverProps = {

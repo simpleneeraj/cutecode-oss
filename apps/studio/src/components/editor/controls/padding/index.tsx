@@ -1,5 +1,5 @@
 import React from "react";
-import { Field } from "@/components/ui/field";
+import { Field } from "@cutecode/ui/components/field";
 import ControlLabel from "../control-label";
 import { useAtomValue, useSetAtom } from "jotai";
 import { elementPaddingAtom, updateSlideElementAtom } from "@/store/editor/editor";

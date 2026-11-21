@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@cutecode/ui/components/button";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Copy01Icon, Tick02Icon } from "@hugeicons/core-free-icons";
 

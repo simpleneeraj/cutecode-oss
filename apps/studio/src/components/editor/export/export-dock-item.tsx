@@ -2,10 +2,10 @@ import type { ReactNode } from "react";
 import { motion } from "motion/react";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Download02Icon, Film01Icon } from "@hugeicons/core-free-icons";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { Popover, PopoverPopup, PopoverTrigger } from "@/components/ui/popover";
-import { Tooltip, TooltipPopup, TooltipTrigger } from "@/components/ui/tooltip";
+import { Button } from "@cutecode/ui/components/button";
+import { Separator } from "@cutecode/ui/components/separator";
+import { Popover, PopoverPopup, PopoverTrigger } from "@cutecode/ui/components/popover";
+import { Tooltip, TooltipPopup, TooltipTrigger } from "@cutecode/ui/components/tooltip";
 import { dockDivider, dockLabel, dockPopup, dockTrigger } from "../controls/dock-styles";
 
 type ExportDockItemProps = {

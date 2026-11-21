@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { Link } from "@/components/link";
-import { cn } from "@/utils/cn";
+import { cn } from "@cutecode/ui/lib/cn";
 
 const LEGAL_PAGES = [
   { href: "/legal/terms", label: "Terms" },

@@ -1,7 +1,7 @@
 import React from "react";
 import { useAtom } from "jotai";
 import { FitToScreenIcon, SmartPhone01Icon, SquareIcon, Tv01Icon } from "@hugeicons/core-free-icons";
-import { Field } from "@/components/ui/field";
+import { Field } from "@cutecode/ui/components/field";
 import { CanvasSize, canvasSizeAtom } from "@/store/editor/editor";
 import ControlLabel from "../control-label";
 import SegmentedControl from "../segmented-control";

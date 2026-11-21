@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "@/utils/cn";
+import { cn } from "@cutecode/ui/lib/cn";
 import { Link } from "@/components/link";
 import { useAuthActions, useUser } from "@/hooks/use-auth";
 import { useSetAtom } from "jotai";
@@ -11,14 +11,14 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+} from "@cutecode/ui/components/menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@cutecode/ui/components/avatar";
 import { useSubscription } from "@/hooks/use-subscription";
 import { resetEditorAtom } from "@/store/editor/editor/reset";
 import { plansDialogOpenAtom } from "@/store/editor/plans";
 import useBilling from "@/hooks/use-billing";
-import { Button } from "@/components/ui/button";
-import { Icon } from "@/components/ui/icon";
+import { Button } from "@cutecode/ui/components/button";
+import { Icon } from "@cutecode/ui/components/icon";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Tag01Icon } from "@hugeicons/core-free-icons";
 import PremiumBadge from "./premium-badge";

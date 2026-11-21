@@ -1,4 +1,4 @@
-import { Card } from "@/components/ui/card";
+import { Card } from "@cutecode/ui/components/card";
 import { Plan } from "@/db/schema";
 import PremiumBadge from "../../preview/components/premium-badge";
 

@@ -1,6 +1,6 @@
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowLeft01Icon, ArrowRight01Icon } from "@hugeicons/core-free-icons";
-import { Button } from "@/components/ui/button";
+import { Button } from "@cutecode/ui/components/button";
 
 /**
  * Shared pager for the snippets browse grid. Compact, monochrome,

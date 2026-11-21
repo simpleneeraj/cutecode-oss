@@ -2,7 +2,7 @@ import { useSetAtom } from "jotai";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { CrownIcon } from "@hugeicons/core-free-icons";
 import { plansDialogOpenAtom } from "@/store/editor/plans";
-import { Button } from "@/components/ui/button";
+import { Button } from "@cutecode/ui/components/button";
 
 export default function UpgradeNote() {
   const setPlansOpen = useSetAtom(plansDialogOpenAtom);

@@ -1,7 +1,7 @@
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Refresh01Icon } from "@hugeicons/core-free-icons";
-import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
+import { Button } from "@cutecode/ui/components/button";
+import { Spinner } from "@cutecode/ui/components/spinner";
 
 type PlanSlowNoticeProps = {
   isRefreshing: boolean;

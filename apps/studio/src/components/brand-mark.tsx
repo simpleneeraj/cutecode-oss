@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { cn } from "@/utils/cn";
+import { cn } from "@cutecode/ui/lib/cn";
 
 export function BrandMark({ className, preload }: { className?: string; preload?: boolean }) {
   return (

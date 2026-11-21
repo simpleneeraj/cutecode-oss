@@ -1,4 +1,4 @@
-import { Spinner } from "@/components/ui/spinner";
+import { Spinner } from "@cutecode/ui/components/spinner";
 import PlanSlowNotice from "./plan-slow-notice";
 
 type PlanActivatingProps = {

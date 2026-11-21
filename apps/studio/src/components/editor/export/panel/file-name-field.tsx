@@ -1,6 +1,6 @@
 import { useAtom } from "jotai";
 import { fileNameAtom } from "@/store/editor/editor";
-import { Input } from "@/components/ui/input";
+import { Input } from "@cutecode/ui/components/input";
 
 export default function FileNameField() {
   const [fileName, setFileName] = useAtom(fileNameAtom);

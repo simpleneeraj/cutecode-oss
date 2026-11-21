@@ -10,12 +10,12 @@ import {
   DialogPopup,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Group, GroupSeparator } from "@/components/ui/group";
-import { Input } from "@/components/ui/input";
+} from "@cutecode/ui/components/dialog";
+import { Button } from "@cutecode/ui/components/button";
+import { Group, GroupSeparator } from "@cutecode/ui/components/group";
+import { Input } from "@cutecode/ui/components/input";
 import { toast } from "@/components/toast";
-import { Icon } from "@/components/ui/icon";
+import { Icon } from "@cutecode/ui/components/icon";
 import { shortenUrl } from "@/utils/common";
 import siteConfig from "@/constants/site-config";
 

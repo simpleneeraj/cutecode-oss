@@ -1,7 +1,7 @@
 import { MotionConfig } from "motion/react";
-import { Dialog, DialogPopup } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Kbd } from "@/components/ui/kbd";
+import { Dialog, DialogPopup } from "@cutecode/ui/components/dialog";
+import { Button } from "@cutecode/ui/components/button";
+import { Kbd } from "@cutecode/ui/components/kbd";
 import UpgradeNote from "./panel/upgrade-note";
 import ExportMeta from "./progress/export-meta";
 import ExportPreview from "./progress/export-preview";

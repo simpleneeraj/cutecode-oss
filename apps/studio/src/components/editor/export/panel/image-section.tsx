@@ -1,6 +1,6 @@
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Copy01Icon, Download04Icon, SvgIcon } from "@hugeicons/core-free-icons";
-import { Button } from "@/components/ui/button";
+import { Button } from "@cutecode/ui/components/button";
 import usePngClipboardSupported from "../../util/usePngClipboardSupported";
 import FileNameField from "./file-name-field";
 import ScaleControl from "./scale-control";

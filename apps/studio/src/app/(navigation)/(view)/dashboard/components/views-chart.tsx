@@ -1,7 +1,7 @@
 "use client";
 
-import { Card } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Card } from "@cutecode/ui/components/card";
+import { Skeleton } from "@cutecode/ui/components/skeleton";
 import { useDashboardViews } from "@/hooks/use-dashboard";
 import { ViewsArea } from "./views-area";
 

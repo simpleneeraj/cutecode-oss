@@ -1,6 +1,6 @@
 import { useAtomValue } from "jotai";
 import React, { useMemo, useState } from "react";
-import { Icon } from "@/components/ui/icon";
+import { Icon } from "@cutecode/ui/components/icon";
 import {
   Combobox,
   ComboboxTrigger,
@@ -14,7 +14,7 @@ import {
   ComboboxPopup,
   ComboboxCollection,
   ComboboxInput,
-} from "@/components/ui/combobox";
+} from "@cutecode/ui/components/combobox";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowDown01Icon, Search01Icon, Fire02Icon, CrownIcon } from "@hugeicons/core-free-icons";
 import { Theme, IconType, BadgeVariant } from "@/typings/editor";
@@ -26,11 +26,11 @@ import {
   updateSlideElementAtom,
 } from "@/store/editor/editor";
 import { motion } from "motion/react";
-import { cn } from "@/utils/cn";
+import { cn } from "@cutecode/ui/lib/cn";
 import { useSetAtom } from "jotai";
 import View from "@/components/view";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Badge } from "@cutecode/ui/components/badge";
+import { Button } from "@cutecode/ui/components/button";
 import { themes } from "@/components/presets/themes";
 import { usePremiumAccess } from "@/hooks/use-premium-access";
 import { groupThemes, type ThemeGroup } from "@/components/presets/themes/shared";

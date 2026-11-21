@@ -2,7 +2,7 @@ import { useSetAtom } from "jotai";
 import { motion } from "motion/react";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { PlayIcon } from "@hugeicons/core-free-icons";
-import { Button } from "@/components/ui/button";
+import { Button } from "@cutecode/ui/components/button";
 import { typingIsPausedAtom, typingReplayCountAtom } from "@/store/editor/editor";
 import HoldToggle from "./hold-toggle";
 import SettingRow from "./setting-row";

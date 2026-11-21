@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@cutecode/ui/components/avatar";
 import FollowButton from "@/components/follow-button";
 import FollowersDialog from "@/components/followers-dialog";
 import { SnippetActions } from "./snippet-actions";

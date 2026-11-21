@@ -1,9 +1,9 @@
 "use client";
 
 import { useSetAtom } from "jotai";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Icon } from "@/components/ui/icon";
+import { Card } from "@cutecode/ui/components/card";
+import { Button } from "@cutecode/ui/components/button";
+import { Icon } from "@cutecode/ui/components/icon";
 import { plansDialogOpenAtom } from "@/store/editor/plans";
 import { ViewsArea } from "./views-area";
 

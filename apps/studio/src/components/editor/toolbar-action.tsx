@@ -2,11 +2,11 @@
 
 import { motion } from "motion/react";
 import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
-import { cn } from "@/utils/cn";
-import { Button } from "@/components/ui/button";
-import { Kbd, KbdGroup } from "@/components/ui/kbd";
-import { ToolbarButton } from "@/components/ui/toolbar";
-import { Tooltip, TooltipPopup, TooltipTrigger } from "@/components/ui/tooltip";
+import { cn } from "@cutecode/ui/lib/cn";
+import { Button } from "@cutecode/ui/components/button";
+import { Kbd, KbdGroup } from "@cutecode/ui/components/kbd";
+import { ToolbarButton } from "@cutecode/ui/components/toolbar";
+import { Tooltip, TooltipPopup, TooltipTrigger } from "@cutecode/ui/components/tooltip";
 
 type ToolbarActionProps = {
   label: string;

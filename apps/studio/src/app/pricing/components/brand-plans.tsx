@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { BRAND_BUILD_FEE, BRAND_DURATIONS, SPONSOR_TIERS } from "@/lib/brand-presets";
-import { Button } from "@/components/ui/button";
+import { Button } from "@cutecode/ui/components/button";
 import BrandRequestDialog from "@/components/brand-request/brand-request-dialog";
 import SponsorsStrip from "@/components/sponsors/sponsors-strip";
 

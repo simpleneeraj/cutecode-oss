@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "motion/react";
-import { Spinner } from "@/components/ui/spinner";
+import { Spinner } from "@cutecode/ui/components/spinner";
 
 type ThemeLoadingPillProps = {
   isVisible: boolean;

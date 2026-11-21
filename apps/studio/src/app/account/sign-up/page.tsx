@@ -7,12 +7,12 @@ import { useResendVerification, useSignUp } from "@/hooks/use-auth-mutations";
 import { tv } from "tailwind-variants";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Mail01Icon } from "@hugeicons/core-free-icons";
-import { Card, CardDescription, CardFooter, CardHeader, CardPanel, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Field, FieldLabel, FieldError, FieldDescription } from "@/components/ui/field";
-import { Spinner } from "@/components/ui/spinner";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Card, CardDescription, CardFooter, CardHeader, CardPanel, CardTitle } from "@cutecode/ui/components/card";
+import { Button } from "@cutecode/ui/components/button";
+import { Input } from "@cutecode/ui/components/input";
+import { Field, FieldLabel, FieldError, FieldDescription } from "@cutecode/ui/components/field";
+import { Spinner } from "@cutecode/ui/components/spinner";
+import { Alert, AlertDescription } from "@cutecode/ui/components/alert";
 import { safeRedirectPath } from "@/utils/safe-redirect";
 import { SocialAuthButtons } from "../components/social-auth-buttons";
 

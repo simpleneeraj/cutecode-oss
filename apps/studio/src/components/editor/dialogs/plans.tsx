@@ -10,7 +10,7 @@ import {
   DialogPopup,
   DialogTitle,
   DialogDescription,
-} from "@/components/ui/dialog";
+} from "@cutecode/ui/components/dialog";
 import { BillingInterval } from "@/lib/billing/products";
 import { plansDialogOpenAtom } from "@/store/editor/plans";
 import BillingIntervalTabs from "./billing-interval-tabs";

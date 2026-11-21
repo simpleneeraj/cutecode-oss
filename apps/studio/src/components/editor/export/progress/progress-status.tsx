@@ -1,4 +1,4 @@
-import { DialogDescription, DialogTitle } from "@/components/ui/dialog";
+import { DialogDescription, DialogTitle } from "@cutecode/ui/components/dialog";
 import { formatEta } from "./format-eta";
 import ProgressBar from "./progress-bar";
 import StageLabel from "./stage-label";

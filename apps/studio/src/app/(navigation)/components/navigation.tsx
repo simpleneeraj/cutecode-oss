@@ -3,7 +3,7 @@
 import { Link } from "@/components/link";
 import siteConfig from "@/constants/site-config";
 import { usePathname } from "next/navigation";
-import { Tabs, TabsList, TabsTab } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTab } from "@cutecode/ui/components/tabs";
 
 const EDITOR_ROUTES = ["/remix/", "/edit/"];
 const SNIPPET_ROUTES = ["/preview/", "/u/"];

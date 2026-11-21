@@ -1,5 +1,5 @@
 import React from "react";
-import { cn } from "@/utils/cn";
+import { cn } from "@cutecode/ui/lib/cn";
 import View from "@/components/view";
 import editorFonts from "@/fonts/editor";
 import globalFonts from "@/fonts/global";

@@ -1,5 +1,5 @@
 import Presets from "../presets";
-import { cn } from "@/utils/cn";
+import { cn } from "@cutecode/ui/lib/cn";
 import React, { useContext } from "react";
 import { useAtomValue } from "jotai";
 import ToolbarParticle from "./Toolbar";

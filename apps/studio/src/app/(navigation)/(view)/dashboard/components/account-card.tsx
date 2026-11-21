@@ -1,10 +1,10 @@
 "use client";
 
 import { useSetAtom } from "jotai";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Icon } from "@/components/ui/icon";
+import { Card } from "@cutecode/ui/components/card";
+import { Badge } from "@cutecode/ui/components/badge";
+import { Button } from "@cutecode/ui/components/button";
+import { Icon } from "@cutecode/ui/components/icon";
 import { PLANS } from "@/lib/billing/plans";
 import useBilling from "@/hooks/use-billing";
 import { usePricing, type PricingResult } from "@/hooks/use-pricing";
@@ -12,7 +12,7 @@ import { Plan } from "@/db/schema";
 import type { PaidPlan } from "@/lib/billing/products";
 import { plansDialogOpenAtom } from "@/store/editor/plans";
 import type { PublishQuota } from "@/lib/billing/publish-quota";
-import { Meter, MeterIndicator, MeterLabel, MeterTrack, MeterValue } from "@/components/ui/meter";
+import { Meter, MeterIndicator, MeterLabel, MeterTrack, MeterValue } from "@cutecode/ui/components/meter";
 import PremiumBadge from "../../preview/components/premium-badge";
 
 type AccountCardProps = {

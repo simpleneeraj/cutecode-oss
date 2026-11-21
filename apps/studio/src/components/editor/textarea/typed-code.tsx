@@ -4,7 +4,7 @@ import { useMotionValueEvent, useTransform } from "motion/react";
 import styles from "@/styles/editor/Editor.module.css";
 import { sceneExportTimeAtom } from "@/components/presets/scene";
 import type { TypingTimeline } from "@/lib/typing-timeline";
-import { cn } from "@/utils/cn";
+import { cn } from "@cutecode/ui/lib/cn";
 import type { Language } from "../util/languages";
 import { sliceTokens } from "./slice-tokens";
 import TypedLines from "./typed-lines";

@@ -6,7 +6,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { Copy01Icon, MagicWandIcon, Tick02Icon } from "@hugeicons/core-free-icons";
 import siteConfig from "@/constants/site-config";
 import { BrandMark } from "@/components/brand-mark";
-import { Button } from "@/components/ui/button";
+import { Button } from "@cutecode/ui/components/button";
 
 type EmbedFooterProps = {
   slug: string;

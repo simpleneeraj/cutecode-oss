@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@cutecode/ui/components/skeleton";
 
 export function PreviewLoading() {
   return (

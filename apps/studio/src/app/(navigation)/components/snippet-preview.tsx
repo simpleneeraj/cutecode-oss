@@ -1,4 +1,4 @@
-import { cn } from "@/utils/cn";
+import { cn } from "@cutecode/ui/lib/cn";
 
 const CODE_LINES = [
   "w-11/20 bg-foreground/20",

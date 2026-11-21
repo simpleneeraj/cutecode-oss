@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@cutecode/ui/components/button";
 import {
   Dialog,
   DialogClose,
@@ -8,11 +8,11 @@ import {
   DialogPanel,
   DialogPopup,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "@cutecode/ui/components/dialog";
 import { toast } from "@/components/toast";
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Icon } from "@/components/ui/icon";
+import { Icon } from "@cutecode/ui/components/icon";
 
 export default function SuccessDialog({
   isSuccessOpen,

@@ -25,7 +25,7 @@ import {
   isCodeExampleAtom,
   updateSlideElementAtom,
 } from "@/store/editor/editor";
-import { cn } from "@/utils/cn";
+import { cn } from "@cutecode/ui/lib/cn";
 import fonts from "@/fonts/editor/fonts";
 
 /* ------------------------------- */

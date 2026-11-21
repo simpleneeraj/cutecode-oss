@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
-import { Meter, MeterIndicator, MeterTrack } from "@/components/ui/meter";
+import { Button } from "@cutecode/ui/components/button";
+import { Meter, MeterIndicator, MeterTrack } from "@cutecode/ui/components/meter";
 import type { PublishQuota as Quota } from "@/hooks/use-publish";
 
 type PublishQuotaProps = {

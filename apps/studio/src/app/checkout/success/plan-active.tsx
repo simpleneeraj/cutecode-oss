@@ -3,8 +3,8 @@ import { ArrowRight01Icon, CheckmarkCircle02Icon, Tick02Icon } from "@hugeicons/
 import { Link } from "@/components/link";
 import { Plan } from "@/db/enums";
 import { PLANS } from "@/lib/billing/plans";
-import { Button } from "@/components/ui/button";
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
+import { Button } from "@cutecode/ui/components/button";
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@cutecode/ui/components/empty";
 
 type PlanActiveProps = {
   plan: Plan;

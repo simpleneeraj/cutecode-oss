@@ -1,5 +1,5 @@
 import { motion, easeInOut } from "motion/react";
-import { Icon } from "@/components/ui/icon";
+import { Icon } from "@cutecode/ui/components/icon";
 import { BaseFrameProps } from "@/typings/presets";
 import { SceneFrame, useLoop } from "../scene";
 import styles from "./starry-night.module.css";

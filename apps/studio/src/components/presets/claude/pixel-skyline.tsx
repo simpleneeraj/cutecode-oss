@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { useLoop } from "../scene";
-import { cn } from "@/utils/cn";
+import { cn } from "@cutecode/ui/lib/cn";
 import styles from "./claude.module.css";
 
 export type Building = {

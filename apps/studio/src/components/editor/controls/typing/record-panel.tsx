@@ -2,7 +2,7 @@ import { useAtomValue } from "jotai";
 import { motion } from "motion/react";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { RecordIcon } from "@hugeicons/core-free-icons";
-import { Button } from "@/components/ui/button";
+import { Button } from "@cutecode/ui/components/button";
 import { currentSlideIdAtom, typingRecordingsAtom } from "@/store/editor/editor";
 import RecordedSummary from "./recorded-summary";
 import RecordingStatus from "./recording-status";

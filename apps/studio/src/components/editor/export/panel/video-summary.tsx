@@ -1,7 +1,7 @@
 import { useAtomValue, useSetAtom } from "jotai";
 import { CanvasSize, CANVAS_DIMENSIONS, canvasSizeAtom, videoDurationMsAtom } from "@/store/editor/editor";
 import { plansDialogOpenAtom } from "@/store/editor/plans";
-import { cn } from "@/utils/cn";
+import { cn } from "@cutecode/ui/lib/cn";
 import { MAX_VIDEO_MS } from "@/components/editor/lib/animation";
 import { VideoFormat } from "./enums";
 import type { Size, VideoFormatOption } from "./types";

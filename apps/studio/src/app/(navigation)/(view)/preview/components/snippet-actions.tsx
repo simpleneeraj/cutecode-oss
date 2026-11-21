@@ -3,9 +3,9 @@
 import React, { useState } from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { FavouriteIcon, Bookmark01Icon, ChatIcon, CodeSquareIcon, MagicWandIcon } from "@hugeicons/core-free-icons";
-import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
-import { Toggle } from "@/components/ui/toggle";
+import { Button } from "@cutecode/ui/components/button";
+import { Spinner } from "@cutecode/ui/components/spinner";
+import { Toggle } from "@cutecode/ui/components/toggle";
 import { EmbedDialog } from "./embed-dialog";
 import { ShareDialog } from "./share-dialog";
 import MoreOptions from "./more-options";

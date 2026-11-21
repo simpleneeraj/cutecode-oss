@@ -1,4 +1,4 @@
-import { Accordion, AccordionItem, AccordionPanel, AccordionTrigger } from "@/components/ui/accordion";
+import { Accordion, AccordionItem, AccordionPanel, AccordionTrigger } from "@cutecode/ui/components/accordion";
 import { PRICING_FAQ, PRICING_HERO } from "./content";
 import PricingPlans from "./components/pricing-plans";
 import BrandPlans from "./components/brand-plans";

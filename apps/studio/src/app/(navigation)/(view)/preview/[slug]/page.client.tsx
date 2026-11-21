@@ -1,10 +1,10 @@
 "use client";
 
 import React from "react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
-import { Textarea } from "@/components/ui/textarea";
+import { Avatar, AvatarFallback } from "@cutecode/ui/components/avatar";
+import { Button } from "@cutecode/ui/components/button";
+import { Spinner } from "@cutecode/ui/components/spinner";
+import { Textarea } from "@cutecode/ui/components/textarea";
 import { PasscodeGate } from "../components/passcode-gate";
 import { SnippetFrame } from "../components/snippet-frame";
 import { SnippetCard } from "../components/snippet-card";

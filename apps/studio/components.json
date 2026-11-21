@@ -13,10 +13,10 @@
   "iconLibrary": "hugeicons",
   "rtl": false,
   "aliases": {
-    "components": "@/components",
-    "utils": "@/lib/utils",
-    "ui": "@/components/ui",
-    "lib": "@/lib",
+    "components": "@cutecode/ui/components",
+    "utils": "@cutecode/ui/lib/cn",
+    "ui": "@cutecode/ui/components",
+    "lib": "@cutecode/ui/lib",
     "hooks": "@/hooks"
   },
   "registries": {

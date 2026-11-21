@@ -4,10 +4,10 @@ import { useEffect, useRef } from "react";
 import View from "@/components/view";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { SquareLock02Icon } from "@hugeicons/core-free-icons";
-import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
-import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
-import { OTPField, OTPFieldInput, OTPFieldSeparator } from "@/components/ui/otp-field";
+import { Button } from "@cutecode/ui/components/button";
+import { Spinner } from "@cutecode/ui/components/spinner";
+import { Field, FieldDescription, FieldLabel } from "@cutecode/ui/components/field";
+import { OTPField, OTPFieldInput, OTPFieldSeparator } from "@cutecode/ui/components/otp-field";
 import { motion } from "motion/react";
 
 const OTP_LENGTH = 6;

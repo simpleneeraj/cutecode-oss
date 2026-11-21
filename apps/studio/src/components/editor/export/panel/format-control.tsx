@@ -1,4 +1,4 @@
-import { Select, SelectItem, SelectPopup, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectItem, SelectPopup, SelectTrigger, SelectValue } from "@cutecode/ui/components/select";
 import { VideoFormat } from "./enums";
 import type { VideoFormatOption } from "./types";
 

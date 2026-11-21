@@ -4,7 +4,7 @@ import { useState } from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Copy01Icon, LinkSquare02Icon, Tick02Icon } from "@hugeicons/core-free-icons";
 import { toast } from "@/components/toast";
-import { Button } from "@/components/ui/button";
+import { Button } from "@cutecode/ui/components/button";
 import {
   Dialog,
   DialogDescription,
@@ -13,8 +13,8 @@ import {
   DialogPanel,
   DialogPopup,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Tabs, TabsList, TabsPanel, TabsTab } from "@/components/ui/tabs";
+} from "@cutecode/ui/components/dialog";
+import { Tabs, TabsList, TabsPanel, TabsTab } from "@cutecode/ui/components/tabs";
 
 type EmbedDialogProps = {
   slug: string;

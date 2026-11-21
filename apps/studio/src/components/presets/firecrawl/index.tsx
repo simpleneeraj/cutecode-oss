@@ -1,4 +1,4 @@
-import { cn as classNames } from "@/utils/cn";
+import { cn as classNames } from "@cutecode/ui/lib/cn";
 import { BaseFrameProps } from "@/typings/presets";
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./firecrawl.module.css";

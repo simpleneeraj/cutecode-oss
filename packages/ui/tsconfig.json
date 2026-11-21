@@ -1,0 +1,15 @@
+{
+  "extends": "@cutecode/config/tsconfig.base.json",
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "types": ["node"],
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "paths": {
+      "@cutecode/ui/*": ["./src/*"]
+    }
+  },
+  "include": ["src", "scripts"]
+}

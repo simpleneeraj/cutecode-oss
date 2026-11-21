@@ -1,6 +1,6 @@
 "use client";
 
-import { ToastProvider, toastManager, type ToastPosition } from "@/components/ui/toast";
+import { ToastProvider, toastManager, type ToastPosition } from "@cutecode/ui/components/toast";
 
 const DEFAULT_TIMEOUT = 2000;
 

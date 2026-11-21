@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@cutecode/ui/components/button";
 import {
   Dialog,
   DialogClose,
@@ -9,12 +9,12 @@ import {
   DialogPopup,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
-import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
-import { OTPField, OTPFieldInput } from "@/components/ui/otp-field";
-import { Spinner } from "@/components/ui/spinner";
+} from "@cutecode/ui/components/dialog";
+import { Field, FieldDescription, FieldLabel } from "@cutecode/ui/components/field";
+import { Textarea } from "@cutecode/ui/components/textarea";
+import { Input } from "@cutecode/ui/components/input";
+import { OTPField, OTPFieldInput } from "@cutecode/ui/components/otp-field";
+import { Spinner } from "@cutecode/ui/components/spinner";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Share01Icon, Cancel01Icon } from "@hugeicons/core-free-icons";
 import { useAtomValue, useSetAtom } from "jotai";

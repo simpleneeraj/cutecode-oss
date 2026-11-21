@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Icon } from "@/components/ui/icon";
+import { Button } from "@cutecode/ui/components/button";
+import { Icon } from "@cutecode/ui/components/icon";
 import { getShareUrl } from "@/lib/share/urls";
 
 export function CopyLinkButton({ slug }: { slug: string }) {

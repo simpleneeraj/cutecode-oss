@@ -8,7 +8,7 @@ import { dispatchPublishSnippetAtom } from "@/components/editor/export/store";
 import { Visibility } from "@/components/editor/export/types";
 import { useShareLoad, type SharePreviewOutput } from "@/hooks/use-share";
 import { toast } from "@/components/toast";
-import { Spinner } from "@/components/ui/spinner";
+import { Spinner } from "@cutecode/ui/components/spinner";
 import type { EditorState } from "@/typings/editor";
 import Frame from "@/components/editor/Frame";
 import Controls from "@/components/editor/controls";
