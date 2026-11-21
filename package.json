@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "3.1152.0",
-    "@aws-sdk/client-ses": "^3.1152.0",
+    "@aws-sdk/client-ses": "^3.1171.0",
     "@aws-sdk/client-ssm": "^3.1152.0",
     "@aws-sdk/lib-dynamodb": "3.1152.0",
     "@base-ui/react": "^1.9.0",
