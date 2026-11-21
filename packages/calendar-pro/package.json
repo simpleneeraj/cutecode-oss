@@ -1,0 +1,36 @@
+{
+  "name": "@cutecode/calendar-pro",
+  "version": "0.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    "./recurrence": "./src/recurrence/index.ts",
+    "./resources": "./src/resources/index.ts",
+    "./zones": "./src/zones/index.ts",
+    "./quick-add": "./src/quick-add/index.ts",
+    "./heat": "./src/heat/index.ts"
+  },
+  "scripts": {
+    "typecheck": "node ../../node_modules/typescript-7/bin/tsc --noEmit",
+    "lint": "eslint .",
+    "test:unit": "vitest run"
+  },
+  "dependencies": {
+    "chrono-node": "^2.10.3",
+    "rrule": "^2.8.1"
+  },
+  "peerDependencies": {
+    "@cutecode/calendar": "*"
+  },
+  "devDependencies": {
+    "@cutecode/calendar": "*",
+    "@cutecode/config": "*",
+    "eslint": "^10",
+    "typescript": "^6.0.3",
+    "typescript-7": "npm:typescript@7.0.2",
+    "typescript-eslint": "^8.71.2",
+    "vitest": "^5.1.1"
+  }
+}

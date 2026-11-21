@@ -1,0 +1,46 @@
+{
+  "name": "@cutecode/calendar",
+  "version": "0.0.0",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    "./types": "./src/types/index.ts",
+    "./time": "./src/time/index.ts",
+    "./event": "./src/event/index.ts",
+    "./testing": "./src/testing/index.ts",
+    "./locale": "./src/locale/index.ts",
+    "./announce": "./src/announce/index.ts",
+    "./keyboard": "./src/keyboard/index.ts",
+    "./range": "./src/range/index.ts",
+    "./layout": "./src/layout/index.ts",
+    "./layout/timed": "./src/layout/timed/index.ts",
+    "./layout/span": "./src/layout/span/index.ts",
+    "./layout/month": "./src/layout/month/index.ts",
+    "./drag": "./src/drag/index.ts",
+    "./agenda": "./src/agenda/index.ts",
+    "./agenda/virtual": "./src/agenda/virtual/index.ts",
+    "./picker": "./src/picker/index.ts",
+    "./widgets": "./src/widgets/index.ts"
+  },
+  "scripts": {
+    "typecheck": "node ../../node_modules/typescript-7/bin/tsc --noEmit",
+    "lint": "eslint .",
+    "test:unit": "vitest run"
+  },
+  "dependencies": {
+    "@date-fns/tz": "^1.5.0",
+    "@date-fns/utc": "^2.1.1",
+    "@tanstack/virtual-core": "^3.19.11",
+    "date-fns": "^4.4.0",
+    "memoize-one": "^6.0.0"
+  },
+  "devDependencies": {
+    "@cutecode/config": "*",
+    "eslint": "^10",
+    "typescript": "^6.0.3",
+    "typescript-7": "npm:typescript@7.0.2",
+    "typescript-eslint": "^8.71.2",
+    "vitest": "^5.1.1"
+  }
+}
