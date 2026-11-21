@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { expect, it } from "vitest";
-import { renderThemeCss, renderTokensCss, tokensFile } from "./css";
+import { renderThemeCss, renderTokensCss } from "./css";
+import { tokensFile } from "./file";
 import { FontPairing } from "./fonts";
 import { Palette } from "./palettes";
 import { Style } from "./styles";

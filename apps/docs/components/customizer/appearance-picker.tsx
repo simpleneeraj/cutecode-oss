@@ -3,13 +3,14 @@
 import { ToggleGroup, ToggleGroupItem } from "@cutecode/ui/components/toggle-group";
 import { useTheme } from "fumadocs-ui/provider/base";
 
-import { styleSwitcher, ThemePreference } from "./constants";
-import { styleSwitcherStyles } from "./style";
+import { customizer, ThemePreference } from "./constants";
+import { PickerSection } from "./picker-section";
+import { customizerStyles } from "./style";
 
-const styles = styleSwitcherStyles();
+const styles = customizerStyles();
 const themePreferences = Object.values(ThemePreference);
 
-export function ThemePicker() {
+export function AppearancePicker() {
   const { theme, setTheme } = useTheme();
   const selectedThemes = themePreferences.filter((preference) => preference === theme);
 
@@ -21,21 +22,20 @@ export function ThemePicker() {
   }
 
   return (
-    <div className={styles.group()}>
-      <span className={styles.caption()}>Appearance</span>
-      <ToggleGroup aria-label="Appearance" onValueChange={selectTheme} size="sm" value={selectedThemes}>
+    <PickerSection title="Appearance">
+      <ToggleGroup aria-label="Appearance" onValueChange={selectTheme} value={selectedThemes}>
         {themePreferences.map((preference) => {
-          const ThemeIcon = styleSwitcher.themeIcons[preference];
+          const ThemeIcon = customizer.themeIcons[preference];
           return (
             <ToggleGroupItem key={preference} value={preference}>
               <span className={styles.themeLabel()}>
                 <ThemeIcon aria-hidden="true" />
-                {styleSwitcher.themeLabels[preference]}
+                {customizer.themeLabels[preference]}
               </span>
             </ToggleGroupItem>
           );
         })}
       </ToggleGroup>
-    </div>
+    </PickerSection>
   );
 }

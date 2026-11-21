@@ -9,15 +9,18 @@ export enum ThemePreference {
   System = "system",
 }
 
-export const styleSwitcher = {
-  styleLabels: {
-    [Style.Tactile]: "Tactile",
-    [Style.Glass]: "Glass",
-    [Style.Pop]: "Pop",
-    [Style.Clay]: "Clay",
-    [Style.Paper]: "Paper",
-    [Style.Minimal]: "Minimal",
-  } satisfies Record<Style, string>,
+export const customizer = {
+  phoneQuery: "(max-width: 767px)",
+  themeBuilderHref: "/themes",
+  fontSampleText: "Quick brown fox jumps over the lazy dog.",
+  styleOptions: {
+    [Style.Tactile]: { name: "Tactile", feel: "Soft objects that lift and press" },
+    [Style.Glass]: { name: "Glass", feel: "Frosted layers with a bright rim" },
+    [Style.Pop]: { name: "Pop", feel: "Bold ink and offset shadows" },
+    [Style.Clay]: { name: "Clay", feel: "Puffy shapes that press in" },
+    [Style.Paper]: { name: "Paper", feel: "Flat ink lines" },
+    [Style.Minimal]: { name: "Minimal", feel: "Quiet hairlines, no fuss" },
+  } satisfies Record<Style, { name: string; feel: string }>,
   paletteLabels: {
     [Palette.Blue]: "Blue",
     [Palette.Indigo]: "Indigo",

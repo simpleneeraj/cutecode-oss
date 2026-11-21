@@ -14,8 +14,6 @@ type ThemeSelection = {
   font: FontPairing;
 };
 
-export const tokensFile = new URL("../styles/tokens.css", import.meta.url);
-
 const defaults = {
   palette: Palette.Blue,
   style: Style.Tactile,

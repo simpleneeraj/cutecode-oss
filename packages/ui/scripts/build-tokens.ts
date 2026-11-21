@@ -1,4 +1,5 @@
 import { writeFileSync } from "node:fs";
-import { renderTokensCss, tokensFile } from "../src/tokens/css";
+import { renderTokensCss } from "../src/tokens/css";
+import { tokensFile } from "../src/tokens/file";
 
 writeFileSync(tokensFile, renderTokensCss());
