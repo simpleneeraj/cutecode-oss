@@ -1,11 +1,14 @@
 import { defineConfig } from "vitest/config";
 import path from "node:path";
+import { createRequire } from "node:module";
+
+const require = createRequire(import.meta.url);
 
 export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "src"),
-      "server-only": path.resolve(import.meta.dirname, "node_modules/server-only/empty.js"),
+      "server-only": path.join(path.dirname(require.resolve("server-only")), "empty.js"),
     },
   },
   test: {

@@ -1,63 +1,64 @@
 # Next.js SSR on Amplify Hosting (WEB_COMPUTE). Non-secret config goes to .env.production via RUNTIME_VARS;
 # secrets come from SSM /cutecode/<branch>/ (build: service role, runtime: compute role). See docs/deploy-aws.md.
 version: 1
+applications:
+  - appRoot: apps/studio
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - nvm install 24 --skip-default-packages && nvm use 24
+            - node --version
+            - yarn --version || npm install -g yarn@1.22.22
+            - (cd ../.. && yarn install --frozen-lockfile --cache-folder apps/studio/.yarn-cache --prefer-offline --non-interactive)
 
-frontend:
-  phases:
-    preBuild:
-      commands:
-        - nvm install 24 --skip-default-packages && nvm use 24
-        - node --version
-        - yarn --version || npm install -g yarn@1.22.22
-        - yarn install --frozen-lockfile --cache-folder .yarn-cache --prefer-offline --non-interactive
-
-    build:
-      commands:
-        - |
-          REQUIRED_VARS="NEXT_PUBLIC_BASE_URL BETTER_AUTH_URL DODO_PAYMENTS_ENVIRONMENT SES_FROM_EMAIL"
-          RUNTIME_VARS="NEXT_PUBLIC_BASE_URL BETTER_AUTH_URL DODO_PAYMENTS_ENVIRONMENT GITHUB_CLIENT_ID GOOGLE_CLIENT_ID SES_FROM_EMAIL LOG_LEVEL NEXT_PUBLIC_DODO_PRODUCT_PRO_MONTHLY NEXT_PUBLIC_DODO_PRODUCT_PRO_YEARLY NEXT_PUBLIC_DODO_PRODUCT_PREMIUM_MONTHLY NEXT_PUBLIC_DODO_PRODUCT_PREMIUM_YEARLY NEXT_PUBLIC_DODO_PRODUCT_PREMIUM KV_TABLE"
-          for name in $REQUIRED_VARS; do
-            if [ -z "${!name:-}" ]; then
-              echo "amplify.yml: $name is not set for branch '${AWS_BRANCH}'. Set it under Hosting > Environment variables."
-              exit 1
-            fi
-          done
-          export SSM_SECRETS_PATH="${SSM_SECRETS_PATH:-/cutecode/${AWS_BRANCH}/}"
-          : > .env.production
-          for name in $RUNTIME_VARS SSM_SECRETS_PATH AWS_REGION; do
-            value="${!name:-}"
-            if [ -z "$value" ]; then continue; fi
-            case "$value" in
-              *"'"* | *'$'* | *$'\n'*)
-                echo "amplify.yml: $name contains a quote, a dollar sign or a newline and cannot be written to .env.production safely."
+        build:
+          commands:
+            - |
+              REQUIRED_VARS="NEXT_PUBLIC_BASE_URL BETTER_AUTH_URL DODO_PAYMENTS_ENVIRONMENT SES_FROM_EMAIL"
+              RUNTIME_VARS="NEXT_PUBLIC_BASE_URL BETTER_AUTH_URL DODO_PAYMENTS_ENVIRONMENT GITHUB_CLIENT_ID GOOGLE_CLIENT_ID SES_FROM_EMAIL LOG_LEVEL NEXT_PUBLIC_DODO_PRODUCT_PRO_MONTHLY NEXT_PUBLIC_DODO_PRODUCT_PRO_YEARLY NEXT_PUBLIC_DODO_PRODUCT_PREMIUM_MONTHLY NEXT_PUBLIC_DODO_PRODUCT_PREMIUM_YEARLY NEXT_PUBLIC_DODO_PRODUCT_PREMIUM KV_TABLE"
+              for name in $REQUIRED_VARS; do
+                if [ -z "${!name:-}" ]; then
+                  echo "amplify.yml: $name is not set for branch '${AWS_BRANCH}'. Set it under Hosting > Environment variables."
+                  exit 1
+                fi
+              done
+              export SSM_SECRETS_PATH="${SSM_SECRETS_PATH:-/cutecode/${AWS_BRANCH}/}"
+              : > .env.production
+              for name in $RUNTIME_VARS SSM_SECRETS_PATH AWS_REGION; do
+                value="${!name:-}"
+                if [ -z "$value" ]; then continue; fi
+                case "$value" in
+                  *"'"* | *'$'* | *$'\n'*)
+                    echo "amplify.yml: $name contains a quote, a dollar sign or a newline and cannot be written to .env.production safely."
+                    exit 1
+                    ;;
+                esac
+                printf "%s='%s'\n" "$name" "$value" >> .env.production
+              done
+              echo "Wrote $(wc -l < .env.production | tr -d ' ') variables to .env.production:"
+              cut -d= -f1 .env.production
+            - |
+              SSM_SECRETS_PATH="${SSM_SECRETS_PATH:-/cutecode/${AWS_BRANCH}/}"
+              SECRET_ROWS="$(aws ssm get-parameters-by-path --path "$SSM_SECRETS_PATH" --with-decryption --query 'Parameters[].[Name,Value]' --output text)" || {
+                echo "amplify.yml: could not read SSM parameters under $SSM_SECRETS_PATH. Check the service role's ssm:GetParametersByPath permission."
                 exit 1
-                ;;
-            esac
-            printf "%s='%s'\n" "$name" "$value" >> .env.production
-          done
-          echo "Wrote $(wc -l < .env.production | tr -d ' ') variables to .env.production:"
-          cut -d= -f1 .env.production
-        - |
-          SSM_SECRETS_PATH="${SSM_SECRETS_PATH:-/cutecode/${AWS_BRANCH}/}"
-          SECRET_ROWS="$(aws ssm get-parameters-by-path --path "$SSM_SECRETS_PATH" --with-decryption --query 'Parameters[].[Name,Value]' --output text)" || {
-            echo "amplify.yml: could not read SSM parameters under $SSM_SECRETS_PATH. Check the service role's ssm:GetParametersByPath permission."
-            exit 1
-          }
-          while IFS=$'\t' read -r name value; do
-            if [ -n "$name" ] && [ "$name" != "None" ]; then
-              export "${name##*/}=$value"
-              echo "Loaded secret ${name##*/} for the build"
-            fi
-          done <<< "$SECRET_ROWS"
-          NODE_ENV=production yarn db:migrate
-          yarn build
+              }
+              while IFS=$'\t' read -r name value; do
+                if [ -n "$name" ] && [ "$name" != "None" ]; then
+                  export "${name##*/}=$value"
+                  echo "Loaded secret ${name##*/} for the build"
+                fi
+              done <<< "$SECRET_ROWS"
+              NODE_ENV=production yarn db:migrate
+              yarn build
 
-  artifacts:
-    baseDirectory: .next
-    files:
-      - "**/*"
+      artifacts:
+        baseDirectory: .next
+        files:
+          - "**/*"
 
-  cache:
-    paths:
-      - .yarn-cache/**/*
-      - .next/cache/**/*
+      cache:
+        paths:
+          - .yarn-cache/**/*
+          - .next/cache/**/*

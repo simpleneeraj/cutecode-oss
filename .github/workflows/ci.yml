@@ -32,15 +32,15 @@ jobs:
       - run: yarn install --frozen-lockfile --non-interactive
 
       - name: Typecheck
-        run: yarn type-check
+        run: yarn turbo run typecheck
 
       - name: Lint
         if: ${{ !cancelled() }}
-        run: yarn lint
+        run: yarn turbo run lint
 
       - name: Unit tests
         if: ${{ !cancelled() }}
-        run: yarn vitest run --project unit
+        run: yarn turbo run test:unit
 
   infra:
     name: Infra typecheck

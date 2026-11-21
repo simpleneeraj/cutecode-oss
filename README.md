@@ -39,7 +39,7 @@ cd cutecode-oss
 yarn install
 ```
 
-Create `.env.development`:
+Create `apps/studio/.env.development`:
 
 ```env
 NEXT_PUBLIC_BASE_URL="http://localhost:3000"
@@ -66,13 +66,13 @@ CRON_SECRET="openssl rand -hex 32"
 ```
 
 - OAuth providers turn on when their client id and secret are set. Redirect URLs: `<url>/api/auth/callback/github` and `<url>/api/auth/callback/google`.
-- `yarn dodo:products` creates the Dodo subscription products and prints their env lines.
+- `yarn workspace @cutecode/studio dodo:products` creates the Dodo subscription products and prints their env lines.
 - Production also uses `SES_FROM_EMAIL`, `AWS_REGION`, `SSM_SECRETS_PATH` and the `NEXT_PUBLIC_RUM_*` variables. See [docs/deploy-aws.md](docs/deploy-aws.md).
 
 Set up the database and start the app:
 
 ```bash
-yarn db:push
+yarn workspace @cutecode/studio db:push
 yarn dev
 ```
 
@@ -81,33 +81,36 @@ yarn dev
 | Script | What it does |
 |---|---|
 | `yarn dev` | Start the dev server |
-| `yarn lint` / `yarn type-check` | ESLint and TypeScript checks |
-| `yarn test` / `yarn test:api` | Unit tests and API tests (Vitest) |
-| `yarn db:generate` / `db:migrate` / `db:studio` | Drizzle migrations and studio |
-| `yarn dodo:products` | Create or update Dodo products |
+| `yarn lint` / `yarn typecheck` | ESLint and TypeScript checks |
+| `yarn test:unit` | Unit tests (Vitest) |
+| `yarn workspace @cutecode/studio test:api` | API tests (Vitest) |
+| `yarn workspace @cutecode/studio db:generate` / `db:migrate` / `db:studio` | Drizzle migrations and studio |
+| `yarn workspace @cutecode/studio dodo:products` | Create or update Dodo products |
 
 ## Project structure
 
 ```
-src/
-  app/            routes: editor, dashboard, pricing, legal, api
-  components/
-    editor/       editor UI, export, controls
-    presets/      one folder per preset (theme.ts, scene, styles)
-  db/             Drizzle schema
-  lib/            billing, capture, encoders, secrets
-  server/         API routers
-  store/          Jotai atoms
-drizzle/          SQL migrations
-infra/            AWS CDK
-docs/             deploy runbook, launch plan
+apps/studio/
+  src/
+    app/            routes: editor, dashboard, pricing, legal, api
+    components/
+      editor/       editor UI, export, controls
+      presets/      one folder per preset (theme.ts, scene, styles)
+    db/             Drizzle schema
+    lib/            billing, capture, encoders, secrets
+    server/         API routers
+    store/          Jotai atoms
+  drizzle/          SQL migrations
+packages/config/    shared tsconfig
+infra/              AWS CDK
+docs/               deploy runbook, launch plan
 ```
 
 ## Adding a preset
 
-1. Create `src/components/presets/<id>/` with `theme.ts`, a frame `index.tsx` and a CSS module.
+1. Create `apps/studio/src/components/presets/<id>/` with `theme.ts`, a frame `index.tsx` and a CSS module.
 2. Add a `sample` to the theme so the preset ships its own code.
-3. Register it in `src/components/presets/themes/index.ts`, and in `scene/scene-themes.ts` if it is an animated scene.
+3. Register it in `apps/studio/src/components/presets/themes/index.ts`, and in `scene/scene-themes.ts` if it is an animated scene.
 
 ## Credits
 
