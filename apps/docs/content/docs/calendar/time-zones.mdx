@@ -1,0 +1,36 @@
+---
+title: Time zones
+description: A second zone column and a banner when the device zone differs.
+---
+
+<ProBadge /> Part of `@cutecode/calendar-pro`.
+
+The zone column adds a second zone to the hour gutter. The banner warns when the device zone differs from the calendar zone and offers to switch. Events keep the zone they were made in, so a 9 AM standup stays 9 AM local across daylight saving.
+
+### Zone column
+
+<CalendarDemo id="zone-column" size="regular" />
+
+### Zone banner
+
+<CalendarDemo id="zone-banner" size="compact" />
+
+## Import
+
+```tsx
+import { zoneColumnOf } from "@cutecode/calendar-pro/zone-column";
+import { ZoneBanner } from "@cutecode/calendar-pro/zone-banner";
+```
+
+## Props
+
+| Prop | Type | Notes |
+|---|---|---|
+| `timeZone` | `string` | ZoneBanner. The calendar zone. |
+| `now` | `Instant` | ZoneBanner. Current moment. |
+| `onTimeZoneChange` | `(timeZone) => void` | ZoneBanner. Called when the viewer switches. |
+
+## States
+
+- Banner hidden when zones match.
+- Dismissing the banner is remembered for the browser session.

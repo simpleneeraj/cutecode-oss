@@ -1,0 +1,29 @@
+---
+title: Recurring
+description: Repeat rules and the This, Following, All edit choice.
+---
+
+<ProBadge /> Part of `@cutecode/calendar-pro`.
+
+Repeating events follow an RFC 5545 subset and are expanded per visible range, never stored. Editing This event writes an exception. This and following splits the series. All events edits the series.
+
+<CalendarDemo id="recurring" size="tall" />
+
+## Import
+
+```tsx
+import { expandRecurrences } from "@cutecode/calendar-pro/recurrence";
+import { RepeatField } from "@cutecode/calendar-pro/repeat-field";
+```
+
+## Props
+
+| Prop | Type | Notes |
+|---|---|---|
+| `expandRecurrences` | `OccurrenceExpander` | Pass as `data.expand` so views show every occurrence. |
+| `RepeatField` | `RepeatSlot` | Pass as `repeat` on QuickEvent. |
+
+## States
+
+- Scope question: This event, This and following, All events.
+- Exceptions keep `seriesId` and `originalStart`.

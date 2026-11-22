@@ -1,0 +1,27 @@
+---
+title: Money calendar
+description: Bills and subscriptions by day with totals and filters.
+---
+
+Total and Upcoming, filter chips for All, Bill, Subscription and Debt, a neutral glyph per payment and +N when a day holds more.
+
+<CalendarDemo id="money" size="tall" canNarrow startNarrow />
+
+## Import
+
+```tsx
+import { MoneyCalendar } from "@cutecode/calendar/money";
+```
+
+## Props
+
+| Prop | Type | Notes |
+|---|---|---|
+| `payments` | `Payment[]` | The payments. |
+| `selection` | `MoneySelection` | Selected date and handler. |
+| `options` | `MoneyOptions` | Locale, zone, currency. |
+
+## States
+
+- A day with a payment.
+- Nothing due: "No payments due. Tap another day."

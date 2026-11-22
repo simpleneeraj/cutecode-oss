@@ -1,11 +1,17 @@
+import { Badge } from "@cutecode/ui/components/badge";
 import defaultMdxComponents from "fumadocs-ui/mdx";
 import * as TabsComponents from "fumadocs-ui/components/tabs";
 import type { ComponentProps } from "react";
 import type { MDXComponents } from "mdx/types";
+import { CalendarDemo } from "@/components/calendar-docs/demo";
 import { Callout } from "@/components/docs-mdx/callout";
 import { DocsCodeBlock } from "@/components/docs-mdx/code-block";
 import { DocsHeading } from "@/components/docs-mdx/heading";
 import { HeadingLevel } from "@/components/docs-mdx/heading-level";
+
+function ProBadge() {
+  return <Badge variant="info">Pro</Badge>;
+}
 
 function headingFor(level: HeadingLevel) {
   return function Heading(props: ComponentProps<"h2">) {
@@ -27,6 +33,8 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     ...defaultMdxComponents,
     ...TabsComponents,
     Callout,
+    CalendarDemo,
+    ProBadge,
     pre: DocsCodeBlock,
     ...headings,
     ...components,

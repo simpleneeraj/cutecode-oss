@@ -1,0 +1,32 @@
+---
+title: States
+description: Loading, failed, offline and conflict, plus the empty state.
+---
+
+Every view takes an optional `status`. These are the shared parts it renders.
+
+<CalendarDemo id="states" size="regular" />
+
+## Import
+
+```tsx
+import { CalendarStatusKind } from "@cutecode/calendar/week";
+import { CalendarEmpty } from "@cutecode/calendar/parts/state/empty";
+import { CalendarError } from "@cutecode/calendar/parts/state/error";
+```
+
+## Props
+
+| Prop | Type | Notes |
+|---|---|---|
+| `status` | `CalendarStatus` | `CalendarStatusKind` plus its detail, such as a sync conflict. |
+
+## States
+
+- Ready, Loading, Failed, Offline and Conflict are the `CalendarStatusKind` values.
+- Loading sets `aria-busy` and shows decorative skeletons.
+- Failed carries `onRetry` and shows a retry button.
+- Offline carries the ids of events waiting to sync.
+- Conflict carries both versions; the viewer picks Keep mine or Use theirs.
+
+`CalendarEmpty` is a separate part, not a status. A view shows it when a range has no events.

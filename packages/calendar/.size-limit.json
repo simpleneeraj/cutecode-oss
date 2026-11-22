@@ -1,0 +1,365 @@
+[
+  {
+    "name": "core",
+    "path": [
+      "src/time/index.ts",
+      "src/event/index.ts",
+      "src/range/index.ts",
+      "src/layout/index.ts",
+      "src/types/index.ts"
+    ],
+    "limit": "6 kB",
+    "ignore": [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "motion",
+      "motion/*",
+      "@cutecode/ui",
+      "@cutecode/ui/*",
+      "@base-ui/react",
+      "@base-ui/react/*"
+    ],
+    "gzip": true
+  },
+  {
+    "name": "week",
+    "path": "src/views/week/index.tsx",
+    "limit": "186 kB",
+    "ignore": [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "motion",
+      "motion/*",
+      "@cutecode/ui",
+      "@cutecode/ui/*",
+      "@base-ui/react",
+      "@base-ui/react/*"
+    ],
+    "gzip": true
+  },
+  {
+    "name": "day",
+    "path": "src/views/day/index.tsx",
+    "limit": "186 kB",
+    "ignore": [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "motion",
+      "motion/*",
+      "@cutecode/ui",
+      "@cutecode/ui/*",
+      "@base-ui/react",
+      "@base-ui/react/*"
+    ],
+    "gzip": true
+  },
+  {
+    "name": "month",
+    "path": "src/views/month/index.tsx",
+    "limit": "177 kB",
+    "ignore": [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "motion",
+      "motion/*",
+      "@cutecode/ui",
+      "@cutecode/ui/*",
+      "@base-ui/react",
+      "@base-ui/react/*"
+    ],
+    "gzip": true
+  },
+  {
+    "name": "agenda",
+    "path": "src/views/agenda/index.tsx",
+    "limit": "47 kB",
+    "ignore": [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "motion",
+      "motion/*",
+      "@cutecode/ui",
+      "@cutecode/ui/*",
+      "@base-ui/react",
+      "@base-ui/react/*"
+    ],
+    "gzip": true
+  },
+  {
+    "name": "date-picker",
+    "path": "src/family/date-picker/index.tsx",
+    "limit": "30 kB",
+    "ignore": [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "motion",
+      "motion/*",
+      "@cutecode/ui",
+      "@cutecode/ui/*",
+      "@base-ui/react",
+      "@base-ui/react/*"
+    ],
+    "gzip": true
+  },
+  {
+    "name": "range-picker",
+    "path": "src/family/range-picker/index.tsx",
+    "limit": "30 kB",
+    "ignore": [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "motion",
+      "motion/*",
+      "@cutecode/ui",
+      "@cutecode/ui/*",
+      "@base-ui/react",
+      "@base-ui/react/*"
+    ],
+    "gzip": true
+  },
+  {
+    "name": "widget-small",
+    "path": "src/family/widgets/small/index.tsx",
+    "limit": "28 kB",
+    "ignore": [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "motion",
+      "motion/*",
+      "@cutecode/ui",
+      "@cutecode/ui/*",
+      "@base-ui/react",
+      "@base-ui/react/*"
+    ],
+    "gzip": true
+  },
+  {
+    "name": "widget-medium",
+    "path": "src/family/widgets/medium/index.tsx",
+    "limit": "28 kB",
+    "ignore": [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "motion",
+      "motion/*",
+      "@cutecode/ui",
+      "@cutecode/ui/*",
+      "@base-ui/react",
+      "@base-ui/react/*"
+    ],
+    "gzip": true
+  },
+  {
+    "name": "widget-medium-notch",
+    "path": "src/family/widgets/medium-notch/index.tsx",
+    "limit": "28 kB",
+    "ignore": [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "motion",
+      "motion/*",
+      "@cutecode/ui",
+      "@cutecode/ui/*",
+      "@base-ui/react",
+      "@base-ui/react/*"
+    ],
+    "gzip": true
+  },
+  {
+    "name": "widget-large",
+    "path": "src/family/widgets/large/index.tsx",
+    "limit": "29 kB",
+    "ignore": [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "motion",
+      "motion/*",
+      "@cutecode/ui",
+      "@cutecode/ui/*",
+      "@base-ui/react",
+      "@base-ui/react/*"
+    ],
+    "gzip": true
+  },
+  {
+    "name": "agenda-virtual",
+    "path": "src/agenda/virtual/index.ts",
+    "ignore": [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "motion",
+      "motion/*",
+      "@cutecode/ui",
+      "@cutecode/ui/*",
+      "@base-ui/react",
+      "@base-ui/react/*"
+    ],
+    "limit": "2 kB",
+    "gzip": true
+  },
+  {
+    "name": "sidebar",
+    "path": "src/views/sidebar/index.tsx",
+    "ignore": [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "motion",
+      "motion/*",
+      "@cutecode/ui",
+      "@cutecode/ui/*",
+      "@base-ui/react",
+      "@base-ui/react/*"
+    ],
+    "limit": "33 kB",
+    "gzip": true
+  },
+  {
+    "name": "phone",
+    "path": "src/views/phone/index.tsx",
+    "ignore": [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "motion",
+      "motion/*",
+      "@cutecode/ui",
+      "@cutecode/ui/*",
+      "@base-ui/react",
+      "@base-ui/react/*"
+    ],
+    "limit": "223 kB",
+    "gzip": true
+  },
+  {
+    "name": "tablet",
+    "path": "src/views/tablet/index.tsx",
+    "ignore": [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "motion",
+      "motion/*",
+      "@cutecode/ui",
+      "@cutecode/ui/*",
+      "@base-ui/react",
+      "@base-ui/react/*"
+    ],
+    "limit": "191 kB",
+    "gzip": true
+  },
+  {
+    "name": "quick-event",
+    "path": "src/parts/quick-event/index.tsx",
+    "ignore": [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "motion",
+      "motion/*",
+      "@cutecode/ui",
+      "@cutecode/ui/*",
+      "@base-ui/react",
+      "@base-ui/react/*"
+    ],
+    "limit": "150 kB",
+    "gzip": true
+  },
+  {
+    "name": "compact-month",
+    "path": "src/family/compact-month/index.tsx",
+    "ignore": [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "motion",
+      "motion/*",
+      "@cutecode/ui",
+      "@cutecode/ui/*",
+      "@base-ui/react",
+      "@base-ui/react/*"
+    ],
+    "limit": "34 kB",
+    "gzip": true
+  },
+  {
+    "name": "week-strip",
+    "path": "src/family/week-strip/index.tsx",
+    "ignore": [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "motion",
+      "motion/*",
+      "@cutecode/ui",
+      "@cutecode/ui/*",
+      "@base-ui/react",
+      "@base-ui/react/*"
+    ],
+    "limit": "29 kB",
+    "gzip": true
+  },
+  {
+    "name": "desk",
+    "path": "src/family/desk/index.tsx",
+    "ignore": [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "motion",
+      "motion/*",
+      "@cutecode/ui",
+      "@cutecode/ui/*",
+      "@base-ui/react",
+      "@base-ui/react/*"
+    ],
+    "limit": "28 kB",
+    "gzip": true
+  },
+  {
+    "name": "task-agenda",
+    "path": "src/family/task-agenda/index.tsx",
+    "ignore": [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "motion",
+      "motion/*",
+      "@cutecode/ui",
+      "@cutecode/ui/*",
+      "@base-ui/react",
+      "@base-ui/react/*"
+    ],
+    "limit": "32 kB",
+    "gzip": true
+  },
+  {
+    "name": "money",
+    "path": "src/family/money/index.tsx",
+    "ignore": [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "motion",
+      "motion/*",
+      "@cutecode/ui",
+      "@cutecode/ui/*",
+      "@base-ui/react",
+      "@base-ui/react/*"
+    ],
+    "limit": "32 kB",
+    "gzip": true
+  }
+]

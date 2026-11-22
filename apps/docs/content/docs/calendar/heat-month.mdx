@@ -1,0 +1,30 @@
+---
+title: Heat month
+description: A month where busy days show a count or an accent heat.
+---
+
+<ProBadge /> Part of `@cutecode/calendar-pro`.
+
+Count badges on busy days, or accent heat by count. The selected day is a solid ink tile.
+
+<CalendarDemo id="heat-month" size="regular" canNarrow />
+
+## Import
+
+```tsx
+import { HeatMonth, HeatLook } from "@cutecode/calendar-pro/heat-month";
+```
+
+## Props
+
+| Prop | Type | Notes |
+|---|---|---|
+| `data` | `CalendarData` | Events and calendars. |
+| `selection` | `HeatMonthSelection` | Selected date and handler. |
+| `options` | `HeatMonthOptions` | Locale, zone, look. |
+| `loading` | `boolean` | Optional. |
+
+## States
+
+- Quiet month.
+- Loading.

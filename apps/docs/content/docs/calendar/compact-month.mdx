@@ -1,0 +1,30 @@
+---
+title: Compact month
+description: Soft tile month with a Grid or List toggle and filter chips.
+---
+
+Busy days are filled tiles holding up to three event lines. Switch between Grid and List. Chips filter by calendar and show counts.
+
+<CalendarDemo id="compact-month" size="regular" canNarrow />
+
+## Import
+
+```tsx
+import { CompactMonth } from "@cutecode/calendar/compact-month";
+```
+
+## Props
+
+| Prop | Type | Notes |
+|---|---|---|
+| `data` | `CompactMonthData` | Events and calendars. |
+| `value` | `PlainDate` | Selected date. |
+| `onValueChange` | `(date) => void` | Called on select. |
+| `options` | `FamilyOptions` | Locale, time zone, week start, pinned now. |
+| `isLoading` | `boolean` | Optional. Shows skeleton tiles. |
+
+## States
+
+- Selected day.
+- Loading.
+- Empty month.

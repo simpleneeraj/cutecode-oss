@@ -1,0 +1,27 @@
+---
+title: Tablet
+description: The week without a sidebar; the sidebar opens as an overlay.
+---
+
+The week view with the sidebar behind a toolbar button. The overlay opens from the leading edge, or the trailing edge in right-to-left.
+
+<CalendarDemo id="tablet" size="tall" />
+
+## Import
+
+```tsx
+import { TabletView } from "@cutecode/calendar/tablet";
+```
+
+## Props
+
+| Prop | Type | Notes |
+|---|---|---|
+| `calendar` | `CalendarViewProps` | Everything the week view takes. |
+| `sidebar` | `ReactNode` | The sidebar content, usually CalendarSidebar. |
+| `timeZoneBanner` | `ReactNode` | Optional banner above the grid. |
+
+## States
+
+- Sidebar closed and open.
+- Mirrors in right-to-left.

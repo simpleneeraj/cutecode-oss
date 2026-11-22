@@ -1,0 +1,32 @@
+---
+title: Phone
+description: Large title, day strip, timeline, floating add button and tab bar.
+---
+
+The phone layout. Tap a day, swipe the timeline for the next or previous day, long press an event to pick it up, pinch or use the zoom control for hour height. Dialogs become drawers. Landscape shows a five day week.
+
+<CalendarDemo id="phone" size="tall" canNarrow startNarrow />
+
+The preview follows your window, not its frame. Drawers and touch gestures show when the window itself is phone sized.
+
+## Import
+
+```tsx
+import { PhoneView } from "@cutecode/calendar/phone";
+```
+
+## Props
+
+| Prop | Type | Notes |
+|---|---|---|
+| `data` | `CalendarData` | Events and calendars. |
+| `navigation` | `CalendarNavigation` | Date and view. |
+| `options` | `TimeGridOptions` | Locale, zone, hours. |
+| `status` | `CalendarStatus` | Optional loading, failed, offline or conflict. |
+| `features` | `PhoneFeatures` | Quick event actions, repeat slot, zone banner, change handler. |
+
+## States
+
+- Portrait and landscape layouts.
+- Every target is 44pt.
+- Add and details open in a drawer.

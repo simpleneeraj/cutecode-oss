@@ -1,0 +1,30 @@
+---
+title: Sidebar
+description: Search, mini month, calendar toggles and an Up next card.
+---
+
+Search, a mini month with this week banded, calendar toggles grouped as My calendars and Other, and a small Up next card. Toggles hide a calendar in every view.
+
+<CalendarDemo id="sidebar" size="regular" />
+
+## Import
+
+```tsx
+import { CalendarSidebar } from "@cutecode/calendar/sidebar";
+```
+
+## Props
+
+| Prop | Type | Notes |
+|---|---|---|
+| `data` | `CalendarData` | Events and calendars. |
+| `navigation` | `{ date, onDateChange }` | The mini month selection. |
+| `visibility` | `CalendarVisibility` | Which calendars are shown and the change handler. |
+| `options` | `SidebarOptions` | Locale, time zone, week start. |
+| `onEventOpen` | `(occurrence) => void` | Called from search results and Up next. |
+
+## States
+
+- Search replaces the mini month with results until cleared.
+- Read only calendars show a lock.
+- Toggles are `role="switch"` with `aria-checked`.

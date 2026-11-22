@@ -1,0 +1,29 @@
+---
+title: Week strip
+description: A pill of seven days with a raised selected tile.
+---
+
+A soft pill with a raised selected tile. The Island look is a black pill, with a compact Island pill for headers.
+
+<CalendarDemo id="week-strip" size="compact" />
+
+## Import
+
+```tsx
+import { WeekStrip, WeekStripLook } from "@cutecode/calendar/week-strip";
+```
+
+## Props
+
+| Prop | Type | Notes |
+|---|---|---|
+| `value` | `PlainDate` | Selected date. |
+| `onValueChange` | `(date) => void` | Called on select. |
+| `options` | `FamilyOptions` | Locale, zone, week start. |
+| `look` | `WeekStripLook` | Optional. Soft or Island. |
+| `isPastLocked` | `boolean` | Optional. Disables days before today. |
+
+## States
+
+- Selected.
+- Past locked.

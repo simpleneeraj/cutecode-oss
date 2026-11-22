@@ -1,4 +1,5 @@
 import { BookMinimalisticIcon } from "@solar-icons/react/linear/book-minimalistic";
+import { CalendarIcon } from "@solar-icons/react/linear/calendar";
 import { DownloadMinimalisticIcon } from "@solar-icons/react/linear/download-minimalistic";
 import { Widget5Icon } from "@solar-icons/react/linear/widget-5";
 import { docs } from "collections/server";
@@ -7,6 +8,7 @@ import { createElement } from "react";
 
 const pageIcons = {
   BookMinimalistic: BookMinimalisticIcon,
+  Calendar: CalendarIcon,
   DownloadMinimalistic: DownloadMinimalisticIcon,
   Widget5: Widget5Icon,
 };

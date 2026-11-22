@@ -1,0 +1,30 @@
+---
+title: Resources day
+description: One column per room or person with bookable hours.
+---
+
+<ProBadge /> Part of `@cutecode/calendar-pro`.
+
+The day view with resources as columns. Headers carry a glyph and a detail line. Dragging across columns rebooks, and a drop outside the resource's bookable hours is refused with a hint. On phone a picker chooses the resource.
+
+<CalendarDemo id="resources-day" size="tall" canNarrow />
+
+## Import
+
+```tsx
+import { ResourcesDayView } from "@cutecode/calendar-pro/resources-day";
+```
+
+## Props
+
+| Prop | Type | Notes |
+|---|---|---|
+| `data` | `CalendarData` | Events, calendars and `resources`. |
+| `navigation` | `CalendarNavigation` | Date and view. |
+| `options` | `TimeGridOptions` | Locale, zone, hours. |
+| `actions` | `CalendarActions` | Same handlers as day. |
+
+## States
+
+- Refused drop outside bookable hours.
+- Phone resource picker.

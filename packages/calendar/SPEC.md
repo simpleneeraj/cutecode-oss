@@ -230,18 +230,22 @@ Each is its own entry, light and dark, phone and desktop. All take `events`, `va
 - Family: `picker`, `range-picker`, `week-strip`, `compact-month`, `heat-month`, `desk`, `widgets/*`, `task-agenda`, `money`. They import `core`, never a view.
 - Package proposal: `@cutecode/calendar` with subpath `exports`, `sideEffects: false` except CSS. Apps import leaf entries only.
 
-### 9.2 Budgets (gzip, targets checked in CI with size-limit or similar)
+### 9.2 Budgets (gzip, goals; `yarn size` enforces measured limits)
 
-| Entry | Budget |
-|---|---|
-| core | 6 kB |
-| week or day | 14 kB |
-| month | 9 kB |
-| agenda, virtualized | 8 kB |
-| year | 5 kB |
-| picker or range-picker | 6 kB |
-| each widget | 3 kB |
-| quick-add parser | 4 kB, loaded on focus |
+The budgets below are goals. Most are missed today. `.size-limit.json` holds the measured size plus about 5 percent headroom, so `yarn size` catches regressions and stays green. Raising a limit needs a reason in the PR.
+
+| Entry | Budget | Measured | Status |
+|---|---|---|---|
+| core | 6 kB | 5.3 kB | met |
+| week or day | 14 kB | 177.0 kB / 177.0 kB | missed |
+| month | 9 kB | 168.2 kB | missed |
+| agenda, virtualized | 8 kB | 44.9 kB (virtual core 1.2 kB) | missed |
+| year | 5 kB | 33.1 kB | missed |
+| picker or range-picker | 6 kB | 28.4 kB / 28.6 kB | missed |
+| each widget | 3 kB | 26.2 kB to 27.1 kB | missed |
+| quick-add parser | 4 kB, loaded on focus | 17.7 kB | missed |
+
+Measured with size-limit (esbuild, minified, gzip) via `yarn size`; react, react-dom, motion, @cutecode/ui and @base-ui/react are external, and calendar-pro excludes @cutecode/calendar. Every figure includes tailwind-variants (about 15 kB gzip, twMerge). Month and quick-event also pull zod and react-hook-form through the quick-event schema.
 
 No heavy dependencies: no moment, no date-fns locale bundles, no drag library. Base UI for overlays, Solar icons one import per icon.
 

@@ -1,0 +1,29 @@
+---
+title: Agenda
+description: A virtualized list grouped by day with sticky glass headers.
+---
+
+All-day first, then time order. Past rows are dimmed. The list is virtualized and endless in both directions.
+
+<CalendarDemo id="agenda" size="tall" />
+
+## Import
+
+```tsx
+import { AgendaView } from "@cutecode/calendar/agenda";
+```
+
+## Props
+
+| Prop | Type | Notes |
+|---|---|---|
+| `data` | `CalendarData` | Events, calendars and optional resources, columns and drop constraints. |
+| `navigation` | `CalendarNavigation` | Current date, view and the change handlers. |
+| `options` | `TimeGridOptions` | Locale, time zone, week start, shown hours, zoom, pinned now. |
+| `actions` | `CalendarActions` | Open, change, create, delete, duplicate and undo handlers. |
+| `status` | `CalendarStatus` | Optional. Loading, failed, offline or conflict. |
+
+## States
+
+- Loading shows skeleton rows.
+- Past events are dimmed.

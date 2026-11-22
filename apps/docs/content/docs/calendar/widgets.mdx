@@ -1,0 +1,47 @@
+---
+title: Widgets
+description: Small, medium, medium with notch and large glance cards.
+---
+
+Four sizes. Each takes the same props and a `placeholder` flag for the loading look.
+
+### Small
+
+<CalendarDemo id="widget-small" size="compact" />
+
+### Medium
+
+<CalendarDemo id="widget-medium" size="compact" />
+
+### Medium with notch
+
+<CalendarDemo id="widget-medium-notch" size="compact" />
+
+### Large
+
+<CalendarDemo id="widget-large" size="regular" />
+
+## Import
+
+```tsx
+import { SmallWidget } from "@cutecode/calendar/widgets/small";
+import { MediumWidget } from "@cutecode/calendar/widgets/medium";
+import { MediumNotchWidget } from "@cutecode/calendar/widgets/medium-notch";
+import { LargeWidget } from "@cutecode/calendar/widgets/large";
+```
+
+## Props
+
+| Prop | Type | Notes |
+|---|---|---|
+| `data` | `CalendarData` | Events and calendars. |
+| `options` | `WidgetOptions` | Locale, zone, week start, pinned now. |
+| `placeholder` | `boolean` | Optional. Shows quiet placeholder lines. |
+
+## States
+
+- Small: today.
+- Medium: date tile with the next two events.
+- Medium with notch: a folder tab holds the time of the next event.
+- Large: month glance and three events.
+- Each has a day done, a placeholder and a busy day.

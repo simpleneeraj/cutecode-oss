@@ -1,0 +1,30 @@
+---
+title: Week
+description: Seven day hour grid with drag to move, resize and click to create.
+---
+
+The main view. Day headers, an all-day row and an hour grid. Drag an event to move it, drag the bottom grip to resize, click an empty slot to create. Overlapping events sit side by side, with a +N chip after three.
+
+<CalendarDemo id="week" size="tall" />
+
+## Import
+
+```tsx
+import { WeekView } from "@cutecode/calendar/week";
+```
+
+## Props
+
+| Prop | Type | Notes |
+|---|---|---|
+| `data` | `CalendarData` | Events, calendars and optional resources, columns and drop constraints. |
+| `navigation` | `CalendarNavigation` | Current date, view and the change handlers. |
+| `options` | `TimeGridOptions` | Locale, time zone, week start, shown hours, zoom, pinned now. |
+| `actions` | `CalendarActions` | Open, change, create, delete, duplicate and undo handlers. |
+| `status` | `CalendarStatus` | Optional. Loading, failed, offline or conflict. |
+
+## States
+
+- Loading: the grid sets `aria-busy` and shows skeleton events.
+- Refused drop: the event goes back and a polite message says why (outside hours, read only).
+- Read only calendars show a lock and cannot be moved.

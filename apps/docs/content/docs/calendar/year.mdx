@@ -1,0 +1,30 @@
+---
+title: Year
+description: Twelve months, each day a square on a heat scale.
+---
+
+<ProBadge /> Part of `@cutecode/calendar-pro`.
+
+Each day is a square on the accent heat scale with a Less to More legend. Today is ringed. Click a day to open it. Hover shows the count.
+
+<CalendarDemo id="year" size="tall" />
+
+## Import
+
+```tsx
+import { YearView } from "@cutecode/calendar-pro/year";
+```
+
+## Props
+
+| Prop | Type | Notes |
+|---|---|---|
+| `data` | `CalendarData` | Events and calendars. |
+| `navigation` | `CalendarNavigation` | Date and view. |
+| `options` | `YearOptions` | Locale, zone, week start. |
+| `status` | `CalendarStatus` | Optional. |
+
+## States
+
+- Nothing planned this year.
+- Summary line with the busiest month.

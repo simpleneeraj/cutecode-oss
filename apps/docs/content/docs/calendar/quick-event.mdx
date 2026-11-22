@@ -1,0 +1,29 @@
+---
+title: Quick event
+description: The popover that creates and edits an event.
+---
+
+Opens anchored to a slot or an event. Title, time, repeat, calendar, invitees and place. Return saves, Esc closes. On phone it becomes a drawer. Editing a repeating event asks This event, This and following or All events.
+
+<CalendarDemo id="quick-event" size="tall" />
+
+## Import
+
+```tsx
+import { QuickEvent } from "@cutecode/calendar/quick-event";
+```
+
+## Props
+
+| Prop | Type | Notes |
+|---|---|---|
+| `session` | `QuickEventSession` | Open state and the draft being edited. |
+| `context` | `QuickEventContext` | Calendars, settings and bounds. |
+| `actions` | `QuickEventActions` | Create, update, delete handlers. |
+| `repeat` | `RepeatSlot` | Optional. Pro supplies the repeat field here. |
+
+## States
+
+- Creating and editing.
+- Invalid title or time shown as you type.
+- Scope question for repeating events.

@@ -12,6 +12,7 @@
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
     "test:unit": "turbo run test:unit",
+    "size": "turbo run size",
     "format": "prettier --write"
   },
   "devDependencies": {

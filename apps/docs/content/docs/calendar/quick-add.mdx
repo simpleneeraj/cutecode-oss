@@ -1,0 +1,30 @@
+---
+title: Quick add
+description: Type a sentence, get an event.
+---
+
+<ProBadge /> Part of `@cutecode/calendar-pro`.
+
+One field that parses as you type into chips: title, day, time, length, repeat, with and where. Chips are tappable to fix. The parser loads on focus. Cmd K opens it from any view.
+
+<CalendarDemo id="quick-add" size="regular" />
+
+## Import
+
+```tsx
+import { QuickAddField, QuickAddDialog } from "@cutecode/calendar-pro/quick-add-field";
+```
+
+## Props
+
+| Prop | Type | Notes |
+|---|---|---|
+| `setup` | `QuickAddSetup` | `context` and `onEventCreate` for the parsed draft. |
+
+## States
+
+- Empty with an example hint.
+- Typing and parsed.
+- Missing day goes on today.
+- Missing time makes it all-day.
+- Unknown text stays in the title.

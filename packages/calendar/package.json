@@ -101,7 +101,8 @@
   "scripts": {
     "typecheck": "node ../../node_modules/typescript-7/bin/tsc --noEmit",
     "lint": "eslint .",
-    "test:unit": "vitest run"
+    "test:unit": "vitest run",
+    "size": "size-limit"
   },
   "dependencies": {
     "@atlaskit/pragmatic-drag-and-drop": "^4.0.0",
@@ -120,6 +121,8 @@
   "devDependencies": {
     "@cutecode/config": "*",
     "@cutecode/ui": "*",
+    "@size-limit/esbuild": "^14.3.0",
+    "@size-limit/file": "^14.3.0",
     "@solar-icons/react": "^2.7.0",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
@@ -128,6 +131,7 @@
     "motion": "^14.14.0",
     "react": "19.3.1",
     "react-dom": "19.3.1",
+    "size-limit": "^14.3.0",
     "typescript": "^6.0.3",
     "typescript-7": "npm:typescript@7.0.2",
     "typescript-eslint": "^8.71.2",

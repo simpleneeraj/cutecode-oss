@@ -1,0 +1,31 @@
+---
+title: Range picker
+description: Pick a start and an end; the days between fill softly.
+---
+
+Same frame as the date picker. The range fills `brandSoft` between the ends.
+
+<CalendarDemo id="range-picker" size="regular" canNarrow />
+
+## Import
+
+```tsx
+import { RangePicker } from "@cutecode/calendar/range-picker";
+```
+
+## Props
+
+| Prop | Type | Notes |
+|---|---|---|
+| `value` | `Partial<DateRange> \| null` | Current range. |
+| `onValueChange` | `(range) => void` | Called on Confirm. |
+| `onCancel` | `() => void` | Called on Cancel. |
+| `options` | `FamilyOptions` | Locale, zone, week start. |
+| `setup` | `RangePickerSetup` | Optional. Rules such as disabled dates. |
+
+## States
+
+- Start only.
+- Full range.
+- Disabled dates.
+- Invalid range is refused with a hint.

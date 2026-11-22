@@ -1,0 +1,30 @@
+---
+title: Date picker
+description: One tinted frame with month and year selects and Confirm.
+---
+
+A single date picker in one tinted frame. Month and year selects, Confirm and Cancel.
+
+<CalendarDemo id="date-picker" size="regular" canNarrow />
+
+## Import
+
+```tsx
+import { DatePicker } from "@cutecode/calendar/date-picker";
+```
+
+## Props
+
+| Prop | Type | Notes |
+|---|---|---|
+| `value` | `PlainDate \| null` | Current date. |
+| `onValueChange` | `(date) => void` | Called on Confirm. |
+| `onCancel` | `() => void` | Called on Cancel. |
+| `options` | `FamilyOptions` | Locale, zone, week start. |
+| `setup` | `DatePickerSetup` | Optional. Rules such as disabled dates. |
+
+## States
+
+- Single selection.
+- Disabled dates.
+- Nothing picked yet.

@@ -1,0 +1,192 @@
+[
+  {
+    "name": "year",
+    "path": "src/views/year/index.tsx",
+    "limit": "35 kB",
+    "ignore": [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "motion",
+      "motion/*",
+      "@cutecode/ui",
+      "@cutecode/ui/*",
+      "@base-ui/react",
+      "@base-ui/react/*",
+      "@cutecode/calendar",
+      "@cutecode/calendar/*"
+    ],
+    "gzip": true
+  },
+  {
+    "name": "quick-add-parser",
+    "path": "src/quick-add/index.ts",
+    "limit": "19 kB",
+    "ignore": [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "motion",
+      "motion/*",
+      "@cutecode/ui",
+      "@cutecode/ui/*",
+      "@base-ui/react",
+      "@base-ui/react/*",
+      "@cutecode/calendar",
+      "@cutecode/calendar/*"
+    ],
+    "gzip": true
+  },
+  {
+    "name": "recurrence",
+    "path": "src/recurrence/index.ts",
+    "ignore": [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "motion",
+      "motion/*",
+      "@cutecode/ui",
+      "@cutecode/ui/*",
+      "@base-ui/react",
+      "@base-ui/react/*",
+      "@cutecode/calendar",
+      "@cutecode/calendar/*"
+    ],
+    "limit": "19 kB",
+    "gzip": true
+  },
+  {
+    "name": "zones",
+    "path": "src/zones/index.ts",
+    "ignore": [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "motion",
+      "motion/*",
+      "@cutecode/ui",
+      "@cutecode/ui/*",
+      "@base-ui/react",
+      "@base-ui/react/*",
+      "@cutecode/calendar",
+      "@cutecode/calendar/*"
+    ],
+    "limit": "1 kB",
+    "gzip": true
+  },
+  {
+    "name": "resources-day",
+    "path": "src/views/resources-day/index.tsx",
+    "ignore": [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "motion",
+      "motion/*",
+      "@cutecode/ui",
+      "@cutecode/ui/*",
+      "@base-ui/react",
+      "@base-ui/react/*",
+      "@cutecode/calendar",
+      "@cutecode/calendar/*"
+    ],
+    "limit": "22 kB",
+    "gzip": true
+  },
+  {
+    "name": "heat-month",
+    "path": "src/views/heat-month/index.tsx",
+    "ignore": [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "motion",
+      "motion/*",
+      "@cutecode/ui",
+      "@cutecode/ui/*",
+      "@base-ui/react",
+      "@base-ui/react/*",
+      "@cutecode/calendar",
+      "@cutecode/calendar/*"
+    ],
+    "limit": "24 kB",
+    "gzip": true
+  },
+  {
+    "name": "quick-add-field",
+    "path": "src/parts/quick-add-field/index.tsx",
+    "ignore": [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "motion",
+      "motion/*",
+      "@cutecode/ui",
+      "@cutecode/ui/*",
+      "@base-ui/react",
+      "@base-ui/react/*",
+      "@cutecode/calendar",
+      "@cutecode/calendar/*"
+    ],
+    "limit": "159 kB",
+    "gzip": true
+  },
+  {
+    "name": "zone-column",
+    "path": "src/parts/zone-column/index.ts",
+    "ignore": [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "motion",
+      "motion/*",
+      "@cutecode/ui",
+      "@cutecode/ui/*",
+      "@base-ui/react",
+      "@base-ui/react/*",
+      "@cutecode/calendar",
+      "@cutecode/calendar/*"
+    ],
+    "limit": "1 kB",
+    "gzip": true
+  },
+  {
+    "name": "zone-banner",
+    "path": "src/parts/zone-banner/index.tsx",
+    "ignore": [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "motion",
+      "motion/*",
+      "@cutecode/ui",
+      "@cutecode/ui/*",
+      "@base-ui/react",
+      "@base-ui/react/*",
+      "@cutecode/calendar",
+      "@cutecode/calendar/*"
+    ],
+    "limit": "21 kB",
+    "gzip": true
+  },
+  {
+    "name": "repeat-field",
+    "path": "src/parts/repeat-field/index.tsx",
+    "ignore": [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "motion",
+      "motion/*",
+      "@cutecode/ui",
+      "@cutecode/ui/*",
+      "@base-ui/react",
+      "@base-ui/react/*",
+      "@cutecode/calendar",
+      "@cutecode/calendar/*"
+    ],
+    "limit": "2 kB",
+    "gzip": true
+  }
+]

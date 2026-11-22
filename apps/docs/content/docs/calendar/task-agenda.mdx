@@ -1,0 +1,30 @@
+---
+title: Task agenda
+description: Week strip, task groups and a floating tab bar.
+---
+
+A week strip over To do, Completed and Pending. Tasks group as Morning, Workload and Night with checkboxes and neutral glyph tiles.
+
+<CalendarDemo id="task-agenda" size="tall" canNarrow startNarrow />
+
+## Import
+
+```tsx
+import { TaskAgenda } from "@cutecode/calendar/task-agenda";
+```
+
+## Props
+
+| Prop | Type | Notes |
+|---|---|---|
+| `tasks` | `Task[]` | The tasks. |
+| `selection` | `DateSelectionProps` | Selected date and handler. |
+| `actions` | `TaskActions` | Toggle and add handlers. |
+| `options` | `TaskAgendaOptions` | Locale, zone, week start. |
+| `state` | `TaskAgendaState` | Optional. Loading and tab state. |
+
+## States
+
+- Completed.
+- Loading.
+- All done.

@@ -1,0 +1,29 @@
+---
+title: Day
+description: One day on the hour grid, up to four events side by side.
+---
+
+The week grid for a single day. With resources it becomes one column per room or person, see resources day.
+
+<CalendarDemo id="day" size="tall" />
+
+## Import
+
+```tsx
+import { DayView } from "@cutecode/calendar/day";
+```
+
+## Props
+
+| Prop | Type | Notes |
+|---|---|---|
+| `data` | `CalendarData` | Events, calendars and optional resources, columns and drop constraints. |
+| `navigation` | `CalendarNavigation` | Current date, view and the change handlers. |
+| `options` | `TimeGridOptions` | Locale, time zone, week start, shown hours, zoom, pinned now. |
+| `actions` | `CalendarActions` | Open, change, create, delete, duplicate and undo handlers. |
+| `status` | `CalendarStatus` | Optional. Loading, failed, offline or conflict. |
+
+## States
+
+- Same states as week.
+- With a second time zone the gutter shows both zones.

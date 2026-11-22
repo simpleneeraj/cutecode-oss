@@ -1,0 +1,29 @@
+---
+title: Desk calendar
+description: Flip-date tiles with binder rings on warm paper.
+---
+
+A tactile desk calendar. Tap to flip to the next day.
+
+<CalendarDemo id="desk" size="regular" />
+
+## Import
+
+```tsx
+import { DeskCalendar } from "@cutecode/calendar/desk";
+```
+
+## Props
+
+| Prop | Type | Notes |
+|---|---|---|
+| `events` | `CalendarEvent[]` | Events for the lines under the date. |
+| `value` | `PlainDate` | Shown date. |
+| `onValueChange` | `(date) => void` | Called on flip. |
+| `options` | `FamilyOptions` | Locale, zone, week start. |
+| `onAdd` | `(date) => void` | Optional. Shows the add control. |
+
+## States
+
+- Next day.
+- Nothing planned.

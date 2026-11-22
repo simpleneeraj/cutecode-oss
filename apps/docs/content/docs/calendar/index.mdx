@@ -1,0 +1,110 @@
+---
+title: Overview
+description: Views, interaction and a family of small calendars, built on one engine with no framework inside.
+icon: Calendar
+---
+
+CuteUI Calendar is two packages. `@cutecode/calendar` is the engine and the React views. `@cutecode/calendar-pro` adds the heavier features. Every part is its own import path, so an app ships only what it uses.
+
+The engine does the calendar math and returns plain data. It is correct on daylight saving days, across midnight, with weeks that start on Sunday or Monday, with 12 or 24 hour clocks, and in right-to-left layouts.
+
+## Free and Pro
+
+The free package never imports Pro. Pro plugs in through typed hooks.
+
+| Part | Package |
+|---|---|
+| Week, day, month, agenda, sidebar, phone, tablet | Free |
+| Drag, resize, quick event, keyboard and screen reader support | Free |
+| Compact month, week strip, date and range pickers, desk, widgets, task agenda, money | Free |
+| Resources day <ProBadge /> | Pro |
+| Year and heat month <ProBadge /> | Pro |
+| Natural-language quick add <ProBadge /> | Pro |
+| Time zone column and banner <ProBadge /> | Pro |
+| Repeating events and the This, Following, All edit <ProBadge /> | Pro |
+
+## Install
+
+Not yet available. `@cutecode/calendar` is not published and its peer `@cutecode/ui` ships only through the shadcn registry, so there is no install command today.
+
+Pro (`@cutecode/calendar-pro`) is a paid add-on that is not out yet.
+
+## Import
+
+Import from a subpath, never from a root barrel.
+
+```tsx
+import { WeekView } from "@cutecode/calendar/week";
+import { CompactMonth } from "@cutecode/calendar/compact-month";
+import { ResourcesDayView } from "@cutecode/calendar-pro/resources-day";
+```
+
+Every entry also has an `example` subpath, such as `@cutecode/calendar/week/example`, which is the component each page here previews. The Code tab on each page shows the demo source: the example file under its public path, plus any demo helper it imports by repo path.
+
+## Data model
+
+Times are ISO 8601 strings, so the shapes stay flat and store well in Postgres JSON or DynamoDB as they are.
+
+```ts
+type CalendarEvent = {
+  id: string;
+  calendarId: string;
+  title: string;
+  start: string;
+  end: string;
+  allDay: boolean;
+  timeZone: string;
+  location?: string;
+  notes?: string;
+  resourceIds?: string[];
+  attendees?: Attendee[];
+  status: EventStatus;
+  recurrence?: Recurrence;
+  seriesId?: string;
+  originalStart?: string;
+  version: number;
+  updatedAt: string;
+};
+```
+
+- `end` is exclusive. All-day events use plain dates; a three-day trip is `2026-11-20` to `2026-11-23`.
+- `timeZone` is the IANA zone the event was made in. The rendering zone is a view option, so a 9 AM standup stays 9 AM local across daylight saving.
+- `Calendar` has an `id`, `name`, `tone`, `readOnly`, `visible` and an optional `timeZone`. The tones are accent, ink, grey and line.
+- `Resource` is a room, person or equipment with an optional capacity and bookable hours.
+- Recurrence is an RFC 5545 subset: frequency, interval, weekdays, month days, set position, count, until and exception dates. Occurrences are expanded per visible range and never stored.
+- `EventChange` reports a move or resize with its scope (this, following or all) and its source (drag, resize, keyboard, form or quick add).
+
+## Keyboard shortcuts
+
+| Key | Action |
+|---|---|
+| T | Today |
+| Left, Right | Previous or next day (mirrored in right-to-left) |
+| Up, Down | Previous or next hour |
+| Shift + Left, Right | Previous or next week |
+| D, W, M, Y, A | Day, Week, Month, Year, Agenda |
+| N | New event at the focused slot |
+| Return | Open the focused event |
+| Delete, Backspace | Delete the focused event (not on read only calendars) |
+| Cmd + D | Duplicate the focused event |
+| Space on an event | Pick up; arrows move by 15 minutes or a day; Shift + arrows a week; Return drops; Esc cancels |
+| Cmd + Z | Undo |
+| / | Search |
+| Cmd + K | Quick add |
+| ? | Show keyboard shortcuts |
+| Esc | Close the popover or sheet, or cancel a drag |
+
+Cmd is Ctrl on Windows and Linux.
+
+The views never keep history. Delete, duplicate and undo call your handlers; your app owns the undo stack.
+
+## Accessibility
+
+- Week and day are a `grid` with one tab stop and arrow key movement. Month is a `grid` whose days name their date and event count.
+- Events are buttons named with title, day, time, place and read only status.
+- Popovers and drawers are dialogs with a name. Focus goes to the title and returns to the slot or event on close.
+- One polite live region announces view changes, focus moves, moves, resizes, refusals and deletes.
+- Loading sets `aria-busy` on the grid. Skeletons are decorative.
+- Every touch target is 44pt.
+- Without long press, an event moves with Space to pick up, arrows to move and Return to drop.
+- Focus rings are a 2px gap then a 2px ring on cells, events and controls.

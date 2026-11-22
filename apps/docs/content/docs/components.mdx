@@ -67,6 +67,7 @@ import { Preview } from "@/components/gallery/preview";
 import { PreviewRow } from "@/components/gallery/preview-row";
 import { PreviewTile } from "@/components/gallery/preview-tile";
 import { TabBarPreview } from "@/components/gallery/tab-bar-preview";
+import { PreviewFrame } from "@/components/calendar-docs/preview-frame";
 import { ToastPreview } from "@/components/gallery/toast-preview";
 
 ## Primitives
@@ -392,4 +393,30 @@ import { ToastPreview } from "@/components/gallery/toast-preview";
       <AppIcon icon={CodeIcon} size={AppIconSize.Medium} tone={Tone.Accent} />
     </Orbit>
   </PreviewTile>
+</Preview>
+
+## Calendar
+
+### Compact month
+
+<Preview>
+  <PreviewFrame id="compact-month" size="regular" />
+</Preview>
+
+### Week strip
+
+<Preview>
+  <PreviewFrame id="week-strip" size="compact" />
+</Preview>
+
+### Date picker
+
+<Preview>
+  <PreviewFrame id="date-picker" size="regular" />
+</Preview>
+
+### Widgets
+
+<Preview>
+  <PreviewFrame id="widget-medium" size="compact" />
 </Preview>

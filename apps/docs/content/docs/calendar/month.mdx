@@ -1,0 +1,30 @@
+---
+title: Month
+description: Month grid with multi-day bars, chips and a +N more overflow.
+---
+
+Seven columns, five or six rows sharing the height. Multi-day events are bars on lanes under the date. A day holds as many chips as fit, then a +N more that opens the day.
+
+<CalendarDemo id="month" size="tall" />
+
+## Import
+
+```tsx
+import { MonthView } from "@cutecode/calendar/month";
+```
+
+## Props
+
+| Prop | Type | Notes |
+|---|---|---|
+| `data` | `CalendarData` | Events, calendars and optional resources, columns and drop constraints. |
+| `navigation` | `CalendarNavigation` | Current date, view and the change handlers. |
+| `options` | `TimeGridOptions` | Locale, time zone, week start, shown hours, zoom, pinned now. |
+| `actions` | `CalendarActions` | Open, change, create, delete, duplicate and undo handlers. |
+| `status` | `CalendarStatus` | Optional. Loading, failed, offline or conflict. |
+
+## States
+
+- Selected day and today ring.
+- +N more when a day has too many chips.
+- Loading and empty states use the shared state parts.
