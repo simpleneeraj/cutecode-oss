@@ -23,6 +23,7 @@ export enum KeyCommand {
   Search = "search",
   QuickAdd = "quickAdd",
   ShowShortcuts = "showShortcuts",
+  Undo = "undo",
 }
 
 export enum FocusTarget {

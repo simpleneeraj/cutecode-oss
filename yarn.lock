@@ -7,6 +7,23 @@
   resolved "https://registry.npmjs.org/@alloc/quick-lru/-/quick-lru-5.2.0.tgz"
   integrity sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==
 
+"@atlaskit/pragmatic-drag-and-drop-auto-scroll@^3.2.1":
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/@atlaskit/pragmatic-drag-and-drop-auto-scroll/-/pragmatic-drag-and-drop-auto-scroll-3.2.1.tgz#6238ac8dd75c1b3bf8660871cd9bd481ab283b77"
+  integrity sha512-2fhWAG48EjPoKhoHLG6RcT3/VaCzYEbRb6BtA/Vcfx4FrL0P1KrEgBJ6OAwB0X8MOV6UH22YgjFFHjv8fQD9rA==
+  dependencies:
+    "@atlaskit/pragmatic-drag-and-drop" "^4.0.0"
+    "@babel/runtime" "^7.0.0"
+
+"@atlaskit/pragmatic-drag-and-drop@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/pragmatic-drag-and-drop/-/pragmatic-drag-and-drop-4.0.0.tgz#70ca2ae1c3b9612c0808fb6be7a9b60bd3033922"
+  integrity sha512-pyDo2B5NiaExoKGmgeXKGNUL4aR4UzzSZm8QWWjYTEyBLVqSqKyKUwtVxMw2YEkakagOGFONUdHM32LAH2nPug==
+  dependencies:
+    "@babel/runtime" "^7.0.0"
+    bind-event-listener "^3.0.0"
+    raf-schd "^4.0.3"
+
 "@aws-crypto/sha256-js@^5.2.0":
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/@aws-crypto/sha256-js/-/sha256-js-5.2.0.tgz#c4fdb773fdbed9a664fc1a95724e206cf3860042"
@@ -600,6 +617,11 @@
     "@babel/plugin-syntax-jsx" "^7.27.1"
     "@babel/plugin-transform-modules-commonjs" "^7.27.1"
     "@babel/plugin-transform-typescript" "^7.28.5"
+
+"@babel/runtime@^7.0.0":
+  version "7.29.15"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.29.15.tgz#fd047349f32c2e89c28527e023af277e3dc747b6"
+  integrity sha512-304gsbbGVmQc+cNGHzwHBlqepYdWLKj3VXCQBGt/EGcV7PUPfKI7kAUNW1FZEOCwlQiLvQjg1JEaAlRQ616h+Q==
 
 "@babel/runtime@^7.1.2":
   version "7.29.2"
@@ -1373,6 +1395,13 @@
   version "1.19.14"
   resolved "https://registry.yarnpkg.com/@hono/node-server/-/node-server-1.19.14.tgz#e30f844bc77e3ce7be442aac3b1f73ad8b58d181"
   integrity sha512-GwtvgtXxnWsucXvbQXkRgqksiH2Qed37H9xHZocE5sA3N8O8O8/8FA3uclQXxXVzc9XBZuEOMK7+r02FmSpHtw==
+
+"@hookform/resolvers@^6.0.2":
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/@hookform/resolvers/-/resolvers-6.0.2.tgz#9d7e0c6d7f076b6f8dc7d10190e3c71d7e65d20d"
+  integrity sha512-e2dqUOlaGuirKVOd/iZWk/Yg5zeaGw7t0hSc3LzxL3o7eZGwZkTyEbBL8H52m0wRKEsNLWoMGOiXGHbPHTXlEQ==
+  dependencies:
+    "@standard-schema/utils" "^0.3.0"
 
 "@humanfs/core@^0.19.2":
   version "0.19.2"
@@ -2680,7 +2709,82 @@
   dependencies:
     postcss-selector-parser "6.0.10"
 
-"@tanstack/virtual-core@^3.19.11":
+"@takumi-rs/core-darwin-arm64@2.20.0":
+  version "2.20.0"
+  resolved "https://registry.yarnpkg.com/@takumi-rs/core-darwin-arm64/-/core-darwin-arm64-2.20.0.tgz#60862893a6c3afa8c9c27b4a05e7bf7c74835c68"
+  integrity sha512-wescbJ8pm0fBN8uXxjiZUDqN7JkdDDmxt8Gq1pSrpRCuGxvAnoj3agMMhHtJ5Ty+BufkIwSvV2cBXRLM4wyYZw==
+
+"@takumi-rs/core-darwin-x64@2.20.0":
+  version "2.20.0"
+  resolved "https://registry.yarnpkg.com/@takumi-rs/core-darwin-x64/-/core-darwin-x64-2.20.0.tgz#2ac5a404c87e9999bc4c60d50879529b580166c1"
+  integrity sha512-idCQC8PLuuDFQ4c2YEx142Q1WM+GbrR3RqNxuJay5MxfCXcZ42dv+96xGcgs0U2AWOk1GkY/vTY4y/Om7O/QHA==
+
+"@takumi-rs/core-linux-arm64-gnu@2.20.0":
+  version "2.20.0"
+  resolved "https://registry.yarnpkg.com/@takumi-rs/core-linux-arm64-gnu/-/core-linux-arm64-gnu-2.20.0.tgz#e8f1069acdcc4f01225dc1235d36f27ed693c814"
+  integrity sha512-TeqwOXlVdjAoSoOVQVoJOER4upQnh7nX6QJnYqVDlbByiSkMhqYULXc7I83NqzkL3U/fbT7/oASNeGWAI2axBA==
+
+"@takumi-rs/core-linux-arm64-musl@2.20.0":
+  version "2.20.0"
+  resolved "https://registry.yarnpkg.com/@takumi-rs/core-linux-arm64-musl/-/core-linux-arm64-musl-2.20.0.tgz#7b4e45d752ac0fa3f0094dafbdb8b8024c891946"
+  integrity sha512-gOcZxdGq7ebhqRN1Ue3FYJV7jKFG8yG99Opiky13viXXH8hkOde+OKUMe2kqWRH42j7p5EhBPj2qmdUBXXQBCQ==
+
+"@takumi-rs/core-linux-x64-gnu@2.20.0":
+  version "2.20.0"
+  resolved "https://registry.yarnpkg.com/@takumi-rs/core-linux-x64-gnu/-/core-linux-x64-gnu-2.20.0.tgz#477d8e4dde5aa2684c85e44b14269983625f19c3"
+  integrity sha512-MwIdLqyMUUz+6wuxkGJZyEO9alZODuDqe826HAG2+RErwpSUwfqtD2pHPWG9bnWkr7qpVeziFut6Ng68lYzcvQ==
+
+"@takumi-rs/core-linux-x64-musl@2.20.0":
+  version "2.20.0"
+  resolved "https://registry.yarnpkg.com/@takumi-rs/core-linux-x64-musl/-/core-linux-x64-musl-2.20.0.tgz#8f5faad4e7c4ab00047d1028fe9ca54ee749fc26"
+  integrity sha512-bM9QEwOuKg0+im1M+XjownCCdN+zHKQXGblDttpKuoa2QEd4F9t0JJcQMBSjLFucC2sf+rGicAmayMsQRxwgfg==
+
+"@takumi-rs/core-win32-arm64-msvc@2.20.0":
+  version "2.20.0"
+  resolved "https://registry.yarnpkg.com/@takumi-rs/core-win32-arm64-msvc/-/core-win32-arm64-msvc-2.20.0.tgz#d9ed403f57132033ee3408f602ac52a96c800dde"
+  integrity sha512-VwGj5dsODmHYV09P3AFhvcHL3hk8cS3Y0PYYHxFQtopwcWTsDN522+siotYL1lXZaEag9FoMJOuqiuZsVGgR3w==
+
+"@takumi-rs/core-win32-x64-msvc@2.20.0":
+  version "2.20.0"
+  resolved "https://registry.yarnpkg.com/@takumi-rs/core-win32-x64-msvc/-/core-win32-x64-msvc-2.20.0.tgz#b2f0fcd8c5a3c3d0f7b5d307d8570d58ea18a4d0"
+  integrity sha512-3am5JIowXAETxUHwQh8MONCagATpN4jFiXISKT2djvceJxrriPZKwWNjB7zTUzZmVLYTbslMrG7x2+U1wPndYg==
+
+"@takumi-rs/core@2.20.0":
+  version "2.20.0"
+  resolved "https://registry.yarnpkg.com/@takumi-rs/core/-/core-2.20.0.tgz#5031e847f1a9647dfdbb5fac30ac0b176350b4fa"
+  integrity sha512-28uryNYSyuXZWv5uBfJiWDrRXVdAunkU0sZiB7KG2WgLej64pUNL6jZSTQa+gBXfVu+3DdCz58OnpONBO6EUqQ==
+  dependencies:
+    "@takumi-rs/helpers" "2.20.0"
+  optionalDependencies:
+    "@takumi-rs/core-darwin-arm64" "2.20.0"
+    "@takumi-rs/core-darwin-x64" "2.20.0"
+    "@takumi-rs/core-linux-arm64-gnu" "2.20.0"
+    "@takumi-rs/core-linux-arm64-musl" "2.20.0"
+    "@takumi-rs/core-linux-x64-gnu" "2.20.0"
+    "@takumi-rs/core-linux-x64-musl" "2.20.0"
+    "@takumi-rs/core-win32-arm64-msvc" "2.20.0"
+    "@takumi-rs/core-win32-x64-msvc" "2.20.0"
+
+"@takumi-rs/helpers@2.20.0":
+  version "2.20.0"
+  resolved "https://registry.yarnpkg.com/@takumi-rs/helpers/-/helpers-2.20.0.tgz#9028e2074089256b5d06ad01bf0620cd4214f898"
+  integrity sha512-efdeG4Ujsw0IEYXhq3lUN1UiKhK6f3tak7VSMrCEWSvumFs0q5moBHSLdsR6aJhPNsYei21Ea6Rjtv94/qdyjg==
+
+"@takumi-rs/wasm@2.20.0":
+  version "2.20.0"
+  resolved "https://registry.yarnpkg.com/@takumi-rs/wasm/-/wasm-2.20.0.tgz#e2184ae99f33337ab28e40b6546c45af6ac06710"
+  integrity sha512-2Xfu55Ye8gmJMXQEDun/5zl/78LyCXKUjP503alH1tG0OyotkkWpZbgW8iWGuxxf4IJvp9kIaO+NLGbq4B6J8A==
+  dependencies:
+    "@takumi-rs/helpers" "2.20.0"
+
+"@tanstack/react-virtual@^3.14.26":
+  version "3.14.26"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-virtual/-/react-virtual-3.14.26.tgz#30efd2d54dfa7165b59657abfef39312d3de2402"
+  integrity sha512-HUDlfsrYH6ko5xH56L62Mcl/uzT+AGVNMHFuDNqDJMdZWc1AQa2oeVKNUvZ/RWBZQ4TYtyQerFrNvLnp39h65A==
+  dependencies:
+    "@tanstack/virtual-core" "3.19.11"
+
+"@tanstack/virtual-core@3.19.11", "@tanstack/virtual-core@^3.19.11":
   version "3.19.11"
   resolved "https://registry.yarnpkg.com/@tanstack/virtual-core/-/virtual-core-3.19.11.tgz#089fd1a9a92503f8f2329c7e48ceb84178726fc1"
   integrity sha512-/5iHb0RHBvj8Di59FDs4ESNm45jls33aZAi4zccVXZjc/6ZvwQP6nzEYeT6weXjTf9E6/vrp2JhYWRyO+ZP13A==
@@ -3730,6 +3834,11 @@ better-call@1.4.6:
     rou3 "^0.9.1"
     set-cookie-parser "^3.1.2"
 
+bind-event-listener@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/bind-event-listener/-/bind-event-listener-3.0.0.tgz#c90f9a7fcb65cac21045f810c20ef7e647a74921"
+  integrity sha512-PJvH288AWQhKs2v9zyfYdPzlPqf5bXbGMmhmUIY9x4dAUGIWgomO771oBQNwJnMQSnUIXhKu6sgzpBRXTlvb8Q==
+
 bowser@^2.11.0:
   version "2.14.1"
   resolved "https://registry.yarnpkg.com/bowser/-/bowser-2.14.1.tgz#4ea39bf31e305184522d7ad7bfd91389e4f0cb79"
@@ -4690,7 +4799,7 @@ eslint-plugin-jsx-a11y@^6.10.0:
     safe-regex-test "^1.0.3"
     string.prototype.includes "^2.0.1"
 
-eslint-plugin-react-hooks@^7.1.0:
+eslint-plugin-react-hooks@^7.1.0, eslint-plugin-react-hooks@^7.1.1:
   version "7.1.1"
   resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-7.1.1.tgz#e6742cad75d970c0a3f30d7d3fa80a4784f55927"
   integrity sha512-f2I7Gw6JbvCexzIInuSbZpfdQ44D7iqdWX01FKLvrPgqxoE7oMj8clOfto8U6vYiz4yd5oKu39rRSVOe1zRu0g==
@@ -7486,12 +7595,22 @@ quick-format-unescaped@^4.0.3:
   resolved "https://registry.npmjs.org/quick-format-unescaped/-/quick-format-unescaped-4.0.4.tgz"
   integrity sha512-tYC1Q1hgyRuHgloV/YXs2w15unPVh8qfu/qCTfhTYamaw7fyhumKa2yGpdSo87vY32rIclj+4fWYQXUMs9EHvg==
 
+raf-schd@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/raf-schd/-/raf-schd-4.0.3.tgz#5d6c34ef46f8b2a0e880a8fcdb743efc5bfdbc1a"
+  integrity sha512-tQkJl2GRWh83ui2DiPTJz9wEiMN20syf+5oKfB03yYP7ioZcJwsIK8FjrtLwH1m7C7e+Tt2yYBlrOpdT+dyeIQ==
+
 react-dom@19.3.1:
   version "19.3.1"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-19.3.1.tgz#b384c53cfcbe9c2a5d09d863b98455de9d68afe2"
   integrity sha512-Y0bARz53lhEC1NMCASs0/j+faB/zqt3R8hpvg1e8+61ZVJ4UL0UdC4cBbXfZMcIuhrfgeILTLe+ZeBCavQPtKQ==
   dependencies:
     scheduler "^0.28.0"
+
+react-hook-form@^7.91.0:
+  version "7.92.0"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.92.0.tgz#6d4ef30192906d7f2318ff57eef17e83e35b09f1"
+  integrity sha512-O5ILyY5fYHN7N13Pfxpe55KboyNFsJdM03BHpshQkClJd8raugiAUGY7VjifITrfhVxyx81ko25azXCoayhf1w==
 
 react-is@^16.13.1:
   version "16.13.1"
@@ -8512,6 +8631,15 @@ tailwindcss@4.3.5, tailwindcss@^4.3.5:
   version "4.3.5"
   resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-4.3.5.tgz#91ac1f2486f3dff8747aebd0a687abd5955035b8"
   integrity sha512-FcQk9BuffmEHJP2G0XmB2SplU1aLTI7j07Kunk+U74Ny+XiWOtzXz9aujFZ/avntw1e2cOv/3PkgzflQ7gX2vQ==
+
+takumi-js@2.20.0:
+  version "2.20.0"
+  resolved "https://registry.yarnpkg.com/takumi-js/-/takumi-js-2.20.0.tgz#e3dfc5749661f6394d88d6fb4a63b84ffa6fc307"
+  integrity sha512-WnqocRxTlQcDeA6Q0Awcz3+diSF3UGA2hmIL3pLsqiGXZHpeeRVpVad97EO33sYiMT6+L2kMya28EVGJbjCyfg==
+  dependencies:
+    "@takumi-rs/core" "2.20.0"
+    "@takumi-rs/helpers" "2.20.0"
+    "@takumi-rs/wasm" "2.20.0"
 
 tapable@^2.3.3:
   version "2.3.3"

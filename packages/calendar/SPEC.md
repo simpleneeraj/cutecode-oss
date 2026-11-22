@@ -16,9 +16,9 @@ Calendars never pick a color. They pick a **tone** (NEW `CalendarTone`), and ton
 
 | Tone | Body | Text | Bar and toggle |
 |---|---|---|---|
-| `accent` | `brandSoft` | `brandInk` | `brand` |
-| `ink` | `foreground` 7% on `card` | `foreground` | `foreground` 70% |
-| `grey` | `foreground` 4% on `card` | `foreground` | `foreground` 26% |
+| `accent` | `toneAccent`: `brandSoft` on tinted palettes, solid `primary` on Neutral and Graphite | `toneAccentInk`: `brandInk` or `primaryForeground` | `toneAccentBar`: `brand` or `primary` |
+| `ink` | `foreground` 12% on `card` (16% dark) | `foreground` | `foreground` 70% |
+| `grey` | `foreground` 7% on `card` (10% dark) | `foreground` | `foreground` 26% |
 | `line` | `card` with a 1px `foreground` 12% edge | `foreground` | `foreground` 14% |
 
 - One calendar gets `accent` (the user's main one). The rest share the three neutrals. More than four calendars share tones; the name, a glyph and grouping tell them apart.
@@ -142,7 +142,7 @@ Overlays:
 | Time-zone mismatch | A banner once per session: device zone versus calendar zone, with Use and Keep. A second zone column can stay on. |
 | 12 or 24 hour, week start | From the locale, overridable. Sunday or Monday start; Monday start makes November 2026 a 6-row month. |
 | Outside working hours | Hours outside the shown range fold into a pill with a count ("2 earlier, from 6:30 AM"). Tap to open; remembered per user. |
-| Past events | 50 percent opacity, still clickable. |
+| Past events | 70 percent opacity on the whole block, fill, bar and text kept, still clickable. Same for markers and all-day bars. |
 | Tentative, declined, cancelled | Neutral hatch, outline with strike, grey with strike. |
 | Read-only calendars | Lock on the event, no grip, no drag, no delete. A drag attempt shows "Name is read only". |
 | Refused drop | Snap every 15 min. Outside allowed hours the block hatches and a tip says why. On release it returns. |
@@ -295,6 +295,8 @@ import { Calendar } from "@cutecode/calendar/week";
 ```
 
 `onEventChange` receives an `EventChange`. For repeating events the calendar asks for the scope first, then calls once. `onEventCreate` receives a draft with start, end, calendar and any quick-add fields.
+
+The views never keep history. Keyboard Delete, Cmd + D and Cmd + Z call `onEventDelete`, `onEventDuplicate` and `onUndo` (which returns whether anything was undone); the app owns the undo stack, as the examples do with `recordChange` and `undoChange` from `event`. Cmd + K calls `onQuickAdd` (the Pro natural-language field) and falls back to `onSlotCreate`.
 
 ## 11. Phased build plan
 

@@ -120,6 +120,12 @@ describe("nudgeIntent", () => {
     expect(nudgeIntent(intent, KeyCommand.NextDay, settings, zone).target.date).toBe("2026-11-19");
   });
 
+  it("moves a week with the week commands", () => {
+    const intent = moveIntent(timed(), slot("2026-11-18", 600), slot("2026-11-18", 600));
+    expect(nudgeIntent(intent, KeyCommand.NextWeek, settings, zone).target).toMatchObject({ date: "2026-11-25", minute: 600 });
+    expect(nudgeIntent(intent, KeyCommand.PreviousWeek, settings, zone).target.date).toBe("2026-11-11");
+  });
+
   it("leaves other commands alone", () => {
     const intent = moveIntent(timed(), slot("2026-11-18", 600), slot("2026-11-18", 600));
     expect(nudgeIntent(intent, KeyCommand.Search, settings, zone)).toBe(intent);

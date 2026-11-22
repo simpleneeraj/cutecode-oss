@@ -1,0 +1,16 @@
+export const stateCopy = {
+  emptyTitle: "Nothing planned",
+  emptyDescription: "Events you add show up here.",
+  errorTitle: "Couldn't load events",
+  errorDescription: "Check your connection and try again.",
+  retry: "Try again",
+  offlineTitle: "Offline",
+  offlineDescription: "Changes save here and sync later.",
+  conflictTitle: "Changed on another device",
+  conflictDescription: "Pick the version to keep. The other copy goes to history.",
+  yours: "Yours",
+  theirs: "Theirs",
+  keepMine: "Keep mine",
+  useTheirs: "Use theirs",
+  readOnly: (calendarName: string) => `${calendarName} is read only. Copy it to edit.`,
+};

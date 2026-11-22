@@ -113,22 +113,38 @@ describe("layoutMonth chips", () => {
     expect(cellOn(cells, "2026-11-25")?.hiddenCount).toBe(0);
   });
 
-  it("hides every chip when the lanes fill the capacity", () => {
+  it("keeps a line free under the bars when bars overflow", () => {
     const bars = ["a", "b", "c", "d", "e"].map((id) => allDay(id, "2026-11-18", "2026-11-19"));
-    const { cells } = layoutMonth([...bars, ...meetingsOn("2026-11-18", 2)], sundayWeeks, options);
-    expect(cellOn(cells, "2026-11-18")?.visibleKeys).toEqual([]);
+    const { cells, bars: shown } = layoutMonth([...bars, ...meetingsOn("2026-11-18", 2)], sundayWeeks, options);
+    expect(shown).toHaveLength(3);
+    expect(cellOn(cells, "2026-11-18")?.visibleKeys).toHaveLength(1);
     expect(cellOn(cells, "2026-11-18")?.hiddenCount).toBe(3);
+  });
+
+  it("frees a line for +N when bars alone fill the row", () => {
+    const bars = ["a", "b", "c", "d", "e"].map((id) => allDay(id, "2026-11-16", "2026-11-19"));
+    const { cells, bars: shown } = layoutMonth(bars, sundayWeeks, options);
+    expect(shown.map((bar) => bar.lane)).toEqual([0, 1, 2]);
+    expect(cellOn(cells, "2026-11-17")?.hiddenCount).toBe(2);
+    expect(cellOn(cells, "2026-11-17")?.visibleKeys).toEqual([]);
+  });
+
+  it("frees a line when bars fill the row and a day has chips", () => {
+    const bars = ["a", "b", "c", "d"].map((id) => allDay(id, "2026-11-16", "2026-11-17"));
+    const { cells, bars: shown } = layoutMonth([...bars, ...meetingsOn("2026-11-18", 1)], sundayWeeks, options);
+    expect(shown).toHaveLength(3);
+    expect(cellOn(cells, "2026-11-18")?.visibleKeys).toHaveLength(1);
   });
 
   it("keeps only the bars that fit and counts the rest on each day they cover", () => {
     const short = ["a", "b", "c", "d"].map((id) => allDay(id, "2026-11-18", "2026-11-19"));
     const long = allDay("long", "2026-11-17", "2026-11-21");
     const { cells, bars } = layoutMonth([...short, long], sundayWeeks, options);
-    expect(bars.map((bar) => bar.lane)).toEqual([0, 1, 2, 3]);
+    expect(bars.map((bar) => bar.lane)).toEqual([0, 1, 2]);
     expect(bars.some((bar) => bar.key === long.key)).toBe(true);
-    expect(bars.filter((bar) => bar.key !== long.key)).toHaveLength(3);
+    expect(bars.filter((bar) => bar.key !== long.key)).toHaveLength(2);
     expect(cellOn(cells, "2026-11-17")?.hiddenCount).toBe(0);
-    expect(cellOn(cells, "2026-11-18")?.hiddenCount).toBe(1);
+    expect(cellOn(cells, "2026-11-18")?.hiddenCount).toBe(2);
     expect(cellOn(cells, "2026-11-20")?.hiddenCount).toBe(0);
   });
 
@@ -141,7 +157,7 @@ describe("layoutMonth chips", () => {
       ["2026-11-16", "2026-11-17", "2026-11-18", "2026-11-19", "2026-11-20"].map(
         (date) => cellOn(cells, date)?.hiddenCount,
       ),
-    ).toEqual([0, 1, 1, 1, 0]);
+    ).toEqual([1, 2, 2, 2, 1]);
   });
 
   it("hides every bar at zero capacity and counts it", () => {

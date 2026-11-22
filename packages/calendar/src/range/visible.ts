@@ -60,8 +60,7 @@ function datesFor(kind: ViewKind, anchor: PlainDate, weekStartsOn: Weekday): Dat
   }
 }
 
-export function viewRange(kind: ViewKind, anchor: PlainDate, settings: ViewSettings): ViewRange {
-  const dates = datesFor(kind, anchor, settings.weekStartsOn);
+function rangeOf(kind: ViewKind, anchor: PlainDate, dates: DateRange, settings: ViewSettings): ViewRange {
   return {
     kind,
     anchor,
@@ -70,6 +69,14 @@ export function viewRange(kind: ViewKind, anchor: PlainDate, settings: ViewSetti
     timeZone: settings.timeZone,
     weekStartsOn: settings.weekStartsOn,
   };
+}
+
+export function viewRange(kind: ViewKind, anchor: PlainDate, settings: ViewSettings): ViewRange {
+  return rangeOf(kind, anchor, datesFor(kind, anchor, settings.weekStartsOn), settings);
+}
+
+export function daysRange(anchor: PlainDate, dayCount: number, settings: ViewSettings): ViewRange {
+  return rangeOf(ViewKind.Week, anchor, { start: anchor, end: addDays(anchor, dayCount) }, settings);
 }
 
 type Midnight = {

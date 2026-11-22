@@ -1,4 +1,5 @@
 import { defineConfig } from "eslint/config";
+import reactHooks from "eslint-plugin-react-hooks";
 import tseslint from "typescript-eslint";
 
 const calendarRules = {
@@ -26,9 +27,35 @@ const zoneLibraries = {
   message: "Zones and plain dates go through src/time.",
 };
 
+const reactLibraries = {
+  group: [
+    "react",
+    "react/*",
+    "react-dom",
+    "react-dom/*",
+    "motion",
+    "motion/*",
+    "@cutecode/ui",
+    "@cutecode/ui/*",
+    "@solar-icons/*",
+    "@atlaskit/*",
+    "@tanstack/react-virtual",
+  ],
+  message: "Engine folders stay pure. React lives in src/views and src/parts.",
+};
+
+const reactFolders = ["src/views/**", "src/parts/**"];
+
 export default defineConfig([
   { ignores: ["node_modules/**"] },
   ...tseslint.configs.strict,
-  { rules: { ...calendarRules, "no-restricted-imports": ["error", { patterns: [proOnly, zoneLibraries] }] } },
+  { files: reactFolders, ...reactHooks.configs.flat["recommended-latest"] },
+  {
+    rules: {
+      ...calendarRules,
+      "no-restricted-imports": ["error", { patterns: [proOnly, zoneLibraries, reactLibraries] }],
+    },
+  },
+  { files: reactFolders, rules: { "no-restricted-imports": ["error", { patterns: [proOnly, zoneLibraries] }] } },
   { files: ["src/time/**"], rules: { "no-restricted-imports": ["error", { patterns: [proOnly] }] } },
 ]);

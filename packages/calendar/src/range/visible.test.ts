@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { instantAt, makeSettings, testZones } from "../testing";
 import { daySpan, eachDate } from "../time";
 import { ViewKind, Weekday } from "../types";
-import { daySpans, isWeekend, rangeDays, viewRange } from "./visible";
+import { daySpans, daysRange, isWeekend, rangeDays, viewRange } from "./visible";
 
 const sundayStart = makeSettings();
 const mondayStart = makeSettings({ weekStartsOn: Weekday.Monday });
@@ -203,5 +203,14 @@ describe("isWeekend", () => {
 
   it("is never true for an empty weekend", () => {
     expect(isWeekend("2026-11-22", [])).toBe(false);
+  });
+});
+
+describe("daysRange", () => {
+  it("starts on the anchor and covers the day count", () => {
+    const range = daysRange("2026-11-18", 5, sundayStart);
+    expect(range.kind).toBe(ViewKind.Week);
+    expect(range.dates).toEqual({ start: "2026-11-18", end: "2026-11-23" });
+    expect(daySpans(range)).toHaveLength(5);
   });
 });

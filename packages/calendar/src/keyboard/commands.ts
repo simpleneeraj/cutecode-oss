@@ -40,6 +40,7 @@ const plainCommands: Record<string, KeyCommand> = {
 const modifiedCommands: Record<string, KeyCommand> = {
   d: KeyCommand.DuplicateEvent,
   k: KeyCommand.QuickAdd,
+  z: KeyCommand.Undo,
 };
 
 const carryingCommands: Record<string, KeyCommand> = {

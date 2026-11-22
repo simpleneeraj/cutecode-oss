@@ -7,6 +7,11 @@ export enum DragKind {
   Create = "create",
 }
 
+export enum MoveStep {
+  Slot = "slot",
+  Day = "day",
+}
+
 export enum VerdictKind {
   Accepted = "accepted",
   Refused = "refused",
@@ -33,6 +38,7 @@ export type MoveIntent = {
   occurrence: EventOccurrence;
   grab: SlotPoint;
   target: SlotPoint;
+  step?: MoveStep;
 };
 
 export type ResizeIntent = {

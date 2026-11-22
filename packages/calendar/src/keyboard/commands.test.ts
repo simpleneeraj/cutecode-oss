@@ -83,12 +83,28 @@ describe("commandFor, browse", () => {
   });
 });
 
+describe("commandFor, undo", () => {
+  it("maps Command Z and Control Z to undo", () => {
+    expect(browse(press("z", { metaKey: true }))).toBe(KeyCommand.Undo);
+    expect(browse(press("z", { ctrlKey: true }))).toBe(KeyCommand.Undo);
+  });
+
+  it("leaves Shift Command Z alone", () => {
+    expect(browse(press("z", { metaKey: true, shiftKey: true }))).toBeNull();
+  });
+});
+
 describe("commandFor, carrying", () => {
   it("nudges with arrows", () => {
     expect(carrying(press("ArrowUp"))).toBe(KeyCommand.PreviousHour);
     expect(carrying(press("ArrowDown"))).toBe(KeyCommand.NextHour);
     expect(carrying(press("ArrowRight"))).toBe(KeyCommand.NextDay);
     expect(carrying(press("ArrowLeft"), TextDirection.RightToLeft)).toBe(KeyCommand.NextDay);
+  });
+
+  it("moves a week with Shift and arrows", () => {
+    expect(carrying(press("ArrowRight", { shiftKey: true }))).toBe(KeyCommand.NextWeek);
+    expect(carrying(press("ArrowLeft", { shiftKey: true }))).toBe(KeyCommand.PreviousWeek);
   });
 
   it("drops on Return and cancels on Escape", () => {

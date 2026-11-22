@@ -56,7 +56,19 @@ export function overlapsRange(interval: InstantRange, range: InstantRange): bool
   return interval.start < range.end && interval.end > range.start;
 }
 
-export const expandEach: OccurrenceExpander = (events) => events.map(occurrenceOf);
+function isException(occurrence: EventOccurrence): boolean {
+  return occurrence.event.seriesId !== undefined;
+}
+
+function isSkipped(occurrence: EventOccurrence): boolean {
+  return occurrence.event.recurrence?.exceptionDates?.includes(occurrence.originalStart) ?? false;
+}
+
+export const expandEach: OccurrenceExpander = (events) => {
+  const occurrences = events.map(occurrenceOf).filter((occurrence) => !isSkipped(occurrence));
+  const replacedKeys = new Set(occurrences.filter(isException).map((occurrence) => occurrence.key));
+  return occurrences.filter((occurrence) => isException(occurrence) || !replacedKeys.has(occurrence.key));
+};
 
 export function occurrencesInRange(
   events: CalendarEvent[],
@@ -92,3 +104,7 @@ export function isEventReadOnly(event: CalendarEvent, calendars: Calendar[]): bo
 export function isRecurring(event: CalendarEvent): boolean {
   return event.recurrence !== undefined || event.seriesId !== undefined;
 }
+export { applyEventChange } from "./apply-change";
+export { duplicateOccurrence } from "./duplicate";
+export { removeOccurrence } from "./remove";
+export { lastChange, recordChange, startHistory, undoChange, undoEntry, type EventHistory, type HistoryEntry } from "./history";

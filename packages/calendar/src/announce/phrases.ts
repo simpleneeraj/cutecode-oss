@@ -98,11 +98,22 @@ function timedSpan(start: Instant, end: Instant, settings: ViewSettings, dayLabe
   return `${startLabel} to ${dayLabel(dateOf(end, settings.timeZone), settings)}, ${formatTime(end, settings)}`;
 }
 
-function movePhrase(title: string, start: Instant, end: Instant, isAllDay: boolean, settings: ViewSettings): string {
+function placePhrase(start: Instant, end: Instant, isAllDay: boolean, settings: ViewSettings): string {
   if (isAllDay) {
-    return `Moved ${title} to ${weekdayLabel(dateOf(start, settings.timeZone), settings)}, ${allDay}.`;
+    return `${weekdayLabel(dateOf(start, settings.timeZone), settings)}, ${allDay}`;
   }
-  return `Moved ${title} to ${timedSpan(start, end, settings, weekdayLabel)}.`;
+  return timedSpan(start, end, settings, weekdayLabel);
+}
+
+const carryCopy = {
+  hint: "Arrows move it, Return drops, Escape cancels.",
+  blocked: "Can't drop here.",
+  undo: "Press Command Z to undo.",
+};
+
+function carriedPhrase(start: Instant, end: Instant, isAllDay: boolean, isAllowed: boolean, settings: ViewSettings) {
+  const place = `${placePhrase(start, end, isAllDay, settings)}.`;
+  return isAllowed ? place : `${place} ${carryCopy.blocked}`;
 }
 
 function hoursSentence(hours: ClockRange, settings: ViewSettings): string {
@@ -114,6 +125,11 @@ function refusalPhrase(reason: RefusalReason, allowedHours: ClockRange | undefin
   return `Can't move there. ${why} It went back.`;
 }
 
+function createRefusalPhrase(reason: RefusalReason, allowedHours: ClockRange | undefined, settings: ViewSettings): string {
+  const why = allowedHours ? hoursSentence(allowedHours, settings) : refusalReasons[reason];
+  return `Can't add an event there. ${why}`;
+}
+
 export function announce(announcement: Announcement, settings: ViewSettings): string {
   switch (announcement.kind) {
     case AnnouncementKind.ViewChanged:
@@ -122,19 +138,37 @@ export function announce(announcement: Announcement, settings: ViewSettings): st
       return `${navigationLabel(announcement.view, announcement.anchor, settings)}.`;
     case AnnouncementKind.FocusMoved:
       return focusPhrase(announcement.instant, announcement.allDay, announcement.eventCount, settings);
+    case AnnouncementKind.DayFocused:
+      return `${formatDayLabel(announcement.date, settings)}. ${countLabel(announcement.eventCount)}.`;
     case AnnouncementKind.Moved:
-      return movePhrase(announcement.title, announcement.start, announcement.end, announcement.allDay, settings);
+      return `Moved ${announcement.title} to ${placePhrase(announcement.start, announcement.end, announcement.allDay, settings)}.`;
     case AnnouncementKind.Resized:
       return `${announcement.title} now ends at ${formatTime(announcement.end, settings)}.`;
     case AnnouncementKind.Refused:
       return refusalPhrase(announcement.reason, announcement.allowedHours, settings);
+    case AnnouncementKind.CreateRefused:
+      return createRefusalPhrase(announcement.reason, announcement.allowedHours, settings);
     case AnnouncementKind.ReadOnly:
       return `${announcement.title} is on ${announcement.calendarName}, which is read only.`;
     case AnnouncementKind.Deleted:
-      return `Deleted ${announcement.title}. Press Command Z to undo.`;
+      return `Deleted ${announcement.title}. ${carryCopy.undo}`;
     case AnnouncementKind.CalendarToggled:
       return `${announcement.calendarName} ${announcement.visible ? "shown" : "hidden"}.`;
+    case AnnouncementKind.PickedUp:
+      return `Picked up ${announcement.title}, ${placePhrase(announcement.start, announcement.end, announcement.allDay, settings)}. ${carryCopy.hint}`;
+    case AnnouncementKind.Carried:
+      return carriedPhrase(announcement.start, announcement.end, announcement.allDay, announcement.isAllowed, settings);
+    case AnnouncementKind.DropCancelled:
+      return `${announcement.title} went back.`;
+    case AnnouncementKind.Duplicated:
+      return `Duplicated ${announcement.title}. ${carryCopy.undo}`;
+    case AnnouncementKind.Undone:
+      return "Undone.";
   }
+}
+
+export function dayCellName(date: PlainDate, eventCount: number, settings: ViewSettings): string {
+  return `${formatDayLabel(date, settings)}, ${countLabel(eventCount).toLowerCase()}`;
 }
 
 function allDayWhen(startDate: PlainDate, endDate: PlainDate, settings: ViewSettings): string {

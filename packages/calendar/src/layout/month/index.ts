@@ -56,6 +56,12 @@ function cellOf(
   };
 }
 
+function weekLaneLimit(placed: SpanBar[], week: number, capacity: number, hasChips: boolean): number {
+  const needed = laneCount(placed, week);
+  const isCrowded = needed > capacity || (needed === capacity && hasChips);
+  return isCrowded ? Math.max(0, capacity - 1) : capacity;
+}
+
 export function layoutMonth(
   occurrences: EventOccurrence[],
   weeks: PlainDate[][],
@@ -64,15 +70,24 @@ export function layoutMonth(
   const visible = visibleOccurrences(occurrences, options.hiddenCalendarIds);
   const laneCapacity = Math.max(0, options.chipCapacity);
   const placed = layoutSpans(visible, weeks, options.timeZone);
-  const bars = placed.filter((bar) => bar.lane < laneCapacity);
-  const overflowBars = placed.filter((bar) => bar.lane >= laneCapacity);
   const chips = visible.filter((occurrence) => isShortTimed(occurrence, options.timeZone)).sort(compareChips);
+  const chipKeys = weeks.map((week) => week.map((date) => chipKeysOn(chips, date, options.timeZone)));
+  const limits = chipKeys.map((week, weekIndex) =>
+    weekLaneLimit(
+      placed,
+      weekIndex,
+      laneCapacity,
+      week.some((keys) => keys.length > 0),
+    ),
+  );
+  const bars = placed.filter((bar) => bar.lane < (limits[bar.week] ?? laneCapacity));
+  const overflowBars = placed.filter((bar) => bar.lane >= (limits[bar.week] ?? laneCapacity));
   const month = startOfMonth(options.month);
   const cells = weeks.flatMap((week, weekIndex) => {
     const capacity = laneCapacity - laneCount(bars, weekIndex);
     return week.map((date, dayIndex) => {
       const hiddenBarCount = overflowBars.filter((bar) => coversDay(bar, weekIndex, dayIndex)).length;
-      return cellOf(date, chipKeysOn(chips, date, options.timeZone), capacity, hiddenBarCount, month);
+      return cellOf(date, chipKeys[weekIndex]?.[dayIndex] ?? [], capacity, hiddenBarCount, month);
     });
   });
   return { cells, bars };

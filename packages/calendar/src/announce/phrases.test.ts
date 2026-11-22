@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { instantAt, makeSettings, testZones } from "../testing";
 import { AnnouncementKind, HourCycle, RefusalReason, ViewKind, Weekday } from "../types";
-import { announce } from "./phrases";
+import { announce, dayCellName } from "./phrases";
 
 const settings = makeSettings();
 
@@ -54,6 +54,15 @@ describe("announce, spec phrases", () => {
     expect(announce(refused, settings)).toBe("Can't move there. Hours are 7 AM to 7 PM. It went back.");
   });
 
+  it("explains a refused create without saying it went back", () => {
+    const refused = {
+      kind: AnnouncementKind.CreateRefused,
+      reason: RefusalReason.OutsideAllowedHours,
+      allowedHours: { start: "07:00", end: "19:00" },
+    } as const;
+    expect(announce(refused, settings)).toBe("Can't add an event there. Hours are 7 AM to 7 PM.");
+  });
+
   it("names a read-only calendar", () => {
     const readOnly = { kind: AnnouncementKind.ReadOnly, title: "Thanksgiving", calendarName: "US holidays" } as const;
     expect(announce(readOnly, settings)).toBe("Thanksgiving is on US holidays, which is read only.");
@@ -62,6 +71,27 @@ describe("announce, spec phrases", () => {
   it("offers undo after a delete", () => {
     const deleted = { kind: AnnouncementKind.Deleted, title: "Design crit" } as const;
     expect(announce(deleted, settings)).toBe("Deleted Design crit. Press Command Z to undo.");
+  });
+
+  it("guides a keyboard pickup and each step", () => {
+    const place = { start: instantAt("2026-11-19", "11:00"), end: instantAt("2026-11-19", "12:00"), allDay: false };
+    const pickedUp = { kind: AnnouncementKind.PickedUp, title: "Design crit", ...place } as const;
+    expect(announce(pickedUp, settings)).toBe(
+      "Picked up Design crit, Thursday, 11 AM to 12 PM. Arrows move it, Return drops, Escape cancels.",
+    );
+    const carried = { kind: AnnouncementKind.Carried, ...place, isAllowed: true } as const;
+    expect(announce(carried, settings)).toBe("Thursday, 11 AM to 12 PM.");
+    expect(announce({ ...carried, isAllowed: false }, settings)).toBe("Thursday, 11 AM to 12 PM. Can't drop here.");
+  });
+
+  it("says a carried event went back", () => {
+    expect(announce({ kind: AnnouncementKind.DropCancelled, title: "Design crit" }, settings)).toBe("Design crit went back.");
+  });
+
+  it("offers undo after a duplicate and confirms an undo", () => {
+    const duplicated = { kind: AnnouncementKind.Duplicated, title: "Design crit" } as const;
+    expect(announce(duplicated, settings)).toBe("Duplicated Design crit. Press Command Z to undo.");
+    expect(announce({ kind: AnnouncementKind.Undone }, settings)).toBe("Undone.");
   });
 
   it("says a calendar was hidden or shown", () => {
@@ -163,5 +193,19 @@ describe("announce, other cases", () => {
     expect(refuse(RefusalReason.OutsideBookableHours)).toBe(
       "Can't move there. It's outside the bookable hours. It went back.",
     );
+  });
+});
+
+describe("announce, month days", () => {
+  const settings = makeSettings();
+
+  it("speaks a focused day with its count", () => {
+    const text = announce({ kind: AnnouncementKind.DayFocused, date: "2026-11-18", eventCount: 2 }, settings);
+    expect(text).toBe("Wednesday, November 18. 2 events.");
+  });
+
+  it("names a day cell with its count", () => {
+    expect(dayCellName("2026-11-18", 1, settings)).toBe("Wednesday, November 18, 1 event");
+    expect(dayCellName("2026-11-19", 0, settings)).toBe("Thursday, November 19, no events");
   });
 });

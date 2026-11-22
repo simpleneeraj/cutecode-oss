@@ -9,6 +9,7 @@ import {
   type DropProposal,
   type Instant,
   type MoveIntent,
+  MoveStep,
   type PlainDate,
   type ResizeIntent,
   type SlotPoint,
@@ -21,6 +22,8 @@ export type DateShift = {
   startDate: PlainDate;
   endDate: PlainDate;
 };
+
+const weekLength = 7;
 
 type MinuteSnap = (minute: number, step: number) => number;
 
@@ -59,6 +62,9 @@ function snappedMoveStart(
 ): Instant {
   const grabOffset = occurrence.start - slotInstant(intent.grab, timeZone);
   const rawStart = slotInstant(intent.target, timeZone) + grabOffset;
+  if (intent.step === MoveStep.Day) {
+    return rawStart;
+  }
   return snapInstant(rawStart, snapMinute, settings.snapMinutes, timeZone);
 }
 
@@ -133,12 +139,15 @@ function moveTargetByDays(intent: MoveIntent, days: number, timeZone: string): M
   return { ...intent, target: slotPointAt(instant, timeZone, intent.target) };
 }
 
-function nudgeByMinutes(intent: MoveIntent, deltaMinutes: number, timeZone: string): MoveIntent {
+function nudgeVertically(intent: MoveIntent, direction: number, settings: DragSettings, timeZone: string): MoveIntent {
+  if (intent.step === MoveStep.Day) {
+    return moveTargetByDays(intent, direction * weekLength, timeZone);
+  }
   const isAllDay = intent.occurrence.kind === OccurrenceKind.AllDay;
   if (isAllDay) {
     return intent;
   }
-  return moveTargetBy(intent, deltaMinutes, timeZone);
+  return moveTargetBy(intent, direction * settings.snapMinutes, timeZone);
 }
 
 export function nudgeIntent(
@@ -148,16 +157,22 @@ export function nudgeIntent(
   timeZone: string,
 ): MoveIntent {
   if (command === KeyCommand.PreviousHour) {
-    return nudgeByMinutes(intent, -settings.snapMinutes, timeZone);
+    return nudgeVertically(intent, -1, settings, timeZone);
   }
   if (command === KeyCommand.NextHour) {
-    return nudgeByMinutes(intent, settings.snapMinutes, timeZone);
+    return nudgeVertically(intent, 1, settings, timeZone);
   }
   if (command === KeyCommand.PreviousDay) {
     return moveTargetByDays(intent, -1, timeZone);
   }
   if (command === KeyCommand.NextDay) {
     return moveTargetByDays(intent, 1, timeZone);
+  }
+  if (command === KeyCommand.PreviousWeek) {
+    return moveTargetByDays(intent, -weekLength, timeZone);
+  }
+  if (command === KeyCommand.NextWeek) {
+    return moveTargetByDays(intent, weekLength, timeZone);
   }
   return intent;
 }
