@@ -11,7 +11,10 @@
   --shell: #161616;
   --shell-edge: #262626;
   --key-line: rgba(255, 255, 255, 0.18);
-  background: radial-gradient(ellipse at 80% 100%, #1f0d04 0%, #0a0a0a 50%, #000 100%);
+  --base: #050505;
+  --light-source: rgba(255, 255, 255, 0.06);
+  --corner: rgba(0, 0, 0, 0.5);
+  background: radial-gradient(ellipse at 80% 100%, #1f0d04 0%, #0a0a0a 50%, var(--base) 100%);
 }
 
 .light {
@@ -21,7 +24,10 @@
   --shell: #ededed;
   --shell-edge: #dcdcdc;
   --key-line: rgba(0, 0, 0, 0.2);
-  background: radial-gradient(ellipse at 80% 100%, #ffe6d6 0%, #f7f5f2 50%, #efedea 100%);
+  --base: #efedea;
+  --light-source: rgba(255, 255, 255, 0.9);
+  --corner: rgba(0, 0, 0, 0.08);
+  background: radial-gradient(ellipse at 80% 100%, #ffe6d6 0%, #f7f5f2 50%, var(--base) 100%);
 }
 
 .transparent {
@@ -35,12 +41,25 @@
   pointer-events: none;
 }
 
+.layer::after {
+  position: absolute;
+  background:
+    radial-gradient(80% 60% at 30% 0%, var(--light-source), transparent 65%),
+    radial-gradient(70% 60% at 100% 100%, var(--corner), transparent 72%);
+  content: "";
+  inset: 0;
+}
+
 .dotMatrix {
   position: absolute;
+  top: 6%;
+  right: 6%;
+  bottom: 6%;
+  left: 6%;
+  border-radius: 40px;
   background-image: radial-gradient(circle, var(--matrix-dot) 1.2px, transparent 1.6px);
   background-size: 12px 12px;
-  inset: 0;
-  mask-image: radial-gradient(ellipse at 50% 50%, black 30%, transparent 85%);
+  opacity: 0.8;
 }
 
 .glow {
@@ -62,7 +81,7 @@
   border-radius: 50%;
   background: repeating-conic-gradient(from 0deg, var(--orange) 0deg 3deg, #e04a0e 3deg 6deg);
   border: 6px solid var(--shell);
-  filter: drop-shadow(0 20px 60px rgba(255, 95, 31, 0.25));
+  box-shadow: 0 32px 64px -16px rgba(255, 95, 31, 0.3);
 }
 
 .dialCap {
@@ -88,7 +107,9 @@
   border-radius: 50%;
   background: var(--shell);
   border: 1px solid var(--shell-edge);
-  filter: drop-shadow(0 12px 32px rgba(0, 0, 0, 0.25));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 24px 48px -16px rgba(0, 0, 0, 0.35);
 }
 
 .iris {
@@ -140,79 +161,102 @@
   position: relative;
   z-index: 10;
   overflow: hidden;
-  border-radius: 18px;
-}
-
-.dark .window {
-  background: #0b0b0b;
-  border: 1px solid #242424;
-  filter: drop-shadow(0 28px 70px rgba(0, 0, 0, 0.75));
+  border-radius: 28px;
+  background: var(--window-fill);
+  box-shadow:
+    0 0 0 0.5px var(--window-edge),
+    0 48px 96px -32px var(--window-shadow);
+  --line-number: var(--window-muted);
 }
 
 .light .window {
-  background: #fff;
-  border: 1px solid #e2e2e2;
-  filter: drop-shadow(0 20px 50px rgba(120, 50, 10, 0.12));
+  --window-fill: #ffffff;
+  --window-header: #fbfbfb;
+  --window-edge: rgba(0, 0, 0, 0.13);
+  --window-shine: #ffffff;
+  --window-shadow: rgba(150, 60, 10, 0.26);
+  --window-dot: #e3e3e3;
+  --window-title: #111111;
+  --window-muted: #a6a6a6;
+  --window-divider: rgba(0, 0, 0, 0.06);
+  --window-glow: rgba(255, 90, 18, 0.5);
+  --window-accent: #ff5a12;
+}
+
+.dark .window {
+  --window-fill: #111111;
+  --window-header: #151515;
+  --window-edge: rgba(255, 255, 255, 0.1);
+  --window-shine: rgba(255, 255, 255, 0.12);
+  --window-shadow: rgba(16, 4, 0, 0.82);
+  --window-dot: #2c2c2c;
+  --window-title: #f0f0f0;
+  --window-muted: #5c5c5c;
+  --window-divider: rgba(255, 255, 255, 0.06);
+  --window-glow: rgba(255, 95, 31, 0.5);
+  --window-accent: #ff5f1f;
+}
+
+.window::after {
+  position: absolute;
+  z-index: 40;
+  border-radius: inherit;
+  box-shadow: inset 0 1px 0 var(--window-shine);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+}
+
+.window [style*="--editor-padding"] {
+  --editor-padding: 20px 24px 24px !important;
+}
+
+.window [style*="token-comment"] {
+  font-style: italic;
 }
 
 .topEdge {
   position: absolute;
-  z-index: 20;
+  z-index: 41;
   top: 0;
-  right: 0;
-  left: 0;
+  right: 32px;
+  left: 32px;
   overflow: hidden;
-  height: 2px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--window-glow), transparent);
 }
 
 .sweep {
   position: absolute;
   width: 40%;
-  background: linear-gradient(90deg, transparent, var(--orange), #ffb38f, var(--orange), transparent);
+  background: linear-gradient(90deg, transparent, var(--window-accent), transparent);
   inset-block: 0;
 }
 
 .header {
+  position: relative;
   display: grid;
+  height: 44px;
   align-items: center;
-  padding: 12px 16px 11px;
+  padding: 0 20px;
+  background: var(--window-header);
+  box-shadow: inset 0 -0.5px 0 var(--window-divider);
   grid-gap: 12px;
-  grid-template-columns: 60px 1fr 60px;
-}
-
-.dark .header {
-  border-bottom: 1px solid #1c1c1c;
-  background: #101010;
-}
-
-.light .header {
-  border-bottom: 1px solid #ededed;
-  background: #fafafa;
+  grid-template-columns: 64px 1fr 64px;
 }
 
 .dots {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
 }
 
 .dot {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-}
-
-.dot:nth-child(1) {
-  background: radial-gradient(circle at 35% 35%, #ff9a6a, var(--orange));
-  filter: drop-shadow(0 0 6px rgba(255, 95, 31, 0.5));
-}
-
-.dark .dot:nth-child(n + 2) {
-  background: #262626;
-}
-
-.light .dot:nth-child(n + 2) {
-  background: #e8e8e8;
+  background: var(--window-dot);
+  box-shadow: inset 0 0 0 0.5px var(--window-edge);
 }
 
 .fileName {
@@ -221,11 +265,12 @@
   height: 16px;
   align-items: center;
   justify-content: center;
-  font-family: var(--code-font, "Geist Mono", monospace);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  line-height: 12px;
+  color: var(--window-title);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  line-height: 16px;
 
   > input {
     position: absolute;
@@ -247,12 +292,4 @@
   > input:focus + span {
     display: none;
   }
-}
-
-.dark .fileName {
-  color: #d4d4d4;
-}
-
-.light .fileName {
-  color: #3a3a3a;
 }

@@ -12,11 +12,22 @@ const CONTROLLERS = [
 const PIXELS = Array.from({ length: 14 }, (_, index) => ({
   left: `${(index * 43 + 7) % 96}%`,
   top: `${(index * 29 + 11) % 60}%`,
-  size: 5 + ((index * 3) % 3) * 2,
-  color: ["#7ce7ff", "#ff7ac6", "#b69cff", "#ffd36e"][index % 4],
+  size: 4 + ((index * 3) % 3) * 2,
+  isBright: index % 3 === 0,
   cycles: 1 + (index % 3),
   phase: ((index * 7) % 14) / 14,
 }));
+
+const floorGrowth = 1.4;
+
+const floor = {
+  growth: floorGrowth,
+  raysPath: Array.from({ length: 21 }, (_, index) => {
+    const offset = index - 10;
+    return `M${500 + offset * 40} 0L${500 + offset * 160} 100`;
+  }).join(""),
+  rowsPath: Array.from({ length: 13 }, (_, index) => `M0 ${(100 / floorGrowth ** index).toFixed(3)}H1000`).join(""),
+};
 
 type Controller = (typeof CONTROLLERS)[number];
 type Pixel = (typeof PIXELS)[number];
@@ -40,35 +51,37 @@ function BlinkingPixel({ pixel }: { pixel: Pixel }) {
 
   return (
     <motion.span
-      className={styles.pixel}
-      style={{
-        left: pixel.left,
-        top: pixel.top,
-        width: pixel.size,
-        height: pixel.size,
-        background: pixel.color,
-        color: pixel.color,
-        y,
-        opacity,
-      }}
+      className={pixel.isBright ? styles.brightPixel : styles.pixel}
+      style={{ left: pixel.left, top: pixel.top, width: pixel.size, height: pixel.size, y, opacity }}
     />
   );
 }
 
+function PerspectiveFloor() {
+  const scaleY = useLoop([1, floor.growth], { cycles: 2 });
+
+  return (
+    <div className={styles.floor}>
+      <svg className={styles.grid} viewBox="0 0 1000 100" preserveAspectRatio="none">
+        <path d={floor.raysPath} vectorEffect="non-scaling-stroke" />
+      </svg>
+      <motion.svg className={styles.grid} viewBox="0 0 1000 100" preserveAspectRatio="none" style={{ scaleY }}>
+        <path d={floor.rowsPath} vectorEffect="non-scaling-stroke" />
+      </motion.svg>
+      <div className={styles.floorFade} />
+    </div>
+  );
+}
+
 function RetroConsoleScene() {
-  const gridY = useLoop([0, 48], { cycles: 2 });
   const sunScale = useLoop([1, 1.06, 1], { ease: easeInOut });
   const scanY = useLoop(["-10cqh", "110cqh"]);
 
   return (
     <div className={styles.layer} aria-hidden>
       <motion.div className={styles.sun} style={{ scale: sunScale }} />
+      <PerspectiveFloor />
       <div className={styles.horizon} />
-      <div className={styles.floor}>
-        <div className={styles.grid}>
-          <motion.div className={styles.gridLines} style={{ y: gridY }} />
-        </div>
-      </div>
       {PIXELS.map((pixel, index) => (
         <BlinkingPixel key={index} pixel={pixel} />
       ))}

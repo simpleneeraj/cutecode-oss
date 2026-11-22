@@ -11,8 +11,11 @@
   --tray: #1a1a1e;
   --skeleton: rgba(255, 255, 255, 0.1);
   --skeleton-soft: rgba(255, 255, 255, 0.05);
+  --base: #131316;
+  --light-source: rgba(140, 115, 255, 0.12);
+  --corner: rgba(0, 0, 0, 0.55);
 
-  background: #131316;
+  background: var(--base);
 }
 
 .light {
@@ -22,8 +25,11 @@
   --tray: #f7f7f8;
   --skeleton: rgba(19, 19, 22, 0.1);
   --skeleton-soft: rgba(19, 19, 22, 0.05);
+  --base: #f8f8fa;
+  --light-source: rgba(255, 255, 255, 0.95);
+  --corner: rgba(40, 30, 90, 0.08);
 
-  background: #fafafb;
+  background: var(--base);
 }
 
 .transparent {
@@ -37,15 +43,27 @@
   pointer-events: none;
 }
 
+.layer::after {
+  position: absolute;
+  background:
+    radial-gradient(80% 60% at 30% 0%, var(--light-source), transparent 65%),
+    radial-gradient(70% 60% at 100% 100%, var(--corner), transparent 72%);
+  content: "";
+  inset: 0;
+}
+
 .grid {
   position: absolute;
   background-image:
+    radial-gradient(ellipse 70% 60% at 50% 45%, transparent 0%, var(--base) 100%),
     linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
     linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
   background-position: center;
-  background-size: 32px 32px;
+  background-size:
+    100% 100%,
+    32px 32px,
+    32px 32px;
   inset: 0;
-  mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, black 0%, transparent 100%);
 }
 
 .glow {
@@ -91,11 +109,11 @@
 }
 
 .dark .tray {
-  filter: drop-shadow(0 16px 32px rgba(0, 0, 0, 0.5));
+  box-shadow: 0 24px 48px -16px rgba(0, 0, 0, 0.6);
 }
 
 .light .tray {
-  filter: drop-shadow(0 12px 24px rgba(19, 19, 22, 0.08));
+  box-shadow: 0 24px 48px -16px rgba(40, 30, 90, 0.14);
 }
 
 .signIn {
@@ -214,18 +232,18 @@
 }
 
 .dark .pill {
-  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.45));
+  box-shadow: 0 16px 32px -12px rgba(0, 0, 0, 0.55);
 }
 
 .light .pill {
-  filter: drop-shadow(0 8px 20px rgba(19, 19, 22, 0.08));
+  box-shadow: 0 16px 32px -12px rgba(40, 30, 90, 0.14);
 }
 
 .avatar {
   position: relative;
   width: 26px;
   height: 26px;
-  background: linear-gradient(135deg, #6c47ff, #5de3ff);
+  background: linear-gradient(135deg, #8c73ff, #6c47ff);
   border-radius: 50%;
 
   &::after {
@@ -285,92 +303,102 @@
   position: relative;
   z-index: 10;
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: 28px;
+  background: var(--window-fill);
+  box-shadow:
+    0 0 0 0.5px var(--window-edge),
+    0 48px 96px -32px var(--window-shadow);
+  --line-number: var(--window-muted);
 }
 
 .light .window {
-  --line-number: #b7b8c2;
-  background: #ffffff;
-  border: 1px solid rgba(19, 19, 22, 0.06);
-  filter: drop-shadow(0 18px 18px rgba(19, 19, 22, 0.04)) drop-shadow(0 5px 10px rgba(19, 19, 22, 0.05));
+  --window-fill: #ffffff;
+  --window-header: #fbfbfc;
+  --window-edge: rgba(19, 19, 22, 0.14);
+  --window-shine: #ffffff;
+  --window-shadow: rgba(64, 40, 170, 0.24);
+  --window-dot: #e4e4e8;
+  --window-title: #212126;
+  --window-muted: #a3a3ad;
+  --window-divider: rgba(19, 19, 22, 0.06);
+  --window-glow: rgba(108, 71, 255, 0.45);
+  --window-accent: #6c47ff;
 }
 
 .dark .window {
-  --line-number: #42434d;
-  background: #212126;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  filter: drop-shadow(0 0 60px rgba(108, 71, 255, 0.12)) drop-shadow(0 24px 72px rgba(0, 0, 0, 0.6));
+  --window-fill: #1b1b1f;
+  --window-header: #202025;
+  --window-edge: rgba(255, 255, 255, 0.1);
+  --window-shine: rgba(255, 255, 255, 0.12);
+  --window-shadow: rgba(10, 6, 32, 0.78);
+  --window-dot: #35353c;
+  --window-title: #ededf0;
+  --window-muted: #5f5f6b;
+  --window-divider: rgba(255, 255, 255, 0.06);
+  --window-glow: rgba(140, 115, 255, 0.5);
+  --window-accent: #8c73ff;
+}
+
+.window::after {
+  position: absolute;
+  z-index: 40;
+  border-radius: inherit;
+  box-shadow: inset 0 1px 0 var(--window-shine);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+}
+
+.window [style*="--editor-padding"] {
+  --editor-padding: 20px 24px 24px !important;
+}
+
+.window [style*="token-comment"] {
+  font-style: italic;
 }
 
 .topEdge {
   position: absolute;
-  z-index: 20;
+  z-index: 41;
   top: 0;
-  right: 0;
-  left: 0;
+  right: 32px;
+  left: 32px;
   overflow: hidden;
   height: 1px;
-}
-
-.light .topEdge {
-  background: rgba(108, 71, 255, 0.12);
-}
-
-.dark .topEdge {
-  background: rgba(186, 177, 255, 0.1);
+  background: linear-gradient(90deg, transparent, var(--window-glow), transparent);
 }
 
 .sweep {
   position: absolute;
   width: 40%;
-  background: linear-gradient(90deg, transparent, #6c47ff, #bab1ff, #5de3ff, transparent);
+  background: linear-gradient(90deg, transparent, var(--window-accent), transparent);
   inset-block: 0;
 }
 
 .header {
+  position: relative;
   display: grid;
+  height: 44px;
   align-items: center;
-  padding: 12px 16px 11px;
+  padding: 0 20px;
+  background: var(--window-header);
+  box-shadow: inset 0 -0.5px 0 var(--window-divider);
   grid-gap: 12px;
-  grid-template-columns: 60px 1fr 60px;
-}
-
-.light .header {
-  border-bottom: 1px solid rgba(19, 19, 22, 0.06);
-  background: #fafafb;
-}
-
-.dark .header {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  background: #27272d;
+  grid-template-columns: 64px 1fr 64px;
 }
 
 .dots {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
 }
 
 .dot {
-  width: 11px;
-  height: 11px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-}
-
-.light .dot {
-  background: #e3e3e7;
-}
-
-.dark .dot {
-  background: #2f3037;
-}
-
-.light .dot:first-child {
-  background: #6c47ff;
-}
-
-.dark .dot:first-child {
-  background: #9785ff;
+  background: var(--window-dot);
+  box-shadow: inset 0 0 0 0.5px var(--window-edge);
 }
 
 .fileName {
@@ -379,11 +407,12 @@
   height: 16px;
   align-items: center;
   justify-content: center;
-  font-family: var(--code-font, "Geist Mono", monospace);
-  font-size: 12px;
+  color: var(--window-title);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-size: 13px;
   font-weight: 500;
-  letter-spacing: 0.02em;
-  line-height: 12px;
+  letter-spacing: -0.005em;
+  line-height: 16px;
 
   > input {
     position: absolute;
@@ -405,12 +434,4 @@
   > input:focus + span {
     display: none;
   }
-}
-
-.light .fileName {
-  color: #5e5f6e;
-}
-
-.dark .fileName {
-  color: #b7b8c2;
 }

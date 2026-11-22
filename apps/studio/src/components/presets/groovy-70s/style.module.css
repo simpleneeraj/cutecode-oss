@@ -5,11 +5,37 @@
 }
 
 .dark {
-  background: radial-gradient(ellipse at 50% 30%, #3d2614 0%, #2a1a0e 55%, #1a0f08 100%);
+  --window-fill: #1a120d;
+  --window-shadow: rgba(14, 6, 2, 0.94);
+  --window-edge: rgba(250, 214, 170, 0.14);
+  --window-highlight: rgba(255, 232, 204, 0.12);
+  --header-fill: #1f1610;
+  --header-line: rgba(250, 214, 170, 0.07);
+  --dot-fill: rgba(240, 224, 206, 0.13);
+  --dot-edge: rgba(255, 255, 255, 0.06);
+  --file-color: #e6d6c2;
+
+  background:
+    radial-gradient(90% 70% at 50% 30%, rgba(240, 150, 70, 0.16) 0%, transparent 60%),
+    radial-gradient(90% 70% at 100% 100%, rgba(6, 3, 1, 0.6) 0%, transparent 70%),
+    linear-gradient(170deg, #33200f 0%, #24170c 55%, #160d06 100%);
 }
 
 .light {
-  background: radial-gradient(ellipse at 50% 30%, #fff6e6 0%, #fbecd2 55%, #f3d9ae 100%);
+  --window-fill: #fffbf4;
+  --window-shadow: rgba(140, 70, 20, 0.32);
+  --window-edge: rgba(100, 56, 20, 0.16);
+  --window-highlight: rgba(255, 255, 255, 0.9);
+  --header-fill: #fbf4e8;
+  --header-line: rgba(100, 56, 20, 0.09);
+  --dot-fill: rgba(100, 56, 20, 0.12);
+  --dot-edge: rgba(100, 56, 20, 0.1);
+  --file-color: #4d3521;
+
+  background:
+    radial-gradient(90% 70% at 50% 30%, rgba(255, 255, 255, 0.85) 0%, transparent 60%),
+    radial-gradient(90% 70% at 100% 100%, rgba(150, 90, 40, 0.2) 0%, transparent 70%),
+    linear-gradient(170deg, #fdf5e7 0%, #f7ead4 55%, #efdbb9 100%);
 }
 
 .transparent {
@@ -32,16 +58,15 @@
   height: 1400px;
   border-radius: 50%;
   margin: -760px 0 0 -700px;
-  mask-image: radial-gradient(circle, #000 0%, rgba(0, 0, 0, 0.6) 30%, transparent 60%);
   will-change: transform;
 }
 
 .light .sunburst {
-  background: repeating-conic-gradient(rgba(232, 119, 46, 0.12) 0deg 7.5deg, transparent 7.5deg 15deg);
+  background: repeating-conic-gradient(rgba(217, 105, 42, 0.06) 0deg 7.5deg, transparent 7.5deg 15deg);
 }
 
 .dark .sunburst {
-  background: repeating-conic-gradient(rgba(245, 196, 81, 0.07) 0deg 7.5deg, transparent 7.5deg 15deg);
+  background: repeating-conic-gradient(rgba(240, 160, 90, 0.04) 0deg 7.5deg, transparent 7.5deg 15deg);
 }
 
 .sun {
@@ -56,11 +81,11 @@
 }
 
 .light .sun {
-  background: radial-gradient(circle, rgba(245, 180, 60, 0.55) 0%, rgba(232, 119, 46, 0.18) 45%, transparent 70%);
+  background: radial-gradient(circle, rgba(250, 190, 120, 0.5) 0%, rgba(217, 105, 42, 0.14) 45%, transparent 70%);
 }
 
 .dark .sun {
-  background: radial-gradient(circle, rgba(245, 160, 50, 0.3) 0%, rgba(194, 80, 42, 0.1) 45%, transparent 70%);
+  background: radial-gradient(circle, rgba(240, 150, 70, 0.26) 0%, rgba(180, 80, 30, 0.08) 45%, transparent 70%);
 }
 
 .wave {
@@ -106,20 +131,20 @@
 
 .light .mustard,
 .light .crestMustard {
-  fill: #e0a526;
+  fill: #e2c193;
 }
 
 .light .orange,
 .light .crestOrange {
-  fill: #e8772e;
+  fill: #d9692a;
 }
 
 .light .rust {
-  fill: #c2502a;
+  fill: #a5481f;
 }
 
 .light .brown {
-  fill: #7a4a2a;
+  fill: #5a3620;
 }
 
 .light .crestMustard {
@@ -128,20 +153,20 @@
 
 .dark .mustard,
 .dark .crestMustard {
-  fill: #b7841c;
+  fill: #8f6c45;
 }
 
 .dark .orange,
 .dark .crestOrange {
-  fill: #c4611f;
+  fill: #b8561f;
 }
 
 .dark .rust {
-  fill: #9a3d1e;
+  fill: #7e3816;
 }
 
 .dark .brown {
-  fill: #4e2d18;
+  fill: #3a2213;
 }
 
 .dark .wave {
@@ -152,25 +177,6 @@
   opacity: 0.45;
 }
 
-.window {
-  position: relative;
-  z-index: 10;
-  overflow: hidden;
-  border-radius: 22px;
-}
-
-.light .window {
-  border: 5px solid rgba(224, 165, 38, 0.22);
-  background: #fffaf0;
-  filter: drop-shadow(0 16px 44px rgba(122, 74, 42, 0.2));
-}
-
-.dark .window {
-  border: 5px solid rgba(196, 97, 31, 0.18);
-  background: #1f140c;
-  filter: drop-shadow(0 24px 70px rgba(0, 0, 0, 0.7));
-}
-
 .topEdge {
   position: absolute;
   z-index: 20;
@@ -178,8 +184,8 @@
   right: 0;
   left: 0;
   overflow: hidden;
-  height: 4px;
-  background: linear-gradient(180deg, #e0a526 0 25%, #e8772e 25% 50%, #c2502a 50% 75%, #7a4a2a 75% 100%);
+  height: 3px;
+  background: linear-gradient(180deg, #e2c193 0 33%, #d9692a 33% 66%, #8a3e1a 66% 100%);
 }
 
 .sweep {
@@ -189,59 +195,68 @@
   inset-block: 0;
 }
 
+.window {
+  position: relative;
+  z-index: 10;
+  overflow: hidden;
+  border-radius: 28px;
+  background: var(--window-fill);
+  box-shadow: 0 40px 96px -32px var(--window-shadow);
+}
+
+.window::after {
+  position: absolute;
+  z-index: 30;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 0 0 0.5px var(--window-edge),
+    inset 0 1px 0 var(--window-highlight);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+}
+
 .header {
   display: grid;
+  height: 44px;
   align-items: center;
-  padding: 14px 16px 11px;
+  padding: 0 18px;
+  border-bottom: 0.5px solid var(--header-line);
+  background: var(--header-fill);
   grid-gap: 12px;
-  grid-template-columns: 60px 1fr 60px;
+  grid-template-columns: 52px 1fr 52px;
 }
 
-.light .header {
-  border-bottom: 1px solid rgba(122, 74, 42, 0.12);
-  background: #fdf1dc;
-}
-
-.dark .header {
-  border-bottom: 1px solid rgba(245, 196, 81, 0.1);
-  background: #2a1b10;
+.header + * {
+  padding: 8px 8px 12px;
 }
 
 .dots {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
 }
 
 .dot {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-}
-
-.dot:nth-child(1) {
-  background: #c2502a;
-}
-
-.dot:nth-child(2) {
-  background: #e8772e;
-}
-
-.dot:nth-child(3) {
-  background: #e0a526;
+  background: var(--dot-fill);
+  box-shadow: inset 0 0 0 0.5px var(--dot-edge);
 }
 
 .fileName {
   position: relative;
   display: flex;
-  height: 16px;
+  height: 18px;
   align-items: center;
   justify-content: center;
-  font-family: var(--code-font, "Geist Mono", "Courier New", monospace);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  line-height: 12px;
+  color: var(--file-color);
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  line-height: 18px;
 
   > input {
     position: absolute;
@@ -263,12 +278,4 @@
   > input:focus + span {
     display: none;
   }
-}
-
-.light .fileName {
-  color: #5a3518;
-}
-
-.dark .fileName {
-  color: #f2dcb8;
 }

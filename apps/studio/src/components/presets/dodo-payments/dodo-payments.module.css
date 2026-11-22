@@ -5,11 +5,17 @@
 }
 
 .dark {
-  background: #020d08;
+  --light-source: rgba(198, 254, 30, 0.08);
+  --corner: rgba(0, 0, 0, 0.6);
+
+  background: linear-gradient(160deg, #04140c 0%, #020d08 55%, #010604 100%);
 }
 
 .light {
-  background: #f6f7f9;
+  --light-source: rgba(255, 255, 255, 0.95);
+  --corner: rgba(0, 79, 50, 0.1);
+
+  background: linear-gradient(160deg, #fafbfa 0%, #f3f5f3 55%, #e9eeea 100%);
 }
 
 .transparent {
@@ -23,11 +29,19 @@
   pointer-events: none;
 }
 
+.layer::after {
+  position: absolute;
+  background:
+    radial-gradient(80% 60% at 30% 0%, var(--light-source), transparent 65%),
+    radial-gradient(70% 60% at 100% 100%, var(--corner), transparent 72%);
+  content: "";
+  inset: 0;
+}
+
 .auroraLime,
 .auroraGreen {
   position: absolute;
   border-radius: 50%;
-  filter: blur(90px);
   will-change: transform;
 }
 
@@ -65,7 +79,7 @@
   position: absolute;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.09'/%3E%3C/svg%3E");
   inset: 0;
-  mix-blend-mode: overlay;
+  opacity: 0.5;
 }
 
 .card {
@@ -76,26 +90,25 @@
   width: 220px;
   flex-direction: column;
   padding: 18px 20px 20px;
-  border-radius: 16px;
-  backdrop-filter: blur(24px);
-  font-family: ui-sans-serif, system-ui, sans-serif;
+  border-radius: 20px;
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   rotate: 8deg;
 }
 
 .dark .card {
-  border: 1px solid rgba(198, 254, 30, 0.14);
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
+  border: 0.5px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(160deg, #13241b, #0a1811);
   box-shadow:
-    inset 0 1px 0 rgba(198, 254, 30, 0.28),
-    0 30px 60px rgba(0, 0, 0, 0.45);
+    inset 0 1px 0 rgba(230, 255, 200, 0.14),
+    0 32px 64px -20px rgba(0, 0, 0, 0.7);
 }
 
 .light .card {
-  border: 1px solid rgba(0, 79, 50, 0.1);
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.6));
+  border: 0.5px solid rgba(0, 40, 25, 0.14);
+  background: linear-gradient(160deg, #ffffff, #f6f8f6);
   box-shadow:
-    inset 0 1px 0 rgba(198, 254, 30, 0.6),
-    0 30px 60px rgba(0, 79, 50, 0.12);
+    inset 0 1px 0 #ffffff,
+    0 32px 64px -20px rgba(0, 79, 50, 0.22);
 }
 
 .check {
@@ -159,73 +172,102 @@
   position: relative;
   z-index: 10;
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: 28px;
+  background: var(--window-fill);
+  box-shadow:
+    0 0 0 0.5px var(--window-edge),
+    0 48px 96px -32px var(--window-shadow);
+  --line-number: var(--window-muted);
 }
 
 .light .window {
-  background: #ffffff;
-  border: 1px solid rgba(0, 79, 50, 0.12);
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.04)) drop-shadow(0 24px 60px rgba(0, 79, 50, 0.14));
+  --window-fill: #ffffff;
+  --window-header: #fafbfa;
+  --window-edge: rgba(0, 40, 25, 0.14);
+  --window-shine: #ffffff;
+  --window-shadow: rgba(0, 79, 50, 0.24);
+  --window-dot: #dfe5e1;
+  --window-title: #14211b;
+  --window-muted: #9aa6a0;
+  --window-divider: rgba(0, 40, 25, 0.06);
+  --window-glow: rgba(0, 79, 50, 0.35);
+  --window-accent: #1f8a55;
 }
 
 .dark .window {
-  background: rgba(10, 14, 12, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  filter: drop-shadow(0 0 80px rgba(198, 254, 30, 0.05)) drop-shadow(0 30px 80px rgba(0, 0, 0, 0.9));
+  --window-fill: #08140e;
+  --window-header: #0b1812;
+  --window-edge: rgba(255, 255, 255, 0.1);
+  --window-shine: rgba(230, 255, 200, 0.12);
+  --window-shadow: rgba(0, 6, 3, 0.85);
+  --window-dot: #202d26;
+  --window-title: #e8efe9;
+  --window-muted: #55635b;
+  --window-divider: rgba(255, 255, 255, 0.06);
+  --window-glow: rgba(198, 254, 30, 0.4);
+  --window-accent: #c6fe1e;
+}
+
+.window::after {
+  position: absolute;
+  z-index: 40;
+  border-radius: inherit;
+  box-shadow: inset 0 1px 0 var(--window-shine);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+}
+
+.window [style*="--editor-padding"] {
+  --editor-padding: 20px 24px 24px !important;
+}
+
+.window [style*="token-comment"] {
+  font-style: italic;
 }
 
 .topEdge {
   position: absolute;
-  z-index: 20;
+  z-index: 41;
   top: 0;
-  right: 0;
-  left: 0;
+  right: 32px;
+  left: 32px;
   overflow: hidden;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(198, 254, 30, 0.22), transparent);
+  background: linear-gradient(90deg, transparent, var(--window-glow), transparent);
 }
 
 .sweep {
   position: absolute;
-  width: 35%;
-  background: linear-gradient(90deg, transparent, rgba(198, 254, 30, 0.7), transparent);
+  width: 40%;
+  background: linear-gradient(90deg, transparent, var(--window-accent), transparent);
   inset-block: 0;
 }
 
 .header {
+  position: relative;
   display: grid;
+  height: 44px;
   align-items: center;
-  padding: 12px 16px 11px;
+  padding: 0 20px;
+  background: var(--window-header);
+  box-shadow: inset 0 -0.5px 0 var(--window-divider);
   grid-gap: 12px;
-  grid-template-columns: 60px 1fr 60px;
-}
-
-.light .header {
-  border-bottom: 1px solid rgba(0, 79, 50, 0.08);
-}
-
-.dark .header {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  grid-template-columns: 64px 1fr 64px;
 }
 
 .dots {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
 }
 
 .dot {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-}
-
-.dark .dot {
-  background: rgba(255, 255, 255, 0.12);
-}
-
-.light .dot {
-  background: rgba(0, 79, 50, 0.12);
+  background: var(--window-dot);
+  box-shadow: inset 0 0 0 0.5px var(--window-edge);
 }
 
 .fileName {
@@ -234,9 +276,12 @@
   height: 16px;
   align-items: center;
   justify-content: center;
-  font-family: var(--code-font, ui-monospace, monospace);
+  color: var(--window-title);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
   font-size: 13px;
-  line-height: 12px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  line-height: 16px;
 
   > input {
     position: absolute;
@@ -258,12 +303,4 @@
   > input:focus + span {
     display: none;
   }
-}
-
-.light .fileName {
-  color: #344054;
-}
-
-.dark .fileName {
-  color: #a0a0a0;
 }

@@ -5,31 +5,43 @@
 }
 
 .light {
-  --cloud-strength: 0.5;
-  --puff-strength: 0.42;
-  --window-bg: rgba(255, 253, 251, 0.95);
-  --window-ring: rgba(192, 38, 122, 0.12);
-  --window-glow: drop-shadow(0 14px 44px rgba(123, 63, 196, 0.12));
-  --header-bg: rgba(255, 247, 250, 0.92);
-  --header-border: rgba(192, 38, 122, 0.1);
-  --file-color: #a3216a;
-  --edge-bg: rgba(192, 38, 122, 0.16);
+  --cloud-strength: 0.3;
+  --puff-strength: 0.26;
+  --window-fill: #fffcfb;
+  --window-shadow: rgba(150, 40, 96, 0.28);
+  --window-edge: rgba(90, 30, 60, 0.15);
+  --window-highlight: rgba(255, 255, 255, 0.9);
+  --header-fill: #fcf6f6;
+  --header-line: rgba(90, 30, 60, 0.08);
+  --dot-fill: rgba(90, 30, 60, 0.11);
+  --dot-edge: rgba(90, 30, 60, 0.09);
+  --file-color: #4a3440;
+  --edge-bg: rgba(214, 51, 132, 0.14);
 
-  background: radial-gradient(ellipse at 50% 40%, #ffffff 0%, #fff8f3 55%, #fdf0f6 100%);
+  background:
+    radial-gradient(110% 80% at 30% -10%, rgba(255, 255, 255, 0.95) 0%, transparent 55%),
+    radial-gradient(90% 70% at 100% 100%, rgba(150, 90, 110, 0.18) 0%, transparent 70%),
+    linear-gradient(160deg, #fffaf8 0%, #f8f0ef 55%, #efe2e4 100%);
 }
 
 .dark {
-  --cloud-strength: 0.32;
-  --puff-strength: 0.3;
-  --window-bg: #1b1230;
-  --window-ring: rgba(255, 122, 184, 0.14);
-  --window-glow: drop-shadow(0 0 60px rgba(201, 162, 255, 0.1)) drop-shadow(0 24px 75px rgba(0, 0, 0, 0.75));
-  --header-bg: #221839;
-  --header-border: rgba(255, 122, 184, 0.1);
-  --file-color: #ff9ccb;
+  --cloud-strength: 0.22;
+  --puff-strength: 0.2;
+  --window-fill: #150f15;
+  --window-shadow: rgba(10, 2, 8, 0.92);
+  --window-edge: rgba(255, 190, 220, 0.13);
+  --window-highlight: rgba(255, 226, 240, 0.12);
+  --header-fill: #1a131a;
+  --header-line: rgba(255, 190, 220, 0.07);
+  --dot-fill: rgba(240, 226, 234, 0.13);
+  --dot-edge: rgba(255, 255, 255, 0.06);
+  --file-color: #e6d6de;
   --edge-bg: rgba(255, 122, 184, 0.12);
 
-  background: radial-gradient(ellipse at 50% 40%, #2a1b47 0%, #1a1030 55%, #110a22 100%);
+  background:
+    radial-gradient(110% 80% at 30% -10%, rgba(255, 150, 200, 0.1) 0%, transparent 55%),
+    radial-gradient(90% 70% at 100% 100%, rgba(3, 1, 3, 0.7) 0%, transparent 70%),
+    linear-gradient(160deg, #211821 0%, #171117 55%, #0e0a0e 100%);
 }
 
 .transparent {
@@ -43,28 +55,16 @@
   pointer-events: none;
 }
 
-.pink {
+.rose {
   --tone: 255, 92, 168;
 }
 
-.yellow {
-  --tone: 255, 200, 40;
+.blush {
+  --tone: 255, 158, 200;
 }
 
-.teal {
-  --tone: 32, 201, 190;
-}
-
-.violet {
-  --tone: 150, 100, 255;
-}
-
-.orange {
-  --tone: 255, 138, 60;
-}
-
-.green {
-  --tone: 110, 214, 90;
+.deep {
+  --tone: 214, 51, 132;
 }
 
 .cloud {
@@ -97,17 +97,7 @@
 }
 
 .dark .speck {
-  filter: drop-shadow(0 0 6px rgba(var(--tone), 0.7));
-}
-
-.window {
-  position: relative;
-  z-index: 10;
-  overflow: hidden;
-  border-radius: 20px;
-  border: 1px solid var(--window-ring);
-  background: var(--window-bg);
-  filter: var(--window-glow);
+  box-shadow: 0 0 6px rgba(var(--tone), 0.6);
 }
 
 .topEdge {
@@ -124,71 +114,72 @@
 .sweep {
   position: absolute;
   width: 40%;
-  background: linear-gradient(90deg, transparent, #ff5ca8, #ffc828, #20c9be, #9664ff, transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 92, 168, 0.7), #ffd6ea, rgba(255, 92, 168, 0.7), transparent);
   inset-block: 0;
+}
+
+.window {
+  position: relative;
+  z-index: 10;
+  overflow: hidden;
+  border-radius: 28px;
+  background: var(--window-fill);
+  box-shadow: 0 40px 96px -32px var(--window-shadow);
+}
+
+.window::after {
+  position: absolute;
+  z-index: 30;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 0 0 0.5px var(--window-edge),
+    inset 0 1px 0 var(--window-highlight);
+  content: "";
+  inset: 0;
+  pointer-events: none;
 }
 
 .header {
   display: grid;
+  height: 44px;
   align-items: center;
-  padding: 12px 16px 11px;
-  border-bottom: 1px solid var(--header-border);
-  background: var(--header-bg);
+  padding: 0 18px;
+  border-bottom: 0.5px solid var(--header-line);
+  background: var(--header-fill);
   grid-gap: 12px;
-  grid-template-columns: 60px 1fr 60px;
+  grid-template-columns: 52px 1fr 52px;
+}
+
+.header + * {
+  padding: 8px 8px 12px;
 }
 
 .dots {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
 }
 
 .dot {
-  position: relative;
-  width: 13px;
-  height: 13px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-}
-
-.dot::after {
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.55);
-  content: "";
-}
-
-.dot:nth-child(1) {
-  background: radial-gradient(circle at 35% 35%, #ffa3cf, #e0338a);
-  filter: drop-shadow(0 1px 4px rgba(224, 51, 138, 0.45));
-}
-
-.dot:nth-child(2) {
-  background: radial-gradient(circle at 35% 35%, #ffe28a, #f0a800);
-  filter: drop-shadow(0 1px 4px rgba(240, 168, 0, 0.45));
-}
-
-.dot:nth-child(3) {
-  background: radial-gradient(circle at 35% 35%, #8ff0e6, #14a89e);
-  filter: drop-shadow(0 1px 4px rgba(20, 168, 158, 0.45));
+  background: var(--dot-fill);
+  box-shadow: inset 0 0 0 0.5px var(--dot-edge);
 }
 
 .fileName {
   position: relative;
   display: flex;
-  height: 16px;
+  height: 18px;
   align-items: center;
   justify-content: center;
   color: var(--file-color);
-  font-family: var(--code-font, "Geist Mono", "Courier New", monospace);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  line-height: 12px;
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  line-height: 18px;
 
   > input {
     position: absolute;

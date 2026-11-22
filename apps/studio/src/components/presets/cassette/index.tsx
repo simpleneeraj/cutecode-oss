@@ -11,8 +11,6 @@ const BARS = Array.from({ length: 14 }, (_, index) => ({
   phase: ((index * 5) % 14) / 14,
 }));
 
-const SHAPE_TONES = [styles.pink, styles.cyan, styles.violet, styles.amber];
-
 const SHAPES = [
   { id: "shape-ring", x: 8, y: 14, size: 24, path: "M12 3a9 9 0 1 1 0 18 9 9 0 0 1 0-18z" },
   { id: "shape-squiggle", x: 44, y: 5, size: 32, path: "M2 14c3-6 5-6 7 0s4 6 7 0 4-6 6 0" },
@@ -21,7 +19,7 @@ const SHAPES = [
   { id: "shape-dot", x: 94, y: 70, size: 16, path: "M12 6a6 6 0 1 1 0 12 6 6 0 0 1 0-12z" },
   { id: "shape-zigzag", x: 3, y: 48, size: 24, path: "M2 16l5-8 5 8 5-8 5 8" },
   { id: "shape-arc", x: 24, y: 4, size: 24, path: "M4 18a8 8 0 0 1 16 0" },
-].map((shape, index) => ({ ...shape, tone: SHAPE_TONES[index % SHAPE_TONES.length] }));
+];
 
 const SPARKLES = [
   { id: "sparkle-a", x: 18, y: 8, size: 16 },
@@ -55,7 +53,7 @@ function FloatingShape({ shape, index }: { shape: Shape; index: number }) {
 
   return (
     <motion.svg
-      className={cn(styles.shape, shape.tone)}
+      className={styles.shape}
       viewBox="0 0 24 24"
       width={shape.size}
       height={shape.size}
@@ -117,7 +115,7 @@ function CassetteScene() {
     <div className={styles.layer} aria-hidden>
       <div className={styles.stars} />
       <motion.div className={styles.blobPink} style={{ x: driftX, y: driftY }} />
-      <motion.div className={styles.blobCyan} style={{ x: driftY, y: driftX }} />
+      <motion.div className={styles.blobLilac} style={{ x: driftY, y: driftX }} />
       {SPARKLES.map((sparkle, index) => (
         <TwinkleSparkle key={sparkle.id} sparkle={sparkle} index={index} />
       ))}

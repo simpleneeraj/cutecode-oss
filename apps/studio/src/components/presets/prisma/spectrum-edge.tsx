@@ -7,11 +7,8 @@ export default function SpectrumEdge() {
   const opacity = useLoop([1, 1, 0, 0, 1]);
 
   return (
-    <>
-      <div className={styles.frameBorder} aria-hidden />
-      <div className={styles.topEdge} aria-hidden>
-        <motion.div className={styles.sweep} style={{ x, opacity }} />
-      </div>
-    </>
+    <div className={styles.topEdge} aria-hidden>
+      <motion.div className={styles.sweep} style={{ x, opacity }} />
+    </div>
   );
 }

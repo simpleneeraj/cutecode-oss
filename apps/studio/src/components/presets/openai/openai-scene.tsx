@@ -14,7 +14,7 @@ type Field = {
 const FIELDS: Field[] = [
   { id: "blue", className: styles.blue, x: ["0%", "8%", "-4%", "0%"], y: ["0%", "-6%", "6%", "0%"], phase: 0 },
   { id: "cyan", className: styles.cyan, x: ["0%", "-10%", "4%", "0%"], y: ["0%", "4%", "-8%", "0%"], phase: 0.25 },
-  { id: "violet", className: styles.violet, x: ["0%", "6%", "10%", "0%"], y: ["0%", "8%", "-4%", "0%"], phase: 0.5 },
+  { id: "indigo", className: styles.indigo, x: ["0%", "6%", "10%", "0%"], y: ["0%", "8%", "-4%", "0%"], phase: 0.5 },
   { id: "green", className: styles.green, x: ["0%", "-6%", "-10%", "0%"], y: ["0%", "-8%", "4%", "0%"], phase: 0.75 },
 ];
 

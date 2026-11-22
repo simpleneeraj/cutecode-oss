@@ -25,13 +25,13 @@ const STRAND = Array.from({ length: 4 }, (_, index) => ({
 }));
 
 const LANTERNS = [
-  { id: "lantern-left", x: 14, drop: 6, phase: 0, tone: styles.magenta },
+  { id: "lantern-left", x: 14, drop: 6, phase: 0, tone: styles.ivory },
   { id: "lantern-right", x: 86, drop: 12, phase: 0.5, tone: styles.amber },
 ];
 
 const BURSTS = [
   { id: "burst-left", x: 28, y: 26, size: 16, phase: 0, tone: styles.goldBurst },
-  { id: "burst-right", x: 72, y: 22, size: 20, phase: 0.36, tone: styles.magentaBurst },
+  { id: "burst-right", x: 72, y: 22, size: 20, phase: 0.36, tone: styles.paleBurst },
   { id: "burst-top", x: 50, y: 12, size: 12, phase: 0.68, tone: styles.saffronBurst },
 ];
 

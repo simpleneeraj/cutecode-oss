@@ -5,11 +5,29 @@
 }
 
 .dark {
-  background: radial-gradient(ellipse at 70% 0%, #1a2a5e 0%, #0d1b3e 40%, #060818 100%);
+  --window-fill: #0b1024;
+  --window-ink: 228 234 250;
+  --window-accent: 147 168 255;
+  --window-shadow: rgba(2, 6, 30, 0.88);
+  --window-highlight: rgba(255, 255, 255, 0.14);
+
+  background:
+    radial-gradient(90% 65% at 72% 0%, rgba(96, 120, 220, 0.28), transparent 64%),
+    radial-gradient(75% 65% at 0% 100%, rgba(0, 0, 0, 0.55), transparent 72%),
+    linear-gradient(180deg, #0e1838 0%, #0a1230 50%, #050816 100%);
 }
 
 .light {
-  background: radial-gradient(ellipse at 70% 0%, #ffffff 0%, #eef2ff 45%, #dfe6ff 100%);
+  --window-fill: #fcfcff;
+  --window-ink: 22 28 56;
+  --window-accent: 52 70 184;
+  --window-shadow: rgba(40, 52, 140, 0.24);
+  --window-highlight: rgba(255, 255, 255, 0.95);
+
+  background:
+    radial-gradient(90% 65% at 72% 0%, rgba(255, 255, 255, 1), transparent 64%),
+    radial-gradient(75% 65% at 0% 100%, rgba(40, 50, 120, 0.12), transparent 72%),
+    linear-gradient(180deg, #f2f4ff 0%, #e8ecfb 55%, #dde3f6 100%);
 }
 
 .transparent {
@@ -46,8 +64,8 @@
 }
 
 .dark .nebulaA {
-  background: #4c1d95;
-  opacity: 0.35;
+  background: #3846a8;
+  opacity: 0.32;
 }
 
 .dark .nebulaB {
@@ -56,8 +74,8 @@
 }
 
 .light .nebulaA {
-  background: #c4b5fd;
-  opacity: 0.45;
+  background: #c7d2fe;
+  opacity: 0.5;
 }
 
 .light .nebulaB {
@@ -71,21 +89,21 @@
 }
 
 .dark .star {
-  background: #e8f4fd;
-  filter: drop-shadow(0 0 5px rgba(232, 244, 253, 0.85));
+  background: #eef2ff;
+  box-shadow: 0 0 4px rgba(224, 231, 255, 0.7);
 }
 
-.dark .star:nth-child(4n) {
-  background: #fde68a;
-  filter: drop-shadow(0 0 5px rgba(251, 191, 36, 0.8));
+.dark .star:nth-child(6n) {
+  background: #f5e6b8;
+  box-shadow: 0 0 4px rgba(245, 230, 184, 0.6);
 }
 
 .light .star {
   background: #3b4a8a;
 }
 
-.light .star:nth-child(4n) {
-  background: #d29b1a;
+.light .star:nth-child(6n) {
+  background: #a87f1c;
 }
 
 .meteor {
@@ -98,8 +116,7 @@
 }
 
 .dark .meteor {
-  background: linear-gradient(90deg, transparent, rgba(232, 244, 253, 0.9));
-  filter: drop-shadow(0 0 8px rgba(232, 244, 253, 0.6));
+  background: linear-gradient(90deg, transparent, rgba(238, 242, 255, 0.95));
 }
 
 .light .meteor {
@@ -118,13 +135,13 @@
 }
 
 .dark .constellation {
-  fill: #fde68a;
-  stroke: rgba(253, 230, 138, 0.45);
+  fill: #eef2ff;
+  stroke: rgba(199, 210, 254, 0.35);
 }
 
 .light .constellation {
-  fill: #6d5bd0;
-  stroke: rgba(109, 91, 208, 0.35);
+  fill: #3446b8;
+  stroke: rgba(52, 70, 184, 0.3);
 }
 
 .moon {
@@ -146,121 +163,82 @@
 }
 
 .dark .moon {
-  color: #fde68a;
+  color: #f5e6b8;
 }
 
 .dark .moonGlow {
-  background: rgba(251, 191, 36, 0.25);
+  background: rgba(245, 230, 184, 0.2);
 }
 
 .light .moon {
-  color: #6d5bd0;
-  opacity: 0.6;
+  color: #3446b8;
+  opacity: 0.55;
 }
 
 .light .moonGlow {
-  background: rgba(196, 181, 253, 0.45);
+  background: rgba(199, 210, 254, 0.6);
 }
+
 
 .window {
   position: relative;
   z-index: 10;
   overflow: hidden;
-  border-radius: 20px;
-}
+  border-radius: 28px;
+  background: var(--window-fill);
+  box-shadow:
+    inset 0 1px 0 var(--window-highlight),
+    0 0 0 0.5px rgb(var(--window-ink) / 0.12),
+    0 48px 96px -32px var(--window-shadow);
 
-.dark .window {
-  border: 1px solid rgba(96, 165, 250, 0.16);
-  background: #070b1f;
-  filter: drop-shadow(0 0 60px rgba(76, 29, 149, 0.18)) drop-shadow(0 24px 75px rgba(0, 0, 0, 0.8));
-}
-
-.light .window {
-  border: 1px solid rgba(29, 78, 216, 0.1);
-  background: rgba(253, 253, 255, 0.95);
-  filter: drop-shadow(0 12px 40px rgba(29, 78, 216, 0.12));
+  > :last-child {
+    padding: 4px 8px 8px;
+  }
 }
 
 .topEdge {
   position: absolute;
   z-index: 20;
   top: 0;
-  right: 0;
-  left: 0;
+  right: 28px;
+  left: 28px;
+  display: flex;
   overflow: hidden;
-  height: 2px;
-}
-
-.dark .topEdge {
-  background: rgba(96, 165, 250, 0.12);
-}
-
-.light .topEdge {
-  background: rgba(96, 165, 250, 0.2);
+  height: 1px;
+  justify-content: center;
+  background: linear-gradient(90deg, transparent, var(--window-highlight), transparent);
 }
 
 .sweep {
   position: absolute;
   width: 40%;
-  background: linear-gradient(90deg, transparent, #a78bfa, #60a5fa, #fde68a, transparent);
+  background: linear-gradient(90deg, transparent, rgb(var(--window-accent) / 0.85), transparent);
   inset-block: 0;
 }
 
 .header {
+  position: relative;
   display: grid;
+  height: 44px;
   align-items: center;
-  padding: 12px 16px 11px;
+  padding: 0 18px;
+  border-bottom: 0.5px solid rgb(var(--window-ink) / 0.08);
   grid-gap: 12px;
-  grid-template-columns: 60px 1fr 60px;
-}
-
-.dark .header {
-  border-bottom: 1px solid rgba(96, 165, 250, 0.1);
-  background: #0c1330;
-}
-
-.light .header {
-  border-bottom: 1px solid rgba(29, 78, 216, 0.08);
-  background: rgba(240, 244, 255, 0.9);
+  grid-template-columns: 56px 1fr 56px;
 }
 
 .dots {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
 }
 
 .dot {
-  position: relative;
-  width: 13px;
-  height: 13px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-}
-
-.dot::after {
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.5);
-  content: "";
-}
-
-.dot:nth-child(1) {
-  background: radial-gradient(circle at 35% 35%, #fde68a, #d29b1a);
-  filter: drop-shadow(0 1px 4px rgba(210, 155, 26, 0.5));
-}
-
-.dot:nth-child(2) {
-  background: radial-gradient(circle at 35% 35%, #93c5fd, #1d4ed8);
-  filter: drop-shadow(0 1px 4px rgba(29, 78, 216, 0.5));
-}
-
-.dot:nth-child(3) {
-  background: radial-gradient(circle at 35% 35%, #c4b5fd, #6d28d9);
-  filter: drop-shadow(0 1px 4px rgba(109, 40, 217, 0.45));
+  background: rgb(var(--window-ink) / 0.14);
+  box-shadow: inset 0 0 0 0.5px rgb(var(--window-ink) / 0.12);
 }
 
 .fileName {
@@ -269,11 +247,12 @@
   height: 16px;
   align-items: center;
   justify-content: center;
-  font-family: var(--code-font, "Geist Mono", "Courier New", monospace);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  line-height: 12px;
+  color: rgb(var(--window-ink) / 0.42);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  line-height: 16px;
 
   > input {
     position: absolute;
@@ -281,7 +260,7 @@
     border: none;
     margin: 0;
     background-color: transparent;
-    color: inherit;
+    color: rgb(var(--window-ink) / 0.8);
     font: inherit;
     inset: 0;
     letter-spacing: inherit;
@@ -295,12 +274,4 @@
   > input:focus + span {
     display: none;
   }
-}
-
-.dark .fileName {
-  color: #93c5fd;
-}
-
-.light .fileName {
-  color: #1d4ed8;
 }

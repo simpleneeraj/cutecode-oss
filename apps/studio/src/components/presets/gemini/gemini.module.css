@@ -5,11 +5,17 @@
 }
 
 .dark {
+  --light-source: rgba(160, 190, 255, 0.1);
+  --corner: rgba(0, 0, 0, 0.55);
+
   background: radial-gradient(ellipse at 30% 0%, #1b2140 0%, #0e1016 60%, #0a0b10 100%);
 }
 
 .light {
-  background: radial-gradient(ellipse at 30% 0%, #e8efff 0%, #f6f7fd 55%, #fdfbff 100%);
+  --light-source: rgba(255, 255, 255, 0.9);
+  --corner: rgba(40, 50, 120, 0.1);
+
+  background: radial-gradient(ellipse at 30% 0%, #e8efff 0%, #f4f5fc 55%, #eceaf6 100%);
 }
 
 .transparent {
@@ -23,12 +29,20 @@
   pointer-events: none;
 }
 
+.layer::after {
+  position: absolute;
+  background:
+    radial-gradient(80% 60% at 30% 0%, var(--light-source), transparent 65%),
+    radial-gradient(70% 60% at 100% 100%, var(--corner), transparent 72%);
+  content: "";
+  inset: 0;
+}
+
 .orbBlue,
 .orbViolet,
 .orbRose {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
 }
 
 .orbBlue {
@@ -36,7 +50,7 @@
   left: -100px;
   width: 380px;
   height: 380px;
-  background: #4f8cff;
+  background: radial-gradient(circle, #4f8cff 0%, rgba(79, 140, 255, 0.4) 35%, transparent 70%);
 }
 
 .orbViolet {
@@ -44,7 +58,7 @@
   bottom: -130px;
   width: 400px;
   height: 400px;
-  background: #9b72cb;
+  background: radial-gradient(circle, #9b72cb 0%, rgba(155, 114, 203, 0.4) 35%, transparent 70%);
 }
 
 .orbRose {
@@ -52,7 +66,7 @@
   right: -60px;
   width: 220px;
   height: 220px;
-  background: #d96570;
+  background: radial-gradient(circle, #d96570 0%, rgba(217, 101, 112, 0.35) 35%, transparent 70%);
 }
 
 .dark .orbBlue {
@@ -64,7 +78,7 @@
 }
 
 .dark .orbRose {
-  opacity: 0.14;
+  opacity: 0.1;
 }
 
 .light .orbBlue {
@@ -76,7 +90,7 @@
 }
 
 .light .orbRose {
-  opacity: 0.16;
+  opacity: 0.1;
 }
 
 .halo {
@@ -88,7 +102,7 @@
   margin-left: -65%;
   aspect-ratio: 1;
   border-radius: 50%;
-  mask-image: radial-gradient(circle, transparent 46%, black 54%, transparent 70%);
+  opacity: 0.5;
 }
 
 .dark .halo {
@@ -182,90 +196,102 @@
   position: relative;
   z-index: 10;
   overflow: hidden;
-  border-radius: 22px;
-}
-
-.dark .window {
-  --line-number: rgba(171, 178, 191, 0.3);
-
-  background: #16181d;
-  border: 1px solid rgba(155, 180, 255, 0.12);
-  filter: drop-shadow(0 0 70px rgba(79, 140, 255, 0.1)) drop-shadow(0 24px 72px rgba(0, 0, 0, 0.6));
+  border-radius: 28px;
+  background: var(--window-fill);
+  box-shadow:
+    0 0 0 0.5px var(--window-edge),
+    0 48px 96px -32px var(--window-shadow);
+  --line-number: var(--window-muted);
 }
 
 .light .window {
-  --line-number: rgba(55, 71, 79, 0.35);
+  --window-fill: #ffffff;
+  --window-header: #fbfcff;
+  --window-edge: rgba(30, 40, 90, 0.13);
+  --window-shine: #ffffff;
+  --window-shadow: rgba(60, 90, 200, 0.24);
+  --window-dot: #e2e5ee;
+  --window-title: #1f2433;
+  --window-muted: #a2a8b8;
+  --window-divider: rgba(30, 40, 90, 0.06);
+  --window-glow: rgba(79, 140, 255, 0.45);
+  --window-accent: #4f8cff;
+}
 
-  background: #ffffff;
-  border: 1px solid rgba(79, 110, 237, 0.14);
-  filter: drop-shadow(0 14px 44px rgba(79, 110, 237, 0.12)) drop-shadow(0 2px 8px rgba(155, 114, 203, 0.06));
+.dark .window {
+  --window-fill: #12141b;
+  --window-header: #161821;
+  --window-edge: rgba(255, 255, 255, 0.1);
+  --window-shine: rgba(200, 215, 255, 0.12);
+  --window-shadow: rgba(4, 6, 22, 0.82);
+  --window-dot: #2c303d;
+  --window-title: #e7eaf2;
+  --window-muted: #5b6173;
+  --window-divider: rgba(255, 255, 255, 0.06);
+  --window-glow: rgba(138, 180, 255, 0.45);
+  --window-accent: #8ab4ff;
+}
+
+.window::after {
+  position: absolute;
+  z-index: 40;
+  border-radius: inherit;
+  box-shadow: inset 0 1px 0 var(--window-shine);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+}
+
+.window [style*="--editor-padding"] {
+  --editor-padding: 20px 24px 24px !important;
+}
+
+.window [style*="token-comment"] {
+  font-style: italic;
 }
 
 .topEdge {
   position: absolute;
-  z-index: 20;
+  z-index: 41;
   top: 0;
-  right: 0;
-  left: 0;
+  right: 32px;
+  left: 32px;
   overflow: hidden;
-  height: 2px;
-}
-
-.dark .topEdge {
-  background: rgba(155, 180, 255, 0.08);
-}
-
-.light .topEdge {
-  background: rgba(79, 110, 237, 0.12);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--window-glow), transparent);
 }
 
 .sweep {
   position: absolute;
-  width: 45%;
-  background: linear-gradient(90deg, transparent, #4f8cff, #9b72cb, #d96570, transparent);
+  width: 40%;
+  background: linear-gradient(90deg, transparent, var(--window-accent), transparent);
   inset-block: 0;
 }
 
 .header {
+  position: relative;
   display: grid;
+  height: 44px;
   align-items: center;
-  padding: 12px 16px 11px;
+  padding: 0 20px;
+  background: var(--window-header);
+  box-shadow: inset 0 -0.5px 0 var(--window-divider);
   grid-gap: 12px;
-  grid-template-columns: 60px 1fr 60px;
-}
-
-.dark .header {
-  border-bottom: 1px solid #262a33;
-  background: #1b1e25;
-}
-
-.light .header {
-  border-bottom: 1px solid #e8ebf5;
-  background: #f7f8fd;
+  grid-template-columns: 64px 1fr 64px;
 }
 
 .dots {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
 }
 
 .dot {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-}
-
-.dot:nth-child(1) {
-  background: linear-gradient(135deg, #6fa1ff, #4f6bed);
-}
-
-.dot:nth-child(2) {
-  background: linear-gradient(135deg, #b48ee0, #8a5fc4);
-}
-
-.dot:nth-child(3) {
-  background: linear-gradient(135deg, #ee8a93, #d96570);
+  background: var(--window-dot);
+  box-shadow: inset 0 0 0 0.5px var(--window-edge);
 }
 
 .fileName {
@@ -274,11 +300,12 @@
   height: 16px;
   align-items: center;
   justify-content: center;
-  font-family: var(--code-font, "Google Sans Code", monospace);
-  font-size: 12px;
+  color: var(--window-title);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-size: 13px;
   font-weight: 500;
-  letter-spacing: 0.03em;
-  line-height: 12px;
+  letter-spacing: -0.005em;
+  line-height: 16px;
 
   > input {
     position: absolute;
@@ -300,12 +327,4 @@
   > input:focus + span {
     display: none;
   }
-}
-
-.dark .fileName {
-  color: #a8c7fa;
-}
-
-.light .fileName {
-  color: #1967d2;
 }

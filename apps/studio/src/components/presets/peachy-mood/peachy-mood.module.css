@@ -5,11 +5,29 @@
 }
 
 .dark {
-  background: radial-gradient(ellipse at 80% 100%, #3a1608 0%, #1c0903 55%, #110501 100%);
+  --window-fill: #1b100d;
+  --window-ink: 250 234 226;
+  --window-accent: 255 158 122;
+  --window-shadow: rgba(36, 12, 6, 0.88);
+  --window-highlight: rgba(255, 255, 255, 0.14);
+
+  background:
+    radial-gradient(90% 65% at 30% 0%, rgba(255, 150, 110, 0.2), transparent 64%),
+    radial-gradient(75% 65% at 100% 100%, rgba(0, 0, 0, 0.5), transparent 72%),
+    linear-gradient(180deg, #2c1712 0%, #21110d 55%, #120907 100%);
 }
 
 .light {
-  background: radial-gradient(ellipse at 80% 100%, #ffd9c2 0%, #ffe9dc 45%, #fff6f0 100%);
+  --window-fill: #fffbf9;
+  --window-ink: 60 30 20;
+  --window-accent: 180 74 34;
+  --window-shadow: rgba(200, 100, 70, 0.22);
+  --window-highlight: rgba(255, 255, 255, 0.95);
+
+  background:
+    radial-gradient(90% 65% at 30% 0%, rgba(255, 255, 255, 0.95), transparent 64%),
+    radial-gradient(75% 65% at 100% 100%, rgba(170, 80, 50, 0.12), transparent 72%),
+    linear-gradient(180deg, #fff3ec 0%, #fde6da 55%, #f6d8c9 100%);
 }
 
 .transparent {
@@ -61,7 +79,7 @@
 }
 
 .dark .blobB {
-  background: #e11d48;
+  background: #e8795a;
   opacity: 0.1;
 }
 
@@ -82,12 +100,12 @@
 }
 
 .light .orb {
-  background: radial-gradient(circle at 40% 35%, #ffedd5 0%, #fdba74 45%, #fb923c 75%, rgba(251, 146, 60, 0) 100%);
+  background: radial-gradient(circle at 38% 32%, #fff5ec 0%, #ffc9ab 40%, #f79a74 72%, rgba(247, 154, 116, 0) 100%);
   opacity: 0.85;
 }
 
 .dark .orb {
-  background: radial-gradient(circle at 40% 35%, #fdba74 0%, #ea580c 50%, rgba(194, 65, 12, 0) 100%);
+  background: radial-gradient(circle at 38% 32%, #ffd2bd 0%, #e6774f 50%, rgba(180, 74, 34, 0) 100%);
   opacity: 0.4;
 }
 
@@ -98,11 +116,11 @@
 }
 
 .light .ripple {
-  border: 1.5px solid rgba(249, 115, 22, 0.45);
+  border: 1px solid rgba(180, 74, 34, 0.35);
 }
 
 .dark .ripple {
-  border: 1.5px solid rgba(253, 186, 116, 0.35);
+  border: 1px solid rgba(255, 198, 174, 0.3);
 }
 
 .petal {
@@ -112,12 +130,12 @@
 }
 
 .light .petal {
-  background: linear-gradient(135deg, #fecaca, #fdba74);
+  background: linear-gradient(135deg, #ffe4d6, #f7a584);
+  box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 .dark .petal {
-  background: linear-gradient(135deg, #fdba74, #c2410c);
-  opacity: 0.6;
+  background: linear-gradient(135deg, #ffc6ae, #b44a22);
 }
 
 .floater {
@@ -127,115 +145,75 @@
 }
 
 .light .floater {
-  color: #ea580c;
-  opacity: 0.4;
+  color: #b44a22;
+  opacity: 0.32;
 }
 
 .dark .floater {
-  color: #fdba74;
-  filter: drop-shadow(0 0 8px rgba(251, 146, 60, 0.45));
-  opacity: 0.3;
+  color: #ffc6ae;
+  opacity: 0.28;
 }
+
 
 .window {
   position: relative;
   z-index: 10;
   overflow: hidden;
-  border-radius: 20px;
-}
+  border-radius: 28px;
+  background: var(--window-fill);
+  box-shadow:
+    inset 0 1px 0 var(--window-highlight),
+    0 0 0 0.5px rgb(var(--window-ink) / 0.12),
+    0 48px 96px -32px var(--window-shadow);
 
-.light .window {
-  border: 1px solid rgba(251, 146, 60, 0.16);
-  background: rgba(255, 252, 249, 0.95);
-  filter: drop-shadow(0 12px 40px rgba(234, 88, 12, 0.1));
-}
-
-.dark .window {
-  border: 1px solid rgba(251, 146, 60, 0.16);
-  background: #160600;
-  filter: drop-shadow(0 0 50px rgba(234, 88, 12, 0.08)) drop-shadow(0 24px 70px rgba(0, 0, 0, 0.8));
+  > :last-child {
+    padding: 4px 8px 8px;
+  }
 }
 
 .topEdge {
   position: absolute;
   z-index: 20;
   top: 0;
-  right: 0;
-  left: 0;
+  right: 28px;
+  left: 28px;
+  display: flex;
   overflow: hidden;
-  height: 2px;
-}
-
-.light .topEdge {
-  background: rgba(253, 186, 116, 0.35);
-}
-
-.dark .topEdge {
-  background: rgba(251, 146, 60, 0.15);
+  height: 1px;
+  justify-content: center;
+  background: linear-gradient(90deg, transparent, var(--window-highlight), transparent);
 }
 
 .sweep {
   position: absolute;
   width: 40%;
-  background: linear-gradient(90deg, transparent, #fb923c, #fecaca, #fdba74, transparent);
+  background: linear-gradient(90deg, transparent, rgb(var(--window-accent) / 0.85), transparent);
   inset-block: 0;
 }
 
 .header {
+  position: relative;
   display: grid;
+  height: 44px;
   align-items: center;
-  padding: 12px 16px 11px;
+  padding: 0 18px;
+  border-bottom: 0.5px solid rgb(var(--window-ink) / 0.08);
   grid-gap: 12px;
-  grid-template-columns: 60px 1fr 60px;
-}
-
-.light .header {
-  border-bottom: 1px solid rgba(251, 146, 60, 0.14);
-  background: rgba(255, 245, 238, 0.9);
-}
-
-.dark .header {
-  border-bottom: 1px solid rgba(251, 146, 60, 0.1);
-  background: #200a00;
+  grid-template-columns: 56px 1fr 56px;
 }
 
 .dots {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
 }
 
 .dot {
-  position: relative;
-  width: 13px;
-  height: 13px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-}
-
-.dot::after {
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.6);
-  content: "";
-}
-
-.dot:nth-child(1) {
-  background: radial-gradient(circle at 35% 35%, #fdba74, #ea580c);
-  filter: drop-shadow(0 1px 4px rgba(234, 88, 12, 0.5));
-}
-
-.dot:nth-child(2) {
-  background: radial-gradient(circle at 35% 35%, #fecdd3, #fb7185);
-  filter: drop-shadow(0 1px 4px rgba(251, 113, 133, 0.5));
-}
-
-.dot:nth-child(3) {
-  background: radial-gradient(circle at 35% 35%, #fed7aa, #f97316);
-  filter: drop-shadow(0 1px 4px rgba(249, 115, 22, 0.45));
+  background: rgb(var(--window-ink) / 0.14);
+  box-shadow: inset 0 0 0 0.5px rgb(var(--window-ink) / 0.12);
 }
 
 .fileName {
@@ -244,11 +222,12 @@
   height: 16px;
   align-items: center;
   justify-content: center;
-  font-family: var(--code-font, "Fira Code", "Courier New", monospace);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  line-height: 12px;
+  color: rgb(var(--window-ink) / 0.42);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  line-height: 16px;
 
   > input {
     position: absolute;
@@ -256,7 +235,7 @@
     border: none;
     margin: 0;
     background-color: transparent;
-    color: inherit;
+    color: rgb(var(--window-ink) / 0.8);
     font: inherit;
     inset: 0;
     letter-spacing: inherit;
@@ -270,12 +249,4 @@
   > input:focus + span {
     display: none;
   }
-}
-
-.light .fileName {
-  color: #c2410c;
-}
-
-.dark .fileName {
-  color: #fdba74;
 }

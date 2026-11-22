@@ -5,11 +5,29 @@
 }
 
 .dark {
-  background: linear-gradient(180deg, #0d0018 0%, #1a0230 50%, #08000c 100%);
+  --window-fill: #120818;
+  --window-ink: 240 228 246;
+  --window-accent: 255 111 181;
+  --window-shadow: rgba(70, 0, 44, 0.85);
+  --window-highlight: rgba(255, 255, 255, 0.14);
+
+  background:
+    radial-gradient(90% 65% at 70% 0%, rgba(255, 64, 160, 0.22), transparent 64%),
+    radial-gradient(75% 65% at 0% 100%, rgba(0, 0, 0, 0.6), transparent 72%),
+    linear-gradient(180deg, #14021f 0%, #1c0430 55%, #0a0110 100%);
 }
 
 .light {
-  background: linear-gradient(180deg, #fdf2ff 0%, #f5e1ff 50%, #e6f9ff 100%);
+  --window-fill: #fffbfd;
+  --window-ink: 42 16 40;
+  --window-accent: 184 33 111;
+  --window-shadow: rgba(170, 30, 110, 0.24);
+  --window-highlight: rgba(255, 255, 255, 0.95);
+
+  background:
+    radial-gradient(90% 65% at 30% 0%, rgba(255, 255, 255, 0.95), transparent 64%),
+    radial-gradient(75% 65% at 100% 100%, rgba(150, 40, 120, 0.12), transparent 72%),
+    linear-gradient(180deg, #fdf1f8 0%, #f6e6f6 55%, #ecdff3 100%);
 }
 
 .transparent {
@@ -51,8 +69,8 @@
 }
 
 .light .blobB {
-  background: #67e8f9;
-  opacity: 0.45;
+  background: #f0abfc;
+  opacity: 0.35;
 }
 
 .dark .blobA {
@@ -61,8 +79,8 @@
 }
 
 .dark .blobB {
-  background: #00e5ff;
-  opacity: 0.16;
+  background: #7e1bb0;
+  opacity: 0.2;
 }
 
 .sunWrap {
@@ -91,77 +109,64 @@
   position: absolute;
   border-radius: 50%;
   inset: 0;
-  mask-image: linear-gradient(
-    180deg,
-    black 0%,
-    black 52%,
-    transparent 52%,
-    transparent 56%,
-    black 56%,
-    black 64%,
-    transparent 64%,
-    transparent 69%,
-    black 69%,
-    black 76%,
-    transparent 76%,
-    transparent 82%,
-    black 82%,
-    black 88%,
-    transparent 88%,
-    transparent 95%,
-    black 95%
-  );
 }
 
 .light .sun {
-  background: linear-gradient(180deg, #fde68a 0%, #f9a8d4 55%, #c084fc 100%);
+  background: linear-gradient(
+    180deg,
+    #fcd98a 0%,
+    #f59ac4 52%,
+    transparent 52% 56%,
+    #f293c0 56% 64%,
+    transparent 64% 69%,
+    #ef8cbc 69% 76%,
+    transparent 76% 82%,
+    #ec85b8 82% 88%,
+    transparent 88% 95%,
+    #e97eb4 95%
+  );
 }
 
 .dark .sun {
-  background: linear-gradient(180deg, #ffe066 0%, #ff4fa3 55%, #a100ff 100%);
+  background: linear-gradient(
+    180deg,
+    #ffd36b 0%,
+    #ff6fb5 52%,
+    transparent 52% 56%,
+    #fb64ad 56% 64%,
+    transparent 64% 69%,
+    #f55aa6 69% 76%,
+    transparent 76% 82%,
+    #ee509f 82% 88%,
+    transparent 88% 95%,
+    #e74698 95%
+  );
 }
 
 .floor {
   position: absolute;
   top: 56%;
-  right: -40%;
-  bottom: 0;
-  left: -40%;
-  overflow: hidden;
-  perspective: 280px;
-  perspective-origin: 50% 0%;
-}
-
-.plane {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  overflow: hidden;
-  height: 260%;
-  transform: rotateX(62deg);
-  transform-origin: 50% 0%;
-}
-
-.grid {
-  position: absolute;
-  top: -40px;
   right: 0;
   bottom: 0;
   left: 0;
-  background-size: 40px 40px;
+  width: 100%;
+  height: 44%;
+  fill: none;
+  stroke-width: 1;
 }
 
-.light .grid {
-  background-image:
-    linear-gradient(90deg, rgba(219, 39, 119, 0.35) 1px, transparent 1px),
-    linear-gradient(180deg, rgba(219, 39, 119, 0.35) 1px, transparent 1px);
+.floor line {
+  vector-effect: non-scaling-stroke;
 }
 
-.dark .grid {
-  background-image:
-    linear-gradient(90deg, rgba(255, 0, 144, 0.55) 1px, transparent 1px),
-    linear-gradient(180deg, rgba(0, 229, 255, 0.45) 1px, transparent 1px);
+.light .floor {
+  background: linear-gradient(180deg, rgba(236, 72, 153, 0.1), transparent 70%);
+  stroke: rgba(190, 24, 93, 0.3);
+}
+
+.dark .floor {
+  background: linear-gradient(180deg, rgba(255, 64, 160, 0.16), rgba(10, 1, 16, 0.4) 80%);
+  stroke: rgba(255, 111, 181, 0.45);
 }
 
 .horizon {
@@ -169,17 +174,17 @@
   top: 56%;
   right: 0;
   left: 0;
-  height: 2px;
+  height: 1px;
 }
 
 .light .horizon {
-  background: linear-gradient(90deg, transparent, #ec4899, #22d3ee, transparent);
-  box-shadow: 0 0 14px rgba(236, 72, 153, 0.5);
+  background: linear-gradient(90deg, transparent, rgba(219, 39, 119, 0.7), transparent);
+  box-shadow: 0 0 12px rgba(236, 72, 153, 0.4);
 }
 
 .dark .horizon {
-  background: linear-gradient(90deg, transparent, #ff0090, #00fff9, transparent);
-  box-shadow: 0 0 18px rgba(255, 0, 144, 0.8);
+  background: linear-gradient(90deg, transparent, #ff8cc6, transparent);
+  box-shadow: 0 0 18px rgba(255, 64, 160, 0.7);
 }
 
 .spark {
@@ -189,12 +194,11 @@
 }
 
 .light .spark {
-  color: #db2777;
+  color: #be185d;
 }
 
 .dark .spark {
-  color: #00fff9;
-  filter: drop-shadow(0 0 6px rgba(0, 255, 249, 0.9));
+  color: #ffd1e8;
 }
 
 .scanlines {
@@ -205,8 +209,9 @@
 .dark .scanlines {
   background: repeating-linear-gradient(
     180deg,
-    rgba(0, 0, 0, 0.18) 0px,
-    rgba(0, 0, 0, 0.18) 1px,
+    rgba(0, 0, 0, 0.12) 0px,
+    rgba(0, 0, 0, 0.12) 1px,
+
     transparent 1px,
     transparent 3px
   );
@@ -216,102 +221,61 @@
   position: relative;
   z-index: 10;
   overflow: hidden;
-  border-radius: 20px;
-}
+  border-radius: 28px;
+  background: var(--window-fill);
+  box-shadow:
+    inset 0 1px 0 var(--window-highlight),
+    0 0 0 0.5px rgb(var(--window-ink) / 0.12),
+    0 48px 96px -32px var(--window-shadow);
 
-.light .window {
-  background: rgba(255, 252, 255, 0.95);
-  border: 1px solid rgba(219, 39, 119, 0.18);
-  filter: drop-shadow(0 0 30px rgba(236, 72, 153, 0.14)) drop-shadow(0 12px 40px rgba(34, 211, 238, 0.12));
-}
-
-.dark .window {
-  background: #0b0012;
-  border: 1px solid rgba(255, 0, 144, 0.35);
-  filter: drop-shadow(0 0 24px rgba(255, 0, 144, 0.25)) drop-shadow(0 0 70px rgba(0, 229, 255, 0.12))
-    drop-shadow(0 24px 75px rgba(0, 0, 0, 0.8));
+  > :last-child {
+    padding: 4px 8px 8px;
+  }
 }
 
 .topEdge {
   position: absolute;
   z-index: 20;
   top: 0;
-  right: 0;
-  left: 0;
+  right: 28px;
+  left: 28px;
+  display: flex;
   overflow: hidden;
-  height: 2px;
-}
-
-.light .topEdge {
-  background: rgba(236, 72, 153, 0.25);
-}
-
-.dark .topEdge {
-  background: rgba(255, 0, 144, 0.2);
+  height: 1px;
+  justify-content: center;
+  background: linear-gradient(90deg, transparent, var(--window-highlight), transparent);
 }
 
 .sweep {
   position: absolute;
   width: 40%;
-  background: linear-gradient(90deg, transparent, #ff0090, #ffe066, #00fff9, transparent);
+  background: linear-gradient(90deg, transparent, rgb(var(--window-accent) / 0.85), transparent);
   inset-block: 0;
 }
 
 .header {
+  position: relative;
   display: grid;
+  height: 44px;
   align-items: center;
-  padding: 12px 16px 11px;
+  padding: 0 18px;
+  border-bottom: 0.5px solid rgb(var(--window-ink) / 0.08);
   grid-gap: 12px;
-  grid-template-columns: 60px 1fr 60px;
-}
-
-.light .header {
-  border-bottom: 1px solid rgba(219, 39, 119, 0.14);
-  background: rgba(253, 242, 255, 0.9);
-}
-
-.dark .header {
-  border-bottom: 1px solid rgba(255, 0, 144, 0.18);
-  background: #140020;
+  grid-template-columns: 56px 1fr 56px;
 }
 
 .dots {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
 }
 
 .dot {
-  position: relative;
-  width: 13px;
-  height: 13px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-}
-
-.dot::after {
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.6);
-  content: "";
-}
-
-.dot:nth-child(1) {
-  background: radial-gradient(circle at 35% 35%, #ff7ac4, #ff0090);
-  filter: drop-shadow(0 0 6px rgba(255, 0, 144, 0.7));
-}
-
-.dot:nth-child(2) {
-  background: radial-gradient(circle at 35% 35%, #fff0a3, #ffc400);
-  filter: drop-shadow(0 0 6px rgba(255, 196, 0, 0.6));
-}
-
-.dot:nth-child(3) {
-  background: radial-gradient(circle at 35% 35%, #a5fffc, #00d9e0);
-  filter: drop-shadow(0 0 6px rgba(0, 229, 255, 0.7));
+  background: rgb(var(--window-ink) / 0.14);
+  box-shadow: inset 0 0 0 0.5px rgb(var(--window-ink) / 0.12);
 }
 
 .fileName {
@@ -320,11 +284,12 @@
   height: 16px;
   align-items: center;
   justify-content: center;
-  font-family: var(--code-font, "Fira Code", "Courier New", monospace);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  line-height: 12px;
+  color: rgb(var(--window-ink) / 0.42);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  line-height: 16px;
 
   > input {
     position: absolute;
@@ -332,7 +297,7 @@
     border: none;
     margin: 0;
     background-color: transparent;
-    color: inherit;
+    color: rgb(var(--window-ink) / 0.8);
     font: inherit;
     inset: 0;
     letter-spacing: inherit;
@@ -346,13 +311,4 @@
   > input:focus + span {
     display: none;
   }
-}
-
-.light .fileName {
-  color: #be185d;
-}
-
-.dark .fileName {
-  color: #ff7ac4;
-  text-shadow: 0 0 8px rgba(255, 0, 144, 0.6);
 }

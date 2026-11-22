@@ -45,8 +45,8 @@ function VhsScene() {
   return (
     <div className={styles.layer} aria-hidden>
       <motion.div className={styles.picture} style={{ x: jitterX }}>
-        <motion.div className={styles.glowCyan} style={{ x: driftX, y: driftY }} />
-        <motion.div className={styles.glowMagenta} style={{ x: driftY, y: driftX }} />
+        <motion.div className={styles.glowKey} style={{ x: driftX, y: driftY }} />
+        <motion.div className={styles.glowFill} style={{ x: driftY, y: driftX }} />
       </motion.div>
       <div className={styles.scanlines} />
       <motion.div className={styles.band} style={{ y: bandY, opacity: bandOpacity }} />

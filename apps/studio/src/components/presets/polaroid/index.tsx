@@ -6,8 +6,8 @@ import styles from "./style.module.css";
 
 const LEAKS = [
   { id: "leak-amber", tone: styles.amber, drift: 40, phase: 0 },
-  { id: "leak-coral", tone: styles.coral, drift: -34, phase: 0.33 },
-  { id: "leak-rose", tone: styles.rose, drift: 28, phase: 0.66 },
+  { id: "leak-honey", tone: styles.honey, drift: -34, phase: 0.33 },
+  { id: "leak-ember", tone: styles.ember, drift: 28, phase: 0.66 },
 ];
 
 const SNAPSHOTS = [

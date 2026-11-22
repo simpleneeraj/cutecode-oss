@@ -5,11 +5,37 @@
 }
 
 .dark {
-  background: linear-gradient(180deg, #1c1236 0%, #150d2a 46%, #0d0819 100%);
+  --window-fill: #110d18;
+  --window-shadow: rgba(6, 3, 10, 0.94);
+  --window-edge: rgba(253, 220, 180, 0.13);
+  --window-highlight: rgba(255, 236, 214, 0.12);
+  --header-fill: #16111e;
+  --header-line: rgba(253, 220, 180, 0.07);
+  --dot-fill: rgba(236, 226, 240, 0.13);
+  --dot-edge: rgba(255, 255, 255, 0.06);
+  --file-color: #ddd2cc;
+
+  background:
+    radial-gradient(70% 60% at 86% 8%, rgba(253, 230, 190, 0.12) 0%, transparent 60%),
+    radial-gradient(90% 70% at 0% 100%, rgba(2, 1, 4, 0.7) 0%, transparent 70%),
+    linear-gradient(180deg, #1a1522 0%, #13101b 50%, #0b0910 100%);
 }
 
 .light {
-  background: linear-gradient(180deg, #e6daf6 0%, #eedbef 44%, #f8d4c2 78%, #fbc69c 100%);
+  --window-fill: #fffcfa;
+  --window-shadow: rgba(110, 56, 22, 0.32);
+  --window-edge: rgba(70, 44, 30, 0.16);
+  --window-highlight: rgba(255, 255, 255, 0.9);
+  --header-fill: #faf5f1;
+  --header-line: rgba(70, 44, 30, 0.09);
+  --dot-fill: rgba(70, 44, 30, 0.12);
+  --dot-edge: rgba(70, 44, 30, 0.1);
+  --file-color: #4a3a33;
+
+  background:
+    radial-gradient(70% 60% at 86% 8%, rgba(255, 255, 255, 0.9) 0%, transparent 60%),
+    radial-gradient(90% 70% at 0% 100%, rgba(120, 80, 60, 0.18) 0%, transparent 70%),
+    linear-gradient(180deg, #f1ece9 0%, #ece3dd 50%, #f1d9c6 100%);
 }
 
 .transparent {
@@ -34,7 +60,7 @@
 }
 
 .dark .horizon {
-  background: radial-gradient(ellipse at 50% 70%, rgba(234, 108, 32, 0.3) 0%, rgba(124, 58, 237, 0.08) 45%, transparent 70%);
+  background: radial-gradient(ellipse at 50% 70%, rgba(234, 108, 32, 0.28) 0%, rgba(234, 108, 32, 0.06) 45%, transparent 70%);
 }
 
 .light .horizon {
@@ -48,13 +74,13 @@
 }
 
 .dark .star {
-  background: #f5f0ff;
-  filter: drop-shadow(0 0 4px rgba(237, 233, 254, 0.8));
+  background: #f6f1ea;
+  box-shadow: 0 0 4px rgba(246, 241, 234, 0.7);
 }
 
 .light .star {
   background: #ffffff;
-  filter: drop-shadow(0 0 3px rgba(124, 58, 237, 0.35));
+  box-shadow: 0 0 3px rgba(90, 70, 60, 0.3);
 }
 
 .moonGlow {
@@ -68,7 +94,7 @@
 }
 
 .dark .moonGlow {
-  background: radial-gradient(circle, rgba(253, 230, 170, 0.26) 0%, rgba(196, 160, 255, 0.08) 40%, transparent 68%);
+  background: radial-gradient(circle, rgba(253, 230, 170, 0.24) 0%, rgba(253, 230, 170, 0.06) 40%, transparent 68%);
 }
 
 .light .moonGlow {
@@ -107,12 +133,12 @@
 
 .dark .moon {
   background: radial-gradient(circle at 36% 34%, #fffbeb 0%, #f6e7bd 58%, #dcc38a 100%);
-  filter: drop-shadow(0 0 24px rgba(253, 230, 170, 0.35));
+  box-shadow: 0 0 32px rgba(253, 230, 170, 0.3);
 }
 
 .light .moon {
   background: radial-gradient(circle at 36% 34%, #fffdf6 0%, #fde9cc 60%, #f7c99a 100%);
-  filter: drop-shadow(0 0 24px rgba(253, 186, 116, 0.45));
+  box-shadow: 0 0 32px rgba(253, 186, 116, 0.4);
 }
 
 .dark .moon::before,
@@ -136,7 +162,7 @@
 }
 
 .light .bat {
-  fill: #3f2560;
+  fill: #3a3036;
 }
 
 .batEye {
@@ -159,11 +185,11 @@
 }
 
 .dark .silk {
-  background: rgba(221, 214, 254, 0.28);
+  background: rgba(236, 226, 220, 0.26);
 }
 
 .light .silk {
-  background: rgba(63, 37, 96, 0.3);
+  background: rgba(58, 48, 54, 0.3);
 }
 
 .spiderBody {
@@ -179,13 +205,13 @@
 }
 
 .dark .spiderBody {
-  fill: #0a0514;
-  stroke: #0a0514;
+  fill: #08060b;
+  stroke: #08060b;
 }
 
 .light .spiderBody {
-  fill: #3f2560;
-  stroke: #3f2560;
+  fill: #3a3036;
+  stroke: #3a3036;
 }
 
 .spiderEye {
@@ -207,20 +233,20 @@
 }
 
 .dark .hillBack {
-  fill: #221640;
+  fill: #1d1826;
 }
 
 .dark .hillFront {
-  fill: #120a24;
+  fill: #0f0c15;
 }
 
 .light .hillBack {
-  fill: #c3a6d9;
+  fill: #d5cac8;
   fill-opacity: 0.8;
 }
 
 .light .hillFront {
-  fill: #8f6db3;
+  fill: #a8989a;
   fill-opacity: 0.85;
 }
 
@@ -234,22 +260,22 @@
 }
 
 .dark .ghostBody {
-  fill: #f3eefc;
-  filter: drop-shadow(0 0 8px rgba(221, 214, 254, 0.45));
+  fill: #f4f0ec;
+  filter: drop-shadow(0 0 8px rgba(244, 240, 236, 0.35));
 }
 
 .light .ghostBody {
   fill: #ffffff;
-  filter: drop-shadow(0 4px 8px rgba(63, 37, 96, 0.18));
+  filter: drop-shadow(0 4px 8px rgba(58, 48, 54, 0.18));
 }
 
 .ghostEye {
-  fill: #2b1a45;
+  fill: #2a2228;
 }
 
 .ghostBlush {
-  fill: #fb9fb1;
-  fill-opacity: 0.6;
+  fill: #fb923c;
+  fill-opacity: 0.3;
 }
 
 .fog {
@@ -261,7 +287,7 @@
 }
 
 .dark .fog {
-  background: radial-gradient(ellipse, rgba(200, 186, 240, 0.2) 0%, rgba(200, 186, 240, 0) 70%);
+  background: radial-gradient(ellipse, rgba(220, 210, 214, 0.16) 0%, rgba(220, 210, 214, 0) 70%);
 }
 
 .light .fog {
@@ -305,7 +331,7 @@
 }
 
 .stem {
-  fill: #65a30d;
+  fill: #6b5a32;
 }
 
 .dark .body {
@@ -329,28 +355,9 @@
 }
 
 .faceLight {
-  fill: #fde047;
-  filter: drop-shadow(0 0 2px rgba(253, 224, 71, 0.8));
+  fill: #ffc56b;
+  filter: drop-shadow(0 0 2px rgba(255, 197, 107, 0.8));
   will-change: opacity;
-}
-
-.window {
-  position: relative;
-  z-index: 10;
-  overflow: hidden;
-  border-radius: 16px;
-}
-
-.dark .window {
-  border: 1px solid rgba(196, 181, 253, 0.1);
-  background: #120b1f;
-  filter: drop-shadow(0 0 48px rgba(234, 108, 32, 0.08)) drop-shadow(0 24px 64px rgba(0, 0, 0, 0.6));
-}
-
-.light .window {
-  border: 1px solid rgba(91, 33, 182, 0.12);
-  background: #fdfaff;
-  filter: drop-shadow(0 16px 40px rgba(63, 37, 96, 0.14));
 }
 
 .topEdge {
@@ -374,26 +381,44 @@
 .sweep {
   position: absolute;
   width: 40%;
-  background: linear-gradient(90deg, transparent, #a78bfa, #fb923c, #fde047, transparent);
+  background: linear-gradient(90deg, transparent, rgba(251, 146, 60, 0.7), #ffd9a8, rgba(251, 146, 60, 0.7), transparent);
   inset-block: 0;
+}
+
+.window {
+  position: relative;
+  z-index: 10;
+  overflow: hidden;
+  border-radius: 28px;
+  background: var(--window-fill);
+  box-shadow: 0 40px 96px -32px var(--window-shadow);
+}
+
+.window::after {
+  position: absolute;
+  z-index: 30;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 0 0 0.5px var(--window-edge),
+    inset 0 1px 0 var(--window-highlight);
+  content: "";
+  inset: 0;
+  pointer-events: none;
 }
 
 .header {
   display: grid;
+  height: 44px;
   align-items: center;
-  padding: 12px 16px;
-  grid-gap: 8px;
-  grid-template-columns: 56px 1fr 56px;
+  padding: 0 18px;
+  border-bottom: 0.5px solid var(--header-line);
+  background: var(--header-fill);
+  grid-gap: 12px;
+  grid-template-columns: 52px 1fr 52px;
 }
 
-.dark .header {
-  border-bottom: 1px solid rgba(196, 181, 253, 0.08);
-  background: #1a1029;
-}
-
-.light .header {
-  border-bottom: 1px solid rgba(91, 33, 182, 0.1);
-  background: #f6f0fd;
+.header + * {
+  padding: 8px 8px 12px;
 }
 
 .dots {
@@ -406,34 +431,22 @@
   width: 12px;
   height: 12px;
   border-radius: 50%;
-}
-
-.dot:nth-child(1) {
-  border: 0.5px solid rgba(124, 45, 18, 0.4);
-  background: radial-gradient(circle at 35% 30%, #fdba74, #ea580c);
-}
-
-.dot:nth-child(2) {
-  border: 0.5px solid rgba(120, 80, 10, 0.4);
-  background: radial-gradient(circle at 35% 30%, #fde68a, #d97706);
-}
-
-.dot:nth-child(3) {
-  border: 0.5px solid rgba(46, 16, 101, 0.4);
-  background: radial-gradient(circle at 35% 30%, #c4b5fd, #6d28d9);
+  background: var(--dot-fill);
+  box-shadow: inset 0 0 0 0.5px var(--dot-edge);
 }
 
 .fileName {
   position: relative;
   display: flex;
-  height: 16px;
+  height: 18px;
   align-items: center;
   justify-content: center;
-  font-family: var(--code-font, "Geist Mono", "Courier New", monospace);
-  font-size: 12px;
+  color: var(--file-color);
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  font-size: 13px;
   font-weight: 500;
-  letter-spacing: 0.04em;
-  line-height: 16px;
+  letter-spacing: -0.005em;
+  line-height: 18px;
 
   > input {
     position: absolute;
@@ -455,12 +468,4 @@
   > input:focus + span {
     display: none;
   }
-}
-
-.dark .fileName {
-  color: #d8cdeb;
-}
-
-.light .fileName {
-  color: #4a3566;
 }

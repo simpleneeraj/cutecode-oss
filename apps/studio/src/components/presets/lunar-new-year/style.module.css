@@ -5,41 +5,53 @@
 }
 
 .light {
-  --gold: #c8901a;
-  --gold-soft: rgba(200, 144, 26, 0.32);
+  --gold: #b08a4a;
+  --gold-soft: rgba(212, 40, 40, 0.12);
   --lantern-light: #ff6a4d;
   --lantern-mid: #d4121e;
   --lantern-deep: #8f0a10;
-  --petal: #f6a5bf;
-  --petal-deep: #e07197;
-  --window-bg: rgba(255, 250, 243, 0.95);
-  --window-ring: rgba(212, 18, 30, 0.14);
-  --window-glow: drop-shadow(0 14px 44px rgba(143, 10, 16, 0.12));
-  --header-bg: rgba(255, 243, 230, 0.92);
-  --header-border: rgba(212, 18, 30, 0.12);
-  --file-color: #a3101a;
-  --edge-bg: rgba(200, 144, 26, 0.3);
+  --petal: #f8e4dc;
+  --petal-deep: #e7b9ae;
+  --window-fill: #fffcf7;
+  --window-shadow: rgba(140, 24, 20, 0.28);
+  --window-edge: rgba(90, 40, 30, 0.16);
+  --window-highlight: rgba(255, 255, 255, 0.9);
+  --header-fill: #fbf5ee;
+  --header-line: rgba(90, 40, 30, 0.09);
+  --dot-fill: rgba(90, 40, 30, 0.12);
+  --dot-edge: rgba(90, 40, 30, 0.1);
+  --file-color: #4d3029;
+  --edge-bg: rgba(212, 18, 30, 0.14);
 
-  background: radial-gradient(ellipse at 50% 0%, #fff8ef 0%, #fdebd6 55%, #f8d8bb 100%);
+  background:
+    radial-gradient(110% 80% at 50% -12%, rgba(255, 255, 255, 0.95) 0%, transparent 55%),
+    radial-gradient(90% 70% at 100% 100%, rgba(150, 90, 60, 0.2) 0%, transparent 70%),
+    linear-gradient(170deg, #fdf8f1 0%, #f7eee2 55%, #eee0cd 100%);
 }
 
 .dark {
-  --gold: #f5c451;
-  --gold-soft: rgba(245, 196, 81, 0.22);
+  --gold: #d8b878;
+  --gold-soft: rgba(224, 32, 42, 0.16);
   --lantern-light: #ff8a5c;
   --lantern-mid: #e0202a;
   --lantern-deep: #7d0910;
-  --petal: #ffb3c7;
-  --petal-deep: #f27a9d;
-  --window-bg: #240607;
-  --window-ring: rgba(245, 196, 81, 0.16);
-  --window-glow: drop-shadow(0 0 60px rgba(224, 32, 42, 0.12)) drop-shadow(0 24px 75px rgba(0, 0, 0, 0.8));
-  --header-bg: #300a0b;
-  --header-border: rgba(245, 196, 81, 0.12);
-  --file-color: #f5c451;
-  --edge-bg: rgba(245, 196, 81, 0.14);
+  --petal: #f6ebe6;
+  --petal-deep: #e2c6c0;
+  --window-fill: #170c0b;
+  --window-shadow: rgba(20, 2, 2, 0.94);
+  --window-edge: rgba(255, 200, 180, 0.13);
+  --window-highlight: rgba(255, 226, 214, 0.12);
+  --header-fill: #1c100f;
+  --header-line: rgba(255, 200, 180, 0.07);
+  --dot-fill: rgba(240, 222, 214, 0.13);
+  --dot-edge: rgba(255, 255, 255, 0.06);
+  --file-color: #e8d6cc;
+  --edge-bg: rgba(224, 32, 42, 0.16);
 
-  background: radial-gradient(ellipse at 50% 0%, #5a0d10 0%, #3a0709 50%, #1c0304 100%);
+  background:
+    radial-gradient(110% 80% at 50% -12%, rgba(224, 32, 42, 0.2) 0%, transparent 55%),
+    radial-gradient(90% 70% at 100% 100%, rgba(4, 1, 1, 0.7) 0%, transparent 70%),
+    linear-gradient(170deg, #26110f 0%, #1a0c0b 55%, #0f0706 100%);
 }
 
 .transparent {
@@ -104,7 +116,7 @@
   width: 16px;
   height: 4px;
   border-radius: 2px;
-  background: linear-gradient(180deg, #fbe3a0, var(--gold));
+  background: linear-gradient(180deg, #f2e2bc, var(--gold));
 }
 
 .body {
@@ -142,7 +154,7 @@
 .blossom::after {
   position: absolute;
   border-radius: 50%;
-  background: radial-gradient(circle, #fff1b8 0%, var(--gold) 70%);
+  background: radial-gradient(circle, #ff8a6a 0%, var(--lantern-mid) 70%);
   content: "";
   inset: 38%;
 }
@@ -165,16 +177,6 @@
   will-change: transform, opacity;
 }
 
-.window {
-  position: relative;
-  z-index: 10;
-  overflow: hidden;
-  border-radius: 20px;
-  border: 1px solid var(--window-ring);
-  background: var(--window-bg);
-  filter: var(--window-glow);
-}
-
 .topEdge {
   position: absolute;
   z-index: 20;
@@ -189,71 +191,72 @@
 .sweep {
   position: absolute;
   width: 40%;
-  background: linear-gradient(90deg, transparent, #c8901a, #fff1b8, #f5c451, transparent);
+  background: linear-gradient(90deg, transparent, rgba(224, 32, 42, 0.7), #ffd2c4, rgba(224, 32, 42, 0.7), transparent);
   inset-block: 0;
+}
+
+.window {
+  position: relative;
+  z-index: 10;
+  overflow: hidden;
+  border-radius: 28px;
+  background: var(--window-fill);
+  box-shadow: 0 40px 96px -32px var(--window-shadow);
+}
+
+.window::after {
+  position: absolute;
+  z-index: 30;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 0 0 0.5px var(--window-edge),
+    inset 0 1px 0 var(--window-highlight);
+  content: "";
+  inset: 0;
+  pointer-events: none;
 }
 
 .header {
   display: grid;
+  height: 44px;
   align-items: center;
-  padding: 12px 16px 11px;
-  border-bottom: 1px solid var(--header-border);
-  background: var(--header-bg);
+  padding: 0 18px;
+  border-bottom: 0.5px solid var(--header-line);
+  background: var(--header-fill);
   grid-gap: 12px;
-  grid-template-columns: 60px 1fr 60px;
+  grid-template-columns: 52px 1fr 52px;
+}
+
+.header + * {
+  padding: 8px 8px 12px;
 }
 
 .dots {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
 }
 
 .dot {
-  position: relative;
-  width: 13px;
-  height: 13px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-}
-
-.dot::after {
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.55);
-  content: "";
-}
-
-.dot:nth-child(1) {
-  background: radial-gradient(circle at 35% 35%, #ff8a5c, #d4121e);
-  filter: drop-shadow(0 1px 4px rgba(212, 18, 30, 0.45));
-}
-
-.dot:nth-child(2) {
-  background: radial-gradient(circle at 35% 35%, #fbe3a0, #c8901a);
-  filter: drop-shadow(0 1px 4px rgba(200, 144, 26, 0.45));
-}
-
-.dot:nth-child(3) {
-  background: radial-gradient(circle at 35% 35%, #ffc2d1, #e07197);
-  filter: drop-shadow(0 1px 4px rgba(224, 113, 151, 0.45));
+  background: var(--dot-fill);
+  box-shadow: inset 0 0 0 0.5px var(--dot-edge);
 }
 
 .fileName {
   position: relative;
   display: flex;
-  height: 16px;
+  height: 18px;
   align-items: center;
   justify-content: center;
   color: var(--file-color);
-  font-family: var(--code-font, "Geist Mono", "Courier New", monospace);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  line-height: 12px;
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  line-height: 18px;
 
   > input {
     position: absolute;

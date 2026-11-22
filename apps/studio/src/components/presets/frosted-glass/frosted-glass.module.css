@@ -5,11 +5,29 @@
 }
 
 .dark {
-  background: radial-gradient(ellipse at 30% 0%, #161a3a 0%, #0b0d22 55%, #070816 100%);
+  --window-fill: transparent;
+  --window-ink: 226 230 245;
+  --window-accent: 163 172 255;
+  --window-shadow: rgba(6, 8, 36, 0.7);
+  --window-highlight: rgba(255, 255, 255, 0.14);
+
+  background:
+    radial-gradient(90% 65% at 30% 0%, rgba(120, 130, 255, 0.22), transparent 64%),
+    radial-gradient(75% 65% at 100% 100%, rgba(0, 0, 0, 0.5), transparent 72%),
+    linear-gradient(180deg, #141838 0%, #0d1028 55%, #070816 100%);
 }
 
 .light {
-  background: radial-gradient(ellipse at 30% 20%, #f3f6ff 0%, #f8f1ff 50%, #eef8ff 100%);
+  --window-fill: transparent;
+  --window-ink: 30 27 75;
+  --window-accent: 67 56 202;
+  --window-shadow: rgba(70, 80, 180, 0.22);
+  --window-highlight: rgba(255, 255, 255, 0.95);
+
+  background:
+    radial-gradient(90% 65% at 30% 0%, rgba(255, 255, 255, 0.95), transparent 64%),
+    radial-gradient(75% 65% at 100% 100%, rgba(70, 80, 160, 0.12), transparent 72%),
+    linear-gradient(180deg, #f1f3ff 0%, #eceffd 55%, #e4e8f8 100%);
 }
 
 .transparent {
@@ -24,9 +42,9 @@
 }
 
 .orbIndigo,
-.orbViolet,
+.orbPeriwinkle,
 .orbSky,
-.orbRose {
+.orbPearl {
   position: absolute;
   border-radius: 50%;
   filter: blur(70px);
@@ -41,12 +59,12 @@
   background: #6366f1;
 }
 
-.orbViolet {
+.orbPeriwinkle {
   right: -90px;
   bottom: -110px;
   width: 340px;
   height: 340px;
-  background: #8b5cf6;
+  background: #818cf8;
 }
 
 .orbSky {
@@ -54,34 +72,34 @@
   left: 52%;
   width: 280px;
   height: 280px;
-  background: #38bdf8;
+  background: #93c5fd;
 }
 
-.orbRose {
+.orbPearl {
   bottom: 12%;
   left: 6%;
   width: 220px;
   height: 220px;
-  background: #fb7185;
+  background: #e0e7ff;
 }
 
 .light .orbIndigo,
-.light .orbViolet {
+.light .orbPeriwinkle {
   opacity: 0.55;
 }
 
 .light .orbSky,
-.light .orbRose {
+.light .orbPearl {
   opacity: 0.45;
 }
 
 .dark .orbIndigo,
-.dark .orbViolet {
+.dark .orbPeriwinkle {
   opacity: 0.4;
 }
 
 .dark .orbSky,
-.dark .orbRose {
+.dark .orbPearl {
   opacity: 0.26;
 }
 
@@ -96,25 +114,24 @@
 }
 
 .dark .glint {
-  color: #c7d2fe;
-  filter: drop-shadow(0 0 6px rgba(165, 180, 252, 0.7));
+  color: #e0e7ff;
 }
+
 
 .window {
   position: relative;
   z-index: 10;
   overflow: hidden;
-  border-radius: 20px;
-}
+  border-radius: 28px;
+  background: var(--window-fill);
+  box-shadow:
+    inset 0 1px 0 var(--window-highlight),
+    0 0 0 0.5px rgb(var(--window-ink) / 0.16),
+    0 48px 96px -32px var(--window-shadow);
 
-.light .window {
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  background: rgba(255, 255, 255, 0.5);
-}
-
-.dark .window {
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  background: rgba(12, 14, 34, 0.55);
+  > :last-child {
+    padding: 4px 8px 8px;
+  }
 }
 
 .frost {
@@ -126,9 +143,9 @@
 }
 
 .frost .orbIndigo,
-.frost .orbViolet,
+.frost .orbPeriwinkle,
 .frost .orbSky,
-.frost .orbRose {
+.frost .orbPearl {
   filter: blur(90px);
 }
 
@@ -137,7 +154,7 @@
   left: -160px;
 }
 
-.frost .orbViolet {
+.frost .orbPeriwinkle {
   right: -170px;
   bottom: -200px;
 }
@@ -147,15 +164,18 @@
   left: 60%;
 }
 
-.frost .orbRose {
+.frost .orbPearl {
   bottom: -120px;
   left: 10%;
 }
 
 .milk {
   position: absolute;
+  border-radius: inherit;
+  box-shadow: inset 0 1px 0 var(--window-highlight);
   inset: 0;
 }
+
 
 .light .milk {
   background: linear-gradient(
@@ -193,60 +213,28 @@
 }
 
 .header {
+  position: relative;
   display: grid;
+  height: 44px;
   align-items: center;
-  padding: 12px 16px 11px;
+  padding: 0 18px;
+  border-bottom: 0.5px solid rgb(var(--window-ink) / 0.08);
   grid-gap: 12px;
-  grid-template-columns: 60px 1fr 60px;
-}
-
-.light .header {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.85);
-  background: rgba(255, 255, 255, 0.35);
-}
-
-.dark .header {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-  background: rgba(255, 255, 255, 0.03);
+  grid-template-columns: 56px 1fr 56px;
 }
 
 .dots {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
 }
 
 .dot {
-  position: relative;
-  width: 13px;
-  height: 13px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-}
-
-.dot::after {
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.65);
-  content: "";
-}
-
-.dot:nth-child(1) {
-  background: radial-gradient(circle at 35% 35%, #a5b4fc, #4f46e5);
-  filter: drop-shadow(0 1px 4px rgba(99, 102, 241, 0.5));
-}
-
-.dot:nth-child(2) {
-  background: radial-gradient(circle at 35% 35%, #7dd3fc, #0ea5e9);
-  filter: drop-shadow(0 1px 4px rgba(14, 165, 233, 0.5));
-}
-
-.dot:nth-child(3) {
-  background: radial-gradient(circle at 35% 35%, #c4b5fd, #7c3aed);
-  filter: drop-shadow(0 1px 4px rgba(124, 58, 237, 0.5));
+  background: rgb(var(--window-ink) / 0.14);
+  box-shadow: inset 0 0 0 0.5px rgb(var(--window-ink) / 0.12);
 }
 
 .fileName {
@@ -255,11 +243,12 @@
   height: 16px;
   align-items: center;
   justify-content: center;
-  font-family: var(--code-font, "Geist Mono", "Courier New", monospace);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  line-height: 12px;
+  color: rgb(var(--window-ink) / 0.42);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  line-height: 16px;
 
   > input {
     position: absolute;
@@ -267,7 +256,7 @@
     border: none;
     margin: 0;
     background-color: transparent;
-    color: inherit;
+    color: rgb(var(--window-ink) / 0.8);
     font: inherit;
     inset: 0;
     letter-spacing: inherit;
@@ -281,12 +270,4 @@
   > input:focus + span {
     display: none;
   }
-}
-
-.light .fileName {
-  color: #4f46e5;
-}
-
-.dark .fileName {
-  color: #c7d2fe;
 }

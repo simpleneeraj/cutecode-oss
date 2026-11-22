@@ -12,6 +12,12 @@ const SPARKS = [
   { id: "mid-right", x: 94, y: 38, size: 12, phase: 0.55 },
 ];
 
+const grid = {
+  rays: Array.from({ length: 17 }, (_, index) => -400 + index * 75),
+  rows: Array.from({ length: 7 }, (_, index) => index),
+  steps: [0, 0.25, 0.5, 0.75, 1],
+};
+
 type Spark = (typeof SPARKS)[number];
 
 function FlickeringSpark({ spark }: { spark: Spark }) {
@@ -37,15 +43,27 @@ function NeonSun() {
   );
 }
 
-function GridFloor() {
-  const y = useLoop([0, 40], { cycles: 3 });
+function rowDepth(row: number, step: number) {
+  return (row + step) / grid.rows.length;
+}
 
+function GridRow({ row }: { row: number }) {
+  const y = useLoop(grid.steps.map((step) => rowDepth(row, step) ** 2 * 100));
+  const opacity = useLoop(grid.steps.map((step) => Math.min(1, rowDepth(row, step) * 2)));
+
+  return <motion.line x1={-400} x2={800} y1={0} y2={0} style={{ y, opacity }} />;
+}
+
+function GridFloor() {
   return (
-    <div className={styles.floor}>
-      <div className={styles.plane}>
-        <motion.div className={styles.grid} style={{ y }} />
-      </div>
-    </div>
+    <svg className={styles.floor} viewBox="0 0 400 100" preserveAspectRatio="none">
+      {grid.rays.map((x) => (
+        <line key={x} x1={200} y1={0} x2={x} y2={100} />
+      ))}
+      {grid.rows.map((row) => (
+        <GridRow key={row} row={row} />
+      ))}
+    </svg>
   );
 }
 

@@ -3,22 +3,21 @@ import { BaseFrameProps } from "@/typings/presets";
 import { SceneFrame, useLoop } from "../scene";
 import styles from "./style.module.css";
 
-const TONES = [styles.pink, styles.yellow, styles.teal, styles.violet, styles.orange, styles.green];
+const TONES = [styles.rose, styles.blush, styles.deep];
 
 const CLOUDS = [
-  { id: "cloud-pink", x: -6, y: -14, size: 300, tone: styles.pink, drift: 26, phase: 0 },
-  { id: "cloud-yellow", x: 62, y: -18, size: 280, tone: styles.yellow, drift: -22, phase: 0.2 },
-  { id: "cloud-teal", x: 78, y: 48, size: 300, tone: styles.teal, drift: -24, phase: 0.45 },
-  { id: "cloud-violet", x: -10, y: 56, size: 290, tone: styles.violet, drift: 20, phase: 0.6 },
-  { id: "cloud-orange", x: 34, y: 74, size: 240, tone: styles.orange, drift: 18, phase: 0.8 },
-  { id: "cloud-green", x: 38, y: -24, size: 200, tone: styles.green, drift: -16, phase: 0.35 },
+  { id: "cloud-top-left", x: -6, y: -14, size: 300, tone: styles.rose, drift: 26, phase: 0 },
+  { id: "cloud-top-right", x: 62, y: -18, size: 280, tone: styles.blush, drift: -22, phase: 0.2 },
+  { id: "cloud-right", x: 78, y: 48, size: 300, tone: styles.deep, drift: -24, phase: 0.45 },
+  { id: "cloud-left", x: -10, y: 56, size: 290, tone: styles.blush, drift: 20, phase: 0.6 },
+  { id: "cloud-bottom", x: 34, y: 74, size: 240, tone: styles.rose, drift: 18, phase: 0.8 },
 ];
 
 const PUFFS = [
-  { id: "puff-top-left", x: 14, y: 20, size: 150, tone: styles.pink, phase: 0 },
-  { id: "puff-right", x: 86, y: 34, size: 170, tone: styles.yellow, phase: 0.25 },
-  { id: "puff-bottom-right", x: 72, y: 88, size: 160, tone: styles.violet, phase: 0.5 },
-  { id: "puff-left", x: 10, y: 72, size: 140, tone: styles.teal, phase: 0.75 },
+  { id: "puff-top-left", x: 14, y: 20, size: 150, tone: styles.rose, phase: 0 },
+  { id: "puff-right", x: 86, y: 34, size: 170, tone: styles.blush, phase: 0.25 },
+  { id: "puff-bottom-right", x: 72, y: 88, size: 160, tone: styles.deep, phase: 0.5 },
+  { id: "puff-left", x: 10, y: 72, size: 140, tone: styles.blush, phase: 0.75 },
 ];
 
 const SPECKS = Array.from({ length: 20 }, (_, index) => ({
@@ -115,7 +114,7 @@ function HoliScene() {
   );
 }
 
-function RainbowEdge() {
+function PowderEdge() {
   const x = useLoop(["-100%", "300%", "300%"]);
 
   return (
@@ -126,7 +125,7 @@ function RainbowEdge() {
 }
 
 const background = <HoliScene />;
-const accent = <RainbowEdge />;
+const accent = <PowderEdge />;
 
 export default function HoliFrame(props: BaseFrameProps) {
   return <SceneFrame {...props} themeStyles={styles} background={background} accent={accent} />;

@@ -7,20 +7,24 @@
 .dark {
   --field-blue: #0090f4;
   --field-cyan: #46d8e9;
-  --field-violet: #7e1575;
+  --field-indigo: #1c3d8f;
   --field-green: #25b886;
   --field-opacity: 0.55;
   --vignette: #000;
+  --light-source: rgba(255, 255, 255, 0.05);
+  --corner: rgba(0, 0, 0, 0.55);
   background: #000;
 }
 
 .light {
   --field-blue: #8dcaff;
   --field-cyan: #aedde8;
-  --field-violet: #cbd3fc;
+  --field-indigo: #cfdcff;
   --field-green: #74da9f;
   --field-opacity: 0.7;
   --vignette: #fff;
+  --light-source: rgba(255, 255, 255, 0.6);
+  --corner: rgba(10, 30, 60, 0.08);
   background: #fff;
 }
 
@@ -35,12 +39,20 @@
   pointer-events: none;
 }
 
+.layer::after {
+  position: absolute;
+  background:
+    radial-gradient(80% 60% at 30% 0%, var(--light-source), transparent 65%),
+    radial-gradient(70% 60% at 100% 100%, var(--corner), transparent 72%);
+  content: "";
+  inset: 0;
+}
+
 .field {
   position: absolute;
   width: 70%;
   aspect-ratio: 1;
   border-radius: 50%;
-  filter: blur(64px);
   opacity: var(--field-opacity);
 }
 
@@ -56,10 +68,10 @@
   background: radial-gradient(circle, var(--field-cyan) 0%, transparent 60%);
 }
 
-.violet {
+.indigo {
   bottom: -35%;
   left: -15%;
-  background: radial-gradient(circle, var(--field-violet) 0%, transparent 65%);
+  background: radial-gradient(circle, var(--field-indigo) 0%, transparent 65%);
 }
 
 .green {
@@ -82,30 +94,72 @@
 }
 
 .window {
-  --line-number: #6a737d;
   position: relative;
   z-index: 10;
   overflow: hidden;
-  border-radius: 16px;
-}
-
-.dark .window {
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: #0d0d0d;
-  box-shadow: 0 32px 64px rgba(0, 0, 0, 0.6);
+  border-radius: 28px;
+  background: var(--window-fill);
+  box-shadow:
+    0 0 0 0.5px var(--window-edge),
+    0 48px 96px -32px var(--window-shadow);
+  --line-number: var(--window-muted);
 }
 
 .light .window {
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  background: #fff;
-  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.08);
+  --window-fill: #ffffff;
+  --window-header: #fcfcfc;
+  --window-edge: rgba(0, 0, 0, 0.12);
+  --window-shine: #ffffff;
+  --window-shadow: rgba(30, 70, 120, 0.22);
+  --window-dot: #e6e6e6;
+  --window-title: #0d0d0d;
+  --window-muted: #a3a3a3;
+  --window-divider: rgba(0, 0, 0, 0.06);
+  --window-glow: transparent;
+  --window-accent: #10a37f;
+}
+
+.dark .window {
+  --window-fill: #0f0f0f;
+  --window-header: #141414;
+  --window-edge: rgba(255, 255, 255, 0.1);
+  --window-shine: rgba(255, 255, 255, 0.12);
+  --window-shadow: rgba(0, 0, 0, 0.85);
+  --window-dot: #2d2d2d;
+  --window-title: #ececec;
+  --window-muted: #5d5d5d;
+  --window-divider: rgba(255, 255, 255, 0.06);
+  --window-glow: transparent;
+  --window-accent: #3fd1a5;
+}
+
+.window::after {
+  position: absolute;
+  z-index: 40;
+  border-radius: inherit;
+  box-shadow: inset 0 1px 0 var(--window-shine);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+}
+
+.window [style*="--editor-padding"] {
+  --editor-padding: 20px 24px 24px !important;
+}
+
+.window [style*="token-comment"] {
+  font-style: italic;
 }
 
 .header {
+  position: relative;
   display: grid;
+  height: 44px;
   align-items: center;
-  padding: 12px 16px;
-  grid-gap: 16px;
+  padding: 0 20px;
+  background: var(--window-header);
+  box-shadow: inset 0 -0.5px 0 var(--window-divider);
+  grid-gap: 12px;
   grid-template-columns: 64px 1fr 64px;
 }
 
@@ -116,17 +170,11 @@
 }
 
 .dot {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-}
-
-.dark .dot {
-  background: rgba(255, 255, 255, 0.12);
-}
-
-.light .dot {
-  background: rgba(0, 0, 0, 0.1);
+  background: var(--window-dot);
+  box-shadow: inset 0 0 0 0.5px var(--window-edge);
 }
 
 .fileName {
@@ -135,9 +183,12 @@
   height: 16px;
   align-items: center;
   justify-content: center;
-  font-family: var(--code-font, monospace);
-  font-size: 12px;
-  line-height: 12px;
+  color: var(--window-title);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  line-height: 16px;
 
   > input {
     position: absolute;
@@ -159,12 +210,4 @@
   > input:focus + span {
     display: none;
   }
-}
-
-.dark .fileName {
-  color: rgba(255, 255, 255, 0.56);
-}
-
-.light .fileName {
-  color: rgba(0, 0, 0, 0.5);
 }

@@ -10,7 +10,10 @@
   --ghost-fill: #0d0d0d;
   --cursor: #ffffff;
 
-  background: radial-gradient(ellipse at 85% 0%, #1f0e05 0%, #0a0807 45%, #060606 100%);
+  background:
+    radial-gradient(90% 70% at 88% 0%, rgba(255, 90, 31, 0.16), transparent 62%),
+    radial-gradient(80% 70% at 0% 100%, rgba(0, 0, 0, 0.7), transparent 72%),
+    linear-gradient(160deg, #141110 0%, #0a0908 55%, #050505 100%);
 }
 
 .light {
@@ -19,7 +22,10 @@
   --ghost-fill: #fbf9f7;
   --cursor: #111111;
 
-  background: radial-gradient(ellipse at 85% 0%, #ffe9dc 0%, #f8f3ef 45%, #f3ede8 100%);
+  background:
+    radial-gradient(90% 70% at 88% 0%, rgba(255, 233, 218, 0.95), transparent 62%),
+    radial-gradient(80% 70% at 0% 100%, rgba(120, 70, 40, 0.12), transparent 72%),
+    linear-gradient(160deg, #fbf8f5 0%, #f5efea 55%, #ede5de 100%);
 }
 
 .transparent {
@@ -38,7 +44,7 @@
   background: repeating-linear-gradient(90deg, var(--grid) 0 1px, transparent 1px 15%);
   background-position: 5% 0;
   inset: 0;
-  mask-image: repeating-linear-gradient(180deg, black 0 6px, transparent 6px 12px);
+  opacity: 0.7;
 }
 
 .glow {
@@ -55,7 +61,7 @@
 }
 
 .light .glow {
-  background: radial-gradient(circle, rgba(255, 107, 53, 0.28) 0%, rgba(255, 184, 0, 0.08) 45%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 107, 53, 0.26) 0%, rgba(255, 107, 53, 0.07) 45%, transparent 70%);
 }
 
 .ghost {
@@ -63,7 +69,7 @@
   width: 180px;
   height: 116px;
   border: 1px solid var(--ghost-line);
-  border-radius: 6px;
+  border-radius: 12px;
   background: var(--ghost-fill);
   box-shadow:
     8px 8px 0 -1px var(--ghost-fill),
@@ -79,8 +85,9 @@
   left: 0;
   height: 18px;
   border-bottom: 1px solid var(--ghost-line);
+  border-radius: 11px 11px 0 0;
   background:
-    radial-gradient(circle at 10px 9px, #ff4500 2.5px, transparent 3px),
+    radial-gradient(circle at 10px 9px, var(--ghost-line) 2.5px, transparent 3px),
     radial-gradient(circle at 19px 9px, var(--ghost-line) 2.5px, transparent 3px),
     radial-gradient(circle at 28px 9px, var(--ghost-line) 2.5px, transparent 3px);
   content: "";
@@ -105,8 +112,7 @@
   height: 60px;
   background: repeating-linear-gradient(180deg, var(--ghost-line) 0 4px, transparent 4px 14px);
   content: "";
-  mask-image: linear-gradient(90deg, black 55%, transparent 100%);
-  opacity: 0.55;
+  opacity: 0.4;
 }
 
 .cursorAnchor {
@@ -139,77 +145,101 @@
   position: relative;
   z-index: 10;
   overflow: hidden;
-  border-radius: 8px;
+  border-radius: 28px;
+  background: var(--window-fill);
+  box-shadow:
+    0 0 0 0.5px var(--window-edge),
+    0 48px 96px -32px var(--window-shadow);
+  --line-number: var(--window-muted);
 }
 
 .light .window {
-  border: 1px solid rgba(0, 0, 0, 0.14);
-  background: #ffffff;
-  filter: drop-shadow(6px 6px 0 rgba(255, 69, 0, 0.85)) drop-shadow(0 20px 50px rgba(120, 50, 20, 0.12));
+  --window-fill: #ffffff;
+  --window-header: #fbf9f7;
+  --window-edge: rgba(60, 22, 0, 0.16);
+  --window-shine: #ffffff;
+  --window-shadow: rgba(150, 52, 8, 0.3);
+  --window-dot: #e7e1dc;
+  --window-title: #2b2420;
+  --window-muted: #aaa29b;
+  --window-divider: rgba(60, 22, 0, 0.07);
+  --window-glow: rgba(255, 69, 0, 0.5);
+  --window-accent: #ff4500;
 }
 
 .dark .window {
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: #0c0c0c;
-  filter: drop-shadow(6px 6px 0 rgba(255, 69, 0, 0.55)) drop-shadow(0 30px 80px rgba(0, 0, 0, 0.8));
+  --window-fill: #0f0f0f;
+  --window-header: #131313;
+  --window-edge: rgba(255, 255, 255, 0.12);
+  --window-shine: rgba(255, 255, 255, 0.14);
+  --window-shadow: rgba(24, 6, 0, 0.82);
+  --window-dot: #2e2e2e;
+  --window-title: #ebe7e4;
+  --window-muted: #5f5a55;
+  --window-divider: rgba(255, 255, 255, 0.06);
+  --window-glow: rgba(255, 90, 31, 0.5);
+  --window-accent: #ff5a1f;
+}
+
+.window::after {
+  position: absolute;
+  z-index: 40;
+  border-radius: inherit;
+  box-shadow: inset 0 1px 0 var(--window-shine);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+}
+
+.window [style*="--editor-padding"] {
+  --editor-padding: 20px 24px 24px !important;
+}
+
+.window [style*="token-comment"] {
+  font-style: italic;
 }
 
 .topEdge {
   position: absolute;
-  z-index: 20;
+  z-index: 41;
   top: 0;
-  right: 0;
-  left: 0;
-  height: 2px;
+  right: 32px;
+  left: 32px;
+  overflow: hidden;
+  height: 1px;
 }
 
 .progress {
   position: absolute;
-  background: linear-gradient(90deg, #ff4500, #ff6b35, #ffb800);
+  background: linear-gradient(90deg, transparent, var(--window-glow) 40%, var(--window-accent));
   inset: 0;
   transform-origin: 0 50%;
 }
 
 .header {
+  position: relative;
   display: grid;
+  height: 44px;
   align-items: center;
-  padding: 12px 16px 11px;
+  padding: 0 20px;
+  background: var(--window-header);
+  box-shadow: inset 0 -0.5px 0 var(--window-divider);
   grid-gap: 12px;
-  grid-template-columns: 60px 1fr 60px;
-}
-
-.light .header {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  background: #faf7f5;
-}
-
-.dark .header {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  background: #111111;
+  grid-template-columns: 64px 1fr 64px;
 }
 
 .dots {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
 }
 
 .dot {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-}
-
-.dot:nth-child(1) {
-  background: #ff4500;
-}
-
-.light .dot:nth-child(n + 2) {
-  background: #d6d0cb;
-}
-
-.dark .dot:nth-child(n + 2) {
-  background: #2e2e2e;
+  background: var(--window-dot);
+  box-shadow: inset 0 0 0 0.5px var(--window-edge);
 }
 
 .fileName {
@@ -218,10 +248,12 @@
   height: 16px;
   align-items: center;
   justify-content: center;
-  font-family: var(--code-font, ui-monospace, monospace);
+  color: var(--window-title);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
   font-size: 13px;
   font-weight: 500;
-  line-height: 12px;
+  letter-spacing: -0.005em;
+  line-height: 16px;
 
   > input {
     position: absolute;
@@ -243,12 +275,4 @@
   > input:focus + span {
     display: none;
   }
-}
-
-.light .fileName {
-  color: rgba(0, 0, 0, 0.65);
-}
-
-.dark .fileName {
-  color: rgba(255, 255, 255, 0.8);
 }

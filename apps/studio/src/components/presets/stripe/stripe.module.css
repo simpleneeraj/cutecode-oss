@@ -5,11 +5,17 @@
 }
 
 .dark {
-  background: #0a2540;
+  --light-source: rgba(255, 255, 255, 0.06);
+  --corner: rgba(2, 10, 26, 0.6);
+
+  background: linear-gradient(180deg, #0c2a48 0%, #0a2540 50%, #071a2f 100%);
 }
 
 .light {
-  background: #f6f9fc;
+  --light-source: rgba(255, 255, 255, 0.35);
+  --corner: rgba(10, 37, 64, 0.1);
+
+  background: linear-gradient(180deg, #f9fbfd 0%, #f6f9fc 50%, #edf2f7 100%);
 }
 
 .transparent {
@@ -21,6 +27,15 @@
   overflow: hidden;
   inset: 0;
   pointer-events: none;
+}
+
+.layer::after {
+  position: absolute;
+  background:
+    radial-gradient(80% 60% at 30% 0%, var(--light-source), transparent 65%),
+    radial-gradient(70% 60% at 100% 100%, var(--corner), transparent 72%);
+  content: "";
+  inset: 0;
 }
 
 .band {
@@ -66,27 +81,69 @@
   position: relative;
   z-index: 10;
   overflow: hidden;
-  border-radius: 8px;
-  background: #212d63;
-  --line-number: #858c90;
-}
-
-.dark .window {
-  box-shadow: 0 50px 100px -20px rgba(50, 50, 93, 0.25), 0 30px 60px -30px rgba(0, 0, 0, 0.5);
+  border-radius: 28px;
+  background: var(--window-fill);
+  box-shadow:
+    0 0 0 0.5px var(--window-edge),
+    0 48px 96px -32px var(--window-shadow);
+  --line-number: var(--window-muted);
 }
 
 .light .window {
-  box-shadow: 0 50px 100px -20px rgba(50, 50, 93, 0.25), 0 30px 60px -30px rgba(0, 0, 0, 0.3);
+  --window-fill: #1f2b5e;
+  --window-header: #1b2654;
+  --window-edge: rgba(10, 37, 64, 0.3);
+  --window-shine: rgba(255, 255, 255, 0.14);
+  --window-shadow: rgba(50, 50, 93, 0.4);
+  --window-dot: #3a4578;
+  --window-title: #c4cce0;
+  --window-muted: #6f7aa3;
+  --window-divider: rgba(255, 255, 255, 0.06);
+  --window-glow: transparent;
+  --window-accent: #635bff;
+}
+
+.dark .window {
+  --window-fill: #1f2b5e;
+  --window-header: #1b2654;
+  --window-edge: rgba(255, 255, 255, 0.1);
+  --window-shine: rgba(255, 255, 255, 0.14);
+  --window-shadow: rgba(2, 10, 26, 0.82);
+  --window-dot: #3a4578;
+  --window-title: #c4cce0;
+  --window-muted: #6f7aa3;
+  --window-divider: rgba(255, 255, 255, 0.06);
+  --window-glow: transparent;
+  --window-accent: #635bff;
+}
+
+.window::after {
+  position: absolute;
+  z-index: 40;
+  border-radius: inherit;
+  box-shadow: inset 0 1px 0 var(--window-shine);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+}
+
+.window [style*="--editor-padding"] {
+  --editor-padding: 20px 24px 24px !important;
+}
+
+.window [style*="token-comment"] {
+  font-style: italic;
 }
 
 .topEdge {
   position: absolute;
-  z-index: 20;
+  z-index: 41;
   top: 0;
   right: 0;
   left: 0;
   overflow: hidden;
-  height: 2px;
+  height: 1px;
+  opacity: 0.9;
 }
 
 .sweep {
@@ -98,25 +155,29 @@
 }
 
 .header {
+  position: relative;
   display: grid;
+  height: 44px;
   align-items: center;
-  padding: 12px 16px 11px;
-  background: #1a2652;
+  padding: 0 20px;
+  background: var(--window-header);
+  box-shadow: inset 0 -0.5px 0 var(--window-divider);
   grid-gap: 12px;
-  grid-template-columns: 60px 1fr 60px;
+  grid-template-columns: 64px 1fr 64px;
 }
 
 .dots {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
 }
 
 .dot {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.16);
+  background: var(--window-dot);
+  box-shadow: inset 0 0 0 0.5px var(--window-edge);
 }
 
 .fileName {
@@ -125,12 +186,12 @@
   height: 16px;
   align-items: center;
   justify-content: center;
-  color: #a3acb9;
-  font-family: var(--code-font, "Source Code Pro", monospace);
-  font-size: 12px;
+  color: var(--window-title);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-size: 13px;
   font-weight: 500;
-  letter-spacing: 0.03em;
-  line-height: 12px;
+  letter-spacing: -0.005em;
+  line-height: 16px;
 
   > input {
     position: absolute;

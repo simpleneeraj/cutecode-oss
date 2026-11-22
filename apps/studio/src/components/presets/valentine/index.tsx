@@ -18,14 +18,15 @@ const KEEPSAKES = [
   { id: "stars-bottom-left", icon: StarsIcon, x: 14, y: 88, size: 16, tilt: 0 },
 ];
 
-const CONFETTI = Array.from({ length: 20 }, (_, index) => ({
+const CONFETTI = Array.from({ length: 12 }, (_, index) => ({
   id: `confetti-${index}`,
   left: `${(index * 29 + 11) % 100}%`,
   size: 6 + ((index * 3) % 6),
   sway: index % 2 === 0 ? 16 : -16,
   spin: index % 2 === 0 ? 180 : -180,
   cycles: 1 + (index % 2),
-  phase: ((index * 7) % 20) / 20,
+  phase: ((index * 7) % 12) / 12,
+
 }));
 
 type Keepsake = (typeof KEEPSAKES)[number];
@@ -48,7 +49,7 @@ function FallingConfetti({ confetti }: { confetti: Confetti }) {
   const y = useLoop(["-6cqh", "106cqh"], options);
   const x = useLoop([0, confetti.sway, 0, -confetti.sway, 0], { ...options, ease: easeInOut });
   const rotate = useLoop([0, confetti.spin], options);
-  const opacity = useLoop([0, 0.85, 0.85, 0], options);
+  const opacity = useLoop([0, 0.6, 0.6, 0], options);
 
   return (
     <motion.span className={styles.confetti} style={{ left: confetti.left, top: 0, x, y, rotate, opacity }}>

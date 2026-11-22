@@ -5,7 +5,7 @@ import GridCell, { type Cell } from "./grid-cell";
 import styles from "./tailwind.module.css";
 
 const WAVES: Wave[] = [
-  { id: "violet", tone: "waveViolet", isReversed: true, cycles: 1 },
+  { id: "mist", tone: "waveMist", isReversed: true, cycles: 1 },
   { id: "sky", tone: "waveSky", isReversed: false, cycles: 1 },
   { id: "cyan", tone: "waveCyan", isReversed: true, cycles: 2 },
 ];
@@ -38,14 +38,14 @@ export default function TailwindScene() {
 
   return (
     <div className={styles.layer} aria-hidden>
-      <motion.div className={styles.beamSky} style={{ x: driftX, y: driftY }} />
-      <motion.div className={styles.beamViolet} style={{ x: driftY, y: driftX }} />
       <div className={styles.grid} />
       <div className={styles.cells}>
         {CELLS.map((cell) => (
           <GridCell key={cell.id} cell={cell} />
         ))}
       </div>
+      <motion.div className={styles.beamSky} style={{ x: driftX, y: driftY }} />
+      <motion.div className={styles.beamCyan} style={{ x: driftY, y: driftX }} />
       <div className={styles.flow}>
         {WAVES.map((wave) => (
           <FlowWave key={wave.id} wave={wave} />

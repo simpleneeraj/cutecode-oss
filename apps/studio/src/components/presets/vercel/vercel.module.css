@@ -15,7 +15,10 @@
   --face-side: rgba(255, 255, 255, 0.05);
   --prism-edge: rgba(255, 255, 255, 0.7);
   --prism-ridge: rgba(255, 255, 255, 0.35);
-  background: radial-gradient(ellipse at 65% 25%, #141414 0%, #050505 55%, #000 100%);
+  --base: #000000;
+  --light-source: rgba(255, 255, 255, 0.05);
+  --corner: rgba(0, 0, 0, 0.6);
+  background: radial-gradient(ellipse at 65% 25%, #141414 0%, #050505 55%, var(--base) 100%);
 }
 
 .light {
@@ -29,7 +32,10 @@
   --face-side: rgba(0, 0, 0, 0.04);
   --prism-edge: rgba(0, 0, 0, 0.5);
   --prism-ridge: rgba(0, 0, 0, 0.2);
-  background: radial-gradient(ellipse at 65% 25%, #fff 0%, #f7f7f7 55%, #ededed 100%);
+  --base: #ebebeb;
+  --light-source: rgba(255, 255, 255, 0.8);
+  --corner: rgba(0, 0, 0, 0.07);
+  background: radial-gradient(ellipse at 65% 25%, #fff 0%, #f6f6f6 55%, var(--base) 100%);
 }
 
 .transparent {
@@ -43,15 +49,27 @@
   pointer-events: none;
 }
 
+.layer::after {
+  position: absolute;
+  background:
+    radial-gradient(80% 60% at 30% 0%, var(--light-source), transparent 65%),
+    radial-gradient(70% 60% at 100% 100%, var(--corner), transparent 72%);
+  content: "";
+  inset: 0;
+}
+
 .grid {
   position: absolute;
   background-image:
+    radial-gradient(ellipse at 50% 45%, transparent 10%, var(--base) 70%),
     linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
     linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
   background-position: center;
-  background-size: 48px 48px;
+  background-size:
+    100% 100%,
+    48px 48px,
+    48px 48px;
   inset: 0;
-  mask-image: radial-gradient(ellipse at 50% 45%, black 10%, transparent 70%);
 }
 
 .optics {
@@ -132,61 +150,88 @@
   position: relative;
   z-index: 10;
   overflow: hidden;
-  border-radius: 16px;
-}
-
-.dark .window {
-  background: linear-gradient(180deg, #0d0d0d 0%, #080808 100%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  filter: drop-shadow(0 0 48px rgba(255, 255, 255, 0.05)) drop-shadow(0 32px 64px rgba(0, 0, 0, 0.8));
+  border-radius: 28px;
+  background: var(--window-fill);
+  box-shadow:
+    0 0 0 0.5px var(--window-edge),
+    0 48px 96px -32px var(--window-shadow);
+  --line-number: var(--window-muted);
 }
 
 .light .window {
-  background: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.04)) drop-shadow(0 24px 48px rgba(0, 0, 0, 0.1));
+  --window-fill: #ffffff;
+  --window-header: #fcfcfc;
+  --window-edge: rgba(0, 0, 0, 0.14);
+  --window-shine: #ffffff;
+  --window-shadow: rgba(0, 0, 0, 0.22);
+  --window-dot: #e5e5e5;
+  --window-title: #171717;
+  --window-muted: #a1a1a1;
+  --window-divider: rgba(0, 0, 0, 0.06);
+  --window-glow: rgba(0, 0, 0, 0.22);
+  --window-accent: #171717;
+}
+
+.dark .window {
+  --window-fill: #0a0a0a;
+  --window-header: #0f0f0f;
+  --window-edge: rgba(255, 255, 255, 0.14);
+  --window-shine: rgba(255, 255, 255, 0.16);
+  --window-shadow: rgba(0, 0, 0, 0.9);
+  --window-dot: #2a2a2a;
+  --window-title: #ededed;
+  --window-muted: #575757;
+  --window-divider: rgba(255, 255, 255, 0.06);
+  --window-glow: rgba(255, 255, 255, 0.4);
+  --window-accent: #ffffff;
+}
+
+.window::after {
+  position: absolute;
+  z-index: 40;
+  border-radius: inherit;
+  box-shadow: inset 0 1px 0 var(--window-shine);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+}
+
+.window [style*="--editor-padding"] {
+  --editor-padding: 20px 24px 24px !important;
+}
+
+.window [style*="token-comment"] {
+  font-style: italic;
 }
 
 .topEdge {
   position: absolute;
-  z-index: 20;
+  z-index: 41;
   top: 0;
-  right: 0;
-  left: 0;
+  right: 32px;
+  left: 32px;
   overflow: hidden;
   height: 1px;
+  background: linear-gradient(90deg, transparent, var(--window-glow), transparent);
 }
 
 .sweep {
   position: absolute;
   width: 40%;
+  background: linear-gradient(90deg, transparent, var(--window-accent), transparent);
   inset-block: 0;
 }
 
-.dark .sweep {
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.9), transparent);
-}
-
-.light .sweep {
-  background: linear-gradient(90deg, transparent, #171717, transparent);
-}
-
 .header {
+  position: relative;
   display: grid;
+  height: 44px;
   align-items: center;
-  padding: 12px 16px 11px;
-  grid-gap: 16px;
+  padding: 0 20px;
+  background: var(--window-header);
+  box-shadow: inset 0 -0.5px 0 var(--window-divider);
+  grid-gap: 12px;
   grid-template-columns: 64px 1fr 64px;
-}
-
-.dark .header {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.02);
-}
-
-.light .header {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  background: #fafafa;
 }
 
 .dots {
@@ -199,14 +244,8 @@
   width: 12px;
   height: 12px;
   border-radius: 50%;
-}
-
-.dark .dot {
-  background: rgba(255, 255, 255, 0.14);
-}
-
-.light .dot {
-  background: rgba(0, 0, 0, 0.1);
+  background: var(--window-dot);
+  box-shadow: inset 0 0 0 0.5px var(--window-edge);
 }
 
 .fileName {
@@ -215,11 +254,12 @@
   height: 16px;
   align-items: center;
   justify-content: center;
-  font-family: var(--code-font, "Geist Mono", monospace);
-  font-size: 12px;
+  color: var(--window-title);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-size: 13px;
   font-weight: 500;
-  letter-spacing: 0.02em;
-  line-height: 12px;
+  letter-spacing: -0.005em;
+  line-height: 16px;
 
   > input {
     position: absolute;
@@ -241,12 +281,4 @@
   > input:focus + span {
     display: none;
   }
-}
-
-.dark .fileName {
-  color: #a1a1a1;
-}
-
-.light .fileName {
-  color: #666;
 }

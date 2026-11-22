@@ -6,7 +6,7 @@ const WAVE_PERIOD = 240;
 
 export type Wave = {
   id: string;
-  tone: "waveSky" | "waveCyan" | "waveViolet";
+  tone: "waveSky" | "waveCyan" | "waveMist";
   isReversed: boolean;
   cycles: number;
 };

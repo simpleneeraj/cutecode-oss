@@ -5,7 +5,7 @@ import { BaseFrameProps } from "@/typings/presets";
 import { SceneFrame, useLoop } from "../scene";
 import styles from "./style.module.css";
 
-const BULB_TONES = [styles.gold, styles.ivory, styles.berry];
+const BULB_TONES = [styles.gold, styles.ivory];
 
 const BULBS = Array.from({ length: 14 }, (_, index) => {
   const swag = Math.floor(index / 7);
@@ -170,7 +170,7 @@ function ChristmasScene() {
         <PineCorner key={corner} corner={corner} index={index} />
       ))}
       <HangingDecor />
-      <span className={cn(styles.bauble, styles.berryBauble, styles.restingLarge)} />
+      <span className={cn(styles.bauble, styles.pearlBauble, styles.restingLarge)} />
       <span className={cn(styles.bauble, styles.goldBauble, styles.restingSmall)} />
       {SPARKLES.map((sparkle, index) => (
         <GoldSparkle key={sparkle.id} sparkle={sparkle} index={index} />

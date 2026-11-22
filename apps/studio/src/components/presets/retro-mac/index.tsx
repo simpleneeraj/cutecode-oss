@@ -67,18 +67,18 @@ function RetroMacScene() {
   );
 }
 
-function RainbowStripe() {
+function PlatinumSheen() {
   const x = useLoop(["-100%", "300%", "300%"]);
 
   return (
-    <div className={styles.rainbow} aria-hidden>
+    <div className={styles.topEdge} aria-hidden>
       <motion.div className={styles.shine} style={{ x }} />
     </div>
   );
 }
 
 const background = <RetroMacScene />;
-const accent = <RainbowStripe />;
+const accent = <PlatinumSheen />;
 
 export default function RetroMacFrame(props: BaseFrameProps) {
   return <SceneFrame {...props} themeStyles={styles} background={background} accent={accent} />;

@@ -6,9 +6,9 @@ import styles from "./frosted-glass.module.css";
 
 const ORBS = [
   { id: "indigo", className: styles.orbIndigo, dx: 36, dy: 22, phase: 0 },
-  { id: "violet", className: styles.orbViolet, dx: -30, dy: -26, phase: 0.25 },
+  { id: "periwinkle", className: styles.orbPeriwinkle, dx: -30, dy: -26, phase: 0.25 },
   { id: "sky", className: styles.orbSky, dx: 26, dy: -32, phase: 0.5 },
-  { id: "rose", className: styles.orbRose, dx: -24, dy: 20, phase: 0.75 },
+  { id: "pearl", className: styles.orbPearl, dx: -24, dy: 20, phase: 0.75 },
 ];
 
 const GLINTS = [

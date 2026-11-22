@@ -26,7 +26,7 @@ const INNER_PATH = `${raysPath(12, 8, 24, 15)}${dotsPath(12, 28, 15)}`;
 
 const BURSTS = [
   { id: "burst-top-left", x: 14, y: 20, size: 30, tone: styles.gold, cycles: 1, phase: 0 },
-  { id: "burst-top-right", x: 84, y: 16, size: 36, tone: styles.rose, cycles: 1, phase: 0.5 },
+  { id: "burst-top-right", x: 84, y: 16, size: 36, tone: styles.champagne, cycles: 1, phase: 0.5 },
   { id: "burst-top", x: 52, y: 8, size: 22, tone: styles.silver, cycles: 2, phase: 0.3 },
   { id: "burst-right", x: 92, y: 64, size: 24, tone: styles.gold, cycles: 1, phase: 0.75 },
   { id: "burst-bottom-left", x: 8, y: 74, size: 26, tone: styles.silver, cycles: 1, phase: 0.25 },
@@ -41,7 +41,7 @@ const STARS = Array.from({ length: 18 }, (_, index) => ({
   phase: ((index * 5) % 18) / 18,
 }));
 
-const CONFETTI_TONES = [styles.gold, styles.champagne, styles.rose, styles.silver];
+const CONFETTI_TONES = [styles.gold, styles.champagne, styles.silver];
 
 const CONFETTI = Array.from({ length: 24 }, (_, index) => ({
   id: `confetti-${index}`,

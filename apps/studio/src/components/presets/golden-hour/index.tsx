@@ -1,3 +1,4 @@
+import { useId } from "react";
 import { motion, easeInOut } from "motion/react";
 import { LeafIcon } from "@solar-icons/react/bold-duotone/leaf";
 import { StarsIcon } from "@solar-icons/react/bold-duotone/stars";
@@ -21,6 +22,13 @@ const MOTES = Array.from({ length: 18 }, (_, index) => ({
   size: 3 + ((index * 4) % 3),
   phase: ((index * 7) % 18) / 18,
 }));
+
+const rayPaths = Array.from({ length: 20 }, (_, index) => {
+  const start = (index * 18 * Math.PI) / 180;
+  const end = start + (6 * Math.PI) / 180;
+  const point = (angle: number) => `${(Math.cos(angle) * 100).toFixed(2)} ${(Math.sin(angle) * 100).toFixed(2)}`;
+  return `M0 0L${point(start)}L${point(end)}Z`;
+});
 
 type Floater = (typeof FLOATERS)[number];
 type Mote = (typeof MOTES)[number];
@@ -46,15 +54,33 @@ function RisingMote({ mote }: { mote: Mote }) {
   );
 }
 
-function GoldenHourScene() {
+function SunRays() {
+  const gradientId = useId();
   const rotate = useLoop([0, 18]);
+
+  return (
+    <motion.svg className={styles.rays} viewBox="-100 -100 200 200" style={{ rotate }}>
+      <defs>
+        <radialGradient id={gradientId} gradientUnits="userSpaceOnUse" cx="0" cy="0" r="100">
+          <stop offset="0" stopOpacity="1" />
+          <stop offset="0.62" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+      {rayPaths.map((path) => (
+        <path key={path} d={path} fill={`url(#${gradientId})`} />
+      ))}
+    </motion.svg>
+  );
+}
+
+function GoldenHourScene() {
   const glowScale = useLoop([1, 1.05, 1], { ease: easeInOut });
   const driftX = useLoop([0, 14, 0], { ease: easeInOut });
   const driftY = useLoop([0, -10, 0], { ease: easeInOut, phase: 0.25 });
 
   return (
     <div className={styles.layer} aria-hidden>
-      <motion.div className={styles.rays} style={{ rotate }} />
+      <SunRays />
       <motion.div className={styles.sun} style={{ scale: glowScale }} />
       <motion.div className={styles.blobA} style={{ x: driftX, y: driftY }} />
       <motion.div className={styles.blobB} style={{ x: driftY, y: driftX }} />

@@ -5,13 +5,12 @@ import { BaseFrameProps } from "@/typings/presets";
 import { SceneFrame, useLoop } from "../scene";
 import styles from "./love.module.css";
 
-const HEARTS = Array.from({ length: 12 }, (_, index) => ({
+const HEARTS = Array.from({ length: 8 }, (_, index) => ({
   id: `heart-${index}`,
   left: `${(index * 43 + 6) % 96}%`,
-  size: 10 + ((index * 7) % 10),
-  sway: index % 2 === 0 ? 14 : -14,
-  cycles: 1 + (index % 2),
-  phase: ((index * 5) % 12) / 12,
+  size: 10 + ((index * 7) % 8),
+  sway: index % 2 === 0 ? 12 : -12,
+  phase: ((index * 5) % 8) / 8,
 }));
 
 const TWINKLES = [
@@ -27,10 +26,10 @@ type Heart = (typeof HEARTS)[number];
 type Twinkle = (typeof TWINKLES)[number];
 
 function RisingHeart({ heart }: { heart: Heart }) {
-  const options = { cycles: heart.cycles, phase: heart.phase };
+  const options = { phase: heart.phase };
   const y = useLoop(["110cqh", "-10cqh"], options);
   const x = useLoop([0, heart.sway, 0, -heart.sway, 0], { ...options, ease: easeInOut });
-  const opacity = useLoop([0, 0.7, 0.7, 0], options);
+  const opacity = useLoop([0, 0.5, 0.5, 0], options);
   const scale = useLoop([0.6, 1, 0.8], options);
 
   return (
@@ -46,10 +45,7 @@ function TwinkleStar({ twinkle, index }: { twinkle: Twinkle; index: number }) {
   const scale = useLoop([0.8, 1.15, 0.8], { cycles: 2, phase, ease: easeInOut });
 
   return (
-    <motion.span
-      className={styles.twinkle}
-      style={{ left: `${twinkle.x}%`, top: `${twinkle.y}%`, opacity, scale }}
-    >
+    <motion.span className={styles.twinkle} style={{ left: `${twinkle.x}%`, top: `${twinkle.y}%`, opacity, scale }}>
       <StarsMinimalisticIcon size={twinkle.size} />
     </motion.span>
   );
