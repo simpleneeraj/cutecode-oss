@@ -24,7 +24,9 @@
     "./zone-banner": "./src/parts/zone-banner/index.tsx",
     "./zone-banner/example": "./src/parts/zone-banner/example.tsx",
     "./repeat-field": "./src/parts/repeat-field/index.tsx",
-    "./recurring/example": "./src/views/recurring/example.tsx"
+    "./recurring/example": "./src/views/recurring/example.tsx",
+    "./heat-month": "./src/views/heat-month/index.tsx",
+    "./heat-month/example": "./src/views/heat-month/example.tsx"
   },
   "scripts": {
     "typecheck": "node ../../node_modules/typescript-7/bin/tsc --noEmit",

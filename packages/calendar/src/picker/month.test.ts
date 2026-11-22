@@ -91,6 +91,19 @@ describe("pickerMonth selection", () => {
     expect(dayOf(weeks, "2026-11-22")?.inRange).toBe(false);
   });
 
+  it("marks only the start of an inverted range", () => {
+    const selection: DateSelection = { mode: SelectionMode.Range, start: "2026-11-27", end: "2026-11-20" };
+    const weeks = pickerMonth("2026-11-18", sundayStart, selection, {}, today);
+    expect(dayOf(weeks, "2026-11-27")).toMatchObject({
+      selected: true,
+      rangeStart: true,
+      rangeEnd: false,
+      inRange: false,
+    });
+    expect(weeks.flat().filter((day) => day.selected)).toHaveLength(1);
+    expect(weeks.flat().some((day) => day.rangeEnd)).toBe(false);
+  });
+
   it("marks a one day range as both start and end", () => {
     const selection: DateSelection = { mode: SelectionMode.Range, start: "2026-11-18", end: "2026-11-19" };
     const weeks = pickerMonth("2026-11-18", sundayStart, selection, {}, today);

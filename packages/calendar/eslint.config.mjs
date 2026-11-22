@@ -44,7 +44,7 @@ const reactLibraries = {
   message: "Engine folders stay pure. React lives in src/views and src/parts.",
 };
 
-const reactFolders = ["src/views/**", "src/parts/**"];
+const reactFolders = ["src/views/**", "src/parts/**", "src/family/**"];
 
 export default defineConfig([
   { ignores: ["node_modules/**"] },

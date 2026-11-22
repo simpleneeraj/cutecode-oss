@@ -29,11 +29,13 @@ function rangeMarks(date: PlainDate, selection: DateSelection): RangeMarks {
     return unmarked;
   }
   const rangeStart = date === selection.start;
-  if (selection.end === null) {
+  const end = selection.end ?? selection.start;
+  const isOpen = compareDates(end, selection.start) <= 0;
+  if (isOpen) {
     return { ...unmarked, selected: rangeStart, rangeStart };
   }
-  const inRange = isWithin(date, selection.start, selection.end);
-  const rangeEnd = date === addDays(selection.end, -1);
+  const inRange = isWithin(date, selection.start, end);
+  const rangeEnd = date === addDays(end, -1);
   return { selected: inRange, rangeStart, rangeEnd, inRange };
 }
 
