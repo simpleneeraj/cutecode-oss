@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { buttonPairStyles, neckPaths } from "./style";
+import { buttonPairStyles } from "./style";
 
 type ButtonPairProps = {
   label: string;
@@ -18,10 +18,6 @@ function ButtonPair({ label, primary, secondary, onPrimaryClick, onSecondaryClic
       <button className={styles.button({ class: styles.primary() })} onClick={onPrimaryClick} type="button">
         {primary}
       </button>
-      <svg aria-hidden="true" className={styles.neck()} focusable="false" viewBox="0 0 24 44">
-        <path className={styles.primaryNeck()} d={neckPaths.primary} />
-        <path className={styles.secondaryNeck()} d={neckPaths.secondary} />
-      </svg>
       <button className={styles.button({ class: styles.secondary() })} onClick={onSecondaryClick} type="button">
         {secondary}
       </button>

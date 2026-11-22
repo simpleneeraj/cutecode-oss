@@ -17,7 +17,7 @@ const buttonTones = {
 };
 
 const buttonVariants = cva(
-  "hit-area press relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-1.5 whitespace-nowrap rounded-control font-semibold text-body outline-none focus-visible:shadow-focus disabled:pointer-events-none disabled:opacity-40 aria-disabled:pointer-events-none aria-disabled:opacity-40 [&_svg:not([class*='size-'])]:size-5 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+  "hit-area press relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-control font-medium text-density-body outline-none focus-visible:shadow-focus disabled:pointer-events-none disabled:opacity-64 aria-disabled:pointer-events-none aria-disabled:opacity-64 [&_svg:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:-mx-0.5 [&_svg]:shrink-0",
   {
     defaultVariants: {
       size: "default",
@@ -25,16 +25,16 @@ const buttonVariants = cva(
     },
     variants: {
       size: {
-        default: "h-11 px-5",
-        icon: "size-11",
-        "icon-lg": "size-12.5",
-        "icon-sm": "size-8.5 [&_svg:not([class*='size-'])]:size-4.25",
-        "icon-xl": "size-14 [&_svg:not([class*='size-'])]:size-6",
-        "icon-xs": "size-7 [&_svg:not([class*='size-'])]:size-4",
-        lg: "h-12.5 px-6",
-        sm: "h-8.5 gap-1 px-3.5 text-subheadline [&_svg:not([class*='size-'])]:size-4.25",
-        xl: "h-14 px-7 [&_svg:not([class*='size-'])]:size-6",
-        xs: "h-7 gap-1 px-3 text-footnote [&_svg:not([class*='size-'])]:size-4",
+        default: "h-control-medium px-control-inset-medium",
+        icon: "size-control-medium",
+        "icon-lg": "size-control-large",
+        "icon-sm": "size-control-small",
+        "icon-xl": "size-11 sm:size-10 [&_svg:not([class*='size-'])]:size-5 sm:[&_svg:not([class*='size-'])]:size-4.5",
+        "icon-xs": "size-7 rounded-lg sm:size-6 [&_svg:not([class*='size-'])]:size-4 sm:[&_svg:not([class*='size-'])]:size-3.5",
+        lg: "h-control-large px-control-inset-large",
+        sm: "h-control-small gap-1.5 px-control-inset-small",
+        xl: "h-11 px-4 text-lg sm:h-10 sm:text-base [&_svg:not([class*='size-'])]:size-5 sm:[&_svg:not([class*='size-'])]:size-4.5",
+        xs: "h-7 gap-1 rounded-lg px-2 text-sm sm:h-6 sm:text-xs [&_svg:not([class*='size-'])]:size-4 sm:[&_svg:not([class*='size-'])]:size-3.5",
       },
       variant: {
         default: buttonTones.filled,

@@ -51,7 +51,7 @@ function PopoverPopup({
         <PopoverPrimitive.Popup
           className={cn(
             popupClassNames.glass,
-            "relative flex h-(--popup-height,auto) w-(--popup-width,auto) origin-(--transform-origin) outline-none transition-popup data-starting-style:scale-95 data-starting-style:opacity-0 motion-reduce:transition-none",
+            "relative flex h-(--popup-height,auto) w-(--popup-width,auto) origin-(--transform-origin) outline-none transition-popup data-starting-style:scale-98 data-starting-style:opacity-0 motion-reduce:transition-none",
             tooltipStyle && "w-fit text-balance text-density-footnote",
             className,
           )}
@@ -61,7 +61,7 @@ function PopoverPopup({
           <PopoverPrimitive.Viewport
             className={cn(
               "relative size-full max-h-(--available-height) overflow-clip data-instant:transition-none **:data-current:data-ending-style:opacity-0 **:data-current:data-starting-style:opacity-0 **:data-previous:data-ending-style:opacity-0 **:data-previous:data-starting-style:opacity-0 **:data-current:opacity-100 **:data-previous:opacity-100 **:data-current:transition-opacity **:data-previous:transition-opacity",
-              tooltipStyle ? "viewport-inset-3 py-1.5" : "viewport-inset-5 py-5 not-data-transitioning:overflow-y-auto",
+              tooltipStyle ? "viewport-inset-2 py-1" : "viewport-inset-4 py-4 not-data-transitioning:overflow-y-auto",
             )}
             data-slot="popover-viewport"
           >
@@ -80,7 +80,7 @@ function PopoverClose({ ...props }: PopoverPrimitive.Close.Props) {
 function PopoverTitle({ className, ...props }: PopoverPrimitive.Title.Props) {
   return (
     <PopoverPrimitive.Title
-      className={cn("font-semibold text-density-body", className)}
+      className={cn("font-semibold text-lg leading-none", className)}
       data-slot="popover-title"
       {...props}
     />

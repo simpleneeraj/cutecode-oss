@@ -4,6 +4,7 @@
 @import "@cutecode/ui/globals.css";
 @import "./docs-theme.css";
 @source "../../../packages/ui/src";
+@source "../../../packages/calendar/src";
 @source "../../../node_modules/fumadocs-ui/dist";
 
 :root,

@@ -22,30 +22,30 @@ it("renders one combination as root and dark variables", () => {
 });
 
 it("renders the default combination as the head of tokens.css", () => {
-  const css = renderThemeCss({ style: Style.Tactile, palette: Palette.Blue, font: FontPairing.System });
+  const css = renderThemeCss({ style: Style.Tactile, palette: Palette.Neutral, font: FontPairing.System });
   expect(renderTokensCss()).toContain(css.trimEnd());
 });
 
 describe("density", () => {
   const css = renderTokensCss();
-  const regularRoot = ":root {\n  --control-height-small: 2.125rem;";
-  const compactUnderFinePointer =
-    "@media (pointer: fine) and (min-width: 48rem) {\n  :root {\n    --control-height-small: 1.75rem;";
-  const regularOverride = '[data-density="regular"] {\n  --control-height-small: 2.125rem;';
+  const regularRoot = ":root {\n  --control-height-small: 2rem;";
+  const compactFromSmallBreakpoint =
+    "@media (min-width: 40rem) {\n  :root {\n    --control-height-small: 1.75rem;";
+  const regularOverride = '[data-density="regular"] {\n  --control-height-small: 2rem;';
   const compactOverride = '[data-density="compact"] {\n  --control-height-small: 1.75rem;';
 
-  it("keeps 44pt touch sizes in regular", () => {
+  it("matches the coss sizes in regular", () => {
     const regular = densities[Density.Regular];
     expect([regular.controlHeightMedium, regular.fieldHeight, regular.rowHeight]).toEqual([
-      "2.75rem",
-      "2.75rem",
-      "2.75rem",
+      "2.25rem",
+      "2.125rem",
+      "2rem",
     ]);
-    expect(regular.bodySize).toBe("1.0625rem");
+    expect(regular.bodySize).toBe("1rem");
   });
 
-  it("renders regular on the root, compact for a fine pointer, then the data-density overrides", () => {
-    const positions = [regularRoot, compactUnderFinePointer, regularOverride, compactOverride].map((block) =>
+  it("renders regular on the root, compact from the small breakpoint, then the data-density overrides", () => {
+    const positions = [regularRoot, compactFromSmallBreakpoint, regularOverride, compactOverride].map((block) =>
       css.indexOf(block),
     );
     expect(positions.every((position) => position > 0)).toBe(true);
@@ -54,7 +54,7 @@ describe("density", () => {
 
   it("renders every density token in every block", () => {
     const variableNames = Object.keys(densities[Density.Regular]).map(toVariableName);
-    const blocks = [regularRoot, compactUnderFinePointer, regularOverride, compactOverride].map(
+    const blocks = [regularRoot, compactFromSmallBreakpoint, regularOverride, compactOverride].map(
       (block) => css.slice(css.indexOf(block)).split("}")[0],
     );
     blocks.forEach((block) => variableNames.forEach((name) => expect(block).toContain(`${name}: `)));

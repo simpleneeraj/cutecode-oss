@@ -9,6 +9,7 @@
     "./lib/*": "./src/lib/*.ts",
     "./provider": "./src/provider/index.ts",
     "./provider/use-style-settings": "./src/provider/use-style-settings.ts",
+    "./tokens/motion": "./src/tokens/motion.ts",
     "./tactile/tone": "./src/tactile/tone/index.ts",
     "./tactile/*/style": "./src/tactile/*/style.ts",
     "./tactile/*": "./src/tactile/*/index.tsx"

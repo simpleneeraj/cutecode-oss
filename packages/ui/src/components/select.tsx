@@ -17,7 +17,7 @@ import { popupClassNames } from "./popup-classes";
 const Select = SelectPrimitive.Root;
 
 const selectTriggerVariants = cva(
-  "relative inline-flex min-h-field w-full min-w-36 cursor-pointer select-none items-center justify-between gap-2 rounded-density-field edge bg-card px-row-inset text-left text-density-body text-foreground outline-none inset-ring inset-ring-input transition-shadow in-data-[slot=toolbar]:rounded-control focus-visible:shadow-focus aria-invalid:inset-ring-2 aria-invalid:inset-ring-destructive-foreground data-disabled:pointer-events-none data-disabled:opacity-40 [&_svg:not([class*='size-'])]:size-5 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+  "hit-area relative inline-flex min-h-control-medium w-full min-w-36 cursor-pointer select-none items-center justify-between gap-2 rounded-density-field edge bg-card px-control-inset-medium text-left text-density-body text-foreground outline-none inset-ring inset-ring-input transition-shadow in-data-[slot=toolbar]:rounded-control focus-visible:shadow-focus aria-invalid:inset-ring-destructive-foreground data-disabled:pointer-events-none data-disabled:opacity-64 [&_svg:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
   {
     defaultVariants: {
       size: "default",
@@ -25,14 +25,14 @@ const selectTriggerVariants = cva(
     variants: {
       size: {
         default: "",
-        lg: "min-h-control-large px-control-inset-small",
-        sm: "gap-1.5",
+        lg: "min-h-control-large",
+        sm: "min-h-control-small gap-1.5 px-control-inset-small",
       },
     },
   },
 );
 
-const selectTriggerIconClassName = "-me-1 size-4.5 text-muted-foreground";
+const selectTriggerIconClassName = "-me-1 size-4.5 text-muted-foreground sm:size-4";
 
 type SelectButtonProps = useRender.ComponentProps<"button"> & {
   size?: VariantProps<typeof selectTriggerVariants>["size"];
@@ -93,10 +93,10 @@ function SelectValue({ className, ...props }: SelectPrimitive.Value.Props) {
 function SelectScrollUpArrow() {
   return (
     <SelectPrimitive.ScrollUpArrow
-      className="top-0 z-50 flex h-7 w-full cursor-default items-center justify-center"
+      className="top-0 z-50 flex h-6 w-full cursor-default items-center justify-center"
       data-slot="select-scroll-up-arrow"
     >
-      <AltArrowUpIcon aria-hidden="true" className="size-4" />
+      <AltArrowUpIcon aria-hidden="true" className="relative size-4.5 sm:size-4" />
     </SelectPrimitive.ScrollUpArrow>
   );
 }
@@ -104,10 +104,10 @@ function SelectScrollUpArrow() {
 function SelectScrollDownArrow() {
   return (
     <SelectPrimitive.ScrollDownArrow
-      className="bottom-0 z-50 flex h-7 w-full cursor-default items-center justify-center"
+      className="bottom-0 z-50 flex h-6 w-full cursor-default items-center justify-center"
       data-slot="select-scroll-down-arrow"
     >
-      <AltArrowDownIcon aria-hidden="true" className="size-4" />
+      <AltArrowDownIcon aria-hidden="true" className="relative size-4.5 sm:size-4" />
     </SelectPrimitive.ScrollDownArrow>
   );
 }
@@ -139,7 +139,7 @@ function SelectPopup({
         sideOffset={sideOffset}
       >
         <SelectPrimitive.Popup
-          className="group/select-popup origin-(--transform-origin) text-foreground"
+          className="group/select-popup origin-(--transform-origin) text-foreground outline-none"
           data-slot="select-popup"
           {...props}
         >
@@ -147,7 +147,7 @@ function SelectPopup({
           <div className={cn("relative h-full min-w-(--anchor-width) overflow-hidden", popupClassNames.glass)}>
             <SelectPrimitive.List
               className={cn(
-                "scroll-arrow-fade max-h-(--available-height) overflow-y-auto p-1.5 group-has-data-[slot=select-scroll-down-arrow]/select-popup:mask-b-from-(--arrow-fade) group-has-data-[slot=select-scroll-up-arrow]/select-popup:mask-t-from-(--arrow-fade)",
+                "scroll-arrow-fade max-h-(--available-height) overflow-y-auto p-1 group-has-data-[slot=select-scroll-down-arrow]/select-popup:mask-b-from-(--arrow-fade) group-has-data-[slot=select-scroll-up-arrow]/select-popup:mask-t-from-(--arrow-fade)",
                 className,
               )}
               data-slot="select-list"
@@ -166,16 +166,16 @@ function SelectItem({ className, children, ...props }: SelectPrimitive.Item.Prop
   return (
     <SelectPrimitive.Item
       className={cn(
-        "relative flex min-h-row in-data-[side=none]:min-w-anchor-inset cursor-default items-center rounded-density-surface py-1.5 ps-10 pe-row-inset text-density-body outline-none data-disabled:pointer-events-none data-highlighted:bg-foreground/7 data-disabled:opacity-40 [&_svg:not([class*='size-'])]:size-5 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        "grid min-h-row in-data-[side=none]:min-w-anchor-inset cursor-default grid-cols-[1rem_minmax(0,1fr)] items-center gap-2 rounded-density-control py-1 ps-row-inset pe-4 text-density-body outline-none data-disabled:pointer-events-none data-highlighted:bg-foreground/7 data-disabled:opacity-64 [&_svg:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
         className,
       )}
       data-slot="select-item"
       {...props}
     >
-      <SelectPrimitive.ItemIndicator className="absolute start-row-inset text-foreground">
+      <SelectPrimitive.ItemIndicator className="col-start-1 text-foreground">
         <CheckIcon aria-hidden="true" strokeWidth={2} />
       </SelectPrimitive.ItemIndicator>
-      <SelectPrimitive.ItemText className="min-w-0">{children}</SelectPrimitive.ItemText>
+      <SelectPrimitive.ItemText className="wrap-anywhere col-start-2 min-w-0">{children}</SelectPrimitive.ItemText>
     </SelectPrimitive.Item>
   );
 }
@@ -183,7 +183,7 @@ function SelectItem({ className, children, ...props }: SelectPrimitive.Item.Prop
 function SelectSeparator({ className, ...props }: SelectPrimitive.Separator.Props) {
   return (
     <SelectPrimitive.Separator
-      className={cn("mx-row-inset my-1.5 h-px bg-border", className)}
+      className={cn("mx-row-inset my-1 h-px bg-border", className)}
       data-slot="select-separator"
       {...props}
     />
@@ -197,7 +197,7 @@ function SelectGroup(props: SelectPrimitive.Group.Props) {
 function SelectGroupLabel(props: SelectPrimitive.GroupLabel.Props) {
   return (
     <SelectPrimitive.GroupLabel
-      className="px-row-inset pt-2 pb-1 font-semibold text-density-footnote text-muted-foreground"
+      className="px-row-inset py-1.5 font-medium text-density-footnote text-muted-foreground"
       data-slot="select-group-label"
       {...props}
     />

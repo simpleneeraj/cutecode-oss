@@ -49,12 +49,12 @@ const noSheen = { light: "none", dark: "none" } satisfies AppearanceValue;
 
 const focusRings = {
   onWhite: {
-    light: "0 0 0 2px #ffffff, 0 0 0 4px var(--ring)",
-    dark: "0 0 0 2px #000000, 0 0 0 4px var(--ring)",
+    light: "0 0 0 1px var(--ring), 0 0 0 4px color-mix(in srgb, var(--ring) 24%, transparent)",
+    dark: "0 0 0 1px var(--ring), 0 0 0 4px color-mix(in srgb, var(--ring) 24%, transparent)",
   },
   onCanvas: {
-    light: "0 0 0 2px var(--background), 0 0 0 4px var(--ring)",
-    dark: "0 0 0 2px var(--background), 0 0 0 4px var(--ring)",
+    light: "0 0 0 1px var(--ring), 0 0 0 4px color-mix(in srgb, var(--ring) 24%, transparent)",
+    dark: "0 0 0 1px var(--ring), 0 0 0 4px color-mix(in srgb, var(--ring) 24%, transparent)",
   },
 } satisfies Record<string, AppearanceValue>;
 
@@ -64,7 +64,7 @@ function offsetShadow(offset: string, ink: AppearanceValue): AppearanceValue {
 
 export const styles = {
   [Style.Tactile]: {
-    radiusControl: "9999px",
+    radiusControl: "10px",
     radiusSurface: "22px",
     radiusOverlay: "28px",
     radiusField: "10px",
@@ -77,8 +77,8 @@ export const styles = {
       dark: "0 0 0 1px rgba(255, 255, 255, 0.06)",
     },
     elevationRaised: {
-      light: "0 2px 6px rgba(0, 0, 0, 0.06), 0 18px 44px -10px rgba(0, 0, 0, 0.18)",
-      dark: "0 0 0 1px rgba(255, 255, 255, 0.08), 0 20px 50px -10px rgba(0, 0, 0, 0.8)",
+      light: "0 1px 3px rgba(0, 0, 0, 0.06), 0 10px 24px -8px rgba(0, 0, 0, 0.14)",
+      dark: "0 0 0 1px rgba(255, 255, 255, 0.08), 0 10px 24px -8px rgba(0, 0, 0, 0.55)",
     },
     elevationPress: {
       light: "0 1px 2px rgba(0, 0, 0, 0.04)",
@@ -110,7 +110,7 @@ export const styles = {
   [Style.Glass]: {
     glass: { light: "rgba(255, 255, 255, 0.5)", dark: "rgba(40, 40, 44, 0.46)" },
     glassEdge: { light: "rgba(255, 255, 255, 0.95)", dark: "rgba(255, 255, 255, 0.2)" },
-    radiusControl: "9999px",
+    radiusControl: "14px",
     radiusSurface: "26px",
     radiusOverlay: "30px",
     radiusField: "14px",
@@ -193,7 +193,7 @@ export const styles = {
     headingTracking: "-0.02em",
   },
   [Style.Clay]: {
-    radiusControl: "9999px",
+    radiusControl: "16px",
     radiusSurface: "24px",
     radiusOverlay: "30px",
     radiusField: "16px",
@@ -254,7 +254,7 @@ export const styles = {
     glassEdge: inkColors.paper,
     glassSolid: { light: "#ffffff", dark: "#1f1e1b" },
     glassSheen: noSheen,
-    radiusControl: "9999px",
+    radiusControl: "12px",
     radiusSurface: "16px",
     radiusOverlay: "18px",
     radiusField: "12px",

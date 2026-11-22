@@ -7,7 +7,7 @@ export const customizerStyles = tv(
       controls: "flex min-w-0 flex-col gap-7",
       section: "flex min-w-0 flex-col gap-3",
       sectionTitle: "font-semibold text-foreground text-subheadline",
-      strip: "flex min-w-0 snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain p-1 pb-3",
+      strip: "flex min-w-0 snap-x snap-mandatory scroll-px-2 gap-3 overflow-x-auto overscroll-x-contain p-2 pb-3",
       option:
         "press relative flex shrink-0 cursor-pointer snap-start flex-col gap-2 rounded-surface edge bg-card p-2 text-left shadow-rest outline-none focus-visible:shadow-focus data-checked:outline-2 data-checked:outline-brand data-checked:outline-offset-2 data-checked:outline-solid",
       check:

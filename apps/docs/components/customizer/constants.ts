@@ -32,6 +32,7 @@ export const customizer = {
     [Style.Minimal]: { name: "Minimal", feel: "Quiet hairlines, no fuss" },
   } satisfies Record<Style, { name: string; feel: string }>,
   paletteLabels: {
+    [Palette.Neutral]: "Neutral",
     [Palette.Blue]: "Blue",
     [Palette.Indigo]: "Indigo",
     [Palette.Purple]: "Purple",

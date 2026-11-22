@@ -21,12 +21,12 @@ export const folderStyles = tv(
   {
     slots: {
       root: "flex w-full touch-manipulation select-none flex-col items-center gap-2.5 outline-none",
-      body: "relative block aspect-5/4 w-full origin-bottom perspective-midrange",
+      body: "relative block aspect-5/4 w-full origin-bottom",
       tab: "absolute top-0 left-1/12 h-1/6 w-1/3 rounded-t-field bg-muted",
       back: "absolute inset-x-0 top-1/12 bottom-0 rounded-surface bg-muted",
       front:
-        "glass absolute inset-x-0 bottom-0 flex h-3/5 origin-bottom items-end overflow-hidden rounded-surface edge p-3 shadow-glass",
-      tint: "absolute inset-0",
+        "glass absolute inset-x-0 bottom-0 flex h-3/5 origin-bottom items-end overflow-hidden rounded-surface edge p-3 shadow-glass transition-transform duration-snappy ease-snappy motion-reduce:transition-none",
+      tint: "absolute inset-0 transition-opacity duration-fade ease-out",
       papers: "absolute inset-0",
       frontContent: "relative flex w-full items-end justify-between gap-2",
       title: "max-w-full truncate text-center font-semibold text-body text-foreground",

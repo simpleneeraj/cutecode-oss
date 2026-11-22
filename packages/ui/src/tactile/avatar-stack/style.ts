@@ -16,7 +16,7 @@ export const avatarStackStyles = tv(
 
 export const avatarStackFallbackStyles = tv(
   {
-    base: "font-semibold text-caption1 tracking-tight",
+    base: "font-medium text-density-caption tracking-tight",
     variants: {
       look: {
         [Tone.Neutral]: neutralFace,

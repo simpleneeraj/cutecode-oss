@@ -55,7 +55,7 @@ function ComboboxChipsInput({
   );
 }
 
-const comboboxInputButtonClassName = cn(popupClassNames.inputButton, "has-[+[data-slot=combobox-clear]]:hidden");
+const comboboxInputButtonClassName = cn(popupClassNames.inputButton, "inset-y-0.5 end-0.5 [&_svg:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 has-[+[data-slot=combobox-clear]]:hidden");
 
 type ComboboxInputButtonsProps = {
   showTrigger: boolean;
@@ -101,15 +101,15 @@ function ComboboxInput({
   ...props
 }: ComboboxInputProps) {
   return (
-    <div className={popupClassNames.inputShell}>
+    <div className={cn(popupClassNames.inputShell, "has-disabled:opacity-64")}>
       {startAddon && (
-        <div aria-hidden="true" className={popupClassNames.inputStartAddon} data-slot="combobox-start-addon">
+        <div aria-hidden="true" className={cn(popupClassNames.inputStartAddon, "ps-control-inset-medium [&_svg:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 [&_svg]:-mx-0.5")} data-slot="combobox-start-addon">
           {startAddon}
         </div>
       )}
       <ComboboxPrimitive.Input
         className={cn(
-          startAddon && "*:data-[slot=combobox-input]:ps-10.5",
+          startAddon && "*:data-[slot=combobox-input]:ps-8.5 sm:*:data-[slot=combobox-input]:ps-8",
           "has-[+[data-slot=combobox-trigger],+[data-slot=combobox-clear]]:*:data-[slot=combobox-input]:pe-field",
           className,
         )}
@@ -181,16 +181,16 @@ function ComboboxItem({ className, children, ...props }: ComboboxPrimitive.Item.
   return (
     <ComboboxPrimitive.Item
       className={cn(
-        "relative flex min-h-row in-data-[side=none]:min-w-anchor-inset cursor-default items-center rounded-density-surface py-1.5 ps-10 pe-row-inset text-density-body outline-none data-disabled:pointer-events-none data-highlighted:bg-foreground/7 data-disabled:opacity-40 [&_svg:not([class*='size-'])]:size-5 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        "grid min-h-row in-data-[side=none]:min-w-anchor-inset cursor-default grid-cols-[1rem_minmax(0,1fr)] items-center gap-2 rounded-density-control py-1 ps-row-inset pe-4 text-density-body outline-none data-disabled:pointer-events-none data-highlighted:bg-foreground/7 data-disabled:opacity-64 [&_svg:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
         className,
       )}
       data-slot="combobox-item"
       {...props}
     >
-      <ComboboxPrimitive.ItemIndicator className="absolute start-row-inset text-foreground">
+      <ComboboxPrimitive.ItemIndicator className="col-start-1 text-foreground">
         <CheckIcon aria-hidden="true" strokeWidth={2} />
       </ComboboxPrimitive.ItemIndicator>
-      <div className="min-w-0">{children}</div>
+      <div className="wrap-anywhere col-start-2 min-w-0">{children}</div>
     </ComboboxPrimitive.Item>
   );
 }
@@ -198,7 +198,7 @@ function ComboboxItem({ className, children, ...props }: ComboboxPrimitive.Item.
 function ComboboxSeparator({ className, ...props }: ComboboxPrimitive.Separator.Props) {
   return (
     <ComboboxPrimitive.Separator
-      className={cn("mx-row-inset my-1.5 h-px bg-border last:hidden", className)}
+      className={cn("mx-row-inset my-1 h-px bg-border last:hidden", className)}
       data-slot="combobox-separator"
       {...props}
     />
@@ -218,7 +218,7 @@ function ComboboxGroup({ className, ...props }: ComboboxPrimitive.Group.Props) {
 function ComboboxGroupLabel({ className, ...props }: ComboboxPrimitive.GroupLabel.Props) {
   return (
     <ComboboxPrimitive.GroupLabel
-      className={cn("px-row-inset pt-2 pb-1 font-semibold text-density-footnote text-muted-foreground", className)}
+      className={cn("px-row-inset py-1.5 font-medium text-density-footnote text-muted-foreground", className)}
       data-slot="combobox-group-label"
       {...props}
     />
@@ -228,7 +228,7 @@ function ComboboxGroupLabel({ className, ...props }: ComboboxPrimitive.GroupLabe
 function ComboboxEmpty({ className, ...props }: ComboboxPrimitive.Empty.Props) {
   return (
     <ComboboxPrimitive.Empty
-      className={cn("not-empty:p-3 text-center text-density-subheadline text-muted-foreground", className)}
+      className={cn("not-empty:p-2 text-center text-density-body text-muted-foreground", className)}
       data-slot="combobox-empty"
       {...props}
     />
@@ -247,7 +247,7 @@ function ComboboxList({ className, ...props }: ComboboxPrimitive.List.Props) {
   return (
     <ScrollArea scrollbarGutter scrollFade>
       <ComboboxPrimitive.List
-        className={cn("not-empty:scroll-py-1.5 not-empty:p-1.5 in-data-has-overflow-y:pe-3", className)}
+        className={cn("not-empty:scroll-py-1 not-empty:p-1 in-data-has-overflow-y:pe-3", className)}
         data-slot="combobox-list"
         {...props}
       />
@@ -262,7 +262,7 @@ function ComboboxClear({ className, ...props }: ComboboxPrimitive.Clear.Props) {
 function ComboboxStatus({ className, ...props }: ComboboxPrimitive.Status.Props) {
   return (
     <ComboboxPrimitive.Status
-      className={cn("px-row-inset py-2 font-medium text-density-footnote text-muted-foreground empty:m-0 empty:p-0", className)}
+      className={cn("px-3 py-2 font-medium text-density-footnote text-muted-foreground empty:m-0 empty:p-0", className)}
       data-slot="combobox-status"
       {...props}
     />
@@ -286,7 +286,7 @@ function ComboboxChips({
   return (
     <ComboboxPrimitive.Chips
       className={cn(
-        "relative inline-flex min-h-field w-full flex-wrap gap-1 rounded-density-field edge bg-card p-1 text-density-body text-foreground outline-none inset-ring inset-ring-input transition-shadow *:min-h-field-inner focus-within:shadow-focus has-disabled:pointer-events-none has-data-[size=lg]:min-h-control-large has-aria-invalid:inset-ring-2 has-aria-invalid:inset-ring-destructive-foreground has-autofill:bg-foreground/4 has-disabled:opacity-40",
+        "relative inline-flex min-h-control-medium w-full flex-wrap gap-1 rounded-density-field edge bg-card p-1 text-density-body text-foreground outline-none inset-ring inset-ring-input transition-shadow *:min-h-7 focus-within:shadow-focus has-disabled:pointer-events-none has-data-[size=lg]:min-h-control-large has-data-[size=sm]:min-h-control-small has-aria-invalid:inset-ring-destructive-foreground has-autofill:bg-foreground/4 has-disabled:opacity-64 has-data-[size=lg]:*:min-h-8 has-data-[size=sm]:*:min-h-6 sm:*:min-h-6 sm:has-data-[size=lg]:*:min-h-7 sm:has-data-[size=sm]:*:min-h-5",
         className,
       )}
       data-slot="combobox-chips"
@@ -296,7 +296,7 @@ function ComboboxChips({
       {startAddon && (
         <div
           aria-hidden="true"
-          className="flex shrink-0 items-center ps-2 text-muted-foreground has-[+[data-slot=combobox-chip]]:pe-1 [&_svg:not([class*='size-'])]:size-5 [&_svg]:pointer-events-none"
+          className="flex shrink-0 items-center ps-2 text-muted-foreground has-[~[data-size=sm]]:ps-1.5 has-[+[data-slot=combobox-chip]]:pe-2 has-[~[data-size=sm]]:has-[+[data-slot=combobox-chip]]:pe-1.5 [&_svg:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:-ms-0.5 [&_svg]:-me-1.5"
           data-slot="combobox-start-addon"
         >
           {startAddon}
@@ -316,7 +316,7 @@ function ComboboxChip({
 }) {
   return (
     <ComboboxPrimitive.Chip
-      className="flex items-center rounded-control bg-secondary ps-3 font-medium text-density-footnote text-secondary-foreground outline-none [&_svg:not([class*='size-'])]:size-3.5"
+      className="flex items-center rounded-density-control bg-secondary ps-2 font-medium text-density-footnote text-secondary-foreground outline-none [&_svg:not([class*='size-'])]:size-4 sm:[&_svg:not([class*='size-'])]:size-3.5"
       data-slot="combobox-chip"
       {...props}
     >
@@ -330,7 +330,7 @@ function ComboboxChipRemove(props: ComboboxPrimitive.ChipRemove.Props) {
   return (
     <ComboboxPrimitive.ChipRemove
       aria-label="Remove"
-      className="hit-area relative h-full shrink-0 cursor-pointer rounded-control px-2 text-muted-foreground hover:text-foreground [&_svg:not([class*='size-'])]:size-3.5"
+      className="hit-area relative h-full shrink-0 cursor-pointer rounded-density-control px-1.5 text-muted-foreground hover:text-foreground [&_svg:not([class*='size-'])]:size-4 sm:[&_svg:not([class*='size-'])]:size-3.5"
       data-slot="combobox-chip-remove"
       {...props}
     >

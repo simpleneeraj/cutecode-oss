@@ -1,6 +1,7 @@
 import type { TokenValue } from "./appearance";
 
 export enum Palette {
+  Neutral = "neutral",
   Blue = "blue",
   Indigo = "indigo",
   Purple = "purple",
@@ -18,9 +19,23 @@ export type PaletteTokens = {
   primary: TokenValue;
   primaryForeground: TokenValue;
   ring: TokenValue;
+  toneAccent: TokenValue;
+  toneAccentInk: TokenValue;
+  toneAccentBar: TokenValue;
 };
 
 export const palettes = {
+  [Palette.Neutral]: {
+    brand: { light: "#262626", dark: "#636366" },
+    brandInk: { light: "#171717", dark: "#e5e5e5" },
+    brandSoft: { light: "#f0f0f0", dark: "#2c2c2e" },
+    primary: { light: "#262626", dark: "#f5f5f5" },
+    primaryForeground: { light: "#fafafa", dark: "#262626" },
+    ring: { light: "#737373", dark: "#a3a3a3" },
+    toneAccent: { light: "var(--primary)", dark: "var(--primary)" },
+    toneAccentInk: { light: "var(--primary-foreground)", dark: "var(--primary-foreground)" },
+    toneAccentBar: { light: "var(--primary)", dark: "var(--primary)" },
+  },
   [Palette.Blue]: {
     brand: { light: "#007aff", dark: "#0a84ff" },
     brandInk: { light: "#0066cc", dark: "#409cff" },
@@ -28,6 +43,9 @@ export const palettes = {
     primary: "#0071e3",
     primaryForeground: "#ffffff",
     ring: { light: "#007aff", dark: "#0a84ff" },
+    toneAccent: { light: "var(--brand-soft)", dark: "var(--brand-soft)" },
+    toneAccentInk: { light: "var(--brand-ink)", dark: "var(--brand-ink)" },
+    toneAccentBar: { light: "var(--brand)", dark: "var(--brand)" },
   },
   [Palette.Indigo]: {
     brand: { light: "#5856d6", dark: "#5e5ce6" },
@@ -36,6 +54,9 @@ export const palettes = {
     primary: "#5856d6",
     primaryForeground: "#ffffff",
     ring: { light: "#5856d6", dark: "#5e5ce6" },
+    toneAccent: { light: "var(--brand-soft)", dark: "var(--brand-soft)" },
+    toneAccentInk: { light: "var(--brand-ink)", dark: "var(--brand-ink)" },
+    toneAccentBar: { light: "var(--brand)", dark: "var(--brand)" },
   },
   [Palette.Purple]: {
     brand: { light: "#af52de", dark: "#bf5af2" },
@@ -44,6 +65,9 @@ export const palettes = {
     primary: "#aa47dc",
     primaryForeground: "#ffffff",
     ring: { light: "#af52de", dark: "#bf5af2" },
+    toneAccent: { light: "var(--brand-soft)", dark: "var(--brand-soft)" },
+    toneAccentInk: { light: "var(--brand-ink)", dark: "var(--brand-ink)" },
+    toneAccentBar: { light: "var(--brand)", dark: "var(--brand)" },
   },
   [Palette.Pink]: {
     brand: { light: "#ff2d55", dark: "#ff375f" },
@@ -52,6 +76,9 @@ export const palettes = {
     primary: "#ed002d",
     primaryForeground: "#ffffff",
     ring: { light: "#ff2d55", dark: "#ff375f" },
+    toneAccent: { light: "var(--brand-soft)", dark: "var(--brand-soft)" },
+    toneAccentInk: { light: "var(--brand-ink)", dark: "var(--brand-ink)" },
+    toneAccentBar: { light: "var(--brand)", dark: "var(--brand)" },
   },
   [Palette.Orange]: {
     brand: { light: "#ff9500", dark: "#ff9f0a" },
@@ -60,6 +87,9 @@ export const palettes = {
     primary: "#ad6500",
     primaryForeground: "#ffffff",
     ring: { light: "#cd7700", dark: "#ff9f0a" },
+    toneAccent: { light: "var(--brand-soft)", dark: "var(--brand-soft)" },
+    toneAccentInk: { light: "var(--brand-ink)", dark: "var(--brand-ink)" },
+    toneAccentBar: { light: "var(--brand)", dark: "var(--brand)" },
   },
   [Palette.Green]: {
     brand: { light: "#34c759", dark: "#30d158" },
@@ -68,6 +98,9 @@ export const palettes = {
     primary: "#24883d",
     primaryForeground: "#ffffff",
     ring: { light: "#2aa048", dark: "#30d158" },
+    toneAccent: { light: "var(--brand-soft)", dark: "var(--brand-soft)" },
+    toneAccentInk: { light: "var(--brand-ink)", dark: "var(--brand-ink)" },
+    toneAccentBar: { light: "var(--brand)", dark: "var(--brand)" },
   },
   [Palette.Teal]: {
     brand: { light: "#30b0c7", dark: "#40c8e0" },
@@ -76,6 +109,9 @@ export const palettes = {
     primary: "#238192",
     primaryForeground: "#ffffff",
     ring: { light: "#2a99ae", dark: "#40c8e0" },
+    toneAccent: { light: "var(--brand-soft)", dark: "var(--brand-soft)" },
+    toneAccentInk: { light: "var(--brand-ink)", dark: "var(--brand-ink)" },
+    toneAccentBar: { light: "var(--brand)", dark: "var(--brand)" },
   },
   [Palette.Graphite]: {
     brand: { light: "#8e8e93", dark: "#98989d" },
@@ -84,5 +120,8 @@ export const palettes = {
     primary: "#76767c",
     primaryForeground: "#ffffff",
     ring: { light: "#8b8b91", dark: "#98989d" },
+    toneAccent: { light: "var(--primary)", dark: "var(--primary)" },
+    toneAccentInk: { light: "var(--primary-foreground)", dark: "var(--primary-foreground)" },
+    toneAccentBar: { light: "var(--primary)", dark: "var(--primary)" },
   },
 } satisfies Record<Palette, PaletteTokens>;

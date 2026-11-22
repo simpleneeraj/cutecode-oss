@@ -2,7 +2,7 @@ import type { Icon } from "@solar-icons/react/lib/types";
 import type { ReactNode } from "react";
 
 import { AppIcon } from "../app-icon";
-import type { AppIconSize } from "../app-icon/style";
+import { AppIconSize } from "../app-icon/style";
 import type { Tone } from "../tone";
 import { type OrbitRing, orbitRings, orbitStyles, ringRatios } from "./style";
 
@@ -36,7 +36,7 @@ function Orbit({ items, children }: OrbitProps) {
       ))}
       {items.map((item) => (
         <span aria-hidden="true" className={styles.item()} key={item.id} style={placeOnRing(item.ring, item.angle)}>
-          <AppIcon icon={item.icon} size={item.size} tone={item.tone} />
+          <AppIcon icon={item.icon} size={item.size ?? AppIconSize.Small} tone={item.tone} />
         </span>
       ))}
       <div className={styles.center()}>{children}</div>

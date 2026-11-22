@@ -7,10 +7,7 @@ import { cn } from "../lib/cn";
 function Toolbar({ className, ...props }: ToolbarPrimitive.Root.Props) {
   return (
     <ToolbarPrimitive.Root
-      className={cn(
-        "glass relative flex gap-2 rounded-control edge p-1.5 text-foreground shadow-glass",
-        className,
-      )}
+      className={cn("glass relative flex gap-2 rounded-2xl edge p-1 text-foreground shadow-glass", className)}
       data-slot="toolbar"
       {...props}
     />
@@ -39,7 +36,7 @@ function ToolbarSeparator({ className, ...props }: ToolbarPrimitive.Separator.Pr
   return (
     <ToolbarPrimitive.Separator
       className={cn(
-        "shrink-0 bg-border data-[orientation=horizontal]:my-1 data-[orientation=vertical]:my-1.5 data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:w-px data-[orientation=vertical]:not-[[class^='h-']]:not-[[class*='_h-']]:self-stretch",
+        "shrink-0 bg-border data-[orientation=horizontal]:my-0.5 data-[orientation=vertical]:my-1.5 data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:w-px data-[orientation=vertical]:not-[[class^='h-']]:not-[[class*='_h-']]:self-stretch",
         className,
       )}
       data-slot="toolbar-separator"

@@ -62,7 +62,7 @@ function ToastIcon({ type }: { type?: string }) {
   }
   return (
     <div
-      className="flex h-lh shrink-0 items-center [&_svg]:pointer-events-none [&_svg]:size-5 [&_svg]:shrink-0"
+      className="flex h-lh shrink-0 items-center [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
       data-slot="toast-icon"
     >
       {icon ?? <Spinner aria-hidden="true" className="text-muted-foreground" />}
@@ -83,23 +83,23 @@ function Toasts({ position = "bottom-right" }: { position: ToastPosition }) {
         {toasts.map((toast) => {
           return (
             <Toast.Root
-              className="toast-stack glass squircle rounded-surface edge text-foreground shadow-glass"
+              className="toast-stack glass squircle rounded-density-control edge text-foreground shadow-glass"
               data-position={position}
               key={toast.id}
               swipeDirection={readSwipeDirections(position)}
               toast={toast}
             >
-              <Toast.Content className="pointer-events-auto flex items-center justify-between gap-3 overflow-hidden px-4 py-3.5 text-subheadline transition-opacity duration-250 data-behind:not-data-expanded:pointer-events-none data-behind:opacity-0 data-expanded:opacity-100">
-                <div className="flex gap-3">
+              <Toast.Content className="pointer-events-auto flex items-center justify-between gap-1.5 overflow-hidden px-3.5 py-3 text-density-subheadline transition-opacity duration-250 data-behind:not-data-expanded:pointer-events-none data-behind:opacity-0 data-expanded:opacity-100">
+                <div className="flex gap-2">
                   <ToastIcon type={toast.type} />
 
                   <div className="flex flex-col gap-0.5">
-                    <Toast.Title className="font-semibold" data-slot="toast-title" />
+                    <Toast.Title className="font-medium" data-slot="toast-title" />
                     <Toast.Description className="text-muted-foreground" data-slot="toast-description" />
                   </div>
                 </div>
                 {toast.actionProps && (
-                  <Toast.Action className={buttonVariants({ size: "sm" })} data-slot="toast-action">
+                  <Toast.Action className={buttonVariants({ size: "xs" })} data-slot="toast-action">
                     {toast.actionProps.children}
                   </Toast.Action>
                 )}
@@ -145,30 +145,30 @@ function AnchoredToasts() {
             >
               <Toast.Root
                 className={cn(
-                  "relative text-balance text-footnote transition-popup data-ending-style:scale-95 data-starting-style:scale-95 data-ending-style:opacity-0 data-starting-style:opacity-0 motion-reduce:transition-none",
+                  "relative text-balance text-density-footnote transition-popup data-ending-style:scale-98 data-starting-style:scale-98 data-ending-style:opacity-0 data-starting-style:opacity-0 motion-reduce:transition-none",
                   tooltipStyle
-                    ? "glass rounded-density-overlay edge text-foreground shadow-raised"
-                    : "glass squircle rounded-surface edge text-foreground shadow-glass",
+                    ? "glass rounded-density-control edge text-foreground shadow-raised"
+                    : "glass squircle rounded-density-control edge text-foreground shadow-glass",
                 )}
                 data-slot="toast-popup"
                 toast={toast}
               >
                 {tooltipStyle ? (
-                  <Toast.Content className="pointer-events-auto px-3 py-1.5">
+                  <Toast.Content className="pointer-events-auto px-2 py-1">
                     <Toast.Title data-slot="toast-title" />
                   </Toast.Content>
                 ) : (
-                  <Toast.Content className="pointer-events-auto flex items-center justify-between gap-3 overflow-hidden px-4 py-3.5 text-subheadline">
-                    <div className="flex gap-3">
+                  <Toast.Content className="pointer-events-auto flex items-center justify-between gap-1.5 overflow-hidden px-3.5 py-3 text-density-subheadline">
+                    <div className="flex gap-2">
                       <ToastIcon type={toast.type} />
 
                       <div className="flex flex-col gap-0.5">
-                        <Toast.Title className="font-semibold" data-slot="toast-title" />
+                        <Toast.Title className="font-medium" data-slot="toast-title" />
                         <Toast.Description className="text-muted-foreground" data-slot="toast-description" />
                       </div>
                     </div>
                     {toast.actionProps && (
-                      <Toast.Action className={buttonVariants({ size: "sm" })} data-slot="toast-action">
+                      <Toast.Action className={buttonVariants({ size: "xs" })} data-slot="toast-action">
                         {toast.actionProps.children}
                       </Toast.Action>
                     )}

@@ -6,7 +6,7 @@ const withMDX = createMDX();
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
-  transpilePackages: ["@cutecode/ui"],
+  transpilePackages: ["@cutecode/ui", "@cutecode/calendar", "@cutecode/calendar-pro"],
 };
 
 export default withMDX(nextConfig);

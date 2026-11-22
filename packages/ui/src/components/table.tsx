@@ -21,7 +21,7 @@ function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
   return (
     <thead
       className={cn(
-        "[&_tr]:border-b in-data-[slot=frame]:**:[th]:h-row in-data-[slot=frame]:*:[tr]:border-none in-data-[slot=frame]:*:[tr]:hover:bg-transparent",
+        "[&_tr]:border-b in-data-[slot=frame]:*:[tr]:border-none in-data-[slot=frame]:*:[tr]:hover:bg-transparent",
         className,
       )}
       data-slot="table-header"
@@ -34,7 +34,7 @@ function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {
   return (
     <tbody
       className={cn(
-        "relative in-data-[slot=frame]:rounded-surface in-data-[slot=frame]:shadow-rest [&_tr:last-child]:border-0 in-data-[slot=frame]:*:[tr]:border-0 in-data-[slot=frame]:*:[tr]:*:[td]:border-b in-data-[slot=frame]:*:[tr]:*:[td]:bg-card in-data-[slot=frame]:*:[tr]:first:*:[td]:first:rounded-ss-surface in-data-[slot=frame]:*:[tr]:last:*:[td]:last:rounded-ee-surface in-data-[slot=frame]:*:[tr]:first:*:[td]:last:rounded-se-surface in-data-[slot=frame]:*:[tr]:last:*:[td]:first:rounded-es-surface in-data-[slot=frame]:*:[tr]:hover:*:[td]:bg-transparent in-data-[slot=frame]:*:[tr]:data-[state=selected]:*:[td]:bg-brand-soft",
+        "relative in-data-[slot=frame]:rounded-density-surface in-data-[slot=frame]:shadow-rest [&_tr:last-child]:border-0 in-data-[slot=frame]:*:[tr]:border-0 in-data-[slot=frame]:*:[tr]:*:[td]:border-b in-data-[slot=frame]:*:[tr]:*:[td]:bg-card in-data-[slot=frame]:*:[tr]:first:*:[td]:first:rounded-ss-surface in-data-[slot=frame]:*:[tr]:last:*:[td]:last:rounded-ee-surface in-data-[slot=frame]:*:[tr]:first:*:[td]:last:rounded-se-surface in-data-[slot=frame]:*:[tr]:last:*:[td]:first:rounded-es-surface in-data-[slot=frame]:*:[tr]:hover:*:[td]:bg-transparent in-data-[slot=frame]:*:[tr]:data-[state=selected]:*:[td]:bg-brand-soft",
         className,
       )}
       data-slot="table-body"
@@ -47,7 +47,7 @@ function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
   return (
     <tfoot
       className={cn(
-        "border-t in-data-[slot=frame]:border-none bg-muted in-data-[slot=frame]:bg-transparent font-semibold [&>tr]:last:border-b-0 in-data-[slot=frame]:*:[tr]:hover:bg-transparent",
+        "border-t in-data-[slot=frame]:border-none bg-muted in-data-[slot=frame]:bg-transparent font-medium [&>tr]:last:border-b-0 in-data-[slot=frame]:*:[tr]:hover:bg-transparent",
         className,
       )}
       data-slot="table-footer"
@@ -60,7 +60,7 @@ function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
   return (
     <tr
       className={cn(
-        "border-b transition-colors hover:bg-foreground/4 in-data-[slot=frame]:hover:bg-transparent data-[state=selected]:bg-brand-soft in-data-[slot=frame]:data-[state=selected]:bg-transparent",
+        "relative border-b transition-colors hover:bg-foreground/4 in-data-[slot=frame]:hover:bg-transparent data-[state=selected]:bg-brand-soft in-data-[slot=frame]:data-[state=selected]:bg-transparent",
         className,
       )}
       data-slot="table-row"
@@ -73,7 +73,7 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
   return (
     <th
       className={cn(
-        "h-row whitespace-nowrap px-row-inset text-left align-middle font-semibold text-density-footnote text-muted-foreground has-[[role=checkbox]]:w-px has-[[role=checkbox]]:pe-0",
+        "h-10 whitespace-nowrap px-2.5 text-left align-middle font-medium text-muted-foreground leading-none has-[[role=checkbox]]:w-px last:has-[[role=checkbox]]:ps-0 first:has-[[role=checkbox]]:pe-0",
         className,
       )}
       data-slot="table-head"
@@ -86,7 +86,7 @@ function TableCell({ className, ...props }: React.ComponentProps<"td">) {
   return (
     <td
       className={cn(
-        "h-row whitespace-nowrap px-row-inset py-1.5 align-middle has-[[role=checkbox]]:pe-0",
+        "whitespace-nowrap p-2.5 in-data-[slot=table-footer]:py-3.5 align-middle leading-none has-[[role=checkbox]]:w-px last:has-[[role=checkbox]]:ps-0 first:has-[[role=checkbox]]:pe-0",
         className,
       )}
       data-slot="table-cell"
@@ -98,7 +98,7 @@ function TableCell({ className, ...props }: React.ComponentProps<"td">) {
 function TableCaption({ className, ...props }: React.ComponentProps<"caption">) {
   return (
     <caption
-      className={cn("in-data-[slot=frame]:my-4 mt-4 text-density-footnote text-muted-foreground", className)}
+      className={cn("in-data-[slot=frame]:my-4 mt-4 text-density-subheadline text-muted-foreground", className)}
       data-slot="table-caption"
       {...props}
     />

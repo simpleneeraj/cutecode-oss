@@ -24,7 +24,7 @@ function AccordionTrigger({ className, children, ...props }: AccordionPrimitive.
     <AccordionPrimitive.Header className="flex">
       <AccordionPrimitive.Trigger
         className={cn(
-          "flex min-h-11 flex-1 cursor-pointer items-start justify-between gap-4 rounded-field py-4 text-left font-semibold text-body outline-none transition-shadow focus-visible:shadow-focus disabled:pointer-events-none disabled:opacity-40 data-panel-open:*:data-[slot=accordion-indicator]:rotate-180",
+          "flex flex-1 cursor-pointer items-start justify-between gap-4 rounded-density-control py-4 text-left font-medium text-density-subheadline outline-none transition-shadow focus-visible:shadow-focus disabled:pointer-events-none disabled:opacity-64 data-panel-open:*:data-[slot=accordion-indicator]:rotate-180",
           className,
         )}
         data-slot="accordion-trigger"
@@ -32,7 +32,7 @@ function AccordionTrigger({ className, children, ...props }: AccordionPrimitive.
       >
         {children}
         <AltArrowDownIcon
-          className="pointer-events-none size-5 shrink-0 translate-y-px text-muted-foreground transition-transform duration-snappy ease-snappy motion-reduce:transition-none"
+          className="pointer-events-none size-4 shrink-0 translate-y-0.5 text-muted-foreground transition-transform duration-snappy ease-snappy motion-reduce:transition-none"
           data-slot="accordion-indicator"
         />
       </AccordionPrimitive.Trigger>
@@ -43,7 +43,7 @@ function AccordionTrigger({ className, children, ...props }: AccordionPrimitive.
 function AccordionPanel({ className, children, ...props }: AccordionPrimitive.Panel.Props) {
   return (
     <AccordionPrimitive.Panel
-      className="h-(--accordion-panel-height) overflow-hidden text-muted-foreground text-subheadline transition-all duration-200 ease-out data-ending-style:h-0 data-starting-style:h-0 motion-reduce:transition-none"
+      className="h-(--accordion-panel-height) overflow-hidden text-density-subheadline text-muted-foreground transition-[height] duration-200 ease-out data-ending-style:h-0 data-starting-style:h-0 motion-reduce:transition-none"
       data-slot="accordion-panel"
       {...props}
     >

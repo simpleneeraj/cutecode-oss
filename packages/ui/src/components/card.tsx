@@ -8,7 +8,7 @@ import { cn } from "../lib/cn";
 function Card({ className, render, ...props }: useRender.ComponentProps<"div">) {
   const defaultProps = {
     className: cn(
-      "squircle relative flex flex-col rounded-surface edge bg-card text-card-foreground shadow-rest",
+      "squircle relative flex flex-col rounded-density-surface edge bg-card text-card-foreground shadow-rest",
       className,
     ),
     "data-slot": "card",
@@ -24,7 +24,7 @@ function Card({ className, render, ...props }: useRender.ComponentProps<"div">) 
 function CardFrame({ className, render, ...props }: useRender.ComponentProps<"div">) {
   const defaultProps = {
     className: cn(
-      "squircle relative flex flex-col gap-1.5 rounded-overlay edge bg-muted p-1.5 text-card-foreground shadow-rest *:data-[slot=card]:shadow-none",
+      "squircle relative flex flex-col gap-1.5 rounded-density-overlay edge bg-muted p-1.5 text-card-foreground shadow-rest *:data-[slot=card]:shadow-none",
       className,
     ),
     "data-slot": "card-frame",
@@ -40,7 +40,7 @@ function CardFrame({ className, render, ...props }: useRender.ComponentProps<"di
 function CardFrameHeader({ className, render, ...props }: useRender.ComponentProps<"div">) {
   const defaultProps = {
     className: cn(
-      "relative grid auto-rows-min items-start gap-x-4 px-4.5 py-3 has-data-[slot=card-frame-action]:grid-cols-fill-auto",
+      "relative grid auto-rows-min items-start gap-x-4 px-4.5 py-2.5 has-data-[slot=card-frame-action]:grid-cols-fill-auto",
       className,
     ),
     "data-slot": "card-frame-header",
@@ -55,7 +55,7 @@ function CardFrameHeader({ className, render, ...props }: useRender.ComponentPro
 
 function CardFrameTitle({ className, render, ...props }: useRender.ComponentProps<"div">) {
   const defaultProps = {
-    className: cn("font-semibold text-subheadline", className),
+    className: cn("self-center font-semibold text-density-subheadline", className),
     "data-slot": "card-frame-title",
   };
 
@@ -68,7 +68,7 @@ function CardFrameTitle({ className, render, ...props }: useRender.ComponentProp
 
 function CardFrameDescription({ className, render, ...props }: useRender.ComponentProps<"div">) {
   const defaultProps = {
-    className: cn("text-muted-foreground text-subheadline", className),
+    className: cn("self-center text-density-subheadline text-muted-foreground", className),
     "data-slot": "card-frame-description",
   };
 
@@ -81,7 +81,7 @@ function CardFrameDescription({ className, render, ...props }: useRender.Compone
 
 function CardFrameAction({ className, render, ...props }: useRender.ComponentProps<"div">) {
   const defaultProps = {
-    className: cn("col-start-2 row-span-2 row-start-1 self-center justify-self-end inline-flex", className),
+    className: cn("col-start-2 nth-3:row-span-2 nth-3:row-start-1 inline-flex self-center justify-self-end", className),
     "data-slot": "card-frame-action",
   };
 
@@ -94,7 +94,7 @@ function CardFrameAction({ className, render, ...props }: useRender.ComponentPro
 
 function CardFrameFooter({ className, render, ...props }: useRender.ComponentProps<"div">) {
   const defaultProps = {
-    className: cn("px-4.5 py-3", className),
+    className: cn("px-4.5 py-2.5", className),
     "data-slot": "card-frame-footer",
   };
 
@@ -108,7 +108,7 @@ function CardFrameFooter({ className, render, ...props }: useRender.ComponentPro
 function CardHeader({ className, render, ...props }: useRender.ComponentProps<"div">) {
   const defaultProps = {
     className: cn(
-      "grid auto-rows-min items-start gap-1 p-5 in-[[data-slot=card]:has(>[data-slot=card-panel])]:pb-3 has-data-[slot=card-action]:grid-cols-fill-auto",
+      "grid auto-rows-min items-start gap-1.5 p-6 in-[[data-slot=card]:has(>[data-slot=card-panel])]:pb-4 has-data-[slot=card-action]:grid-cols-fill-auto",
       className,
     ),
     "data-slot": "card-header",
@@ -123,7 +123,7 @@ function CardHeader({ className, render, ...props }: useRender.ComponentProps<"d
 
 function CardTitle({ className, render, ...props }: useRender.ComponentProps<"div">) {
   const defaultProps = {
-    className: cn("font-semibold text-body", className),
+    className: cn("font-heading font-semibold text-lg leading-none", className),
     "data-slot": "card-title",
   };
 
@@ -136,7 +136,7 @@ function CardTitle({ className, render, ...props }: useRender.ComponentProps<"di
 
 function CardDescription({ className, render, ...props }: useRender.ComponentProps<"div">) {
   const defaultProps = {
-    className: cn("text-muted-foreground text-subheadline", className),
+    className: cn("text-density-subheadline text-muted-foreground", className),
     "data-slot": "card-description",
   };
 
@@ -149,7 +149,7 @@ function CardDescription({ className, render, ...props }: useRender.ComponentPro
 
 function CardAction({ className, render, ...props }: useRender.ComponentProps<"div">) {
   const defaultProps = {
-    className: cn("col-start-2 row-span-2 row-start-1 self-start justify-self-end inline-flex", className),
+    className: cn("col-start-2 row-span-2 row-start-1 inline-flex self-start justify-self-end", className),
     "data-slot": "card-action",
   };
 
@@ -163,7 +163,7 @@ function CardAction({ className, render, ...props }: useRender.ComponentProps<"d
 function CardPanel({ className, render, ...props }: useRender.ComponentProps<"div">) {
   const defaultProps = {
     className: cn(
-      "flex-1 p-5 in-[[data-slot=card]:has(>[data-slot=card-header]:not(.border-b))]:pt-0 in-[[data-slot=card]:has(>[data-slot=card-footer]:not(.border-t))]:pb-0",
+      "flex-1 p-6 in-[[data-slot=card]:has(>[data-slot=card-header]:not(.border-b))]:pt-0 in-[[data-slot=card]:has(>[data-slot=card-footer]:not(.border-t))]:pb-0",
       className,
     ),
     "data-slot": "card-panel",
@@ -178,7 +178,7 @@ function CardPanel({ className, render, ...props }: useRender.ComponentProps<"di
 
 function CardFooter({ className, render, ...props }: useRender.ComponentProps<"div">) {
   const defaultProps = {
-    className: cn("flex items-center p-5 in-[[data-slot=card]:has(>[data-slot=card-panel])]:pt-3", className),
+    className: cn("flex items-center p-6 in-[[data-slot=card]:has(>[data-slot=card-panel])]:pt-4", className),
     "data-slot": "card-footer",
   };
 

@@ -17,9 +17,9 @@ const groupVariants = cva(
     variants: {
       orientation: {
         horizontal:
-          "*:data-slot:has-[~[data-slot]]:rounded-e-none *:[[data-slot]~[data-slot]]:rounded-s-none",
+          "*:pointer-coarse:after:min-w-auto *:data-slot:has-[~[data-slot]]:rounded-e-none *:[[data-slot]~[data-slot]]:rounded-s-none",
         vertical:
-          "flex-col *:data-slot:has-[~[data-slot]]:rounded-b-none *:[[data-slot]~[data-slot]]:rounded-t-none",
+          "flex-col *:pointer-coarse:after:min-h-auto *:data-slot:has-[~[data-slot]]:rounded-b-none *:[[data-slot]~[data-slot]]:rounded-t-none",
       },
     },
   },
@@ -51,7 +51,7 @@ function Group({
 function GroupText({ className, render, ...props }: useRender.ComponentProps<"div">) {
   const defaultProps = {
     className: cn(
-      "relative inline-flex min-h-field items-center gap-2 whitespace-nowrap rounded-density-field bg-muted px-row-inset text-density-body text-muted-foreground outline-none [&_svg:not([class*='size-'])]:size-5 [&_svg]:shrink-0",
+      "relative inline-flex min-h-field items-center gap-2 whitespace-nowrap rounded-density-field bg-muted px-control-inset-medium text-density-body text-muted-foreground outline-none [&_svg:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 [&_svg]:-mx-0.5 [&_svg]:shrink-0",
       className,
     ),
     "data-slot": "group-text",
@@ -72,10 +72,7 @@ function GroupSeparator({
 } & React.ComponentProps<typeof Separator>) {
   return (
     <Separator
-      className={cn(
-        "pointer-events-none relative z-2 bg-border",
-        className,
-      )}
+      className={cn("pointer-events-none relative z-2 bg-border", className)}
       orientation={orientation}
       {...props}
     />

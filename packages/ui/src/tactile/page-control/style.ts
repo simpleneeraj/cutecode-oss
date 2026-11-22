@@ -11,7 +11,7 @@ export const pageControlMotion = {
 export const pageControlStyles = tv(
   {
     slots: {
-      root: "glass inline-flex h-6 items-center gap-2 rounded-control edge px-3 shadow-glass",
+      root: "glass inline-flex h-6 items-center gap-2 rounded-full edge px-3 shadow-glass",
       dot: "h-2 rounded-full bg-foreground/24 transition-colors duration-fade data-current:bg-foreground/80",
     },
   },

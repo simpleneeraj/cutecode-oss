@@ -10,6 +10,8 @@
     "postinstall": "fumadocs-mdx"
   },
   "dependencies": {
+    "@cutecode/calendar": "*",
+    "@cutecode/calendar-pro": "*",
     "@cutecode/ui": "*",
     "@solar-icons/react": "^2.7.0",
     "fumadocs-core": "16.19.5",

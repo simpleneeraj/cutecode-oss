@@ -8,7 +8,7 @@ function Avatar({ className, ...props }: AvatarPrimitive.Root.Props) {
   return (
     <AvatarPrimitive.Root
       className={cn(
-        "inline-flex size-8 shrink-0 select-none items-center justify-center overflow-hidden rounded-full bg-secondary align-middle font-semibold text-caption1 text-foreground",
+        "inline-flex size-8 shrink-0 select-none items-center justify-center overflow-hidden rounded-full bg-secondary align-middle font-medium text-caption1 text-foreground leading-none",
         className,
       )}
       data-slot="avatar"
@@ -19,14 +19,14 @@ function Avatar({ className, ...props }: AvatarPrimitive.Root.Props) {
 
 function AvatarImage({ className, ...props }: AvatarPrimitive.Image.Props) {
   return (
-    <AvatarPrimitive.Image className={cn("size-full object-cover", className)} data-slot="avatar-image" {...props} />
+    <AvatarPrimitive.Image className={cn("size-full rounded-inherit object-cover", className)} data-slot="avatar-image" {...props} />
   );
 }
 
 function AvatarFallback({ className, ...props }: AvatarPrimitive.Fallback.Props) {
   return (
     <AvatarPrimitive.Fallback
-      className={cn("flex size-full items-center justify-center rounded-full bg-secondary", className)}
+      className={cn("flex size-full items-center justify-center rounded-inherit bg-secondary", className)}
       data-slot="avatar-fallback"
       {...props}
     />

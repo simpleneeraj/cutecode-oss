@@ -15,7 +15,7 @@ export function OTPField({
   return (
     <OTPFieldPrimitive.Root
       className={cn(
-        "flex items-center gap-2 has-disabled:opacity-40",
+        "flex items-center gap-2 has-disabled:opacity-64",
         className,
       )}
       data-size={size}
@@ -32,7 +32,7 @@ export function OTPFieldInput({
   return (
     <OTPFieldPrimitive.Input
       className={cn(
-        "relative size-field min-w-0 rounded-density-field edge bg-card text-center text-density-body text-foreground outline-none inset-ring inset-ring-input transition-shadow in-[[data-slot=otp-field][data-size=lg]]:size-control-large in-[[data-slot=otp-field][data-size=lg]]:text-title3 focus-visible:z-10 focus-visible:shadow-focus aria-invalid:inset-ring-2 aria-invalid:inset-ring-destructive-foreground",
+        "relative size-control-medium min-w-0 rounded-density-field edge bg-card text-center text-density-body text-foreground outline-none inset-ring inset-ring-input transition-shadow in-[[data-slot=otp-field][data-size=lg]]:size-control-large in-[[data-slot=otp-field][data-size=lg]]:text-lg focus-visible:z-10 focus-visible:shadow-focus aria-invalid:inset-ring-destructive/36 aria-invalid:focus-visible:inset-ring-destructive/64 sm:in-[[data-slot=otp-field][data-size=lg]]:text-base",
         className,
       )}
       data-slot="otp-field-input"
@@ -48,7 +48,7 @@ export function OTPFieldSeparator({ className, ...props }: React.ComponentProps<
       render={
         <Separator
           className={cn(
-            "rounded-control bg-input data-[orientation=horizontal]:h-0.5 data-[orientation=horizontal]:w-3",
+            "rounded-full bg-input data-[orientation=horizontal]:h-0.5 data-[orientation=horizontal]:w-3",
             className,
           )}
           orientation="horizontal"

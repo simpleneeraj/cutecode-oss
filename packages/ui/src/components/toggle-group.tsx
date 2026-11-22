@@ -29,7 +29,7 @@ function SegmentThumb({ thumbId }: { thumbId?: string }) {
   return (
     <motion.span
       aria-hidden="true"
-      className="-z-10 pointer-events-none absolute inset-0 rounded-control bg-segment-thumb shadow-thumb"
+      className="-z-10 pointer-events-none absolute inset-0 rounded-control-inner bg-segment-thumb shadow-thumb"
       layoutId={thumbId}
       transition={transition}
     />
@@ -52,7 +52,7 @@ function ToggleGroup({
     <ToggleGroupPrimitive
       className={cn(
         "isolate flex w-fit items-center gap-0.5 rounded-control bg-secondary p-0.5",
-        orientation === "vertical" && "flex-col rounded-surface",
+        orientation === "vertical" && "flex-col",
         className,
       )}
       data-size={size}
@@ -108,10 +108,7 @@ function ToggleGroupSeparator({
 } & React.ComponentProps<typeof Separator>) {
   return (
     <Separator
-      className={cn(
-        "pointer-events-none mx-0.5 my-2 bg-border",
-        className,
-      )}
+      className={cn("pointer-events-none mx-0.5 my-2 bg-border", className)}
       orientation={orientation}
       {...props}
     />

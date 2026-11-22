@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useMotionValue, useReducedMotion, useSpring } from "motion/react";
-import { type PointerEvent, type ReactNode, startTransition, useCallback, useId, useRef, useState, ViewTransition } from "react";
+import { type PointerEvent, type ReactNode, useCallback, useRef, useState } from "react";
 
 import { Tone } from "../tone";
 import { closedPeek, type FolderPeek, isFolderOpen, mergePeek, tapPeek } from "./peek";
@@ -72,12 +72,8 @@ function useOutsidePress(closeTap: () => void) {
 function useFolderPeek() {
   const [peek, setPeek] = useState<FolderPeek>(closedPeek);
   const pressPointer = useRef("");
-  const update = (change: Partial<FolderPeek>) =>
-    startTransition(() => setPeek((current) => mergePeek(current, change)));
-  const closeTap = useCallback(
-    () => startTransition(() => setPeek((current) => mergePeek(current, { isTapped: false }))),
-    [],
-  );
+  const update = (change: Partial<FolderPeek>) => setPeek((current) => mergePeek(current, change));
+  const closeTap = useCallback(() => setPeek((current) => mergePeek(current, { isTapped: false })), []);
 
   const handlers = {
     onPointerEnter: (event: PointerEvent<HTMLElement>) => update({ isHovered: event.pointerType !== "touch" }),
@@ -87,7 +83,7 @@ function useFolderPeek() {
     onClick: () => {
       const isTouch = pressPointer.current === "touch";
       if (isTouch) {
-        startTransition(() => setPeek(tapPeek));
+        setPeek(tapPeek);
       }
     },
   };
@@ -96,16 +92,13 @@ function useFolderPeek() {
 }
 
 function FolderFront({ tone = Tone.Neutral, isOpen, children }: FolderFrontProps) {
-  const transitionName = `folder-front-${useId().replace(/[^a-zA-Z0-9]/g, "")}`;
   const frontStyles = folderStyles({ look: tone, isOpen });
 
   return (
-    <ViewTransition name={transitionName} update="folder-front">
-      <span className={frontStyles.front()}>
-        <span aria-hidden="true" className={frontStyles.tint()} />
-        <span className={frontStyles.frontContent()}>{children}</span>
-      </span>
-    </ViewTransition>
+    <span className={frontStyles.front()}>
+      <span aria-hidden="true" className={frontStyles.tint()} />
+      <span className={frontStyles.frontContent()}>{children}</span>
+    </span>
   );
 }
 

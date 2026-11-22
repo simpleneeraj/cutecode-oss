@@ -7,7 +7,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "../lib/cn";
 
 const badgeVariants = cva(
-  "relative inline-flex shrink-0 items-center justify-center gap-1 whitespace-nowrap rounded-control font-semibold outline-none focus-visible:shadow-focus disabled:pointer-events-none disabled:opacity-40 [&_svg:not([class*='size-'])]:size-3.25 [&_svg]:pointer-events-none [&_svg]:shrink-0 [button&,a&]:hit-area [button&,a&]:press [button&,a&]:cursor-pointer",
+  "relative inline-flex shrink-0 items-center justify-center gap-1 whitespace-nowrap rounded-md font-medium outline-none focus-visible:shadow-focus disabled:pointer-events-none disabled:opacity-64 [&_svg:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-3.5 sm:[&_svg:not([class*='size-'])]:size-3 [&_svg]:pointer-events-none [&_svg]:shrink-0 [button&,a&]:hit-area [button&,a&]:press [button&,a&]:cursor-pointer",
   {
     defaultVariants: {
       size: "default",
@@ -15,9 +15,9 @@ const badgeVariants = cva(
     },
     variants: {
       size: {
-        default: "h-6 min-w-6 px-2.5 text-caption1",
-        lg: "h-7 min-w-7 gap-1.5 px-2.75 text-footnote",
-        sm: "h-5 min-w-5 px-2 text-caption1",
+        default: "h-5.5 min-w-5.5 px-1 text-sm sm:h-4.5 sm:min-w-4.5 sm:text-xs",
+        lg: "h-6.5 min-w-6.5 px-1.5 text-base sm:h-5.5 sm:min-w-5.5 sm:text-sm",
+        sm: "h-5 min-w-5 rounded-sm px-1 text-xs sm:h-4 sm:min-w-4 sm:text-[.625rem]",
       },
       variant: {
         default: "bg-primary text-primary-foreground [button&,a&]:hover:bg-primary/90",

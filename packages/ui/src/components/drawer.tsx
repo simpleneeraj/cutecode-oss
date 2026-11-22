@@ -35,7 +35,7 @@ function DrawerPopup({ className, children, ...props }: DrawerPrimitive.Popup.Pr
         >
           <DrawerPrimitive.Popup
             className={cn(
-              "relative row-start-2 flex max-h-full min-h-0 w-full min-w-0 touch-none flex-col squircle rounded-t-overlay edge bg-popover pt-2 pb-safe-inset text-popover-foreground shadow-raised outline-none transition-transform duration-drawer ease-drawer will-change-transform translate-y-(--drawer-swipe-movement-y) data-swiping:select-none data-ending-style:translate-y-full data-starting-style:translate-y-full data-ending-style:duration-drawer-swipe motion-reduce:transition-none",
+              "relative row-start-2 flex max-h-full min-h-0 w-full min-w-0 touch-none flex-col squircle rounded-t-density-overlay edge bg-popover pt-2 pb-safe-inset text-popover-foreground shadow-raised outline-none transition-transform duration-drawer ease-drawer will-change-transform translate-y-(--drawer-swipe-movement-y) data-swiping:select-none data-ending-style:translate-y-full data-starting-style:translate-y-full data-ending-style:duration-drawer-swipe motion-reduce:transition-none",
               className,
             )}
             data-slot="drawer-popup"
@@ -43,14 +43,14 @@ function DrawerPopup({ className, children, ...props }: DrawerPrimitive.Popup.Pr
           >
             <span
               aria-hidden="true"
-              className="mx-auto h-1.25 w-9 shrink-0 rounded-control bg-input/60"
+              className="absolute inset-x-0 top-3 mx-auto h-1 w-12 rounded-full bg-input/60"
               data-slot="drawer-grabber"
             />
             {children}
             <DrawerPrimitive.Close
               aria-label="Close"
-              className="absolute end-4 top-4"
-              render={<Button size="icon-sm" variant="gray" />}
+              className="absolute end-2 top-2 z-1"
+              render={<Button size="icon" variant="ghost" />}
             >
               <CloseIcon aria-hidden="true" />
             </DrawerPrimitive.Close>
@@ -62,13 +62,13 @@ function DrawerPopup({ className, children, ...props }: DrawerPrimitive.Popup.Pr
 }
 
 function DrawerHeader({ className, ...props }: React.ComponentProps<"div">) {
-  return <div className={cn("flex flex-col gap-1.5 px-6 pt-4 pe-16 pb-4", className)} data-slot="drawer-header" {...props} />;
+  return <div className={cn("flex flex-col gap-2 p-6 pe-12 in-[[data-slot=drawer-popup]:has([data-slot=drawer-panel])]:pb-3 max-sm:pb-4", className)} data-slot="drawer-header" {...props} />;
 }
 
 function DrawerTitle({ className, ...props }: DrawerPrimitive.Title.Props) {
   return (
     <DrawerPrimitive.Title
-      className={cn("font-heading font-semibold text-title3", className)}
+      className={cn("font-bold font-heading text-title3 leading-none", className)}
       data-slot="drawer-title"
       {...props}
     />
@@ -78,7 +78,7 @@ function DrawerTitle({ className, ...props }: DrawerPrimitive.Title.Props) {
 function DrawerDescription({ className, ...props }: DrawerPrimitive.Description.Props) {
   return (
     <DrawerPrimitive.Description
-      className={cn("text-muted-foreground text-subheadline", className)}
+      className={cn("text-density-subheadline text-muted-foreground", className)}
       data-slot="drawer-description"
       {...props}
     />
@@ -88,13 +88,13 @@ function DrawerDescription({ className, ...props }: DrawerPrimitive.Description.
 function DrawerPanel({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <ScrollArea className="touch-auto" scrollFade>
-      <DrawerPrimitive.Content className={cn("px-6 pt-1 pb-2", className)} data-slot="drawer-panel" {...props} />
+      <DrawerPrimitive.Content className={cn("p-6 in-[[data-slot=drawer-popup]:has([data-slot=drawer-header])]:pt-1 in-[[data-slot=drawer-popup]:has([data-slot=drawer-footer])]:pb-1", className)} data-slot="drawer-panel" {...props} />
     </ScrollArea>
   );
 }
 
 function DrawerFooter({ className, ...props }: React.ComponentProps<"div">) {
-  return <div className={cn("flex gap-2 px-6 pt-3 pb-6", className)} data-slot="drawer-footer" {...props} />;
+  return <div className={cn("flex flex-col-reverse gap-2 px-6 pt-4 pb-6 in-[[data-slot=drawer-popup]:has([data-slot=drawer-panel])]:pt-3 sm:flex-row sm:justify-end", className)} data-slot="drawer-footer" {...props} />;
 }
 
 export { Drawer, DrawerPopup, DrawerHeader, DrawerTitle, DrawerDescription, DrawerPanel, DrawerFooter, DrawerPrimitive };

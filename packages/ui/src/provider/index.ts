@@ -13,7 +13,7 @@ export type StyleSettings = {
 
 export const defaultStyleSettings = {
   style: Style.Tactile,
-  palette: Palette.Blue,
+  palette: Palette.Neutral,
   font: FontPairing.System,
 } satisfies StyleSettings;
 

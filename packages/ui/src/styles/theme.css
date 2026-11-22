@@ -22,6 +22,9 @@
   --color-brand: var(--brand);
   --color-brand-ink: var(--brand-ink);
   --color-brand-soft: var(--brand-soft);
+  --color-tone-accent: var(--tone-accent);
+  --color-tone-accent-ink: var(--tone-accent-ink);
+  --color-tone-accent-bar: var(--tone-accent-bar);
   --color-orange: var(--orange);
   --color-orange-ink: var(--orange-ink);
   --color-purple: var(--purple);
@@ -64,6 +67,10 @@
   --color-orbit-line: var(--orbit-line);
   --color-note: var(--note);
   --color-note-ink: var(--note-ink);
+  --color-island: var(--island);
+  --color-island-ink: var(--island-ink);
+  --color-tone-ink: var(--tone-ink);
+  --color-tone-grey: var(--tone-grey);
   --color-window-light: var(--window-light);
   --color-syntax-type: var(--syntax-type);
   --color-syntax-string: var(--syntax-string);
@@ -82,6 +89,7 @@
 
 @theme inline reference {
   --radius-control: var(--radius-control);
+  --radius-control-inner: max(0px, calc(var(--radius-control) - 2px));
   --radius-surface: var(--radius-surface);
   --radius-overlay: var(--radius-overlay);
   --radius-icon: var(--radius-icon);
@@ -157,4 +165,7 @@
   --text-caption2: 0.6875rem;
   --text-caption2--line-height: 0.8125rem;
   --text-caption2--letter-spacing: 0.01em;
+
+  --container-5xs: 4rem;
+  --container-4xs: 7rem;
 }

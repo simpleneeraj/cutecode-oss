@@ -4,7 +4,7 @@ import type * as React from "react";
 import { cn } from "../lib/cn";
 
 const alertVariants = cva(
-  "squircle relative grid w-full items-start gap-x-3 gap-y-0.5 rounded-surface edge px-4 py-3.5 text-foreground text-subheadline has-[>svg]:has-data-[slot=alert-action]:grid-cols-icon-fill-auto has-[>svg]:grid-cols-icon-fill has-data-[slot=alert-action]:grid-cols-fill-auto [&>svg]:h-lh [&>svg]:w-5",
+  "squircle relative grid w-full items-start gap-x-2 gap-y-0.5 rounded-density-control edge px-3.5 py-3 text-density-subheadline text-foreground has-[>svg]:has-data-[slot=alert-action]:grid-cols-icon-fill-auto has-[>svg]:grid-cols-icon-fill has-data-[slot=alert-action]:grid-cols-fill-auto [&>svg]:h-lh [&>svg]:w-4",
   {
     defaultVariants: {
       variant: "default",
@@ -26,13 +26,13 @@ function Alert({ className, variant, ...props }: React.ComponentProps<"div"> & V
 }
 
 function AlertTitle({ className, ...props }: React.ComponentProps<"div">) {
-  return <div className={cn("font-semibold [svg~&]:col-start-2", className)} data-slot="alert-title" {...props} />;
+  return <div className={cn("font-medium [svg~&]:col-start-2", className)} data-slot="alert-title" {...props} />;
 }
 
 function AlertDescription({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn("flex flex-col gap-2.5 text-foreground [svg~&]:col-start-2", className)}
+      className={cn("flex flex-col gap-2.5 text-muted-foreground [svg~&]:col-start-2", className)}
       data-slot="alert-description"
       {...props}
     />

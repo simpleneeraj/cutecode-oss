@@ -66,6 +66,7 @@ const contrastPairs = [
   ),
   ...pairEach(["destructiveForeground"], ["destructiveSoft"], minimumContrast.text),
   ...pairEach(["noteInk"], ["note"], minimumContrast.text),
+  ...pairEach(["islandInk"], ["island"], minimumContrast.text),
   ...pairEach(["syntaxType", "syntaxString", "syntaxComment"], ["card"], minimumContrast.text),
   ...pairEach(["brandInk"], ["background", "card", "brandSoft"], minimumContrast.text),
   ...pairEach(["foreground"], ["segmentThumb"], minimumContrast.text),

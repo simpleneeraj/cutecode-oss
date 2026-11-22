@@ -5,8 +5,8 @@ import { Tone } from "../tone";
 export const chipStyles = tv(
   {
     slots: {
-      base: "inline-flex h-7 shrink-0 items-center gap-1.25 whitespace-nowrap rounded-control px-2.75 font-semibold text-footnote",
-      icon: "size-3.75 shrink-0",
+      base: "inline-flex h-control-small shrink-0 items-center gap-1.5 whitespace-nowrap rounded-control px-control-inset-small font-medium text-density-footnote",
+      icon: "size-4 shrink-0 sm:size-3.5",
     },
     variants: {
       look: {

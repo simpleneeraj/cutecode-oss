@@ -6,14 +6,14 @@ import { cn } from "../lib/cn";
 
 function Field({ className, ...props }: FieldPrimitive.Root.Props) {
   return (
-    <FieldPrimitive.Root className={cn("flex flex-col items-start gap-1.5", className)} data-slot="field" {...props} />
+    <FieldPrimitive.Root className={cn("flex flex-col items-start gap-2", className)} data-slot="field" {...props} />
   );
 }
 
 function FieldLabel({ className, ...props }: FieldPrimitive.Label.Props) {
   return (
     <FieldPrimitive.Label
-      className={cn("inline-flex items-center gap-2 font-semibold text-density-subheadline text-foreground", className)}
+      className={cn("inline-flex items-center gap-2 font-medium text-density-body leading-4.5 text-foreground data-disabled:opacity-64 sm:leading-4", className)}
       data-slot="field-label"
       {...props}
     />

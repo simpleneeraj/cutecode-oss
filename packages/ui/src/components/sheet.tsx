@@ -76,15 +76,15 @@ function SheetPopup({
       <SheetViewport side={side} variant={variant}>
         <SheetPrimitive.Popup
           className={cn(
-            "squircle relative flex max-h-full min-h-0 w-full min-w-0 flex-col edge bg-popover text-popover-foreground shadow-raised transition duration-200 ease-out will-change-transform data-ending-style:opacity-0 data-starting-style:opacity-0 motion-reduce:transition-none",
+            "squircle relative flex max-h-full min-h-0 w-full min-w-0 flex-col overflow-hidden edge bg-popover text-popover-foreground shadow-raised outline-none transition duration-200 ease-in-out will-change-transform data-ending-style:opacity-0 data-starting-style:opacity-0 motion-reduce:transition-none",
             side === "bottom" &&
-              "row-start-2 rounded-t-overlay data-ending-style:translate-y-8 data-starting-style:translate-y-8",
-            side === "top" && "rounded-b-overlay data-ending-style:-translate-y-8 data-starting-style:-translate-y-8",
+              "row-start-2 rounded-t-density-overlay data-ending-style:translate-y-8 data-starting-style:translate-y-8",
+            side === "top" && "rounded-b-density-overlay data-ending-style:-translate-y-8 data-starting-style:-translate-y-8",
             side === "left" &&
               "w-11/12 max-w-md data-ending-style:-translate-x-8 data-starting-style:-translate-x-8",
             side === "right" &&
               "col-start-2 w-11/12 max-w-md data-ending-style:translate-x-8 data-starting-style:translate-x-8",
-            variant === "inset" && "sm:rounded-overlay",
+            variant === "inset" && "sm:rounded-density-overlay",
             className,
           )}
           data-slot="sheet-popup"
@@ -93,7 +93,7 @@ function SheetPopup({
           {side === "bottom" && (
             <span
               aria-hidden="true"
-              className="mx-auto mt-2 h-1.25 w-9 shrink-0 rounded-control bg-input/60"
+              className="absolute inset-x-0 top-2 mx-auto h-1 w-12 rounded-full bg-input/60"
               data-slot="sheet-grabber"
             />
           )}
@@ -101,8 +101,8 @@ function SheetPopup({
           {showCloseButton && (
             <SheetPrimitive.Close
               aria-label="Close"
-              className="absolute end-4 top-4"
-              render={<Button size="icon-sm" variant="gray" />}
+              className="absolute end-2 top-2"
+              render={<Button size="icon" variant="ghost" />}
               {...closeProps}
             >
               <CloseIcon aria-hidden="true" />
@@ -118,7 +118,7 @@ function SheetHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "flex flex-col gap-1.5 p-6 pe-16 in-[[data-slot=sheet-popup]:has([data-slot=sheet-panel])]:pb-3 max-sm:pb-4",
+        "flex flex-col gap-2 p-6 pe-12 in-[[data-slot=sheet-popup]:has([data-slot=sheet-panel])]:pb-3 max-sm:pb-4",
         className,
       )}
       data-slot="sheet-header"
@@ -138,7 +138,7 @@ function SheetFooter({
     <div
       className={cn(
         "flex flex-col-reverse gap-2 px-6 sm:flex-row sm:justify-end",
-        variant === "default" && "pt-2 pb-6",
+        variant === "default" && "border-t bg-muted/72 py-4",
         variant === "bare" && "in-[[data-slot=sheet-popup]:has([data-slot=sheet-panel])]:pt-3 pt-4 pb-6",
         className,
       )}
@@ -151,7 +151,7 @@ function SheetFooter({
 function SheetTitle({ className, ...props }: SheetPrimitive.Title.Props) {
   return (
     <SheetPrimitive.Title
-      className={cn("font-heading font-semibold text-title3", className)}
+      className={cn("font-bold font-heading text-title3 leading-none", className)}
       data-slot="sheet-title"
       {...props}
     />
@@ -161,7 +161,7 @@ function SheetTitle({ className, ...props }: SheetPrimitive.Title.Props) {
 function SheetDescription({ className, ...props }: SheetPrimitive.Description.Props) {
   return (
     <SheetPrimitive.Description
-      className={cn("text-muted-foreground text-subheadline", className)}
+      className={cn("text-density-subheadline text-muted-foreground", className)}
       data-slot="sheet-description"
       {...props}
     />
