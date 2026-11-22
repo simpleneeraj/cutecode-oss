@@ -19,13 +19,14 @@ export function slotKey(date: PlainDate, columnKey: string): string {
   return `slot|${date}|${columnKey}`;
 }
 
-export function eventKey(occurrenceKey: string, date: PlainDate): string {
-  return `event|${occurrenceKey}|${date}`;
+export function eventKey(occurrenceKey: string, date: PlainDate, columnKey?: string): string {
+  const key = `event|${occurrenceKey}|${date}`;
+  return columnKey === undefined ? key : `${key}|${columnKey}`;
 }
 
 export function focusKeyOf(focus: GridFocus): string {
   if (focus.target === FocusTarget.Event) {
-    return eventKey(focus.occurrenceKey, focus.date);
+    return eventKey(focus.occurrenceKey, focus.date, focus.columnKey);
   }
   return slotKey(focus.date, focus.columnKey);
 }

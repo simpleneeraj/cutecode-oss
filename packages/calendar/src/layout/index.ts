@@ -40,14 +40,16 @@ function layoutColumns(
   options: RangeLayoutOptions,
 ): DayColumn[] {
   const timedOptions = { maxColumns: options.maxColumns, minimumMinutes: options.minimumMinutes };
-  const descriptors = options.columns?.(dates) ?? dates.map((date) => ({ key: date, date }));
-  return descriptors.flatMap((descriptor) =>
-    layoutTimedColumns(
+  const descriptors: ColumnDescriptor[] = options.columns?.(dates) ?? dates.map((date) => ({ key: date, date }));
+  return descriptors.flatMap((descriptor) => {
+    const columns = layoutTimedColumns(
       occurrences.filter((occurrence) => belongsToColumn(occurrence, descriptor)),
       [daySpan(descriptor.date, timeZone)],
       { ...timedOptions, columnKey: descriptor.key, timeZone },
-    ),
-  );
+    );
+    const { resourceId } = descriptor;
+    return resourceId === undefined ? columns : columns.map((column) => ({ ...column, resourceId }));
+  });
 }
 
 function layoutRange(occurrences: EventOccurrence[], range: ViewRange, options: RangeLayoutOptions): RangeLayout {

@@ -87,6 +87,7 @@ export function useTimeGridModel(calendar: CalendarViewProps, kind: GridKind, da
     maxColumns: maxColumnsOf(kind),
     minimumMinutes: minimumMinutesOf(hourHeightOf(options)),
     hiddenCalendarIds: hiddenCalendarIdsOf(data.calendars),
+    columns: data.columns,
   });
   const model = buildGridModel({
     range,
@@ -99,6 +100,7 @@ export function useTimeGridModel(calendar: CalendarViewProps, kind: GridKind, da
     now,
     open,
     pendingEventIds: pendingEventIdsOf(calendar.status ?? readyStatus),
+    resources: data.resources,
   });
   return { model, now, fold };
 }

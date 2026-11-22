@@ -15,7 +15,9 @@ import {
   type ClockRange,
   type DragIntent,
   type DragResult,
+  type DropConstraint,
   type EventOccurrence,
+  type Resource,
   type SlotPoint,
   type ViewSettings,
 } from "../../types";
@@ -52,9 +54,13 @@ export type DropFlowOptions = {
   settings: ViewSettings;
   calendars: Calendar[];
   allowedHours?: ClockRange;
+  resources?: Resource[];
+  constraints?: DropConstraint[];
   actions: CalendarActions;
   announce: (announcement: Announcement) => void;
 };
+
+const noConstraints: DropConstraint[] = [];
 
 export function announceIf(announce: DropFlowOptions["announce"], announcement: Announcement | null) {
   if (announcement !== null) {
@@ -147,17 +153,19 @@ function chooseScope(flow: FlowContext, scope: ChangeScope) {
   }
 }
 
-export function useDropFlow({ store, settings, calendars, allowedHours, actions, announce }: DropFlowOptions) {
+export function useDropFlow(options: DropFlowOptions) {
+  const { store, settings, calendars, allowedHours, actions, announce } = options;
   const sessionRef = useRef<DragSession | null>(null);
   const isReducedMotion = useReducedMotion() ?? false;
   const dragSettings = { ...defaultDragSettings, allowedHours };
-  const context = { calendars, resources: [], timeZone: settings.timeZone };
+  const context = { calendars, resources: options.resources ?? [], timeZone: settings.timeZone };
+  const constraints = options.constraints ?? noConstraints;
   const flow: FlowContext = { sessionRef, store, actions, announce, isReducedMotion };
 
   return {
     sessionRef,
     isReducedMotion,
-    resolve: (intent: DragIntent) => resolveDrop(intent, dragSettings, context, []),
+    resolve: (intent: DragIntent) => resolveDrop(intent, dragSettings, context, constraints),
     begin: (session: DragSession) => beginDrag(flow, session),
     show: (session: DragSession) => showResult(store, session.source.key, session.source.date, session.result),
     finish: (isDropped: boolean, settle: Pose) => finishDrag(flow, isDropped, settle),

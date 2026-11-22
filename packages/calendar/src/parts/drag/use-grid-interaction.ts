@@ -3,7 +3,7 @@
 import type { ElementEventBasePayload } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import { useId, useState } from "react";
 
-import { DragKind, type Announcement } from "../../types";
+import { DragKind, type Announcement, type DropConstraint } from "../../types";
 import type { GridModel } from "../time-grid/model";
 import type { CalendarActions, TimeGridOptions } from "../time-grid/props";
 import { allDayItemSelector, allDaySessionOf, laneDateAt, laneIntent, lanePose, lanesSelector } from "./all-day-session";
@@ -24,6 +24,7 @@ type GridDragOptions = {
   options: TimeGridOptions;
   actions: CalendarActions;
   announce: (announcement: Announcement) => void;
+  constraints?: DropConstraint[];
 };
 
 function sessionOf(
@@ -133,7 +134,7 @@ function pointerHandlers(model: GridModel, flow: DropFlow, gridId: string, cance
   };
 }
 
-export function useGridInteraction({ model, options, actions, announce }: GridDragOptions) {
+export function useGridInteraction({ model, options, actions, announce, constraints }: GridDragOptions) {
   const gridId = useId();
   const [store] = useState(createDragStore);
   const flow = useDropFlow({
@@ -141,6 +142,8 @@ export function useGridInteraction({ model, options, actions, announce }: GridDr
     settings: model.settings,
     calendars: model.calendars,
     allowedHours: options.allowedHours,
+    resources: model.resources,
+    constraints,
     actions,
     announce,
   });

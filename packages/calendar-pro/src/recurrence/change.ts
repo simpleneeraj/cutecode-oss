@@ -1,5 +1,5 @@
-import { occurrenceKey } from "@cutecode/calendar/event";
-import { addDays, daysBetween, formatDateTime, milliseconds, parseDateTime } from "@cutecode/calendar/time";
+import { occurrenceKey, rebookedResources } from "@cutecode/calendar/event";
+import { formatDateTime } from "@cutecode/calendar/time";
 import {
   ChangeScope,
   type CalendarEvent,
@@ -8,10 +8,16 @@ import {
   type Instant,
   type Recurrence,
 } from "@cutecode/calendar/types";
-import { canonicalStart, floatingDate, formatSlot, ruleOf, seriesSlotOf, slotOrder, wallClockOfFloating } from "./rule";
+import { canonicalStart, endAfter, slotOrder, untilBefore, usedCount } from "./rule";
 import { moveOf, shiftRecurrence, shiftValue, type RecurrenceMove } from "./shift";
 
 type RepeatingEvent = CalendarEvent & { recurrence: Recurrence };
+
+export type EventFields = Partial<
+  Pick<CalendarEvent, "calendarId" | "title" | "location" | "notes" | "attendees" | "resourceIds">
+>;
+
+export type SeriesEdit = EventChange & { fields?: EventFields; recurrence?: Recurrence | null };
 
 type SeriesSplit = {
   editedSlot: string;
@@ -26,36 +32,17 @@ function stamped(event: CalendarEvent, now: Instant): CalendarEvent {
   return { ...event, version: event.version + 1, updatedAt: formatDateTime(now, "UTC") };
 }
 
-function moved(event: CalendarEvent, change: EventChange): CalendarEvent {
-  const resourceIds = change.resourceId === undefined ? event.resourceIds : [change.resourceId];
-  return { ...event, start: change.start, end: change.end, allDay: change.allDay, resourceIds };
+function moved(event: CalendarEvent, change: SeriesEdit): CalendarEvent {
+  const edited = { ...event, ...change.fields };
+  const resourceIds = rebookedResources(edited.resourceIds, change);
+  return { ...edited, start: change.start, end: change.end, allDay: change.allDay, resourceIds };
 }
 
-function endAfter(start: string, change: EventChange, timeZone: string): string {
-  if (change.allDay) {
-    return addDays(start, daysBetween(change.start, change.end));
-  }
-  const duration = parseDateTime(change.end, timeZone) - parseDateTime(change.start, timeZone);
-  return formatDateTime(parseDateTime(start, timeZone) + duration, timeZone);
+function ruleOfEdit(series: RepeatingEvent, change: SeriesEdit): Recurrence | null {
+  return change.recurrence === undefined ? series.recurrence : change.recurrence;
 }
 
-function usedCount(series: CalendarEvent, originalStart: string): number {
-  const rule = ruleOf(series);
-  const dtstart = rule.options.dtstart.getTime();
-  const slot = floatingDate(seriesSlotOf(originalStart, series));
-  return rule.between(new Date(dtstart - milliseconds.second), slot, false).length;
-}
-
-function untilBefore(originalStart: string, series: CalendarEvent): string {
-  if (series.allDay) {
-    return addDays(originalStart, -1);
-  }
-  const rule = ruleOf(series);
-  const previous = rule.before(floatingDate(seriesSlotOf(originalStart, series)), false) ?? rule.options.dtstart;
-  return formatSlot(wallClockOfFloating(previous), false, series.timeZone);
-}
-
-function exceptionFor(series: CalendarEvent, change: EventChange, originalStart: string, now: Instant): CalendarEvent {
+function exceptionFor(series: CalendarEvent, change: SeriesEdit, originalStart: string, now: Instant): CalendarEvent {
   const exception = {
     ...moved(series, change),
     id: occurrenceKey(series.id, originalStart),
@@ -75,7 +62,7 @@ function isExceptionOf(event: CalendarEvent, series: CalendarEvent): boolean {
   return event.seriesId === series.id && event.originalStart !== undefined;
 }
 
-function seriesOf(target: CalendarEvent, events: CalendarEvent[]): RepeatingEvent | undefined {
+export function seriesOf(target: CalendarEvent, events: CalendarEvent[]): RepeatingEvent | undefined {
   if (isRepeating(target)) {
     return target;
   }
@@ -90,7 +77,7 @@ function applyThis(
   events: CalendarEvent[],
   target: CalendarEvent,
   series: RepeatingEvent,
-  change: EventChange,
+  change: SeriesEdit,
   now: Instant,
 ) {
   const isTargetException = target.seriesId !== undefined;
@@ -107,9 +94,23 @@ function applyThis(
   return replaced(events, stamped(moved(existing, change), now));
 }
 
-function applyAll(events: CalendarEvent[], series: RepeatingEvent, change: EventChange, now: Instant): CalendarEvent[] {
+function stoppedSeries(events: CalendarEvent[], series: RepeatingEvent, change: SeriesEdit, now: Instant) {
+  const single = stamped({ ...moved(series, change), recurrence: undefined }, now);
+  return events.flatMap((event) => {
+    if (event.id === series.id) {
+      return [single];
+    }
+    return isExceptionOf(event, series) ? [] : [event];
+  });
+}
+
+function applyAll(events: CalendarEvent[], series: RepeatingEvent, change: SeriesEdit, now: Instant): CalendarEvent[] {
+  const rule = ruleOfEdit(series, change);
+  if (rule === null) {
+    return stoppedSeries(events, series, change, now);
+  }
   const move = moveOf(series, change);
-  const recurrence = shiftRecurrence(series.recurrence, series, move);
+  const recurrence = shiftRecurrence(rule, series, move);
   if (recurrence === undefined) {
     return events;
   }
@@ -131,7 +132,7 @@ function applyAll(events: CalendarEvent[], series: RepeatingEvent, change: Event
   });
 }
 
-function splitOf(series: RepeatingEvent, change: EventChange, used: number): SeriesSplit {
+function splitOf(series: RepeatingEvent, change: SeriesEdit, used: number): SeriesSplit {
   const editedSlot = canonicalStart(change.originalStart, series);
   const splitOrder = slotOrder(editedSlot, series);
   return {
@@ -151,8 +152,11 @@ function endedSeriesOf(series: RepeatingEvent, split: SeriesSplit): CalendarEven
   return { ...series, recurrence: { ...recurrence, count: undefined, until, exceptionDates } };
 }
 
-function followingSeriesOf(series: RepeatingEvent, change: EventChange, split: SeriesSplit): CalendarEvent | undefined {
-  const recurrence = series.recurrence;
+function followingSeriesOf(series: RepeatingEvent, change: SeriesEdit, split: SeriesSplit): CalendarEvent | undefined {
+  const recurrence = ruleOfEdit(series, change);
+  if (recurrence === null) {
+    return { ...moved(series, change), id: split.followingId, recurrence: undefined, version: 0 };
+  }
   const remaining = {
     ...recurrence,
     count: recurrence.count === undefined ? undefined : recurrence.count - split.used,
@@ -165,7 +169,15 @@ function followingSeriesOf(series: RepeatingEvent, change: EventChange, split: S
   return { ...moved(series, change), id: split.followingId, recurrence: shifted, version: 0 };
 }
 
-function applyFollowing(events: CalendarEvent[], series: RepeatingEvent, change: EventChange, now: Instant) {
+function laterExceptionOf(event: CalendarEvent, series: RepeatingEvent, change: SeriesEdit, split: SeriesSplit) {
+  if (event.originalStart === undefined || ruleOfEdit(series, change) === null) {
+    return [];
+  }
+  const originalStart = shiftValue(event.originalStart, series, split.move.shift, change.allDay);
+  return [{ ...event, seriesId: split.followingId, originalStart }];
+}
+
+function applyFollowing(events: CalendarEvent[], series: RepeatingEvent, change: SeriesEdit, now: Instant) {
   const used = usedCount(series, change.originalStart);
   const count = series.recurrence.count;
   const isPastCount = count !== undefined && used >= count;
@@ -193,19 +205,22 @@ function applyFollowing(events: CalendarEvent[], series: RepeatingEvent, change:
     if (!split.isLater(event.originalStart)) {
       return [];
     }
-    const originalStart = shiftValue(event.originalStart, series, split.move.shift, change.allDay);
-    return [stamped({ ...event, seriesId: split.followingId, originalStart }, now)];
+    return laterExceptionOf(event, series, change, split).map((exception) => stamped(exception, now));
   });
 }
 
-export const applyRecurringChange: ChangeApplier = (events, change, now) => {
+function withRuleOf(event: CalendarEvent, change: SeriesEdit): CalendarEvent {
+  return change.recurrence === undefined ? event : { ...event, recurrence: change.recurrence ?? undefined };
+}
+
+export function applyRecurringEdit(events: CalendarEvent[], change: SeriesEdit, now: Instant): CalendarEvent[] {
   const target = events.find((event) => event.id === change.eventId);
   if (target === undefined) {
     return events;
   }
   const series = seriesOf(target, events);
   if (series === undefined) {
-    return replaced(events, stamped(moved(target, change), now));
+    return replaced(events, stamped(withRuleOf(moved(target, change), change), now));
   }
   if (change.scope === ChangeScope.This) {
     return applyThis(events, target, series, change, now);
@@ -214,4 +229,6 @@ export const applyRecurringChange: ChangeApplier = (events, change, now) => {
     return applyFollowing(events, series, change, now);
   }
   return applyAll(events, series, change, now);
-};
+}
+
+export const applyRecurringChange: ChangeApplier = applyRecurringEdit;

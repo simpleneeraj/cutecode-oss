@@ -5,6 +5,7 @@
 @import "./docs-theme.css";
 @source "../../../packages/ui/src";
 @source "../../../packages/calendar/src";
+@source "../../../packages/calendar-pro/src";
 @source "../../../node_modules/fumadocs-ui/dist";
 
 :root,

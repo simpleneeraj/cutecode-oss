@@ -10,6 +10,7 @@ import {
   type Announcement,
   type DragResult,
   type EventOccurrence,
+  type KeyCommand,
   type MoveIntent,
   type PlainDate,
 } from "../../types";
@@ -24,6 +25,7 @@ export type Carry = {
   session: DragSession;
   glide: ReturnType<typeof glideElement>;
   canReach: (intent: MoveIntent) => boolean;
+  nudge?: (intent: MoveIntent, command: KeyCommand) => MoveIntent;
   poseOf: (session: DragSession) => Pose;
 };
 
@@ -35,13 +37,25 @@ type CarryStart = {
   flow: DropFlow;
 };
 
-export function dayMoveIntent(occurrence: EventOccurrence, date: PlainDate): MoveIntent {
-  const point = { date, minute: 0, columnKey: dayColumnKey };
+export type ColumnPoint = {
+  columnKey: string;
+  resourceId?: string;
+};
+
+const dayColumnPoint: ColumnPoint = { columnKey: dayColumnKey };
+
+export function dayMoveIntent(occurrence: EventOccurrence, date: PlainDate, column = dayColumnPoint): MoveIntent {
+  const point = { ...column, date, minute: 0 };
   return { kind: DragKind.Move, source: ChangeSource.Keyboard, occurrence, grab: point, target: point };
 }
 
-export function carryIntentAt(occurrence: EventOccurrence, date: PlainDate, timeZone: string): MoveIntent {
-  const intent = dayMoveIntent(occurrence, date);
+export function carryIntentAt(
+  occurrence: EventOccurrence,
+  date: PlainDate,
+  timeZone: string,
+  column = dayColumnPoint,
+): MoveIntent {
+  const intent = dayMoveIntent(occurrence, date, column);
   if (occurrence.kind !== OccurrenceKind.Timed) {
     return intent;
   }

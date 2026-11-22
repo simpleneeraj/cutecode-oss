@@ -12,7 +12,7 @@ import { ColumnEvents } from "./column-events";
 import { ColumnShading } from "./column-shading";
 import type { GridColumn } from "./columns";
 import { DraftGhost } from "./draft-ghost";
-import { dayColumnKey } from "./focus";
+import { columnOfFocus } from "./focus";
 import { rowsLength } from "./geometry";
 import type { GridModel } from "./model";
 import { dayColumnStyles } from "./style";
@@ -30,7 +30,7 @@ type DayColumnProps = {
 };
 
 function focusRingOffset(column: GridColumn, model: GridModel, focus: GridFocus): number | null {
-  const isHere = focus.target === FocusTarget.Slot && focus.date === column.column.day.date;
+  const isHere = focus.target === FocusTarget.Slot && columnOfFocus(focus, model) === column;
   return isHere ? offsetAt(column.track, focus.minute, model.visible) : null;
 }
 
@@ -38,16 +38,18 @@ function DayColumn({ column, model, focus, onOpen }: DayColumnProps) {
   const { date } = column.column.day;
   const styles = dayColumnStyles({ isWeekend: column.isWeekend });
   const drag = use(DragContext);
-  const dropRef = useDropCellRef(drag?.gridId ?? null, date);
+  const dropRef = useDropCellRef(drag?.gridId ?? null, date, column.focusKey);
+  const dayLabel = formatDayLabel(date, model.settings);
+  const label = column.resource === null ? dayLabel : `${column.resource.name}, ${dayLabel}`;
 
   return (
     <div
       ref={dropRef}
-      {...focus.focusPropsFor(slotKey(date, dayColumnKey))}
+      {...focus.focusPropsFor(slotKey(date, column.focusKey))}
       {...drag?.handlersFor?.(column)}
-      aria-label={formatDayLabel(date, model.settings)}
+      aria-label={label}
       className={styles.root()}
-      data-column-key={dayColumnKey}
+      data-column-key={column.focusKey}
       data-date={date}
       data-slot="day-column"
       role="gridcell"

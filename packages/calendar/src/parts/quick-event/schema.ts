@@ -9,6 +9,7 @@ import {
   type Calendar,
   type EventOccurrence,
   type InstantRange,
+  type Recurrence,
   type ViewSettings,
 } from "../../types";
 import type { NewEventSlot, QuickEventDraft } from "./target";
@@ -30,6 +31,7 @@ export const quickEventSchema = z.object({
   calendarId: z.string().min(1, quickEventErrors.calendarMissing),
   place: z.string().trim().max(quickEventLimits.place),
   invitees: z.array(z.string().trim().min(1)).max(quickEventLimits.invitees),
+  recurrence: z.custom<Recurrence>().nullable(),
 });
 
 export type QuickEventValues = z.infer<typeof quickEventSchema>;
@@ -65,13 +67,14 @@ export function occurrenceTiming(occurrence: EventOccurrence, settings: ViewSett
 export function newEventValues(slot: NewEventSlot, calendars: Calendar[]): QuickEventValues {
   const [first] = writableCalendars(calendars);
   const calendarId = slot.calendarId ?? first?.id ?? "";
-  return { title: "", calendarId, place: "", invitees: [] };
+  return { title: "", calendarId, place: "", invitees: [], recurrence: null };
 }
 
 export function editedEventValues(occurrence: EventOccurrence): QuickEventValues {
   const { event } = occurrence;
   const invitees = (event.attendees ?? []).filter((attendee) => !attendee.organizer).map((attendee) => attendee.name);
-  return { title: event.title, calendarId: event.calendarId, place: event.location ?? "", invitees };
+  const recurrence = event.recurrence ?? null;
+  return { title: event.title, calendarId: event.calendarId, place: event.location ?? "", invitees, recurrence };
 }
 
 function inviteeId(name: string): string {
@@ -106,6 +109,7 @@ export function draftOf(
     timeZone: timing.timeZone,
     location,
     attendees: attendees.length === 0 ? undefined : attendees,
+    recurrence: values.recurrence ?? undefined,
     source: ChangeSource.Form,
   };
 }

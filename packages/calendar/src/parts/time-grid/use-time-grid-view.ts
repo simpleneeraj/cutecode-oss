@@ -27,6 +27,7 @@ export function useTimeGridView(calendar: CalendarViewProps, kind: GridKind, day
     options: calendar.options,
     actions: calendar.actions,
     announce,
+    constraints: calendar.data.constraints,
   });
   const editing = { actions: calendar.actions, keyboardEdit, deleteAsk: binding.deleteAsk };
   const { gridRef, keyboard, shortcuts } = useGridKeyboard({ model, now, fold, navigation, announce, editing });

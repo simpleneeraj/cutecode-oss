@@ -1,3 +1,6 @@
+import { Fragment, use } from "react";
+
+import { ColumnHeaderContext } from "./column-header";
 import type { GridColumn } from "./columns";
 import { DayHeader } from "./day-header";
 import { columnsStyle } from "./geometry";
@@ -12,6 +15,7 @@ type HeaderRowProps = {
 function HeaderRow({ model, onOpenDay }: HeaderRowProps) {
   const styles = timeGridStyles({ hasSecondaryZone: model.secondary !== null });
   const names = model.secondary?.names ?? null;
+  const renderHeader = use(ColumnHeaderContext);
 
   return (
     <div className={styles.headerRow()} role="row">
@@ -20,9 +24,13 @@ function HeaderRow({ model, onOpenDay }: HeaderRowProps) {
         {names && <span>{names.primary}</span>}
       </div>
       <div className={styles.headers()} style={columnsStyle(model.columns.length)}>
-        {model.columns.map((column) => (
-          <DayHeader key={column.column.day.date} column={column} onOpenDay={onOpenDay} settings={model.settings} />
-        ))}
+        {model.columns.map((column) =>
+          renderHeader === null ? (
+            <DayHeader key={column.column.columnKey} column={column} onOpenDay={onOpenDay} settings={model.settings} />
+          ) : (
+            <Fragment key={column.column.columnKey}>{renderHeader(column)}</Fragment>
+          ),
+        )}
       </div>
     </div>
   );

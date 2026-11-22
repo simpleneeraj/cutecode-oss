@@ -1,11 +1,15 @@
 import { isWeekend, workingMinutes } from "../../range";
-import type { DayColumn, Instant, PlainDate, ViewSettings, Weekday } from "../../types";
+import type { ClockRange, DayColumn, Instant, PlainDate, Resource, ViewSettings, Weekday } from "../../types";
 import { nowMinute } from "../now-line/position";
 import { AxisSide, gapRows, missingRows, offsetAt, sideOf, type DayTrack, type VisibleAxis } from "./axis";
 import { bandOf, placeBlocks, placeChips, type Band, type BlockPlacement, type ChipPlacement } from "./placement";
 
+export const dayColumnKey = "day";
+
 export type GridColumn = {
   column: DayColumn;
+  focusKey: string;
+  resource: Resource | null;
   track: DayTrack;
   isToday: boolean;
   isSelected: boolean;
@@ -24,19 +28,38 @@ export type ColumnContext = {
   weekend: Weekday[];
   selected: PlainDate;
   now: Instant | null;
+  resources: Resource[];
 };
 
-function offHoursOf(track: DayTrack, isWeekendDay: boolean, context: ColumnContext): Band[] {
+function isOvernight(hours: ClockRange): boolean {
+  return hours.end < hours.start;
+}
+
+function bandsOutside(track: DayTrack, hours: ClockRange, timeZone: string, visible: VisibleAxis): Band[] {
+  const overnight = isOvernight(hours);
+  const forward = overnight ? { start: hours.end, end: hours.start } : hours;
+  const working = workingMinutes(track.day, forward, timeZone);
+  const bands = overnight
+    ? [bandOf(track, working.startMinute, working.endMinute, visible)]
+    : [bandOf(track, 0, working.startMinute, visible), bandOf(track, working.endMinute, track.day.minutes, visible)];
+  return bands.filter((band) => band !== null);
+}
+
+function offHoursOf(track: DayTrack, isWeekendDay: boolean, resource: Resource | null, context: ColumnContext): Band[] {
   const { workingHours, timeZone } = context.settings;
+  if (resource !== null) {
+    const hours = resource.bookableHours;
+    return hours === undefined ? [] : bandsOutside(track, hours, resource.timeZone ?? timeZone, context.visible);
+  }
   if (workingHours === undefined || isWeekendDay) {
     return [];
   }
-  const working = workingMinutes(track.day, workingHours, timeZone);
-  const bands = [
-    bandOf(track, 0, working.startMinute, context.visible),
-    bandOf(track, working.endMinute, track.day.minutes, context.visible),
-  ];
-  return bands.filter((band) => band !== null);
+  return bandsOutside(track, workingHours, timeZone, context.visible);
+}
+
+function resourceOf(column: DayColumn, resources: Resource[]): Resource | null {
+  const { resourceId } = column;
+  return resourceId === undefined ? null : (resources.find((resource) => resource.id === resourceId) ?? null);
 }
 
 function nowOffsetOf(track: DayTrack, context: ColumnContext): number | null {
@@ -52,15 +75,18 @@ export function gridColumnOf(column: DayColumn, track: DayTrack, context: Column
   const { visible } = context;
   const isWeekendDay = isWeekend(column.day.date, context.weekend);
   const nowOffset = nowOffsetOf(track, context);
+  const resource = resourceOf(column, context.resources);
   return {
     column,
+    focusKey: resource?.id ?? dayColumnKey,
+    resource,
     track,
     isToday: nowMinute(context.now, column.day) !== null,
     isSelected: column.day.date === context.selected,
     isWeekend: isWeekendDay,
     blocks: placeBlocks(column, track, visible),
     chips: placeChips(column, track, visible),
-    offHours: offHoursOf(track, isWeekendDay, context),
+    offHours: offHoursOf(track, isWeekendDay, resource, context),
     missingRows: missingRows(track, visible),
     gapRows: gapRows(track, visible),
     nowOffset,

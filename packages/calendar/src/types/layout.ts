@@ -26,6 +26,7 @@ export type OverflowChip = {
 export type DayColumn = {
   day: DaySpan;
   columnKey: string;
+  resourceId?: string;
   boxes: TimedBox[];
   overflow: OverflowChip[];
 };

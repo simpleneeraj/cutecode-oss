@@ -22,7 +22,7 @@ const slot = { start: instantAt("2026-11-19", "13:00"), end: instantAt("2026-11-
 
 describe("quickEventSchema", () => {
   it("needs a title and trims it", () => {
-    const values = { title: "  ", calendarId: "work", place: "", invitees: [] };
+    const values = { title: "  ", calendarId: "work", place: "", invitees: [], recurrence: null };
     expect(quickEventSchema.safeParse(values).success).toBe(false);
     expect(quickEventSchema.parse({ ...values, title: " Lunch " }).title).toBe("Lunch");
   });
@@ -68,7 +68,7 @@ describe("attendeesOf", () => {
 
 describe("draftOf", () => {
   it("builds a new event draft without empty fields", () => {
-    const values = { title: "Lunch", calendarId: "work", place: "", invitees: [] };
+    const values = { title: "Lunch", calendarId: "work", place: "", invitees: [], recurrence: null };
     expect(draftOf(values, slotTiming(slot, settings), null)).toEqual({
       eventId: undefined,
       originalStart: undefined,

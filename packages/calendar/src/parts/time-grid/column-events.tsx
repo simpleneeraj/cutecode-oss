@@ -21,7 +21,7 @@ function ColumnEvents({ column, model, focusPropsFor, onOpen }: ColumnEventsProp
       {column.blocks.map((placement) => (
         <EventSlot
           key={`${placement.box.key}|${placement.box.date}`}
-          focusProps={focusPropsFor(eventKey(placement.box.key, placement.box.date))}
+          focusProps={focusPropsFor(eventKey(placement.box.key, placement.box.date, column.focusKey))}
           model={model}
           onOpen={onOpen}
           placement={placement}
@@ -30,7 +30,7 @@ function ColumnEvents({ column, model, focusPropsFor, onOpen }: ColumnEventsProp
       {column.chips.map((placement) => (
         <OverflowChip
           key={`chip-${placement.chip.startMinute}`}
-          focusProps={focusPropsFor(chipKeyOf(placement.chip))}
+          focusProps={focusPropsFor(chipKeyOf(placement.chip, column.focusKey))}
           model={model}
           onOpen={onOpen}
           placement={placement}

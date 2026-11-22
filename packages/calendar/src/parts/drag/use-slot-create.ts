@@ -61,7 +61,8 @@ function hasMoved(session: CreateSession, event: PointerEvent<HTMLElement>): boo
 }
 
 export function slotOf(result: DragResult, calendarId: string): NewEventSlot {
-  return { start: result.proposal.start, end: result.proposal.end, allDay: false, calendarId };
+  const { start, end, resourceId } = result.proposal;
+  return { start, end, allDay: false, calendarId, resourceId };
 }
 
 type CreateContext = SlotCreateOptions & {
@@ -80,7 +81,8 @@ function stopCreate(context: CreateContext) {
 }
 
 function pointAt(context: CreateContext, event: PointerEvent<HTMLElement>, column: GridColumn): SlotPoint | null {
-  return gridPointAt(event.clientY, { date: column.column.day.date, element: event.currentTarget }, context.model);
+  const cell = { date: column.column.day.date, columnKey: column.focusKey, element: event.currentTarget };
+  return gridPointAt(event.clientY, cell, context.model);
 }
 
 function beginCreate(context: CreateContext, event: PointerEvent<HTMLElement>, column: GridColumn) {

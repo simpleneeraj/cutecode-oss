@@ -71,6 +71,11 @@
   --color-island-ink: var(--island-ink);
   --color-tone-ink: var(--tone-ink);
   --color-tone-grey: var(--tone-grey);
+  --color-heat-none: color-mix(in oklab, var(--foreground) 5%, transparent);
+  --color-heat-low: color-mix(in srgb, var(--brand) 22%, var(--card));
+  --color-heat-medium: color-mix(in srgb, var(--brand) 45%, var(--card));
+  --color-heat-high: color-mix(in srgb, var(--brand) 70%, var(--card));
+  --color-heat-peak: var(--brand);
   --color-window-light: var(--window-light);
   --color-syntax-type: var(--syntax-type);
   --color-syntax-string: var(--syntax-string);

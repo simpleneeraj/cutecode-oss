@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import type {
   Calendar,
   ChangeScope,
@@ -5,6 +7,7 @@ import type {
   EventOccurrence,
   Instant,
   IsoDateTime,
+  Recurrence,
   ViewSettings,
 } from "../../types";
 
@@ -18,6 +21,7 @@ export type NewEventSlot = {
   end: Instant;
   allDay: boolean;
   calendarId?: string;
+  resourceId?: string;
 };
 
 export type QuickEventTarget =
@@ -40,6 +44,16 @@ export type QuickEventContext = {
   calendars: Calendar[];
   settings: ViewSettings;
 };
+
+export type RepeatFieldProps = {
+  value: Recurrence | null;
+  onValueChange: (value: Recurrence | null) => void;
+  start: string;
+  settings: ViewSettings;
+  isSeriesException?: boolean;
+};
+
+export type RepeatSlot = (field: RepeatFieldProps) => ReactElement;
 
 export type QuickEventActions = {
   onSave: (draft: QuickEventDraft) => void;

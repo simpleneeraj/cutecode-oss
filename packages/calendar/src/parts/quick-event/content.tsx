@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useState, type ReactNode } from "react";
+import { Fragment, useState } from "react";
 
 import { EventDetails } from "../event-details";
 import type { EventOccurrence } from "../../types";
@@ -8,7 +8,13 @@ import { QuickEventForm } from "./form";
 import { draftOf, editedEventValues, newEventValues, occurrenceTiming, slotTiming } from "./schema";
 import { ScopeAsk } from "./scope-ask";
 import { quickEventCopy } from "./session";
-import { QuickEventMode, type QuickEventActions, type QuickEventContext, type QuickEventTarget } from "./target";
+import {
+  QuickEventMode,
+  type QuickEventActions,
+  type QuickEventContext,
+  type QuickEventTarget,
+  type RepeatSlot,
+} from "./target";
 import { useScopeAsk } from "./use-scope-ask";
 
 type QuickEventContentProps = {
@@ -16,7 +22,7 @@ type QuickEventContentProps = {
   isSaving: boolean;
   context: QuickEventContext;
   actions: QuickEventActions;
-  repeat?: ReactNode;
+  repeat?: RepeatSlot;
 };
 
 type OccurrenceContentProps = Omit<QuickEventContentProps, "target"> & {
@@ -25,7 +31,9 @@ type OccurrenceContentProps = Omit<QuickEventContentProps, "target"> & {
 
 function EditForm({ occurrence, isSaving, context, actions, repeat }: OccurrenceContentProps) {
   const timing = occurrenceTiming(occurrence, context.settings);
-  const setup = { defaults: editedEventValues(occurrence), timing, submitLabel: quickEventCopy.save, isSaving };
+  const isSeriesException = occurrence.event.seriesId !== undefined;
+  const defaults = editedEventValues(occurrence);
+  const setup = { defaults, timing, submitLabel: quickEventCopy.save, isSaving, isSeriesException };
 
   return (
     <QuickEventForm

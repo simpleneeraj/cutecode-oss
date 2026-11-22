@@ -16,6 +16,7 @@ export type DragSourceData = {
 
 export type DropCell = {
   date: PlainDate;
+  columnKey?: string;
   element: Element;
 };
 
@@ -34,9 +35,9 @@ export function dragSourceOf(data: Record<string, unknown>, gridId: string): Dra
 
 export function dropCellOf(targets: DropTargetRecord[], gridId: string): DropCell | null {
   for (const target of targets) {
-    const { date } = target.data;
+    const { date, columnKey } = target.data;
     if (target.data.gridId === gridId && typeof date === "string") {
-      return { date, element: target.element };
+      return { date, columnKey: typeof columnKey === "string" ? columnKey : undefined, element: target.element };
     }
   }
   return null;
@@ -58,7 +59,14 @@ export function useDragSourceRef(gridId: string | null, key: string, date: Plain
   );
 }
 
-export function useDropCellRef(gridId: string | null, date: PlainDate | null) {
+function cellData(gridId: string, date: PlainDate | null, columnKey: string | undefined) {
+  if (date === null) {
+    return { gridId };
+  }
+  return columnKey === undefined ? { gridId, date } : { gridId, date, columnKey };
+}
+
+export function useDropCellRef(gridId: string | null, date: PlainDate | null, columnKey?: string) {
   return useCallback(
     (element: HTMLElement | null) => {
       if (element === null || gridId === null) {
@@ -66,11 +74,11 @@ export function useDropCellRef(gridId: string | null, date: PlainDate | null) {
       }
       return dropTargetForElements({
         element,
-        getData: () => (date === null ? { gridId } : { gridId, date }),
+        getData: () => cellData(gridId, date, columnKey),
         canDrop: ({ source }) => source.data.gridId === gridId,
       });
     },
-    [gridId, date],
+    [gridId, date, columnKey],
   );
 }
 

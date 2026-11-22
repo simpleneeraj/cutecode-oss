@@ -3,8 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@cutecode/ui/components/button";
 import { RepeatIcon } from "@solar-icons/react/linear/repeat";
-import type { ReactNode } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm, type Control } from "react-hook-form";
 
 import type { ViewSettings } from "../../types";
 import { datesWhen, timedWhen } from "../event-details/when";
@@ -13,19 +12,20 @@ import { LockedRepeat } from "./repeat-field";
 import { FormRow, TitleField, WhenRow } from "./rows";
 import { quickEventSchema, writableCalendars, type EventTiming, type QuickEventValues } from "./schema";
 import { quickEventStyles } from "./style";
-import type { QuickEventContext } from "./target";
+import type { QuickEventContext, RepeatSlot } from "./target";
 
 export type QuickEventFormSetup = {
   defaults: QuickEventValues;
   timing: EventTiming;
   submitLabel: string;
   isSaving: boolean;
+  isSeriesException?: boolean;
 };
 
 type QuickEventFormProps = {
   setup: QuickEventFormSetup;
   context: QuickEventContext;
-  repeat?: ReactNode;
+  repeat?: RepeatSlot;
   onSubmit: (values: QuickEventValues) => void;
 };
 
@@ -36,6 +36,34 @@ function timingWhen(timing: EventTiming, settings: ViewSettings) {
     return datesWhen({ start: timing.start, end: timing.end }, settings);
   }
   return timedWhen(timing.range, settings);
+}
+
+type RepeatRowProps = {
+  repeat?: RepeatSlot;
+  control: Control<QuickEventValues>;
+  start: string;
+  settings: ViewSettings;
+  isSeriesException?: boolean;
+};
+
+function RepeatRow({ repeat, control, start, settings, isSeriesException }: RepeatRowProps) {
+  return (
+    <FormRow icon={RepeatIcon}>
+      <div className={styles.field()}>
+        {repeat ? (
+          <Controller
+            control={control}
+            name="recurrence"
+            render={({ field }) =>
+              repeat({ value: field.value, onValueChange: field.onChange, start, settings, isSeriesException })
+            }
+          />
+        ) : (
+          <LockedRepeat />
+        )}
+      </div>
+    </FormRow>
+  );
 }
 
 function QuickEventForm({ setup, context, repeat, onSubmit }: QuickEventFormProps) {
@@ -51,9 +79,13 @@ function QuickEventForm({ setup, context, repeat, onSubmit }: QuickEventFormProp
     <form className={styles.form()} noValidate onSubmit={handleSubmit(onSubmit)}>
       <TitleField error={formState.errors.title?.message} registration={register("title")} />
       <WhenRow when={timingWhen(setup.timing, context.settings)} />
-      <FormRow icon={RepeatIcon}>
-        <div className={styles.field()}>{repeat ?? <LockedRepeat />}</div>
-      </FormRow>
+      <RepeatRow
+        control={control}
+        isSeriesException={setup.isSeriesException}
+        repeat={repeat}
+        settings={context.settings}
+        start={setup.timing.start}
+      />
       <CalendarRow calendars={calendars} control={control} error={formState.errors.calendarId?.message} />
       <InviteeRow control={control} />
       <PlaceRow registration={register("place")} />

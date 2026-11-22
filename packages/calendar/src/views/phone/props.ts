@@ -2,14 +2,14 @@ import type { ReactNode } from "react";
 
 import type { EventChange } from "../../types";
 
-import type { QuickEventActions } from "../../parts/quick-event/target";
+import type { QuickEventActions, RepeatSlot } from "../../parts/quick-event/target";
 import type { QuickEventControl } from "../../parts/quick-event/use-session";
 import type { CalendarStatus } from "../../parts/state/status";
 import type { CalendarData, CalendarNavigation, HourZoom, TimeGridOptions } from "../../parts/time-grid/props";
 
 export type PhoneFeatures = {
   actions: QuickEventActions;
-  repeat?: ReactNode;
+  repeat?: RepeatSlot;
   timeZoneBanner?: ReactNode;
   onEventChange?: (change: EventChange) => void;
 };

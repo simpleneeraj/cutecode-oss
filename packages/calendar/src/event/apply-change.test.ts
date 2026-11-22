@@ -45,6 +45,24 @@ describe("applyEventChange", () => {
     expect(moved?.resourceIds).toEqual(["room-b"]);
   });
 
+  it("keeps every booking when the move stays in the grabbed resource", () => {
+    const event = makeEvent({ resourceIds: ["atlas", "sam"] });
+    const [moved] = applyEventChange([event], { ...change, fromResourceId: "atlas", resourceId: "atlas" }, now);
+    expect(moved?.resourceIds).toEqual(["atlas", "sam"]);
+  });
+
+  it("swaps only the grabbed booking when the move changes resource", () => {
+    const event = makeEvent({ resourceIds: ["atlas", "sam"] });
+    const [moved] = applyEventChange([event], { ...change, fromResourceId: "atlas", resourceId: "borealis" }, now);
+    expect(moved?.resourceIds).toEqual(["borealis", "sam"]);
+  });
+
+  it("drops the duplicate when the target resource is already booked", () => {
+    const event = makeEvent({ resourceIds: ["atlas", "sam"] });
+    const [moved] = applyEventChange([event], { ...change, fromResourceId: "atlas", resourceId: "sam" }, now);
+    expect(moved?.resourceIds).toEqual(["sam"]);
+  });
+
   it("writes an exception for This event and keeps the series", () => {
     const [series, exception] = applyEventChange([weekly], { ...third, scope: ChangeScope.This }, now);
     expect(series).toBe(weekly);

@@ -1,6 +1,6 @@
 import { formatClock, formatTime, formatZoneName } from "../../locale";
 import { formatClockTime, milliseconds } from "../../time";
-import type { Instant, SecondaryZoneProvider, ViewSettings } from "../../types";
+import type { Instant, SecondaryZoneProvider, ViewSettings, ZoneMark } from "../../types";
 import {
   AxisSide,
   offsetAt,
@@ -19,9 +19,12 @@ export type GutterLabel = {
   zone: string | null;
 };
 
+export type ZoneShiftLabeler = (mark: ZoneMark, previous: ZoneMark | undefined, settings: ViewSettings) => string | null;
+
 export type SecondaryZone = {
   timeZone: string;
   marksOf: SecondaryZoneProvider;
+  shiftLabelOf?: ZoneShiftLabeler;
 };
 
 function isShiftStop(stop: TrackStop, track: DayTrack): boolean {
@@ -50,22 +53,25 @@ export function gutterLabels(axis: TimeAxis, visible: VisibleAxis, settings: Vie
     .filter((label) => label.offset > 0);
 }
 
+function isShownMark(mark: ZoneMark | undefined, track: DayTrack, visible: VisibleAxis): boolean {
+  return mark !== undefined && sideOf(track, mark.minute, visible) === AxisSide.Inside;
+}
+
 export function secondaryLabels(
   zone: SecondaryZone,
   track: DayTrack,
   visible: VisibleAxis,
   settings: ViewSettings,
 ): GutterLabel[] {
-  return zone
-    .marksOf(track.day, zone.timeZone)
-    .filter((mark) => sideOf(track, mark.minute, visible) === AxisSide.Inside)
-    .map((mark) => ({
+  const marks = zone.marksOf(track.day, zone.timeZone);
+  return marks
+    .map((mark, index) => ({
       key: `${mark.date}|${mark.minute}`,
       offset: offsetAt(track, mark.minute, visible),
       text: formatClock(formatClockTime(mark.wallMinute), settings),
-      zone: null,
+      zone: zone.shiftLabelOf?.(mark, marks[index - 1], settings) ?? null,
     }))
-    .filter((label) => label.offset > 0);
+    .filter((label, index) => isShownMark(marks[index], track, visible) && label.offset > 0);
 }
 
 export function zoneNames(zone: SecondaryZone | undefined, track: DayTrack | undefined, settings: ViewSettings) {

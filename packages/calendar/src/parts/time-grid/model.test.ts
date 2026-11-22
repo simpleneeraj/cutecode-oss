@@ -129,7 +129,7 @@ describe("focus helpers", () => {
     if (!box) {
       throw new Error("No box");
     }
-    expect(focusForKey(eventKey(box.key, box.date), week, current)?.target).toBe(FocusTarget.Event);
+    expect(focusForKey(eventKey(box.key, box.date, "day"), week, current)?.target).toBe(FocusTarget.Event);
   });
 
   it("keeps blocks at least 18px tall", () => {

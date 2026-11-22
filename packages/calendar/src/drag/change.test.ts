@@ -132,6 +132,7 @@ describe("toEventChange", () => {
     const intent = moveIntent(timed(), slot("2026-11-18", 600, "room-a"), slot("2026-11-18", 600, "room-b"));
     expect(changeOf(intent, ChangeScope.Following)).toMatchObject({
       scope: ChangeScope.Following,
+      fromResourceId: "room-a",
       resourceId: "room-b",
     });
   });

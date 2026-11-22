@@ -43,7 +43,7 @@ function start(context: CarryContext, carry: Carry): boolean {
 function step(context: CarryContext, carry: Carry, command: KeyCommand) {
   const { flow, timeZone } = context;
   const { session } = carry;
-  const next = nudgeIntent(carry.intent, command, defaultDragSettings, timeZone);
+  const next = carry.nudge?.(carry.intent, command) ?? nudgeIntent(carry.intent, command, defaultDragSettings, timeZone);
   if (!carry.canReach(next)) {
     return;
   }

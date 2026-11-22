@@ -10,7 +10,21 @@
     "./resources": "./src/resources/index.ts",
     "./zones": "./src/zones/index.ts",
     "./quick-add": "./src/quick-add/index.ts",
-    "./heat": "./src/heat/index.ts"
+    "./heat": "./src/heat/index.ts",
+    "./parts/resource-header": "./src/parts/resource-header/index.tsx",
+    "./parts/resource-picker": "./src/parts/resource-picker/index.tsx",
+    "./resources-day": "./src/views/resources-day/index.tsx",
+    "./resources-day/example": "./src/views/resources-day/example.tsx",
+    "./year": "./src/views/year/index.tsx",
+    "./year/example": "./src/views/year/example.tsx",
+    "./quick-add-field": "./src/parts/quick-add-field/index.tsx",
+    "./quick-add-field/example": "./src/parts/quick-add-field/example.tsx",
+    "./zone-column": "./src/parts/zone-column/index.ts",
+    "./zone-column/example": "./src/parts/zone-column/example.tsx",
+    "./zone-banner": "./src/parts/zone-banner/index.tsx",
+    "./zone-banner/example": "./src/parts/zone-banner/example.tsx",
+    "./repeat-field": "./src/parts/repeat-field/index.tsx",
+    "./recurring/example": "./src/views/recurring/example.tsx"
   },
   "scripts": {
     "typecheck": "node ../../node_modules/typescript-7/bin/tsc --noEmit",
@@ -18,16 +32,34 @@
     "test:unit": "vitest run"
   },
   "dependencies": {
+    "@hookform/resolvers": "^6.0.2",
+    "@tanstack/react-virtual": "^3.14.26",
     "chrono-node": "^2.10.3",
-    "rrule": "^2.8.1"
+    "react-hook-form": "^7.91.0",
+    "rrule": "^2.8.1",
+    "tailwind-variants": "4.0.2",
+    "zod": "^4.6.7"
   },
   "peerDependencies": {
-    "@cutecode/calendar": "*"
+    "@cutecode/calendar": "*",
+    "@cutecode/ui": "*",
+    "@solar-icons/react": "^2.7.0",
+    "motion": "^14.14.0",
+    "react": "^19",
+    "react-dom": "^19"
   },
   "devDependencies": {
     "@cutecode/calendar": "*",
     "@cutecode/config": "*",
+    "@cutecode/ui": "*",
+    "@solar-icons/react": "^2.7.0",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
     "eslint": "^10",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "motion": "^14.14.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
     "typescript": "^6.0.3",
     "typescript-7": "npm:typescript@7.0.2",
     "typescript-eslint": "^8.71.2",

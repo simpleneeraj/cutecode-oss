@@ -2,8 +2,9 @@
 
 import { createContext, type PointerEvent } from "react";
 
-import type { ChangeScope, InstantRange } from "../../types";
+import type { ChangeScope } from "../../types";
 import type { GridColumn } from "../time-grid/columns";
+import type { DraftRange } from "../time-grid/props";
 import { createDragStore, type DragStore } from "./store";
 import type { DeleteAsk } from "./use-delete-ask";
 
@@ -22,7 +23,7 @@ export type ScopeControl = {
 export type DragBinding = {
   gridId: string | null;
   store: DragStore;
-  draft: InstantRange | null;
+  draft: DraftRange | null;
   handlersFor: ((column: GridColumn) => ColumnPointerHandlers) | null;
   scope: ScopeControl;
   deleteAsk: DeleteAsk;

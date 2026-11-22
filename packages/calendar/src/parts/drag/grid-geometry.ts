@@ -1,6 +1,5 @@
 import { minuteAtOffset, offsetAt } from "../time-grid/axis";
 import type { GridColumn } from "../time-grid/columns";
-import { dayColumnKey } from "../time-grid/focus";
 import type { GridModel } from "../time-grid/model";
 import { milliseconds } from "../../time";
 import { ChangeSource, DragKind, OccurrenceKind, type DragIntent, type Instant, type SlotPoint } from "../../types";
@@ -25,15 +24,21 @@ export function originOf(element: HTMLElement): DropCell | null {
   if (column === null || date === null) {
     return null;
   }
-  return { date, element: column };
+  return { date, columnKey: column.getAttribute("data-column-key") ?? undefined, element: column };
 }
 
-function columnOn(model: GridModel, date: string): GridColumn | undefined {
-  return model.columns.find((column) => column.column.day.date === date);
+function isColumnOf(column: GridColumn, columnKey: string | undefined): boolean {
+  return columnKey === undefined || column.focusKey === columnKey;
 }
 
-function columnAt(model: GridModel, instant: Instant): GridColumn | undefined {
-  return model.columns.find((column) => column.column.day.start <= instant && instant < column.column.day.end);
+function columnOn(model: GridModel, cell: Pick<DropCell, "date" | "columnKey">): GridColumn | undefined {
+  return model.columns.find((column) => column.column.day.date === cell.date && isColumnOf(column, cell.columnKey));
+}
+
+function columnAt(model: GridModel, instant: Instant, columnKey: string | undefined): GridColumn | undefined {
+  return model.columns.find(
+    (column) => column.column.day.start <= instant && instant < column.column.day.end && isColumnOf(column, columnKey),
+  );
 }
 
 function minuteIn(column: GridColumn, instant: Instant): number {
@@ -41,12 +46,14 @@ function minuteIn(column: GridColumn, instant: Instant): number {
 }
 
 export function gridPointAt(clientY: number, cell: DropCell, model: GridModel): SlotPoint | null {
-  const column = columnOn(model, cell.date);
+  const column = columnOn(model, cell);
   if (column === undefined) {
     return null;
   }
   const rows = (clientY - cell.element.getBoundingClientRect().top) / model.blockView.hourHeight;
-  return { date: cell.date, minute: minuteAtOffset(column.track, rows, model.visible), columnKey: dayColumnKey };
+  const minute = minuteAtOffset(column.track, rows, model.visible);
+  const point = { date: cell.date, minute, columnKey: column.focusKey };
+  return column.resource === null ? point : { ...point, resourceId: column.resource.id };
 }
 
 export type IntentBase = Pick<DragSession, "occurrence" | "grab" | "source" | "origin" | "target">;
@@ -79,7 +86,7 @@ export function pointerPose(session: DragSession, input: PointerInput): Pose {
 }
 
 function resizePose(session: DragSession, model: GridModel): Pose {
-  const column = columnOn(model, session.origin.date);
+  const column = columnOn(model, session.origin);
   if (column === undefined) {
     return session.pose;
   }
@@ -93,7 +100,7 @@ function pieceStart(session: DragSession, model: GridModel): Instant {
   if (occurrence.kind !== OccurrenceKind.Timed) {
     return start;
   }
-  const originStart = columnOn(model, session.source.date)?.column.day.start ?? occurrence.start;
+  const originStart = columnOn(model, session.origin)?.column.day.start ?? occurrence.start;
   return Math.max(occurrence.start, originStart) + (start - occurrence.start);
 }
 
@@ -102,8 +109,11 @@ export function snappedPose(session: DragSession, model: GridModel): Pose {
     return resizePose(session, model);
   }
   const start = pieceStart(session, model);
-  const column = columnAt(model, start);
-  const selector = `${columnSelector}[data-date="${column?.column.day.date}"]`;
+  const { intent } = session.result.proposal;
+  const targetKey = intent.kind === DragKind.Move ? intent.target.columnKey : session.target.columnKey;
+  const column = columnAt(model, start, targetKey);
+  const columnKey = CSS.escape(column?.focusKey ?? "");
+  const selector = `${columnSelector}[data-date="${column?.column.day.date}"][data-column-key="${columnKey}"]`;
   const element = session.origin.element.parentElement?.querySelector(selector);
   if (column === undefined || element === null || element === undefined) {
     return session.pose;

@@ -4,12 +4,15 @@ import type {
   CalendarEvent,
   ChangeScope,
   ClockRange,
+  ColumnSource,
+  DropConstraint,
   EventChange,
   IsoDateTime,
   EventOccurrence,
   InstantRange,
   OccurrenceExpander,
   PlainDate,
+  Resource,
   ViewKind,
 } from "../../types";
 import type { NewEventSlot } from "../quick-event/target";
@@ -33,6 +36,13 @@ export type CalendarData = {
   events: CalendarEvent[];
   calendars: Calendar[];
   expand?: OccurrenceExpander;
+  resources?: Resource[];
+  columns?: ColumnSource;
+  constraints?: DropConstraint[];
+};
+
+export type DraftRange = InstantRange & {
+  resourceId?: string;
 };
 
 export type CalendarNavigation = {
@@ -56,7 +66,7 @@ export type TimeGridOptions = SettingsInput & {
   fold?: FoldState;
   now?: IsoDateTime;
   allowedHours?: ClockRange;
-  draft?: InstantRange | null;
+  draft?: DraftRange | null;
 };
 
 export type CalendarActions = {

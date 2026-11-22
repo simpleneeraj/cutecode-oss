@@ -130,6 +130,7 @@ export type EventChange = {
   start: string;
   end: string;
   allDay: boolean;
+  fromResourceId?: string;
   resourceId?: string;
   scope: ChangeScope;
   source: ChangeSource;

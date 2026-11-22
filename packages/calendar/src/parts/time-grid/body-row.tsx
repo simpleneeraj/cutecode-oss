@@ -35,7 +35,7 @@ function BodyRow({ model, focus, isBusy, onOpen }: BodyRowProps) {
       </div>
       <div className={styles.columns()} style={columnsStyle(model.columns.length)}>
         {model.columns.map((column) => (
-          <DayColumn key={column.column.day.date} column={column} focus={focus} model={model} onOpen={onOpen} />
+          <DayColumn key={column.column.columnKey} column={column} focus={focus} model={model} onOpen={onOpen} />
         ))}
         {faintOffset !== null && <NowLine emphasis={NowEmphasis.Week} offset={faintOffset} />}
         {isBusy && (

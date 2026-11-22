@@ -12,8 +12,12 @@ describe("focusKeyOf", () => {
   });
 
   it("keys each piece of an event by its day", () => {
-    expect(focusKeyOf(onEvent)).toBe(eventKey("design-crit@2026-11-18", "2026-11-18"));
+    expect(focusKeyOf(onEvent)).toBe(eventKey("design-crit@2026-11-18", "2026-11-18", "2026-11-18"));
     expect(focusKeyOf({ ...onEvent, date: "2026-11-19" })).not.toBe(focusKeyOf(onEvent));
+  });
+
+  it("keys the copies of an event booked on two resources apart", () => {
+    expect(focusKeyOf({ ...onEvent, columnKey: "atlas" })).not.toBe(focusKeyOf({ ...onEvent, columnKey: "sam" }));
   });
 });
 

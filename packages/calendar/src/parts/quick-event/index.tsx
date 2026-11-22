@@ -2,7 +2,7 @@
 
 import { Drawer, DrawerPanel, DrawerPopup } from "@cutecode/ui/components/drawer";
 import { Popover, PopoverPopup } from "@cutecode/ui/components/popover";
-import { Fragment, type ReactNode } from "react";
+import { Fragment } from "react";
 
 import { AnnouncementKind } from "../../types";
 import { LiveRegion } from "../live-region";
@@ -11,13 +11,13 @@ import { useOverlay } from "../overlay/use-overlay";
 import { QuickEventContent } from "./content";
 import { quickEventCopy, targetKey, targetLabel } from "./session";
 import { quickEventStyles } from "./style";
-import type { QuickEventActions, QuickEventContext, QuickEventSession } from "./target";
+import type { QuickEventActions, QuickEventContext, QuickEventSession, RepeatSlot } from "./target";
 
 type QuickEventProps = {
   session: QuickEventSession;
   context: QuickEventContext;
   actions: QuickEventActions;
-  repeat?: ReactNode;
+  repeat?: RepeatSlot;
 };
 
 const quickEventPlacement = {
@@ -92,5 +92,7 @@ export {
   type QuickEventDraft,
   type QuickEventSession,
   type QuickEventTarget,
+  type RepeatFieldProps,
+  type RepeatSlot,
 } from "./target";
 export { ChangeScope } from "../../types";

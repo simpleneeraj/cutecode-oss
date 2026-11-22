@@ -30,6 +30,13 @@ function changedTimes(proposal: ChangeProposal): { start: string; end: string } 
   return { start: formatDateTime(proposal.start, timeZone), end: formatDateTime(proposal.end, timeZone) };
 }
 
+function rebookOf(proposal: ChangeProposal): Pick<EventChange, "fromResourceId" | "resourceId"> {
+  if (proposal.intent.kind !== DragKind.Move) {
+    return { fromResourceId: undefined, resourceId: undefined };
+  }
+  return { fromResourceId: proposal.intent.grab.resourceId, resourceId: proposal.resourceId };
+}
+
 export function toEventChange(proposal: ChangeProposal, scope: ChangeScope): EventChange {
   const occurrence = proposal.intent.occurrence;
   return {
@@ -37,7 +44,7 @@ export function toEventChange(proposal: ChangeProposal, scope: ChangeScope): Eve
     originalStart: occurrence.originalStart,
     ...changedTimes(proposal),
     allDay: proposal.allDay,
-    resourceId: proposal.intent.kind === DragKind.Move ? proposal.resourceId : undefined,
+    ...rebookOf(proposal),
     scope,
     source: proposal.intent.source,
   };

@@ -6,7 +6,7 @@ import { use } from "react";
 
 import { formatTimeRange } from "../../locale";
 import { milliseconds } from "../../time";
-import type { Instant, InstantRange } from "../../types";
+import type { Instant } from "../../types";
 import { DragContext, inertDragStore } from "../drag/context";
 import { isRefusal } from "../drag/feedback";
 import { createResultOf, useDragState } from "../drag/store";
@@ -15,6 +15,7 @@ import { offsetAt } from "./axis";
 import type { GridColumn } from "./columns";
 import { bandStyle } from "./geometry";
 import type { GridModel } from "./model";
+import type { DraftRange } from "./props";
 
 type DraftGhostProps = {
   column: GridColumn;
@@ -27,9 +28,10 @@ const draftCopy = {
 
 const instantTransition = { duration: 0 };
 
-function isOnDay(range: InstantRange | null, column: GridColumn): range is InstantRange {
+function isOnColumn(range: DraftRange | null, column: GridColumn): range is DraftRange {
   const { day } = column.column;
-  return range !== null && range.start >= day.start && range.start < day.end;
+  const isOnDay = range !== null && range.start >= day.start && range.start < day.end;
+  return isOnDay && (column.resource === null || range.resourceId === column.resource.id);
 }
 
 function offsetOf(instant: Instant, column: GridColumn, model: GridModel): number {
@@ -43,7 +45,7 @@ function DraftGhost({ column, model }: DraftGhostProps) {
   const { date } = column.column.day;
   const result = useDragState(drag?.store ?? inertDragStore, (state) => createResultOf(state, date));
   const range = result?.proposal ?? drag?.draft ?? null;
-  const isShown = isOnDay(range, column);
+  const isShown = isOnColumn(range, column);
   const styles = draftGhostStyles({ isRefused: result !== null && isRefusal(result) });
   const top = isShown ? offsetOf(range.start, column, model) : 0;
   const height = isShown ? offsetOf(range.end, column, model) - top : 0;

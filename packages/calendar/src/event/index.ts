@@ -104,7 +104,7 @@ export function isEventReadOnly(event: CalendarEvent, calendars: Calendar[]): bo
 export function isRecurring(event: CalendarEvent): boolean {
   return event.recurrence !== undefined || event.seriesId !== undefined;
 }
-export { applyEventChange } from "./apply-change";
+export { applyEventChange, rebookedResources } from "./apply-change";
 export { duplicateOccurrence } from "./duplicate";
 export { removeOccurrence } from "./remove";
 export { lastChange, recordChange, startHistory, undoChange, undoEntry, type EventHistory, type HistoryEntry } from "./history";

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { occurrenceKey } from "@cutecode/calendar/event";
 import { makeEvent } from "@cutecode/calendar/testing";
+import { ChangeScope } from "@cutecode/calendar/types";
 import { applyRecurringChange } from "./change";
 import { at, byId, changeOf, expandYear, now, stampedAt, standupSeries } from "./change-fixtures";
 
@@ -69,5 +70,18 @@ describe("applyRecurringChange for This", () => {
       now,
     );
     expect(byId(second, exceptionId)).toMatchObject({ start: at("2026-11-17", "09:00"), version: 2 });
+  });
+
+  it("keeps a second booking when the move stays in the grabbed resource", () => {
+    const series = standupSeries({ resourceIds: ["atlas", "sam"] });
+    const events = applyRecurringChange([series], changeOf({ fromResourceId: "atlas", resourceId: "atlas" }), now);
+    expect(events[1]?.resourceIds).toEqual(["atlas", "sam"]);
+  });
+
+  it("swaps only the grabbed booking across resources", () => {
+    const series = standupSeries({ resourceIds: ["atlas", "sam"] });
+    const change = changeOf({ fromResourceId: "atlas", resourceId: "borealis", scope: ChangeScope.All });
+    const events = applyRecurringChange([series], change, now);
+    expect(byId(events, "standup")?.resourceIds).toEqual(["borealis", "sam"]);
   });
 });

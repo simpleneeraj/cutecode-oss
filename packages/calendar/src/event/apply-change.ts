@@ -9,8 +9,21 @@ function timesOf(change: EventChange): EventTimes {
   return { start: change.start, end: change.end, allDay: change.allDay };
 }
 
+export function rebookedResources(resourceIds: string[] | undefined, change: EventChange): string[] | undefined {
+  const { fromResourceId, resourceId } = change;
+  if (resourceId === undefined || resourceId === fromResourceId) {
+    return resourceIds;
+  }
+  const isGrabbedBooking = fromResourceId !== undefined && (resourceIds?.includes(fromResourceId) ?? false);
+  if (!isGrabbedBooking) {
+    return [resourceId];
+  }
+  const swapped = resourceIds?.map((id) => (id === fromResourceId ? resourceId : id)) ?? [];
+  return [...new Set(swapped)];
+}
+
 function moved(event: CalendarEvent, times: EventTimes, change: EventChange, now: Instant): CalendarEvent {
-  const resourceIds = change.resourceId === undefined ? event.resourceIds : [change.resourceId];
+  const resourceIds = rebookedResources(event.resourceIds, change);
   return stamped({ ...event, ...times, resourceIds }, now);
 }
 

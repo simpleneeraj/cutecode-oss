@@ -31,6 +31,7 @@
     "./parts/live-region": "./src/parts/live-region/index.tsx",
     "./parts/live-region/use-announcer": "./src/parts/live-region/use-announcer.ts",
     "./parts/live-region/announcer": "./src/parts/live-region/announcer.tsx",
+    "./parts/live-region/speak-context": "./src/parts/live-region/speak-context.ts",
     "./parts/roving-focus/focus-key": "./src/parts/roving-focus/focus-key.ts",
     "./parts/roving-focus/use-grid-focus": "./src/parts/roving-focus/use-grid-focus.ts",
     "./parts/view-motion": "./src/parts/view-motion/index.tsx",
@@ -63,7 +64,16 @@
     "./parts/state/sync-conflict": "./src/parts/state/sync-conflict.tsx",
     "./parts/state/read-only-hint": "./src/parts/state/read-only-hint.tsx",
     "./parts/state/status-banners": "./src/parts/state/status-banners.tsx",
-    "./parts/state/example": "./src/parts/state/example.tsx"
+    "./parts/state/example": "./src/parts/state/example.tsx",
+    "./parts/time-grid/view": "./src/parts/time-grid/view.tsx",
+    "./parts/time-grid/columns": "./src/parts/time-grid/columns.ts",
+    "./parts/time-grid/column-header": "./src/parts/time-grid/column-header.ts",
+    "./parts/time-grid/use-grid-navigation": "./src/parts/time-grid/use-grid-navigation.ts",
+    "./parts/viewport/use-is-phone": "./src/parts/viewport/use-is-phone.ts",
+    "./parts/quick-event/session": "./src/parts/quick-event/session.ts",
+    "./parts/quick-event/example-events": "./src/parts/quick-event/example-events.ts",
+    "./parts/time-grid/gutter-labels": "./src/parts/time-grid/gutter-labels.ts",
+    "./parts/overlay/responsive-dialog": "./src/parts/overlay/responsive-dialog.tsx"
   },
   "scripts": {
     "typecheck": "node ../../node_modules/typescript-7/bin/tsc --noEmit",

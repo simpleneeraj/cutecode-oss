@@ -5,10 +5,18 @@ import { useRef, useState } from "react";
 
 import { applyEventChange, duplicateOccurrence, lastChange, recordChange, removeOccurrence, startHistory, undoChange, undoEntry } from "../../event";
 import { makeEvent } from "../../testing";
-import { ChangeScope, type CalendarEvent, type EventChange, type EventOccurrence } from "../../types";
+import {
+  ChangeScope,
+  type CalendarEvent,
+  type ChangeApplier,
+  type EventChange,
+  type EventOccurrence,
+} from "../../types";
 import type { QuickEventActions, QuickEventDraft } from "./target";
 
 type EventsUpdate = (events: CalendarEvent[]) => CalendarEvent[];
+
+export type SaveApplier = (events: CalendarEvent[], draft: QuickEventDraft) => CalendarEvent[];
 
 const historyCopy = {
   create: "Create event",
@@ -22,7 +30,7 @@ const historyCopy = {
   undone: (label: string) => `${label} undone`,
 };
 
-function savedEvents(events: CalendarEvent[], draft: QuickEventDraft): CalendarEvent[] {
+export function savedEvents(events: CalendarEvent[], draft: QuickEventDraft): CalendarEvent[] {
   const { eventId, source, ...fields } = draft;
   if (eventId === undefined) {
     return [...events, makeEvent({ ...fields, id: `${source}-${crypto.randomUUID()}` })];
@@ -50,7 +58,11 @@ function useDeleteToast() {
   return { show, close };
 }
 
-export function useExampleEvents(initial: CalendarEvent[]) {
+export function useExampleEvents(
+  initial: CalendarEvent[],
+  applyChange: ChangeApplier = applyEventChange,
+  applySave: SaveApplier = savedEvents,
+) {
   const [history, setHistory] = useState(() => startHistory(initial));
   const deleteToast = useDeleteToast();
   const record = (label: string, update: EventsUpdate) => {
@@ -73,11 +85,11 @@ export function useExampleEvents(initial: CalendarEvent[]) {
     deleteToast.show(occurrence.event.title, () => entry !== null && setHistory((current) => undoEntry(current, entry)));
   };
   const actions: QuickEventActions = {
-    onSave: (draft) => record(draft.eventId === undefined ? historyCopy.create : historyCopy.edit, (events) => savedEvents(events, draft)),
+    onSave: (draft) => record(draft.eventId === undefined ? historyCopy.create : historyCopy.edit, (events) => applySave(events, draft)),
     onDelete: deleteOccurrence,
   };
   const changeEvent = (change: EventChange) =>
-    record(historyCopy.move, (events) => applyEventChange(events, change, Date.now()));
+    record(historyCopy.move, (events) => applyChange(events, change, Date.now()));
   const editing = {
     onEventDelete: deleteOccurrence,
     onEventDuplicate: (occurrence: EventOccurrence) => record(historyCopy.duplicate, withCopy(occurrence)),

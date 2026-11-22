@@ -13,10 +13,10 @@ import {
 } from "../../types";
 import { focusKeyOf, slotKey } from "../roving-focus/focus-key";
 import { AxisSide, sideOf } from "./axis";
-import { anchorColumn, type GridColumn } from "./columns";
+import { anchorColumn, dayColumnKey, type GridColumn } from "./columns";
 import type { GridModel } from "./model";
 
-export const dayColumnKey = "day";
+export { dayColumnKey } from "./columns";
 
 const fallbackClock = "09:00";
 
@@ -24,8 +24,8 @@ const chipKeyPrefix = "chip-";
 
 export function focusGridOf(model: GridModel): FocusGrid {
   return {
-    dates: model.columns.map((column) => column.column.day.date),
-    columnKeys: [dayColumnKey],
+    dates: [...new Set(model.columns.map((column) => column.column.day.date))],
+    columnKeys: [...new Set(model.columns.map((column) => column.focusKey))],
     stepMinutes: minutes.hour,
     days: model.columns.map((column) => column.column.day),
     timeZone: model.settings.timeZone,
@@ -49,47 +49,53 @@ export function startingFocus(model: GridModel, now: Instant | null): SlotFocus 
   const column = anchorColumn(model.columns);
   const date = column?.column.day.date ?? model.range.anchor;
   const minute = column === undefined ? 0 : startingMinute(column, model, now);
-  return { target: FocusTarget.Slot, date, minute, columnKey: dayColumnKey };
+  return { target: FocusTarget.Slot, date, minute, columnKey: column?.focusKey ?? dayColumnKey };
 }
 
 export function columnOfFocus(focus: GridFocus, model: GridModel): GridColumn | undefined {
-  return model.columns.find((column) => column.column.day.date === focus.date);
+  const onDate = model.columns.filter((column) => column.column.day.date === focus.date);
+  return onDate.find((column) => column.focusKey === focus.columnKey) ?? onDate[0];
 }
 
 export function shownBars(model: GridModel): SpanBar[] {
   return model.bars.filter((bar) => bar.week === 0);
 }
 
-export function eventFocusOf(box: TimedBox): EventFocus {
+export function eventFocusOf(box: TimedBox, columnKey: string = dayColumnKey): EventFocus {
   return {
     target: FocusTarget.Event,
     date: box.date,
     minute: box.startMinute,
-    columnKey: dayColumnKey,
+    columnKey,
     occurrenceKey: box.key,
   };
 }
 
-function chipFocusOf(chip: OverflowChip): EventFocus {
+function chipFocusOf(chip: OverflowChip, columnKey: string): EventFocus {
   return {
     target: FocusTarget.Event,
     date: chip.date,
     minute: chip.startMinute,
-    columnKey: dayColumnKey,
-    occurrenceKey: `${chipKeyPrefix}${chip.startMinute}`,
+    columnKey,
+    occurrenceKey: chipKeyPrefix + chipIdOf(chip, columnKey),
   };
 }
 
-function barFocusOf(bar: SpanBar, model: GridModel): EventFocus | null {
-  const date = model.columns[bar.startIndex]?.column.day.date;
-  if (date === undefined) {
-    return null;
-  }
-  return { target: FocusTarget.Event, date, minute: 0, columnKey: dayColumnKey, occurrenceKey: bar.key };
+function chipIdOf(chip: OverflowChip, columnKey: string): string {
+  return columnKey === dayColumnKey ? String(chip.startMinute) : `${columnKey}-${chip.startMinute}`;
 }
 
-export function chipKeyOf(chip: OverflowChip): string {
-  return focusKeyOf(chipFocusOf(chip));
+function barFocusOf(bar: SpanBar, model: GridModel): EventFocus | null {
+  const column = model.columns[bar.startIndex];
+  if (column === undefined) {
+    return null;
+  }
+  const { date } = column.column.day;
+  return { target: FocusTarget.Event, date, minute: 0, columnKey: column.focusKey, occurrenceKey: bar.key };
+}
+
+export function chipKeyOf(chip: OverflowChip, columnKey: string = dayColumnKey): string {
+  return focusKeyOf(chipFocusOf(chip, columnKey));
 }
 
 export function barKeyOf(bar: SpanBar, model: GridModel): string {
@@ -98,8 +104,8 @@ export function barKeyOf(bar: SpanBar, model: GridModel): string {
 }
 
 function columnTargets(column: GridColumn): EventFocus[] {
-  const blocks = column.blocks.map((placement) => eventFocusOf(placement.box));
-  const chips = column.chips.map((placement) => chipFocusOf(placement.chip));
+  const blocks = column.blocks.map((placement) => eventFocusOf(placement.box, column.focusKey));
+  const chips = column.chips.map((placement) => chipFocusOf(placement.chip, column.focusKey));
   return [...blocks, ...chips];
 }
 
@@ -112,7 +118,7 @@ function targetForKey(key: string, model: GridModel): EventFocus | undefined {
 }
 
 function slotFocusAt(focus: GridFocus): SlotFocus {
-  return { target: FocusTarget.Slot, date: focus.date, minute: focus.minute, columnKey: dayColumnKey };
+  return { target: FocusTarget.Slot, date: focus.date, minute: focus.minute, columnKey: focus.columnKey };
 }
 
 export function shownFocus(focus: GridFocus, model: GridModel, now: Instant | null): GridFocus {
@@ -153,14 +159,14 @@ export function foldSideOf(focus: GridFocus, model: GridModel): AxisSide {
 }
 
 function slotFocusForKey(key: string, model: GridModel, current: GridFocus): SlotFocus | null {
-  const column = model.columns.find((candidate) => slotKey(candidate.column.day.date, dayColumnKey) === key);
+  const column = model.columns.find((candidate) => slotKey(candidate.column.day.date, candidate.focusKey) === key);
   if (column === undefined) {
     return null;
   }
   const { day } = column.column;
   const lastMinute = Math.max(0, day.minutes - minutes.hour);
   const minute = Math.min(current.minute, lastMinute);
-  return { target: FocusTarget.Slot, date: day.date, minute, columnKey: dayColumnKey };
+  return { target: FocusTarget.Slot, date: day.date, minute, columnKey: column.focusKey };
 }
 
 export function focusForKey(key: string, model: GridModel, current: GridFocus): GridFocus | null {
@@ -192,10 +198,10 @@ function slotEventFocus(focus: GridFocus, model: GridModel): EventFocus | null {
   }
   const block = column.blocks.find(({ box }) => overlapsSlot(box.startMinute, box.endMinute, focus.minute));
   if (block !== undefined) {
-    return eventFocusOf(block.box);
+    return eventFocusOf(block.box, column.focusKey);
   }
   const chip = column.chips.find((placement) => overlapsSlot(placement.chip.startMinute, placement.chip.endMinute, focus.minute));
-  return chip === undefined ? barOnColumn(column, model) : chipFocusOf(chip.chip);
+  return chip === undefined ? barOnColumn(column, model) : chipFocusOf(chip.chip, column.focusKey);
 }
 
 export function commandFocus(command: KeyCommand, focus: GridFocus, model: GridModel): GridFocus | null {

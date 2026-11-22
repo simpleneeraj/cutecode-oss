@@ -1,6 +1,7 @@
 import { RRule, Frequency as RuleFrequency, type Options, type Weekday as RuleWeekday } from "rrule";
 import {
   addDays,
+  daysBetween,
   formatDateTime,
   isPlainDate,
   milliseconds,
@@ -12,6 +13,8 @@ import {
   toWallClock,
 } from "@cutecode/calendar/time";
 import { Frequency, Weekday, type CalendarEvent, type WallClock } from "@cutecode/calendar/types";
+
+type EventTimes = Pick<CalendarEvent, "start" | "end" | "allDay">;
 
 const ruleFrequencies: Record<Frequency, RuleFrequency> = {
   [Frequency.Daily]: RuleFrequency.DAILY,
@@ -102,4 +105,28 @@ export function seriesSlotOf(value: string, series: CalendarEvent): WallClock {
     .map(wallClockOfFloating)
     .find((wallClock) => formatSlot(wallClock, series.allDay, series.timeZone) === canonical);
   return slot ?? shown;
+}
+
+export function endAfter(start: string, change: EventTimes, timeZone: string): string {
+  if (change.allDay) {
+    return addDays(start, daysBetween(change.start, change.end));
+  }
+  const duration = parseDateTime(change.end, timeZone) - parseDateTime(change.start, timeZone);
+  return formatDateTime(parseDateTime(start, timeZone) + duration, timeZone);
+}
+
+export function usedCount(series: CalendarEvent, originalStart: string): number {
+  const rule = ruleOf(series);
+  const dtstart = rule.options.dtstart.getTime();
+  const slot = floatingDate(seriesSlotOf(originalStart, series));
+  return rule.between(new Date(dtstart - milliseconds.second), slot, false).length;
+}
+
+export function untilBefore(originalStart: string, series: CalendarEvent): string {
+  if (series.allDay) {
+    return addDays(originalStart, -1);
+  }
+  const rule = ruleOf(series);
+  const previous = rule.before(floatingDate(seriesSlotOf(originalStart, series)), false) ?? rule.options.dtstart;
+  return formatSlot(wallClockOfFloating(previous), false, series.timeZone);
 }
