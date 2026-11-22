@@ -81,17 +81,17 @@ export function FollowButton({
         aria-label={isFollowing ? "Unfollow this user" : "Follow this user"}
         aria-pressed={isFollowing}
         className={cn(
-          "gap-1.5 transition-all",
+          "transition-all",
           isFollowing && isHovering && "border-destructive text-destructive hover:bg-destructive/10",
           className,
         )}
       >
         {isFollowPending ? (
-          <Spinner className="size-3.5" />
+          <Spinner />
         ) : isFollowing ? (
-          <UserCheckRoundedIcon className="size-3.5" aria-hidden="true" />
+          <UserCheckRoundedIcon aria-hidden="true" />
         ) : (
-          <UserPlusRoundedIcon className="size-3.5" aria-hidden="true" />
+          <UserPlusRoundedIcon aria-hidden="true" />
         )}
         {label}
       </Button>

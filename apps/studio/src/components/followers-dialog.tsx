@@ -32,7 +32,7 @@ function UserRow({ user, currentUserId }: { user: FollowUser; currentUserId?: st
         <div className="flex items-center gap-1.5">
           <p className="text-sm font-medium truncate">{user.name || "Anonymous"}</p>
           {user.plan !== Plan.FREE && (
-            <Badge variant="secondary" className="text-[10px] px-1 py-0 h-4 shrink-0">
+            <Badge variant="secondary" size="sm" className="shrink-0">
               {user.plan}
             </Badge>
           )}
@@ -152,7 +152,7 @@ export function FollowersDialog({ userId, currentUserId, followerCount, followin
       <Tabs value={tab} onValueChange={setTab}>
         <DialogPopup className="max-w-md w-full">
           <DialogHeader>
-            <DialogTitle className="text-base font-semibold">Connections</DialogTitle>
+            <DialogTitle>Connections</DialogTitle>
             <TabsList>
               <TabsTab value={Tab.Followers}>{Tab.Followers}</TabsTab>
               <TabsTab value={Tab.Following}>{Tab.Following}</TabsTab>

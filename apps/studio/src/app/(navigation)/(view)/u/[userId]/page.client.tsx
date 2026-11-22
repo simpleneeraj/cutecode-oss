@@ -2,153 +2,223 @@
 
 import { AnimatePresence, motion } from "motion/react";
 import { UsersGroupRoundedIcon } from "@solar-icons/react/linear/users-group-rounded";
-import { useUserProfile, useToggleFollow } from "@/hooks/use-user";
-import { useSnippetExplore } from "@/hooks/use-snippet";
+import { UserCrossRoundedIcon } from "@solar-icons/react/linear/user-cross-rounded";
+import { CodeSquareIcon } from "@solar-icons/react/linear/code-square";
+import { useUserProfile, useToggleFollow, type UserProfileOutput } from "@/hooks/use-user";
+import { useSnippetExplore, type SnippetExploreOutput } from "@/hooks/use-snippet";
+import { Avatar, AvatarFallback } from "@cutecode/ui/components/avatar";
 import { Button } from "@cutecode/ui/components/button";
 import { Badge } from "@cutecode/ui/components/badge";
+import { Card } from "@cutecode/ui/components/card";
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@cutecode/ui/components/empty";
 import { Skeleton } from "@cutecode/ui/components/skeleton";
 import { ExploreSnippetCard } from "@/components/snippet/explore-snippet-card";
-import { SLIDE_UP, EASE_OUT } from "@/lib/motion";
+import { SLIDE_UP, EASE_OUT, FADE_IN } from "@/lib/motion";
 import View from "@/components/view";
 import { useUser } from "@/hooks/use-auth";
+import { profileStyles } from "./style";
 
 type ProfilePageClientProps = {
   userId: string;
 };
 
+type ProfileHeaderProps = {
+  profile: NonNullable<UserProfileOutput>;
+  canFollow: boolean;
+  isFollowPending: boolean;
+  onFollowToggle: () => void;
+};
+
+type ProfileSnippet = SnippetExploreOutput["snippets"][number];
+
+enum SnippetsView {
+  Loading = "loading",
+  Empty = "empty",
+  Grid = "grid",
+}
+
+type SnippetsContentProps = {
+  view: SnippetsView;
+  snippets: ProfileSnippet[];
+};
+
+const profileMotion = {
+  skeletonKeys: Array.from({ length: 6 }, (_, i) => `skeleton-${i}`),
+  fadeOut: { opacity: 0 },
+};
+
+const styles = profileStyles();
+
+function ProfileSkeleton() {
+  return (
+    <View className={styles.scroll()}>
+      <View className={styles.root()} aria-busy="true">
+        <Card className={styles.header()}>
+          <Skeleton className={styles.avatarSkeleton()} />
+          <div className={styles.info()}>
+            <Skeleton className={styles.nameSkeleton()} />
+            <Skeleton className={styles.metaSkeleton()} />
+          </div>
+        </Card>
+        <div className={styles.grid()}>
+          {profileMotion.skeletonKeys.map((key) => (
+            <Skeleton key={key} className={styles.cardSkeleton()} />
+          ))}
+        </div>
+      </View>
+    </View>
+  );
+}
+
+function ProfileNotFound() {
+  return (
+    <View className={styles.center()}>
+      <Empty>
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <UserCrossRoundedIcon aria-hidden="true" />
+          </EmptyMedia>
+          <EmptyTitle>User not found.</EmptyTitle>
+        </EmptyHeader>
+      </Empty>
+    </View>
+  );
+}
+
+function ProfileHeader({ profile, canFollow, isFollowPending, onFollowToggle }: ProfileHeaderProps) {
+  const authorInitial = (profile.name || "?").charAt(0).toUpperCase();
+  const followers = profile._count.followers;
+
+  return (
+    <Card className={styles.header()} render={<motion.div {...SLIDE_UP} transition={{ duration: 0.3, ease: EASE_OUT }} />}>
+      <Avatar className={styles.avatar()}>
+        <AvatarFallback className={styles.avatarFallback()}>{authorInitial}</AvatarFallback>
+      </Avatar>
+      <div className={styles.info()}>
+        <h1 className={styles.name()}>{profile.name || "Anonymous"}</h1>
+        <div className={styles.meta()}>
+          <Badge variant="secondary" size="sm" className={styles.plan()}>
+            {profile.plan.toLowerCase()}
+          </Badge>
+          <span className={styles.followers()}>
+            <UsersGroupRoundedIcon className={styles.followersIcon()} aria-hidden="true" />
+            {followers} {followers === 1 ? "follower" : "followers"}
+          </span>
+          <span className={styles.divider()} aria-hidden="true">
+            ·
+          </span>
+          <span>{profile._count.following} following</span>
+        </div>
+      </div>
+      {canFollow && (
+        <Button
+          variant={profile.isFollowing ? "outline" : "default"}
+          className={styles.follow()}
+          onClick={onFollowToggle}
+          disabled={isFollowPending}
+        >
+          {profile.isFollowing ? "Unfollow" : "Follow"}
+        </Button>
+      )}
+    </Card>
+  );
+}
+
+function snippetsView(isLoading: boolean, count: number) {
+  const isEmpty = count === 0;
+  if (isLoading) {
+    return SnippetsView.Loading;
+  }
+  if (isEmpty) {
+    return SnippetsView.Empty;
+  }
+  return SnippetsView.Grid;
+}
+
+function SnippetsContent({ view, snippets }: SnippetsContentProps) {
+  if (view === SnippetsView.Loading) {
+    return (
+      <motion.div {...FADE_IN} exit={profileMotion.fadeOut} className={styles.grid()} aria-busy="true">
+        {profileMotion.skeletonKeys.map((key) => (
+          <Skeleton key={key} className={styles.cardSkeleton()} />
+        ))}
+      </motion.div>
+    );
+  }
+
+  if (view === SnippetsView.Empty) {
+    return (
+      <motion.div {...FADE_IN} exit={profileMotion.fadeOut}>
+        <Card>
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <CodeSquareIcon aria-hidden="true" />
+              </EmptyMedia>
+              <EmptyTitle>No public snippets yet.</EmptyTitle>
+              <EmptyDescription>Snippets this creator publishes will show up here.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
+        </Card>
+      </motion.div>
+    );
+  }
+
+  return (
+    <motion.div {...FADE_IN} exit={profileMotion.fadeOut} className={styles.grid()}>
+      {snippets.map((snippet, i) => (
+        <ExploreSnippetCard key={snippet.id} snippet={snippet} index={i} isPinned={!!snippet.pinnedAt} />
+      ))}
+    </motion.div>
+  );
+}
+
 export default function ProfilePageClient({ userId }: ProfilePageClientProps) {
   const { user: currentClerkUser } = useUser();
   const { data: profile, isLoading: profileLoading } = useUserProfile(userId);
   const { data: snippetsData, isLoading: snippetsLoading } = useSnippetExplore({ limit: 12, userId });
-
   const { trigger: toggleFollow, isMutating: isFollowPending } = useToggleFollow(userId);
 
   const snippets = snippetsData?.snippets ?? [];
+  const view = snippetsView(snippetsLoading, snippets.length);
 
   async function handleFollowToggle() {
-    if (!profile) return;
+    const hasProfile = Boolean(profile);
+    if (!hasProfile) {
+      return;
+    }
     await toggleFollow();
   }
 
+  const isMissing = !profile;
   if (profileLoading) {
-    return (
-      <View className="layout-fill flex flex-col gap-6 py-10 px-4 max-w-3xl mx-auto w-full">
-        <div className="flex items-center gap-4">
-          <Skeleton className="size-16 rounded-full" />
-          <div className="flex flex-col gap-2">
-            <Skeleton className="h-5 w-40" />
-            <Skeleton className="h-4 w-24" />
-          </div>
-        </div>
-        <Skeleton className="h-40 rounded-xl" />
-      </View>
-    );
+    return <ProfileSkeleton />;
+  }
+  if (isMissing) {
+    return <ProfileNotFound />;
   }
 
-  if (!profile) {
-    return (
-      <View className="layout-fill flex items-center justify-center">
-        <p className="text-muted-foreground text-sm">User not found.</p>
-      </View>
-    );
-  }
-
-  const authorInitial = (profile.name || "?").charAt(0).toUpperCase();
-  const isOwnProfile = profile.isOwnProfile;
+  const canFollow = !profile.isOwnProfile && Boolean(currentClerkUser);
 
   return (
-    <View className="layout-fill layout-scroll">
-      <View className="flex flex-col gap-8 py-10 px-4 max-w-3xl mx-auto w-full">
-        {/* Profile header */}
-        <motion.div
-          {...SLIDE_UP}
-          transition={{ duration: 0.3, ease: EASE_OUT }}
-          className="flex flex-col sm:flex-row sm:items-end gap-5"
-        >
-          {/* Avatar */}
-          <div
-            className="flex size-20 items-center justify-center rounded-2xl text-3xl font-bold shrink-0 bg-primary/10 text-primary"
-          >
-            {authorInitial}
-          </div>
-
-          {/* Info */}
-          <div className="flex-1 flex flex-col gap-1.5">
-            <h1 className="text-2xl font-bold tracking-tight">{profile.name || "Anonymous"}</h1>
-            <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-              <Badge variant="secondary" className="capitalize text-xs">
-                {profile.plan.toLowerCase()}
-              </Badge>
-              <span className="flex items-center gap-1">
-                <UsersGroupRoundedIcon className="size-3.5" aria-hidden="true" />
-                {profile._count.followers}{" "}
-                {profile._count.followers === 1 ? "follower" : "followers"}
-              </span>
-              <span className="text-muted-foreground/50">·</span>
-              <span>{profile._count.following} following</span>
-            </div>
-          </div>
-
-          {/* Follow button */}
-          {!isOwnProfile && currentClerkUser && (
-            <Button
-              variant={profile.isFollowing ? "outline" : "default"}
-              size="sm"
-              onClick={handleFollowToggle}
-              disabled={isFollowPending}
-              className="self-start sm:self-auto"
-            >
-              {profile.isFollowing ? "Unfollow" : "Follow"}
-            </Button>
-          )}
-        </motion.div>
-
-        {/* Snippets */}
-        <motion.div
+    <View className={styles.scroll()}>
+      <View className={styles.root()}>
+        <ProfileHeader
+          profile={profile}
+          canFollow={canFollow}
+          isFollowPending={isFollowPending}
+          onFollowToggle={handleFollowToggle}
+        />
+        <motion.section
           {...SLIDE_UP}
           transition={{ duration: 0.3, delay: 0.1, ease: EASE_OUT }}
-          className="flex flex-col gap-4"
+          className={styles.section()}
         >
-          <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-            Public Snippets
-          </h2>
-
+          <h2 className={styles.sectionTitle()}>Public Snippets</h2>
           <AnimatePresence mode="wait">
-            {snippetsLoading ? (
-              <motion.div
-                key="skeleton"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-              >
-                {Array.from({ length: 6 }).map((_, i) => (
-                  <Skeleton key={i} className="h-48 rounded-xl" />
-                ))}
-              </motion.div>
-            ) : snippets.length === 0 ? (
-              <motion.p
-                key="empty"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="text-sm text-muted-foreground"
-              >
-                No public snippets yet.
-              </motion.p>
-            ) : (
-              <motion.div
-                key="grid"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-              >
-                {snippets.map((snippet, i) => (
-                  <ExploreSnippetCard key={snippet.id} snippet={snippet} index={i} isPinned={!!snippet.pinnedAt} />
-                ))}
-              </motion.div>
-            )}
+            <SnippetsContent key={view} view={view} snippets={snippets} />
           </AnimatePresence>
-        </motion.div>
+        </motion.section>
       </View>
     </View>
   );

@@ -14,9 +14,8 @@ export default function OptionToggle({ icon: Glyph, label, checked, onCheckedCha
       variant="switch"
       checked={checked}
       onCheckedChange={onCheckedChange}
-      className="min-h-8 rounded-md text-sm"
     >
-      <span className="flex items-center gap-2 text-sm">
+      <span className="flex items-center gap-2">
         <Glyph className="size-4 text-muted-foreground" aria-hidden="true" />
         {label}
       </span>

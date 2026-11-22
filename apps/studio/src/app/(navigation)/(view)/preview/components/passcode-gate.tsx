@@ -44,7 +44,7 @@ function PasscodeStatus({ invalidPasscode }: { invalidPasscode: boolean }) {
       </p>
     );
   }
-  return <FieldDescription className="text-xs">Ask the author for the {OTP_LENGTH}-digit code.</FieldDescription>;
+  return <FieldDescription>Ask the author for the {OTP_LENGTH}-digit code.</FieldDescription>;
 }
 
 export function PasscodeGate({ passcode, invalidPasscode, isLoading, onChange, onSubmit }: PasscodeGateProps) {

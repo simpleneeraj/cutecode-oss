@@ -1,11 +1,10 @@
 import { AltArrowLeftIcon } from "@solar-icons/react/linear/alt-arrow-left";
 import { AltArrowRightIcon } from "@solar-icons/react/linear/alt-arrow-right";
 import { Button } from "@cutecode/ui/components/button";
+import { paginationStyles } from "./style";
 
-/**
- * Shared pager for the snippets browse grid. Compact, monochrome,
- * Solar line-duotone chevrons.
- */
+const styles = paginationStyles();
+
 export function BrowsePagination({
   page,
   totalPages,
@@ -15,20 +14,26 @@ export function BrowsePagination({
   totalPages: number;
   onPageChange: (page: number) => void;
 }) {
-  if (totalPages <= 1) return null;
+  const hasSinglePage = totalPages <= 1;
+  if (hasSinglePage) return null;
 
   return (
-    <div className="flex items-center justify-center gap-2 pt-2">
-      <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => onPageChange(page - 1)}>
-        <AltArrowLeftIcon className="size-4" aria-hidden="true" />
+    <div className={styles.root()}>
+      <Button variant="outline" className={styles.button()} disabled={page <= 1} onClick={() => onPageChange(page - 1)}>
+        <AltArrowLeftIcon className={styles.icon()} aria-hidden="true" />
         Previous
       </Button>
-      <span className="px-2 text-xs tabular-nums text-muted-foreground">
+      <span className={styles.count()}>
         {page} / {totalPages}
       </span>
-      <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => onPageChange(page + 1)}>
+      <Button
+        variant="outline"
+        className={styles.button()}
+        disabled={page >= totalPages}
+        onClick={() => onPageChange(page + 1)}
+      >
         Next
-        <AltArrowRightIcon className="size-4" aria-hidden="true" />
+        <AltArrowRightIcon className={styles.icon()} aria-hidden="true" />
       </Button>
     </div>
   );

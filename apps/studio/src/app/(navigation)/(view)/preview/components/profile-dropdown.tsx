@@ -1,17 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "@cutecode/ui/lib/cn";
 import { Link } from "@/components/link";
 import { useAuthActions, useUser } from "@/hooks/use-auth";
 import { useSetAtom } from "jotai";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@cutecode/ui/components/menu";
+import { Menu, MenuItem, MenuPopup, MenuSeparator, MenuTrigger } from "@cutecode/ui/components/menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@cutecode/ui/components/avatar";
 import { useSubscription } from "@/hooks/use-subscription";
 import { resetEditorAtom } from "@/store/editor/editor/reset";
@@ -25,8 +18,11 @@ import { Logout3Icon } from "@solar-icons/react/linear/logout-3";
 import { SettingsMinimalisticIcon } from "@solar-icons/react/linear/settings-minimalistic";
 import { TagIcon } from "@solar-icons/react/linear/tag";
 import { Widget2Icon } from "@solar-icons/react/linear/widget-2";
-import PremiumBadge from "./premium-badge";
+import { PlanBadge } from "../../dashboard/components/plan-badge";
 import AccountSettingsDialog from "./account-settings-dialog";
+import { profileStyles } from "./style";
+
+const styles = profileStyles();
 
 const LEGAL_LINKS = [
   { href: "/legal/terms", label: "Terms" },
@@ -35,9 +31,7 @@ const LEGAL_LINKS = [
   { href: "/legal/credits", label: "Credits" },
 ];
 
-interface ProfileDropdownProps extends React.HTMLAttributes<HTMLDivElement> {}
-
-export default function ProfileDropdown({ className, ...props }: ProfileDropdownProps) {
+export default function ProfileDropdown() {
   const { user } = useUser();
   const { openPortal } = useBilling();
   const { plan, isFree } = useSubscription();
@@ -66,99 +60,88 @@ export default function ProfileDropdown({ className, ...props }: ProfileDropdown
   }, [user]);
 
   return (
-    <div className={cn("relative", className)} {...props}>
-      <DropdownMenu>
-        <DropdownMenuTrigger
+    <>
+      <Menu>
+        <MenuTrigger
           render={
-            <Button
-              variant="outline"
-              size="icon"
-              type="button"
-              className={cn(
-                "relative flex size-8 items-center justify-center rounded-full p-0 outline-none",
-                !isFree && "ring-1 ring-warning/60 ring-offset-2 ring-offset-background",
-              )}
-            >
-              <Avatar className="size-full">
-                <AvatarImage src={avatar} alt={name} />
-                <AvatarFallback>{initials}</AvatarFallback>
-              </Avatar>
-
-              {!isFree && (
-                <span className="absolute -right-1 -bottom-1 flex size-4 items-center justify-center rounded-full bg-linear-to-b from-warning to-warning-foreground ring-2 ring-background">
-                  <CrownBoldIcon className="size-2.5 text-background" />
-                </span>
-              )}
-            </Button>
+            <Button variant="outline" size="icon" type="button" aria-label="Account" className={styles.trigger()} />
           }
-        />
+        >
+          <Avatar className={styles.avatar()}>
+            <AvatarImage src={avatar} alt={name} />
+            <AvatarFallback>{initials}</AvatarFallback>
+          </Avatar>
+          {!isFree && (
+            <span className={styles.planDot()}>
+              <CrownBoldIcon className={styles.planDotIcon()} aria-hidden="true" />
+            </span>
+          )}
+        </MenuTrigger>
 
-        <DropdownMenuContent align="end" sideOffset={8} className="flex w-64 flex-col gap-1 p-1.5">
-          <div className="flex items-center gap-3 px-2 py-1.5">
-            <Avatar className="size-9">
+        <MenuPopup align="end" sideOffset={8} className={styles.popup()}>
+          <div className={styles.identity()}>
+            <Avatar className={styles.identityAvatar()}>
               <AvatarImage src={avatar} alt={name} />
-              <AvatarFallback className="text-xs font-semibold">{initials}</AvatarFallback>
+              <AvatarFallback>{initials}</AvatarFallback>
             </Avatar>
-
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-medium text-foreground">{name}</p>
-              <p className="truncate text-xs text-muted-foreground">{email}</p>
+            <div className={styles.identityText()}>
+              <p className={styles.name()}>{name}</p>
+              <p className={styles.email()}>{email}</p>
             </div>
-
-            {!isFree && <PremiumBadge plan={plan} />}
+            {!isFree && <PlanBadge plan={plan} />}
           </div>
 
-          <DropdownMenuSeparator />
+          <MenuSeparator />
 
-          <DropdownMenuItem render={<Link href="/dashboard" />} className="cursor-pointer gap-2.5 px-2 py-2">
-            <Widget2Icon className="size-4" />
+          <MenuItem render={<Link href="/dashboard" />}>
+            <Widget2Icon aria-hidden="true" />
             Dashboard
-          </DropdownMenuItem>
+          </MenuItem>
 
           {!isFree && (
-            <DropdownMenuItem className="cursor-pointer gap-2.5 px-2 py-2" onClick={openPortal}>
-              <CardIcon className="size-4" />
+            <MenuItem onClick={openPortal}>
+              <CardIcon aria-hidden="true" />
               Manage billing
-            </DropdownMenuItem>
+            </MenuItem>
           )}
 
-          <DropdownMenuItem render={<Link href="/pricing" />} className="cursor-pointer gap-2.5 px-2 py-2">
-            <TagIcon className="size-4" aria-hidden="true" />
+          <MenuItem render={<Link href="/pricing" />}>
+            <TagIcon aria-hidden="true" />
             Plans & pricing
-          </DropdownMenuItem>
+          </MenuItem>
 
-          <DropdownMenuItem className="cursor-pointer gap-2.5 px-2 py-2" onClick={() => setIsAccountOpen(true)}>
-            <SettingsMinimalisticIcon className="size-4" />
+          <MenuItem onClick={() => setIsAccountOpen(true)}>
+            <SettingsMinimalisticIcon aria-hidden="true" />
             Manage account
-          </DropdownMenuItem>
+          </MenuItem>
 
           {isFree && (
-            <DropdownMenuItem className="cursor-pointer gap-2.5 px-2 py-2" onClick={() => setPlansOpen(true)}>
-              <CrownIcon className="size-4" />
-              <div className="flex flex-col">
-                <span className="text-sm font-medium text-foreground">Upgrade plan</span>
-                <span className="text-xs text-muted-foreground">Pro and Premium plans</span>
-              </div>
-            </DropdownMenuItem>
+            <MenuItem onClick={() => setPlansOpen(true)}>
+              <CrownIcon aria-hidden="true" />
+              <span className={styles.stack()}>
+                Upgrade plan
+                <span className={styles.hint()}>Pro and Premium plans</span>
+              </span>
+            </MenuItem>
           )}
 
-          <DropdownMenuSeparator />
+          <MenuSeparator />
 
-          <DropdownMenuItem variant="destructive" className="cursor-pointer gap-2.5 px-2 py-2" onClick={onSignOut}>
-            <Logout3Icon className="size-4" />
+          <MenuItem variant="destructive" onClick={onSignOut}>
+            <Logout3Icon aria-hidden="true" />
             Sign out
-          </DropdownMenuItem>
+          </MenuItem>
 
-          <nav aria-label="Legal" className="flex flex-wrap gap-x-3 gap-y-1 px-2 pt-1 pb-1.5 text-xs text-muted-foreground">
+          <nav aria-label="Legal" className={styles.legal()}>
             {LEGAL_LINKS.map((link) => (
-              <Link key={link.href} href={link.href} className="hover:text-foreground">
+              <Link key={link.href} href={link.href} className={styles.legalLink()}>
                 {link.label}
               </Link>
             ))}
           </nav>
-        </DropdownMenuContent>
-      </DropdownMenu>
+        </MenuPopup>
+      </Menu>
       <AccountSettingsDialog open={isAccountOpen} onOpenChange={setIsAccountOpen} />
-    </div>
+    </>
   );
 }

@@ -1,15 +1,12 @@
 "use client";
 
 import { CrownIcon } from "@solar-icons/react/linear/crown";
-import { MagnifierIcon } from "@solar-icons/react/linear/magnifier";
 import { TextFormatIcon } from "@solar-icons/react/linear/text-format";
-import { motion } from "motion/react";
 import { Button } from "@cutecode/ui/components/button";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "@cutecode/ui/components/tooltip";
 import {
   Combobox,
   ComboboxEmpty,
-  ComboboxInput,
   ComboboxItem,
   ComboboxList,
   ComboboxPopup,
@@ -24,7 +21,8 @@ import { usePremiumAccess } from "@/hooks/use-premium-access";
 import { Badge } from "@cutecode/ui/components/badge";
 import View from "@/components/view";
 import { trackEditor } from "@/lib/analytics";
-import { dockLabel, dockPopup, dockTrigger } from "../dock-styles";
+import { dockLabel, dockTrigger } from "../dock-styles";
+import DockSearch from "../dock-search";
 
 type FontFaceItem = {
   name: string;
@@ -68,7 +66,6 @@ export default function FontFaceControl() {
                   size="icon"
                   aria-label="Font"
                   className={dockTrigger()}
-                  render={<motion.button whileTap={{ scale: 0.92 }} />}
                 />
               }
             />
@@ -79,15 +76,8 @@ export default function FontFaceControl() {
         </ComboboxTrigger>
         <TooltipPopup sideOffset={8}>Font</TooltipPopup>
       </Tooltip>
-      <ComboboxPopup side="top" align="center" sideOffset={8} className={dockPopup()} aria-label="Select font face">
-        <div className="border-b p-2">
-          <ComboboxInput
-            className="rounded-md before:rounded-[calc(var(--radius-md)-1px)]"
-            placeholder="Search fonts..."
-            showTrigger={false}
-            startAddon={<MagnifierIcon className="size-4" aria-hidden="true" />}
-          />
-        </div>
+      <ComboboxPopup side="top" align="center" sideOffset={8} aria-label="Select font face">
+        <DockSearch placeholder="Search fonts..." />
         <ComboboxEmpty>No fonts found.</ComboboxEmpty>
         <ComboboxList>
           {(font) => {
@@ -97,12 +87,11 @@ export default function FontFaceControl() {
             return (
               <ComboboxItem key={font.variable} value={font}>
                 <View className="flex items-center gap-1">
-                  <span className="flex-1">{font.name}</span>
+                  <span className="min-w-0 flex-1 truncate">{font.name}</span>
                   {isPremium && (
                     <Badge
                       size="sm"
                       title="Premium font"
-                      className="text-xs"
                       variant={access === AccessLevel.ALLOWED ? "outline" : "warning"}
                     >
                       <CrownIcon className="size-3" aria-hidden="true" />

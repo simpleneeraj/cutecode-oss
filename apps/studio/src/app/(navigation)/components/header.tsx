@@ -1,24 +1,29 @@
 "use client";
 
-import AuthControls from "./controls";
-import Navigations from "./navigation";
-import { Link } from "@/components/link";
+import { Fragment } from "react";
 import { usePathname } from "next/navigation";
-import siteConfig from "@/constants/site-config";
 import { AnimatePresence, motion, Transition } from "motion/react";
+import { Toolbar, ToolbarActions, ToolbarBrand } from "@cutecode/ui/tactile/toolbar";
+import { Link } from "@/components/link";
 import { BrandMark } from "@/components/brand-mark";
+import siteConfig from "@/constants/site-config";
+import AuthControls from "./controls";
+import { MainLinks, MainTabBar } from "./navigation";
+import { headerStyles } from "./style";
 
 const transition: Transition = { duration: 0.2, ease: "easeOut" };
 
+const styles = headerStyles();
+
 function Brand({ activeLabel }: { activeLabel?: string }) {
   return (
-    <div className="flex min-w-0 flex-1 basis-0 items-center gap-2.5">
-      <Link href="/" className="flex items-center gap-2.5 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-ring">
-        <motion.span whileHover={{ rotate: -6, scale: 1.04 }} whileTap={{ scale: 0.94 }}>
+    <Fragment>
+      <ToolbarBrand href="/" render={<Link href="/" />}>
+        <motion.span className={styles.brandMark()} whileHover={{ rotate: -6, scale: 1.04 }} whileTap={{ scale: 0.94 }}>
           <BrandMark preload />
         </motion.span>
-        <span className="hidden font-heading text-lg leading-none font-semibold tracking-tight whitespace-nowrap sm:inline">{siteConfig.name}</span>
-      </Link>
+        <span className={styles.brandName()}>{siteConfig.name}</span>
+      </ToolbarBrand>
       <AnimatePresence mode="wait" initial={false}>
         {activeLabel && (
           <motion.span
@@ -27,14 +32,16 @@ function Brand({ activeLabel }: { activeLabel?: string }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 4 }}
             transition={transition}
-            className="hidden items-center gap-2.5 font-heading text-lg leading-none tracking-tight whitespace-nowrap text-muted-foreground lg:flex"
+            className={styles.location()}
           >
-            <span aria-hidden className="text-muted-foreground/40">/</span>
+            <span aria-hidden="true" className={styles.locationDivider()}>
+              /
+            </span>
             {activeLabel}
           </motion.span>
         )}
       </AnimatePresence>
-    </div>
+    </Fragment>
   );
 }
 
@@ -44,23 +51,26 @@ type HeaderProps = {
 };
 
 export function Header({ title, actions }: HeaderProps) {
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "/";
   const activeTab = siteConfig.tabs.find(({ href }) => href === pathname);
 
   return (
-    <header className="relative z-20 border-b bg-background/70 backdrop-blur-xl">
-      <div className="flex h-14 w-full items-center gap-2 px-3 sm:gap-3 md:px-6">
-        <Brand activeLabel={title ?? activeTab?.label} />
-
-        <div className="flex shrink-0 justify-center">
-          <Navigations />
-        </div>
-
-        <div className="flex min-w-0 flex-1 basis-0 items-center justify-end gap-1.5 sm:gap-2">
-          {actions}
-          <AuthControls />
-        </div>
+    <Fragment>
+      <div className={styles.root()}>
+        <Toolbar>
+          <Brand activeLabel={title ?? activeTab?.label} />
+          <MainLinks pathname={pathname} />
+          <ToolbarActions>
+            {actions}
+            <AuthControls />
+          </ToolbarActions>
+        </Toolbar>
       </div>
-    </header>
+      <div className={styles.tabBar()}>
+        <span className={styles.tabBarInset()}>
+          <MainTabBar pathname={pathname} />
+        </span>
+      </div>
+    </Fragment>
   );
 }

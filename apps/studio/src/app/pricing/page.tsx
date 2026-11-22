@@ -2,25 +2,26 @@ import { Accordion, AccordionItem, AccordionPanel, AccordionTrigger } from "@cut
 import { PRICING_FAQ, PRICING_HERO } from "./content";
 import PricingPlans from "./components/pricing-plans";
 import BrandPlans from "./components/brand-plans";
+import { pricingPageStyles } from "./components/style";
+
+const styles = pricingPageStyles();
 
 export default function PricingPage() {
   return (
-    <main className="flex-1 bg-background px-4 py-16 md:px-8 md:py-24">
-      <div className="mx-auto flex max-w-5xl flex-col gap-16">
-        <header className="mx-auto flex max-w-xl flex-col gap-3 text-center">
-          <h1 className="font-heading text-3xl font-semibold tracking-tight text-balance text-foreground md:text-4xl">
-            {PRICING_HERO.title}
-          </h1>
-          <p className="text-sm text-pretty text-muted-foreground md:text-base">{PRICING_HERO.subtitle}</p>
+    <main className={styles.main()}>
+      <div className={styles.content()}>
+        <header className={styles.hero()}>
+          <h1 className={styles.title()}>{PRICING_HERO.title}</h1>
+          <p className={styles.subtitle()}>{PRICING_HERO.subtitle}</p>
         </header>
 
         <PricingPlans />
 
         <BrandPlans />
 
-        <section className="grid gap-6 border-t pt-16 md:grid-cols-3 md:gap-4">
-          <h2 className="font-heading text-xl font-semibold tracking-tight text-foreground">Frequently asked questions</h2>
-          <Accordion className="md:col-span-2">
+        <section className={styles.section()}>
+          <h2 className={styles.sectionTitle()}>Frequently asked questions</h2>
+          <Accordion className={styles.faq()}>
             {PRICING_FAQ.map(({ question, answer }) => (
               <AccordionItem key={question} value={question}>
                 <AccordionTrigger>{question}</AccordionTrigger>

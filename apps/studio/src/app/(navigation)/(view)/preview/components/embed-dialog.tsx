@@ -52,12 +52,12 @@ export function EmbedDialog({ slug, open, onOpenChange }: EmbedDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogPopup className="sm:max-w-2xl">
-        <DialogHeader className="gap-1 px-5 pt-5">
-          <DialogTitle className="text-base font-medium">Embed snippet</DialogTitle>
+        <DialogHeader>
+          <DialogTitle>Embed snippet</DialogTitle>
           <DialogDescription>Paste the iframe into any site, blog or doc.</DialogDescription>
         </DialogHeader>
 
-        <DialogPanel className="px-5">
+        <DialogPanel>
           <Tabs defaultValue="preview" className="gap-3">
             <TabsList>
               <TabsTab value="preview">Preview</TabsTab>
@@ -87,7 +87,7 @@ export function EmbedDialog({ slug, open, onOpenChange }: EmbedDialogProps) {
           </Tabs>
         </DialogPanel>
 
-        <DialogFooter className="px-5 py-3 sm:justify-between">
+        <DialogFooter className="sm:justify-between">
           <Button variant="ghost" render={<a href={embedUrl} target="_blank" rel="noopener noreferrer" />}>
             <LinkSquareIcon aria-hidden="true" />
             Open in new tab

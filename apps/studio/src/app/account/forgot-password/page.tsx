@@ -1,32 +1,26 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import { useForgotPassword } from "@/hooks/use-auth-mutations";
-import { tv } from "tailwind-variants";
-import { LetterIcon } from "@solar-icons/react/bold-duotone/letter";
 import { AltArrowLeftIcon } from "@solar-icons/react/linear/alt-arrow-left";
+import { Link } from "@/components/link";
+import { useForgotPassword } from "@/hooks/use-auth-mutations";
 import { Card, CardDescription, CardFooter, CardHeader, CardPanel, CardTitle } from "@cutecode/ui/components/card";
-import { Button } from "@cutecode/ui/components/button";
-import { Input } from "@cutecode/ui/components/input";
-import { Field, FieldLabel, FieldError } from "@cutecode/ui/components/field";
-import { Spinner } from "@cutecode/ui/components/spinner";
-import { Alert, AlertDescription } from "@cutecode/ui/components/alert";
+import { FormAlert } from "../components/form-alert";
+import { EmailField } from "../components/email-field";
+import { SubmitButton } from "../components/submit-button";
+import { SentNotice } from "../components/sent-notice";
+import { authCardStyles } from "../components/style";
 
-const sentState = tv({
-  slots: {
-    root: "flex flex-col items-center gap-4 text-center",
-    badge: "flex size-12 items-center justify-center rounded-full bg-muted text-foreground",
-    copy: "flex flex-col gap-1.5",
-    title: "text-lg font-semibold leading-none",
-    body: "text-sm text-muted-foreground",
-    highlight: "font-medium text-foreground",
-  },
-});
+enum ForgotPasswordStep {
+  Request = "request",
+  Sent = "sent",
+}
+
+const styles = authCardStyles();
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
-  const [step, setStep] = useState<"request" | "sent">("request");
+  const [step, setStep] = useState(ForgotPasswordStep.Request);
   const [error, setError] = useState<string | null>(null);
   const { trigger: requestPasswordReset, isMutating: isLoading } = useForgotPassword();
 
@@ -43,80 +37,42 @@ export default function ForgotPasswordPage() {
         setError(resetError.message || "Failed to send the reset link. Please try again.");
         return;
       }
-      setStep("sent");
+      setStep(ForgotPasswordStep.Sent);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An unexpected error occurred. Please try again.");
     }
   }
 
-  const sent = sentState();
-
   return (
-    <Card className="w-full">
-      {step === "sent" ? (
-        <CardPanel className={sent.root()}>
-          <span className={sent.badge()}>
-            <LetterIcon className="size-6" aria-hidden="true" />
-          </span>
-          <div className={sent.copy()}>
-            <h1 className={sent.title()}>Check your inbox</h1>
-            <p className={sent.body()}>
-              If an account exists for <span className={sent.highlight()}>{email}</span>, we sent a link to reset your
-              password.
-            </p>
-          </div>
-        </CardPanel>
+    <Card className={styles.card()}>
+      {step === ForgotPasswordStep.Sent ? (
+        <SentNotice email={email} before="If an account exists for" after=", we sent a link to reset your password." />
       ) : (
         <>
-          <CardHeader className="justify-items-center text-center">
-            <CardTitle render={<h1 />}>Reset your password</CardTitle>
+          <CardHeader className={styles.header()}>
+            <CardTitle render={<h1 />} className={styles.title()}>
+              Reset your password
+            </CardTitle>
             <CardDescription>Enter your email and we&apos;ll send you a reset link</CardDescription>
           </CardHeader>
 
-          <CardPanel className="flex flex-col gap-6">
-            {error && (
-              <Alert variant="error">
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
+          <CardPanel className={styles.panel()}>
+            <FormAlert message={error} tone="error" />
 
-            <form onSubmit={handleSendLink} className="flex flex-col gap-5">
-              <Field name="email">
-                <FieldLabel>Email address</FieldLabel>
-                <Input
-                  type="email"
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  autoComplete="email"
-                  disabled={isLoading}
-                  autoFocus
-                />
-                <FieldError match="valueMissing">Please enter your email address.</FieldError>
-              </Field>
+            <form onSubmit={handleSendLink} className={styles.form()}>
+              <EmailField value={email} onChange={setEmail} isDisabled={isLoading} isAutoFocused />
 
-              <Button type="submit" size="lg" disabled={isLoading} className="w-full">
-                {isLoading ? (
-                  <>
-                    <Spinner />
-                    Sending link…
-                  </>
-                ) : (
-                  "Send reset link"
-                )}
-              </Button>
+              <SubmitButton isLoading={isLoading} loadingLabel="Sending link…">
+                Send reset link
+              </SubmitButton>
             </form>
           </CardPanel>
         </>
       )}
 
-      <CardFooter className="justify-center border-t text-sm">
-        <Link
-          href="/account/sign-in"
-          className="inline-flex items-center gap-1.5 font-medium text-foreground hover:underline"
-        >
-          <AltArrowLeftIcon className="size-3.5" aria-hidden="true" />
+      <CardFooter className={styles.footer()}>
+        <Link href="/account/sign-in" className={styles.footerLink()}>
+          <AltArrowLeftIcon className={styles.footerIcon()} aria-hidden="true" />
           Back to sign in
         </Link>
       </CardFooter>

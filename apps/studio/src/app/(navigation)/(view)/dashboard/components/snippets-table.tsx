@@ -1,5 +1,6 @@
+import { Fragment } from "react";
 import Link from "next/link";
-import { Card } from "@cutecode/ui/components/card";
+import { Card, CardAction, CardDescription, CardHeader, CardTitle } from "@cutecode/ui/components/card";
 import { Badge } from "@cutecode/ui/components/badge";
 import { GlobalIcon } from "@solar-icons/react/linear/global";
 import { LockPasswordIcon } from "@solar-icons/react/linear/lock-password";
@@ -8,6 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { getShareUrl } from "@/lib/share/urls";
 import { useSubscription } from "@/hooks/use-subscription";
 import { CopyLinkButton } from "./copy-link-button";
+import { tableStyles } from "./style";
 
 export type DashboardSnippet = {
   id: string;
@@ -22,29 +24,40 @@ export type DashboardSnippet = {
   visibility: string | null;
 };
 
+const styles = tableStyles();
+
 function formatDate(iso: string): string {
   return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(new Date(iso));
 }
 
 function SnippetTitle({ title, slug }: { title: string | null; slug: string | null }) {
   const label = title || "Untitled snippet";
-  if (!slug) return <span className="block truncate font-medium text-foreground">{label}</span>;
+  if (!slug) return <span className={styles.titleText()}>{label}</span>;
 
   return (
-    <div className="flex min-w-0 flex-col">
-      <Link href={getShareUrl(slug)} target="_blank" className="truncate font-medium text-foreground hover:underline">
+    <div className={styles.titleCell()}>
+      <Link href={getShareUrl(slug)} target="_blank" className={styles.titleLink()}>
         {label}
       </Link>
-      <span className="truncate font-mono text-xs text-muted-foreground">{slug}</span>
+      <span className={styles.slug()}>{slug}</span>
     </div>
   );
 }
 
 function VisibilityBadge({ isPublic }: { isPublic: boolean }) {
+  if (!isPublic) {
+    return (
+      <Badge variant="outline" size="sm">
+        <LockPasswordIcon aria-hidden="true" />
+        Private
+      </Badge>
+    );
+  }
+
   return (
-    <Badge variant={isPublic ? "secondary" : "outline"}>
-      {isPublic ? <GlobalIcon className="size-3" aria-hidden="true" /> : <LockPasswordIcon className="size-3" aria-hidden="true" />}
-      {isPublic ? "Public" : "Private"}
+    <Badge variant="secondary" size="sm">
+      <GlobalIcon aria-hidden="true" />
+      Public
     </Badge>
   );
 }
@@ -54,59 +67,55 @@ export function SnippetsTable({ snippets }: { snippets: DashboardSnippet[] }) {
   const hasFullAnalytics = can("fullAnalytics");
 
   return (
-    <Card className="overflow-hidden p-0">
-      <div className="flex items-center justify-between gap-2 border-b px-5 py-4">
-        <div className="flex flex-col">
-          <h2 className="text-sm font-semibold text-foreground">Your snippets</h2>
-          <p className="text-xs text-muted-foreground">{snippets.length} total, newest first</p>
-        </div>
-        <Button variant="outline" size="sm" render={<Link href="/snippets" />}>
-          View all
-        </Button>
-      </div>
+    <Card className={styles.root()}>
+      <CardHeader className={styles.header()}>
+        <CardTitle className={styles.title()}>Your snippets</CardTitle>
+        <CardDescription className={styles.description()}>{snippets.length} total, newest first</CardDescription>
+        <CardAction>
+          <Button variant="outline" size="sm" className={styles.action()} render={<Link href="/snippets" />}>
+            View all
+          </Button>
+        </CardAction>
+      </CardHeader>
 
-      <div className="overflow-x-auto">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Title</TableHead>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Title</TableHead>
+            {hasFullAnalytics && (
+              <Fragment>
+                <TableHead className={styles.numericHead()}>Views</TableHead>
+                <TableHead className={styles.numericHead()}>Upvotes</TableHead>
+                <TableHead className={styles.numericHead()}>Comments</TableHead>
+              </Fragment>
+            )}
+            <TableHead>Visibility</TableHead>
+            <TableHead className={styles.numericHead()}>Created</TableHead>
+            <TableHead className={styles.copyHead()} />
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {snippets.map((snippet) => (
+            <TableRow key={snippet.id}>
+              <TableCell>
+                <SnippetTitle title={snippet.title} slug={snippet.slug} />
+              </TableCell>
               {hasFullAnalytics && (
-                <>
-                  <TableHead className="text-right">Views</TableHead>
-                  <TableHead className="text-right">Upvotes</TableHead>
-                  <TableHead className="text-right">Comments</TableHead>
-                </>
+                <Fragment>
+                  <TableCell className={styles.numeric()}>{snippet.views}</TableCell>
+                  <TableCell className={styles.numeric()}>{snippet.upvotes}</TableCell>
+                  <TableCell className={styles.numeric()}>{snippet.comments}</TableCell>
+                </Fragment>
               )}
-              <TableHead>Visibility</TableHead>
-              <TableHead className="text-right">Created</TableHead>
-              <TableHead className="w-10" />
+              <TableCell>
+                <VisibilityBadge isPublic={snippet.isPublic} />
+              </TableCell>
+              <TableCell className={styles.date()}>{formatDate(snippet.createdAt)}</TableCell>
+              <TableCell>{snippet.slug && <CopyLinkButton slug={snippet.slug} />}</TableCell>
             </TableRow>
-          </TableHeader>
-          <TableBody>
-            {snippets.map((snippet) => (
-              <TableRow key={snippet.id}>
-                <TableCell className="max-w-56">
-                  <SnippetTitle title={snippet.title} slug={snippet.slug} />
-                </TableCell>
-                {hasFullAnalytics && (
-                  <>
-                    <TableCell className="text-right tabular-nums text-muted-foreground">{snippet.views}</TableCell>
-                    <TableCell className="text-right tabular-nums text-muted-foreground">{snippet.upvotes}</TableCell>
-                    <TableCell className="text-right tabular-nums text-muted-foreground">{snippet.comments}</TableCell>
-                  </>
-                )}
-                <TableCell>
-                  <VisibilityBadge isPublic={snippet.isPublic} />
-                </TableCell>
-                <TableCell className="text-right whitespace-nowrap text-xs text-muted-foreground">
-                  {formatDate(snippet.createdAt)}
-                </TableCell>
-                <TableCell>{snippet.slug && <CopyLinkButton slug={snippet.slug} />}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+          ))}
+        </TableBody>
+      </Table>
     </Card>
   );
 }

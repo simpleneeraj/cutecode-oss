@@ -14,23 +14,28 @@ import { DashboardEmptyState } from "./components/empty-state";
 import { LockedAnalytics } from "./components/locked-analytics";
 import { ViewsChart } from "./components/views-chart";
 import { DashboardSkeleton } from "./components/dashboard-skeleton";
+import { dashboardStyles } from "./components/style";
+
+const styles = dashboardStyles();
 
 export default function DashboardPage() {
   const { data, isLoading } = useDashboard();
   const { can } = useSubscription();
   const resetEditor = useSetAtom(resetEditorAtom);
 
-  if (isLoading || !data) return <DashboardSkeleton />;
-
+  const isPending = isLoading || !data;
+  if (isPending) {
+    return <DashboardSkeleton />;
+  }
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-8 md:px-6 md:py-10">
-      <div className="flex items-end justify-between gap-4">
-        <div className="flex min-w-0 flex-col gap-1">
-          <h1 className="text-2xl font-semibold tracking-tight text-foreground">Dashboard</h1>
-          <p className="text-sm text-muted-foreground">Welcome back{data.userName ? `, ${data.userName}` : ""}</p>
+    <div className={styles.root()}>
+      <div className={styles.header()}>
+        <div className={styles.heading()}>
+          <h1 className={styles.title()}>Dashboard</h1>
+          <p className={styles.subtitle()}>Welcome back{data.userName ? `, ${data.userName}` : ""}</p>
         </div>
-        <Button onClick={resetEditor} render={<Link href="/" />}>
-          <AddSquareIcon className="size-4" aria-hidden="true" />
+        <Button className={styles.action()} onClick={resetEditor} render={<Link href="/" />}>
+          <AddSquareIcon className={styles.icon()} aria-hidden="true" />
           New snippet
         </Button>
       </div>
@@ -39,8 +44,8 @@ export default function DashboardPage() {
 
       {can("fullAnalytics") ? <ViewsChart /> : <LockedAnalytics />}
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <div className="lg:col-span-2">
+      <div className={styles.columns()}>
+        <div className={styles.main()}>
           {data.rows.length === 0 ? <DashboardEmptyState /> : <SnippetsTable snippets={data.rows} />}
         </div>
         <AccountCard

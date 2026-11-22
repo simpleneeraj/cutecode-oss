@@ -4,15 +4,9 @@ import { Button } from "@cutecode/ui/components/button";
 import { Spinner } from "@cutecode/ui/components/spinner";
 import { Separator } from "@cutecode/ui/components/separator";
 import { useSocialSignIn, type SocialProvider } from "@/hooks/use-auth-mutations";
-import { tv } from "tailwind-variants";
+import { socialAuthStyles } from "./style";
 
-const divider = tv({
-  slots: {
-    root: "flex items-center gap-3",
-    line: "flex-1",
-    label: "text-xs text-muted-foreground",
-  },
-});
+const styles = socialAuthStyles();
 
 function GitHubIcon() {
   return (
@@ -57,15 +51,13 @@ export function SocialAuthButtons({
   }
 
   const isDisabled = disabled || github.isMutating || google.isMutating;
-  const { root, line, label } = divider();
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="grid grid-cols-2 gap-2">
+    <div className={styles.root()}>
+      <div className={styles.buttons()}>
         <Button
           variant="outline"
-          size="lg"
-          className="w-full"
+          className={styles.button()}
           disabled={isDisabled}
           aria-label="Continue with GitHub"
           onClick={() => signInWith("github")}
@@ -75,8 +67,7 @@ export function SocialAuthButtons({
         </Button>
         <Button
           variant="outline"
-          size="lg"
-          className="w-full"
+          className={styles.button()}
           disabled={isDisabled}
           aria-label="Continue with Google"
           onClick={() => signInWith("google")}
@@ -86,10 +77,10 @@ export function SocialAuthButtons({
         </Button>
       </div>
 
-      <div className={root()}>
-        <Separator className={line()} />
-        <span className={label()}>or</span>
-        <Separator className={line()} />
+      <div className={styles.divider()}>
+        <Separator className={styles.line()} />
+        <span className={styles.label()}>or</span>
+        <Separator className={styles.line()} />
       </div>
     </div>
   );

@@ -1,26 +1,21 @@
 "use client";
 
-import { Card } from "@cutecode/ui/components/card";
+import { CardTitle } from "@cutecode/ui/components/card";
 import { Skeleton } from "@cutecode/ui/components/skeleton";
 import { useDashboardViews } from "@/hooks/use-dashboard";
 import { ViewsArea } from "./views-area";
+import { ViewsCard } from "./views-card";
+import { viewsStyles } from "./style";
+
+const styles = viewsStyles();
 
 export function ViewsChart() {
   const { data } = useDashboardViews();
   const total = data?.reduce((sum, point) => sum + point.views, 0) ?? 0;
 
   return (
-    <Card className="flex flex-col gap-4 p-5">
-      <div className="flex flex-col gap-0.5">
-        <span className="text-xs text-muted-foreground">Views</span>
-        <span className="text-2xl font-semibold tracking-tight text-foreground tabular-nums">
-          {total.toLocaleString("en-US")}
-        </span>
-        <span className="text-xs text-muted-foreground">Last 30 days</span>
-      </div>
-      <div className="h-56 w-full">
-        {data ? <ViewsArea points={data} isLocked={false} /> : <Skeleton className="size-full rounded-xl" />}
-      </div>
-    </Card>
+    <ViewsCard summary={<CardTitle className={styles.summary()}>{total.toLocaleString("en-US")}</CardTitle>}>
+      {data ? <ViewsArea points={data} isLocked={false} /> : <Skeleton className={styles.loading()} />}
+    </ViewsCard>
   );
 }

@@ -3,36 +3,36 @@ import { Link } from "@/components/link";
 import { BrandMark } from "@/components/brand-mark";
 import siteConfig from "@/constants/site-config";
 import { AuthShowcase } from "./components/auth-showcase";
+import { authLayoutStyles } from "./components/style";
 
 export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
+const styles = authLayoutStyles();
+
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="grid min-h-svh bg-background text-foreground lg:grid-cols-2">
-      <div className="flex flex-col px-4 py-4 sm:px-8 sm:py-6">
-        <header className="flex h-10 items-center">
-          <Link
-            href="/"
-            className="flex items-center gap-2 rounded-lg outline-none transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-ring"
-          >
+    <div className={styles.root()}>
+      <div className={styles.column()}>
+        <header className={styles.header()}>
+          <Link href="/" className={styles.brand()}>
             <BrandMark preload />
-            <span className="font-heading font-semibold tracking-tight">{siteConfig.name}</span>
+            <span className={styles.brandName()}>{siteConfig.name}</span>
           </Link>
         </header>
 
-        <main className="flex flex-1 items-center justify-center py-8">
-          <div className="flex w-full max-w-sm flex-col gap-6">
+        <main className={styles.main()}>
+          <div className={styles.content()}>
             {children}
 
-            <p className="text-center text-xs text-muted-foreground">
+            <p className={styles.legal()}>
               By continuing, you agree to our{" "}
-              <Link href="/legal/terms" className="underline underline-offset-2 hover:text-foreground">
+              <Link href="/legal/terms" className={styles.legalLink()}>
                 Terms
               </Link>{" "}
               and{" "}
-              <Link href="/legal/privacy" className="underline underline-offset-2 hover:text-foreground">
+              <Link href="/legal/privacy" className={styles.legalLink()}>
                 Privacy Policy
               </Link>
               .

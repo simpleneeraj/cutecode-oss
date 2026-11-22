@@ -1,29 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { Button } from "@cutecode/ui/components/button";
-import { CheckCircleIcon } from "@solar-icons/react/bold/check-circle";
-import { LinkIcon } from "@solar-icons/react/bold/link";
+import { CheckCircleIcon } from "@solar-icons/react/linear/check-circle";
+import { LinkIcon } from "@solar-icons/react/linear/link";
 import { getShareUrl } from "@/lib/share/urls";
+import { tableStyles } from "./style";
+
+const styles = tableStyles();
 
 export function CopyLinkButton({ slug }: { slug: string }) {
   const [copied, setCopied] = useState(false);
+  const label = copied ? "Copied" : "Copy share link";
 
   const onCopy = async () => {
-    await navigator.clipboard.writeText(getShareUrl(slug)).catch(() => {});
+    const isCopied = await navigator.clipboard.writeText(getShareUrl(slug)).then(
+      () => true,
+      () => false,
+    );
+    if (!isCopied) return;
     setCopied(true);
     setTimeout(() => setCopied(false), 1800);
   };
 
   return (
-    <Button
-      variant="ghost"
-      size="icon-sm"
-      onClick={onCopy}
-      aria-label={copied ? "Copied" : "Copy share link"}
-      title={copied ? "Copied" : "Copy share link"}
-    >
-      {copied ? <CheckCircleIcon className="size-3.5" /> : <LinkIcon className="size-3.5" />}
-    </Button>
+    <Fragment>
+      <Button
+        variant="ghost"
+        size="icon-sm"
+        className={styles.copy()}
+        onClick={onCopy}
+        aria-label={label}
+        title={label}
+      >
+        {copied ? <CheckCircleIcon aria-hidden="true" /> : <LinkIcon aria-hidden="true" />}
+      </Button>
+      <span aria-live="polite" className={styles.copyStatus()}>
+        {copied ? "Link copied" : ""}
+      </span>
+    </Fragment>
   );
 }

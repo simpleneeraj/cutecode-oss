@@ -1,6 +1,7 @@
 import { Card } from "@cutecode/ui/components/card";
 import { Plan } from "@/db/schema";
-import PremiumBadge from "../../preview/components/premium-badge";
+import { PlanBadge } from "./plan-badge";
+import { statStyles } from "./style";
 
 type Totals = {
   views: number | null;
@@ -13,10 +14,20 @@ type StatCardsProps = {
   totals: Totals;
 };
 
+const styles = statStyles();
+
 function formatCount(n: number): string {
-  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1).replace(/\.0$/, "")}M`;
-  if (n >= 1_000) return `${(n / 1_000).toFixed(1).replace(/\.0$/, "")}K`;
+  const isMillions = n >= 1_000_000;
+  const isThousands = n >= 1_000;
+  if (isMillions) return `${(n / 1_000_000).toFixed(1).replace(/\.0$/, "")}M`;
+  if (isThousands) return `${(n / 1_000).toFixed(1).replace(/\.0$/, "")}K`;
   return String(n);
+}
+
+function StatValue({ value }: { value: number | null }) {
+  const isLocked = value === null;
+  if (isLocked) return <PlanBadge plan={Plan.PREMIUM} />;
+  return <span className={styles.number()}>{formatCount(value)}</span>;
 }
 
 export function StatCards({ totals }: StatCardsProps) {
@@ -28,18 +39,12 @@ export function StatCards({ totals }: StatCardsProps) {
   ];
 
   return (
-    <Card className="grid grid-cols-2 gap-px overflow-hidden bg-border lg:grid-cols-4">
+    <Card className={styles.root()}>
       {stats.map((stat) => (
-        <div key={stat.label} className="flex flex-col gap-1 bg-card p-5">
-          <span className="text-xs text-muted-foreground">{stat.label}</span>
-          <div className="flex h-8 items-center">
-            {stat.value === null ? (
-              <PremiumBadge plan={Plan.PREMIUM} />
-            ) : (
-              <span className="text-2xl font-semibold tracking-tight text-foreground tabular-nums">
-                {formatCount(stat.value)}
-              </span>
-            )}
+        <div key={stat.label} className={styles.cell()}>
+          <span className={styles.label()}>{stat.label}</span>
+          <div className={styles.value()}>
+            <StatValue value={stat.value} />
           </div>
         </div>
       ))}

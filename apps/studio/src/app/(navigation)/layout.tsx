@@ -11,7 +11,7 @@ export default function NavigationLayout({ children }: { children: React.ReactNo
   return (
     <EditorProvider>
       <EditorContextProvider>
-        <View className={cn("h-screen flex flex-col", globalFonts, editorFonts)}>
+        <View className={cn("flex h-dvh flex-col", globalFonts, editorFonts)}>
           <main className="layout-fill">{children}</main>
           <PlansDialog />
         </View>

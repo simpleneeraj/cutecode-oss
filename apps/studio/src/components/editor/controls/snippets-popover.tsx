@@ -1,10 +1,8 @@
 import { Fragment } from "react";
 import { useAtomValue, useSetAtom } from "jotai";
-import { motion } from "motion/react";
 import { AltArrowDownIcon } from "@solar-icons/react/linear/alt-arrow-down";
 import { ChatRoundCodeIcon } from "@solar-icons/react/linear/chat-round-code";
 import { CodeScanIcon } from "@solar-icons/react/linear/code-scan";
-import { MagnifierIcon } from "@solar-icons/react/linear/magnifier";
 import { ScissorsIcon } from "@solar-icons/react/linear/scissors";
 import { elementContentAtom, elementLanguageAtom, updateSlideElementAtom } from "@/store/editor/editor";
 import { Button } from "@cutecode/ui/components/button";
@@ -14,14 +12,14 @@ import {
   ComboboxEmpty,
   ComboboxGroup,
   ComboboxGroupLabel,
-  ComboboxInput,
   ComboboxItem,
   ComboboxList,
   ComboboxPopup,
   ComboboxTrigger,
 } from "@cutecode/ui/components/combobox";
 import { MOODS, SNIPPETS, Snippet, findSnippet, snippetPatch } from "@/components/presets/snippets";
-import { dockLabel, dockPopup, dockTrigger } from "./dock-styles";
+import { dockLabel, dockTrigger } from "./dock-styles";
+import DockSearch from "./dock-search";
 
 const GROUPS = MOODS.map((mood) => ({ value: mood, items: SNIPPETS.filter((snippet) => snippet.mood === mood) }));
 
@@ -44,7 +42,6 @@ export default function SnippetsPopover() {
           <Button
             variant="ghost"
             className={dockTrigger({ shape: "label", className: "sm:justify-between" })}
-            render={<motion.button whileTap={{ scale: 0.96 }} />}
           />
         }
       >
@@ -55,15 +52,8 @@ export default function SnippetsPopover() {
         />
         <span className={dockLabel()}>Snips</span>
       </ComboboxTrigger>
-      <ComboboxPopup side="top" align="center" sideOffset={8} className={dockPopup()} aria-label="Select snippet">
-        <div className="border-b p-2">
-          <ComboboxInput
-            className="rounded-md before:rounded-[calc(var(--radius-md)-1px)]"
-            placeholder="Search snippets..."
-            showTrigger={false}
-            startAddon={<MagnifierIcon className="size-4" aria-hidden="true" />}
-          />
-        </div>
+      <ComboboxPopup side="top" align="center" sideOffset={8} aria-label="Select snippet">
+        <DockSearch placeholder="Search snippets..." />
         <ComboboxEmpty>No snippets found.</ComboboxEmpty>
         <ComboboxList>
           {(group: (typeof GROUPS)[number]) => (

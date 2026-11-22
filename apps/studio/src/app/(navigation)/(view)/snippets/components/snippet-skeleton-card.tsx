@@ -1,14 +1,17 @@
 "use client";
 
 import { Skeleton } from "@cutecode/ui/components/skeleton";
+import { snippetCardStyles } from "../style";
+
+const styles = snippetCardStyles();
 
 export function SnippetSkeletonCard() {
   return (
-    <div className="flex flex-col gap-3">
-      <Skeleton className="aspect-video w-full rounded-xl" />
-      <div className="flex flex-col gap-1.5 px-1">
-        <Skeleton className="h-4 w-2/3" />
-        <Skeleton className="h-3 w-1/3" />
+    <div className={styles.link()}>
+      <Skeleton className={styles.preview()} />
+      <div className={styles.meta()}>
+        <Skeleton className={styles.titleLine()} />
+        <Skeleton className={styles.detailLine()} />
       </div>
     </div>
   );

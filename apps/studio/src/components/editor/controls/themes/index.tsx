@@ -12,12 +12,10 @@ import {
   ComboboxEmpty,
   ComboboxPopup,
   ComboboxCollection,
-  ComboboxInput,
 } from "@cutecode/ui/components/combobox";
 import { AltArrowDownIcon } from "@solar-icons/react/linear/alt-arrow-down";
 import { CrownIcon } from "@solar-icons/react/linear/crown";
 import { FireIcon } from "@solar-icons/react/linear/fire";
-import { MagnifierIcon } from "@solar-icons/react/linear/magnifier";
 import { Theme, IconType, BadgeVariant } from "@/typings/editor";
 import {
   elementContentAtom,
@@ -26,8 +24,6 @@ import {
   previewThemeAtom,
   updateSlideElementAtom,
 } from "@/store/editor/editor";
-import { motion } from "motion/react";
-import { cn } from "@cutecode/ui/lib/cn";
 import { useSetAtom } from "jotai";
 import View from "@/components/view";
 import { Badge } from "@cutecode/ui/components/badge";
@@ -42,7 +38,11 @@ import { isPristineCode, themeChangeUpdate } from "@/components/presets/themes/s
 import { AccessLevel } from "@/typings/enums";
 import { trackEditor } from "@/lib/analytics";
 import BrandRequestDialog from "@/components/brand-request/brand-request-dialog";
-import { dockLabel, dockPopup, dockTrigger } from "../dock-styles";
+import { dockLabel, dockTrigger, panelButton } from "../dock-styles";
+import DockSearch from "../dock-search";
+import { themeStyles } from "./style";
+
+const styles = themeStyles();
 
 interface ThemeIconProps {
   theme: Theme;
@@ -53,10 +53,8 @@ const isTileGlyph = (source: string) => source.endsWith("/glyph.svg");
 
 function ThemeTile({ className, children }: { className?: string; children: React.ReactNode }) {
   return (
-    <span className={cn("shrink-0 p-px", className)}>
-      <span className="grid size-full place-items-center overflow-hidden rounded-md bg-muted ring-1 ring-border ring-inset">
-        {children}
-      </span>
+    <span className={styles.tile({ className })}>
+      <span className={styles.tileFrame()}>{children}</span>
     </span>
   );
 }
@@ -66,18 +64,20 @@ function ThemeIcon({ theme, className }: ThemeIconProps) {
     return (
       <ThemeTile className={className}>
         <span
-          className="size-full"
+          className={styles.gradient()}
           style={{ backgroundImage: `linear-gradient(140deg, ${theme.background?.from}, ${theme.background?.to})` }}
         />
       </ThemeTile>
     );
   }
   if (theme.icon.type === IconType.IMAGE && isTileGlyph(theme.icon.source)) {
-    return <img src={theme.icon.source} alt="" loading="lazy" decoding="async" className={cn("shrink-0", className)} />;
+    return (
+      <img src={theme.icon.source} alt="" loading="lazy" decoding="async" className={styles.glyph({ className })} />
+    );
   }
   return (
     <ThemeTile className={className}>
-      <img src={theme.icon.source} alt="" loading="lazy" decoding="async" className="size-3/5 object-contain" />
+      <img src={theme.icon.source} alt="" loading="lazy" decoding="async" className={styles.tileImage()} />
     </ThemeTile>
   );
 }
@@ -103,30 +103,64 @@ function Badges({ tags, access, sponsorBadge }: { tags?: Theme["tags"]; access: 
   return (
     <>
       {sponsorBadge && (
-        <Badge className="gap-1 text-xs" size="sm" variant="success">
-          <Image src={sponsorBadge} alt="" width={12} height={12} className="size-3 rounded-[3px]" />
+        <Badge size="sm" variant="outline">
+          <Image src={sponsorBadge} alt="" width={12} height={12} className={styles.sponsorLogo()} />
           {SPONSORED_GROUP}
         </Badge>
       )}
       {tags?.includes(BadgeVariant.NEW) && (
-        <Badge className="text-xs" size="sm" variant="info">
+        <Badge size="sm" variant="info">
           {BadgeVariant.NEW}
         </Badge>
       )}
       {tags?.includes(BadgeVariant.POPULAR) && (
-        <Badge className="text-xs" size="sm" variant="error">
-          <FireIcon className="size-3" aria-hidden="true" />
+        <Badge size="sm" variant="secondary">
+          <FireIcon className={styles.badgeIcon()} aria-hidden="true" />
           {BadgeVariant.POPULAR}
         </Badge>
       )}
       {tags?.includes(BadgeVariant.PREMIUM) && (
         <Badge size="sm" variant={access === AccessLevel.ALLOWED ? "outline" : "warning"} title={BadgeVariant.PREMIUM}>
-          <CrownIcon className="size-3" aria-hidden="true" />
+          <CrownIcon className={styles.badgeIcon()} aria-hidden="true" />
         </Badge>
       )}
     </>
   );
 }
+
+function ThemeRow({ theme, access }: { theme: Theme; access: AccessLevel }) {
+  return (
+    <ComboboxItem value={theme}>
+      <View className={styles.row()}>
+        <ThemeIcon theme={theme} className={styles.rowIcon()} />
+        <span className={styles.rowName()}>{theme.name}</span>
+        <Badges tags={theme.tags} access={access} sponsorBadge={sponsorBadgeFor(theme.id)} />
+      </View>
+    </ComboboxItem>
+  );
+}
+
+function ThemeTrigger() {
+  return (
+    <ComboboxTrigger
+      aria-label="Theme"
+      render={<Button variant="ghost" className={dockTrigger({ shape: "label", className: styles.trigger() })} />}
+    >
+      <ComboboxValue>
+        {(theme) => (
+          <span className={styles.value()}>
+            <ThemeIcon theme={theme} className={styles.triggerIcon()} />
+            <span className={styles.valueName()}>{theme.name}</span>
+          </span>
+        )}
+      </ComboboxValue>
+      <AltArrowDownIcon className={styles.chevron()} aria-hidden="true" />
+      <span className={dockLabel()}>Theme</span>
+    </ComboboxTrigger>
+  );
+}
+
+const isPremiumTheme = (theme: Theme) => theme.tags?.includes(BadgeVariant.PREMIUM) ?? false;
 
 const ThemeControl: React.FC = () => {
   const update = useSetAtom(updateSlideElementAtom);
@@ -145,7 +179,7 @@ const ThemeControl: React.FC = () => {
 
   const onValueChange = (theme: Theme | null) => {
     if (!theme) return;
-    const isPremium = theme.tags?.includes(BadgeVariant.PREMIUM) ?? false;
+    const isPremium = isPremiumTheme(theme);
     const access = checkAccess("premiumThemes", isPremium);
     withAccess(access, () => {
       setPreviewTheme(null);
@@ -162,36 +196,9 @@ const ThemeControl: React.FC = () => {
         itemToStringLabel={(theme) => theme?.name ?? ""}
         isItemEqualToValue={(item, selected) => item.id === selected.id}
       >
-        <ComboboxTrigger
-          aria-label="Theme"
-          render={
-            <Button
-              variant="ghost"
-              className={dockTrigger({ shape: "label", className: "max-w-44 justify-between" })}
-              render={<motion.button whileTap={{ scale: 0.96 }} />}
-            />
-          }
-        >
-          <ComboboxValue>
-            {(theme) => (
-              <span className="flex min-w-0 items-center gap-2">
-                <ThemeIcon theme={theme} className="size-4.5" />
-                <span className="hidden truncate sm:inline">{theme.name}</span>
-              </span>
-            )}
-          </ComboboxValue>
-          <AltArrowDownIcon className="hidden size-3.5 text-muted-foreground sm:block" aria-hidden="true" />
-          <span className={dockLabel()}>Theme</span>
-        </ComboboxTrigger>
-        <ComboboxPopup side="top" align="center" sideOffset={8} className={dockPopup()} aria-label="Select theme">
-          <div className="border-b p-2">
-            <ComboboxInput
-              className="rounded-md before:rounded-[calc(var(--radius-md)-1px)]"
-              placeholder="Search themes..."
-              showTrigger={false}
-              startAddon={<MagnifierIcon className="size-4" aria-hidden="true" />}
-            />
-          </div>
+        <ThemeTrigger />
+        <ComboboxPopup side="top" align="center" sideOffset={8} aria-label="Select theme">
+          <DockSearch placeholder="Search themes..." />
           <ComboboxEmpty>No themes found.</ComboboxEmpty>
           <ComboboxList>
             {(group) => (
@@ -199,30 +206,26 @@ const ThemeControl: React.FC = () => {
                 <ComboboxGroup items={group.items}>
                   <ComboboxGroupLabel>{group.value}</ComboboxGroupLabel>
                   <ComboboxCollection>
-                    {(theme) => {
-                      const isPremium = theme.tags?.includes(BadgeVariant.PREMIUM) ?? false;
-                      return (
-                        <ComboboxItem key={theme.id} value={theme}>
-                          <View className="flex flex-row items-center gap-2 text-start">
-                            <ThemeIcon theme={theme} className="size-5" />
-                            {theme.name}
-                            <Badges
-                              tags={theme?.tags}
-                              access={checkAccess("premiumThemes", isPremium)}
-                              sponsorBadge={sponsorBadgeFor(theme.id)}
-                            />
-                          </View>
-                        </ComboboxItem>
-                      );
-                    }}
+                    {(theme) => (
+                      <ThemeRow
+                        key={theme.id}
+                        theme={theme}
+                        access={checkAccess("premiumThemes", isPremiumTheme(theme))}
+                      />
+                    )}
                   </ComboboxCollection>
                   {group?.separator && <ComboboxSeparator />}
                 </ComboboxGroup>
               </React.Fragment>
             )}
           </ComboboxList>
-          <div className="border-t p-2">
-            <Button variant="ghost" size="sm" className="w-full" onClick={() => setIsBrandRequestOpen(true)}>
+          <div className={styles.footer()}>
+            <Button
+              variant="ghost"
+              size="sm"
+              className={panelButton({ className: styles.footerButton() })}
+              onClick={() => setIsBrandRequestOpen(true)}
+            >
               Become a sponsor
             </Button>
           </div>

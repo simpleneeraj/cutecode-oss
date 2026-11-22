@@ -4,6 +4,9 @@ import { Link } from "@/components/link";
 import { motion } from "motion/react";
 import { ShareVisibility } from "@/db/schema";
 import { SnippetPreview } from "../../../components/snippet-preview";
+import { snippetCardStyles } from "../style";
+
+const styles = snippetCardStyles();
 
 function formatDate(date: string | Date) {
   return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(new Date(date));
@@ -43,11 +46,11 @@ export function SnippetCard({ snippet, index }: { snippet: Snippet; index: numbe
       animate={{ opacity: 1 }}
       transition={{ duration: 0.2, delay: Math.min(index * 0.03, 0.3) }}
     >
-      <Link href={`/preview/${slug}`} data-slot="snippet-card" className="flex flex-col gap-3">
+      <Link href={`/preview/${slug}`} data-slot="snippet-card" className={styles.link()}>
         <SnippetPreview language={snippet.presentation.name} />
-        <div className="flex min-w-0 flex-col gap-0.5 px-1">
-          <span className="truncate text-sm font-medium text-foreground">{title}</span>
-          <span className="truncate text-xs text-muted-foreground">
+        <div className={styles.meta()}>
+          <span className={styles.title()}>{title}</span>
+          <span className={styles.detail()}>
             {visibilityLabel(visibility)} · {formatDate(snippet.createdAt)}
           </span>
         </div>

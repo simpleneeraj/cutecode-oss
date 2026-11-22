@@ -1,24 +1,21 @@
 "use client";
 
 import { Suspense, useState } from "react";
-import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Link } from "@/components/link";
 import { useSignIn } from "@/hooks/use-auth-mutations";
-import { tv } from "tailwind-variants";
 import { Card, CardDescription, CardFooter, CardHeader, CardPanel, CardTitle } from "@cutecode/ui/components/card";
-import { Button } from "@cutecode/ui/components/button";
 import { Input } from "@cutecode/ui/components/input";
 import { Field, FieldLabel, FieldError } from "@cutecode/ui/components/field";
 import { Checkbox } from "@cutecode/ui/components/checkbox";
-import { Spinner } from "@cutecode/ui/components/spinner";
-import { Alert, AlertDescription } from "@cutecode/ui/components/alert";
 import { safeRedirectPath } from "@/utils/safe-redirect";
 import { SocialAuthButtons } from "../components/social-auth-buttons";
+import { FormAlert } from "../components/form-alert";
+import { EmailField } from "../components/email-field";
+import { SubmitButton } from "../components/submit-button";
+import { authCardStyles, rememberStyles } from "../components/style";
 
-const rememberLabel = tv({
-  base: "flex cursor-pointer select-none items-center gap-2.5 text-sm text-muted-foreground",
-  variants: { disabled: { true: "cursor-not-allowed opacity-64" } },
-});
+const styles = authCardStyles();
 
 function SignInForm({ redirectedFrom }: { redirectedFrom: string }) {
   const router = useRouter();
@@ -49,42 +46,26 @@ function SignInForm({ redirectedFrom }: { redirectedFrom: string }) {
   }
 
   return (
-    <Card className="w-full">
-      <CardHeader className="justify-items-center text-center">
-        <CardTitle render={<h1 />} className="font-heading text-xl tracking-tight">
+    <Card className={styles.card()}>
+      <CardHeader className={styles.header()}>
+        <CardTitle render={<h1 />} className={styles.title()}>
           Welcome back
         </CardTitle>
         <CardDescription>Sign in to continue to CuteCode.</CardDescription>
       </CardHeader>
 
-      <CardPanel className="flex flex-col gap-6">
+      <CardPanel className={styles.panel()}>
         <SocialAuthButtons disabled={isLoading} redirectedFrom={redirectedFrom} onError={(m) => setError(m || null)} />
 
-        {error && (
-          <Alert variant="error">
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
+        <FormAlert message={error} tone="error" />
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <Field name="email">
-            <FieldLabel>Email address</FieldLabel>
-            <Input
-              type="email"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              autoComplete="email"
-              disabled={isLoading}
-            />
-            <FieldError match="valueMissing">Please enter your email address.</FieldError>
-          </Field>
+        <form onSubmit={handleSubmit} className={styles.form()}>
+          <EmailField value={email} onChange={setEmail} isDisabled={isLoading} />
 
           <Field name="password">
-            <div className="flex w-full items-center justify-between">
+            <div className={styles.labelRow()}>
               <FieldLabel>Password</FieldLabel>
-              <Link href="/account/forgot-password" className="text-xs font-medium text-muted-foreground hover:text-foreground">
+              <Link href="/account/forgot-password" className={styles.inlineLink()}>
                 Forgot password?
               </Link>
             </div>
@@ -100,27 +81,20 @@ function SignInForm({ redirectedFrom }: { redirectedFrom: string }) {
             <FieldError match="valueMissing">Please enter your password.</FieldError>
           </Field>
 
-          <label className={rememberLabel({ disabled: isLoading })}>
+          <label className={rememberStyles({ isDisabled: isLoading })}>
             <Checkbox checked={rememberMe} onCheckedChange={(val) => setRememberMe(val === true)} disabled={isLoading} />
             Remember me
           </label>
 
-          <Button type="submit" size="lg" disabled={isLoading} className="w-full">
-            {isLoading ? (
-              <>
-                <Spinner />
-                Signing in…
-              </>
-            ) : (
-              "Sign in"
-            )}
-          </Button>
+          <SubmitButton isLoading={isLoading} loadingLabel="Signing in…">
+            Sign in
+          </SubmitButton>
         </form>
       </CardPanel>
 
-      <CardFooter className="justify-center gap-1 border-t text-sm text-muted-foreground">
+      <CardFooter className={styles.footer()}>
         Don&apos;t have an account?
-        <Link href="/account/sign-up" className="font-medium text-foreground hover:underline">
+        <Link href="/account/sign-up" className={styles.footerLink()}>
           Create one
         </Link>
       </CardFooter>

@@ -9,6 +9,11 @@ import { PLANS, isPlanAtLeast, type PlanKey } from "@/lib/billing/plans";
 import { PRODUCTS, type BillingInterval } from "@/lib/billing/products";
 import { getRedirectUrlWithParam } from "@/utils/url";
 import { trackUpgrade } from "@/lib/analytics";
+import { tv } from "tailwind-variants";
+
+const planCta = tv({
+  base: "h-control-large w-full px-control-inset-medium text-density-body",
+});
 
 function signInHref(redirectTo = getRedirectUrlWithParam("upgrade", "true")) {
   return `/account/sign-in?redirectedFrom=${encodeURIComponent(redirectTo)}`;
@@ -40,7 +45,7 @@ export default function PlanCta({ tier, currentPlan, interval, isSignedIn, isLoa
 
   if (tier === Plan.FREE || label) {
     return (
-      <Button variant="outline" className="w-full" disabled>
+      <Button variant="outline" className={planCta()} disabled>
         {label}
       </Button>
     );
@@ -48,7 +53,7 @@ export default function PlanCta({ tier, currentPlan, interval, isSignedIn, isLoa
 
   if (!isSignedIn) {
     return (
-      <Button variant={variant} className="w-full" onClick={() => trackUpgrade.ctaClicked(false)} render={<Link href={signInHref(signInRedirect)} />}>
+      <Button variant={variant} className={planCta()} onClick={() => trackUpgrade.ctaClicked(false)} render={<Link href={signInHref(signInRedirect)} />}>
         Sign in to upgrade
       </Button>
     );
@@ -66,7 +71,7 @@ export default function PlanCta({ tier, currentPlan, interval, isSignedIn, isLoa
   }
 
   return (
-    <Button variant={variant} className="w-full" disabled={!isLoaded || isLoading} onClick={onUpgrade}>
+    <Button variant={variant} className={planCta()} disabled={!isLoaded || isLoading} onClick={onUpgrade}>
       {isLoading && <Spinner />}
       {`Upgrade to ${PLANS[tier].name}`}
     </Button>

@@ -9,18 +9,16 @@ import {
   ComboboxValue,
   ComboboxEmpty,
   ComboboxPopup,
-  ComboboxInput,
 } from "@cutecode/ui/components/combobox";
-import { motion } from "motion/react";
 import { Button } from "@cutecode/ui/components/button";
 import { AltArrowDownIcon } from "@solar-icons/react/linear/alt-arrow-down";
 import { CodeIcon } from "@solar-icons/react/linear/code";
-import { MagnifierIcon } from "@solar-icons/react/linear/magnifier";
 import { useAtomValue, useSetAtom } from "jotai";
 import { currentElementAtom, updateSlideElementAtom } from "@/store/editor/editor";
 import { trackEditor } from "@/lib/analytics";
 import { findSnippet, isSnippetLanguage, snippetPatch } from "@/components/presets/snippets";
-import { dockLabel, dockPopup, dockTrigger } from "../dock-styles";
+import { dockLabel, dockTrigger } from "../dock-styles";
+import DockSearch from "../dock-search";
 
 type LanguageItem = {
   id: string;
@@ -80,7 +78,6 @@ const LanguageControl: React.FC = () => {
             <Button
               variant="ghost"
               className={dockTrigger({ shape: "label", className: "sm:max-w-36 sm:justify-between" })}
-              render={<motion.button whileTap={{ scale: 0.96 }} />}
             />
           }
         >
@@ -91,15 +88,8 @@ const LanguageControl: React.FC = () => {
           <AltArrowDownIcon className="hidden size-3.5 text-muted-foreground sm:block" aria-hidden="true" />
           <span className={dockLabel()}>Code</span>
         </ComboboxTrigger>
-        <ComboboxPopup side="top" align="center" sideOffset={8} className={dockPopup()}>
-          <div className="border-b p-2">
-            <ComboboxInput
-              className="rounded-md before:rounded-[calc(var(--radius-md)-1px)]"
-              placeholder="Search..."
-              showTrigger={false}
-              startAddon={<MagnifierIcon className="size-4" aria-hidden="true" />}
-            />
-          </div>
+        <ComboboxPopup side="top" align="center" sideOffset={8}>
+          <DockSearch placeholder="Search..." />
           <ComboboxEmpty>No languages found.</ComboboxEmpty>
           <ComboboxList>
             {(item) => (

@@ -76,12 +76,12 @@ export function ShareDialog({ slug }: ShareDialogProps) {
       </DialogTrigger>
 
       <DialogPopup className="sm:max-w-md">
-        <DialogHeader className="gap-1 px-5 pt-5">
-          <DialogTitle className="text-base font-medium">Share snippet</DialogTitle>
+        <DialogHeader>
+          <DialogTitle>Share snippet</DialogTitle>
           <DialogDescription>Send the link or post it to your network.</DialogDescription>
         </DialogHeader>
 
-        <DialogPanel className="flex flex-col gap-4 px-5 pb-5">
+        <DialogPanel className="flex flex-col gap-4">
           <Group className="w-full">
             <Input readOnly value={url} placeholder="Loading..." aria-label="Snippet link" className="font-mono" />
             <GroupSeparator />

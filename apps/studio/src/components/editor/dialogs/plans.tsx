@@ -28,7 +28,7 @@ export default function PlansDialog({ trigger }: PlansDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       {trigger}
-      <DialogPopup className="overflow-hidden rounded-2xl sm:max-w-4xl">
+      <DialogPopup className="sm:max-w-4xl">
         <DialogHeader>
           <DialogTitle className="font-heading text-xl tracking-tight">Choose your plan</DialogTitle>
           <DialogDescription>Premium themes, sharper exports and clean, watermark-free video. Cancel anytime.</DialogDescription>

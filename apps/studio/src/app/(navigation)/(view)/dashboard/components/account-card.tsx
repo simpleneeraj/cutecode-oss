@@ -1,11 +1,24 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { useSetAtom } from "jotai";
-import { Card } from "@cutecode/ui/components/card";
-import { Badge } from "@cutecode/ui/components/badge";
+import type { Icon } from "@solar-icons/react/lib/types";
 import { Button } from "@cutecode/ui/components/button";
+import {
+  ListGroup,
+  ListGroupHeader,
+  ListGroupRow,
+  ListGroupRows,
+  ListGroupTitle,
+  ListGroupValue,
+} from "@cutecode/ui/tactile/list-group";
+import { Tone } from "@cutecode/ui/tactile/tone";
+import { CalendarIcon } from "@solar-icons/react/linear/calendar";
 import { CardIcon } from "@solar-icons/react/linear/card";
+import { CodeSquareIcon } from "@solar-icons/react/linear/code-square";
 import { CrownIcon } from "@solar-icons/react/linear/crown";
+import { TagPriceIcon } from "@solar-icons/react/linear/tag-price";
+import { UploadMinimalisticIcon } from "@solar-icons/react/linear/upload-minimalistic";
 import { PLANS } from "@/lib/billing/plans";
 import useBilling from "@/hooks/use-billing";
 import { usePricing, type PricingResult } from "@/hooks/use-pricing";
@@ -14,7 +27,8 @@ import type { PaidPlan } from "@/lib/billing/products";
 import { plansDialogOpenAtom } from "@/store/editor/plans";
 import type { PublishQuota } from "@/lib/billing/publish-quota";
 import { Meter, MeterIndicator, MeterLabel, MeterTrack, MeterValue } from "@cutecode/ui/components/meter";
-import PremiumBadge from "../../preview/components/premium-badge";
+import { PlanBadge } from "./plan-badge";
+import { accountStyles, dashboardStyles } from "./style";
 
 type AccountCardProps = {
   plan: keyof typeof PLANS;
@@ -24,11 +38,14 @@ type AccountCardProps = {
   quota: PublishQuota;
 };
 
+const styles = accountStyles();
+const layout = dashboardStyles();
+
 function formatDate(iso: string): string {
   return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(new Date(iso));
 }
 
-const NEXT_PLAN: Record<Plan, PaidPlan | null> = {
+const nextPlans: Record<Plan, PaidPlan | null> = {
   FREE: Plan.PRO,
   PRO: Plan.PREMIUM,
   PREMIUM: null,
@@ -40,17 +57,34 @@ function nextPlanPrice(plan: PaidPlan, pricing?: PricingResult) {
   return `$${PLANS[plan].prices.monthly}/month`;
 }
 
-function PublishMeter({ used, limit }: { used: number; limit: number }) {
+function PublishMeterRow({ used, limit }: { used: number; limit: number }) {
   return (
-    <Meter value={used} max={limit}>
-      <div className="flex items-center justify-between">
-        <MeterLabel className="font-normal text-muted-foreground">Daily publishes</MeterLabel>
-        <MeterValue className="font-medium">{() => `${used}/${limit}`}</MeterValue>
-      </div>
-      <MeterTrack className="h-1.5 rounded-full">
-        <MeterIndicator className="rounded-full" />
-      </MeterTrack>
-    </Meter>
+    <ListGroupRow icon={UploadMinimalisticIcon} tone={Tone.Gray}>
+      <Meter value={used} max={limit} className={styles.meter()}>
+        <div className={styles.meterHeader()}>
+          <MeterLabel className={styles.meterLabel()}>Daily publishes</MeterLabel>
+          <MeterValue>{() => `${used}/${limit}`}</MeterValue>
+        </div>
+        <MeterTrack className={styles.meterTrack()}>
+          <MeterIndicator />
+        </MeterTrack>
+      </Meter>
+    </ListGroupRow>
+  );
+}
+
+type AccountRowProps = {
+  icon: Icon;
+  label: string;
+  value: ReactNode;
+};
+
+function AccountRow({ icon, label, value }: AccountRowProps) {
+  return (
+    <ListGroupRow icon={icon} tone={Tone.Gray}>
+      <ListGroupTitle>{label}</ListGroupTitle>
+      <ListGroupValue>{value}</ListGroupValue>
+    </ListGroupRow>
   );
 }
 
@@ -60,53 +94,47 @@ export function AccountCard({ plan, renewsAt, cancelAtPeriodEnd, totalSnippets, 
   const { data: pricing } = usePricing();
 
   const isFree = plan === Plan.FREE;
-  const planMeta = PLANS[plan];
-  const nextPlan = NEXT_PLAN[plan];
+  const nextPlan = nextPlans[plan];
+  const showRenewal = !isFree && renewsAt;
+  const dailyLimit = isFree ? quota.dailyLimit : null;
 
   return (
-    <Card className="flex h-fit flex-col gap-5 p-5">
-      <div className="flex items-center justify-between">
-        <h2 className="text-sm font-semibold text-foreground">Account</h2>
-        {isFree ? <Badge variant="outline">{planMeta.name}</Badge> : <PremiumBadge plan={plan} />}
-      </div>
-
-      <dl className="flex flex-col gap-3 text-sm">
-        <div className="flex items-center justify-between">
-          <dt className="text-muted-foreground">Plan</dt>
-          <dd className="font-medium text-foreground">{planMeta.name}</dd>
-        </div>
-        {nextPlan && (
-          <div className="flex items-center justify-between">
-            <dt className="text-muted-foreground">{PLANS[nextPlan].name}</dt>
-            <dd className="font-medium text-foreground tabular-nums">{nextPlanPrice(nextPlan, pricing)}</dd>
-          </div>
-        )}
-        <div className="flex items-center justify-between">
-          <dt className="text-muted-foreground">Snippets</dt>
-          <dd className="font-medium text-foreground tabular-nums">{totalSnippets}</dd>
-        </div>
-        {!isFree && renewsAt && (
-          <div className="flex items-center justify-between">
-            <dt className="text-muted-foreground">{cancelAtPeriodEnd ? "Ends" : "Renews"}</dt>
-            <dd className="font-medium text-foreground">{formatDate(renewsAt)}</dd>
-          </div>
-        )}
-      </dl>
-
-      {isFree && quota.dailyLimit !== null && <PublishMeter used={quota.dailyUsed} limit={quota.dailyLimit} />}
+    <div className={styles.root()}>
+      <ListGroup>
+        <ListGroupHeader>Account</ListGroupHeader>
+        <ListGroupRows>
+          <AccountRow icon={CrownIcon} label="Plan" value={<PlanBadge plan={plan} />} />
+          {nextPlan && (
+            <AccountRow
+              icon={TagPriceIcon}
+              label={PLANS[nextPlan].name}
+              value={<span className={styles.number()}>{nextPlanPrice(nextPlan, pricing)}</span>}
+            />
+          )}
+          <AccountRow
+            icon={CodeSquareIcon}
+            label="Snippets"
+            value={<span className={styles.number()}>{totalSnippets}</span>}
+          />
+          {showRenewal && (
+            <AccountRow icon={CalendarIcon} label={cancelAtPeriodEnd ? "Ends" : "Renews"} value={formatDate(renewsAt)} />
+          )}
+          {dailyLimit !== null && <PublishMeterRow used={quota.dailyUsed} limit={dailyLimit} />}
+        </ListGroupRows>
+      </ListGroup>
 
       {nextPlan && (
-        <Button size="lg" className="w-full" onClick={() => setPlansOpen(true)}>
-          <CrownIcon className="size-4" aria-hidden="true" />
+        <Button className={styles.button()} onClick={() => setPlansOpen(true)}>
+          <CrownIcon className={layout.icon()} aria-hidden="true" />
           {`Upgrade to ${PLANS[nextPlan].name}`}
         </Button>
       )}
       {!isFree && (
-        <Button variant="outline" size="lg" className="w-full" disabled={isLoading} onClick={openPortal}>
-          <CardIcon className="size-4" aria-hidden="true" />
+        <Button variant="outline" className={styles.button()} disabled={isLoading} onClick={openPortal}>
+          <CardIcon className={layout.icon()} aria-hidden="true" />
           Manage billing
         </Button>
       )}
-    </Card>
+    </div>
   );
 }

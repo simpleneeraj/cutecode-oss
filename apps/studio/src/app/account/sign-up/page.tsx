@@ -1,30 +1,26 @@
 "use client";
 
 import { Suspense, useState } from "react";
-import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useResendVerification, useSignUp } from "@/hooks/use-auth-mutations";
-import { tv } from "tailwind-variants";
-import { LetterIcon } from "@solar-icons/react/bold-duotone/letter";
+import { Link } from "@/components/link";
+import { useSignUp } from "@/hooks/use-auth-mutations";
 import { Card, CardDescription, CardFooter, CardHeader, CardPanel, CardTitle } from "@cutecode/ui/components/card";
-import { Button } from "@cutecode/ui/components/button";
 import { Input } from "@cutecode/ui/components/input";
 import { Field, FieldLabel, FieldError, FieldDescription } from "@cutecode/ui/components/field";
-import { Spinner } from "@cutecode/ui/components/spinner";
-import { Alert, AlertDescription } from "@cutecode/ui/components/alert";
 import { safeRedirectPath } from "@/utils/safe-redirect";
 import { SocialAuthButtons } from "../components/social-auth-buttons";
+import { FormAlert } from "../components/form-alert";
+import { SignUpSent } from "../components/sign-up-sent";
+import { EmailField } from "../components/email-field";
+import { SubmitButton } from "../components/submit-button";
+import { authCardStyles } from "../components/style";
 
-const sentState = tv({
-  slots: {
-    root: "flex flex-col items-center gap-4 text-center",
-    badge: "flex size-12 items-center justify-center rounded-full bg-muted text-foreground",
-    copy: "flex flex-col gap-1.5",
-    title: "text-lg font-semibold leading-none",
-    body: "text-sm text-muted-foreground",
-    highlight: "font-medium text-foreground",
-  },
-});
+enum SignUpStep {
+  Form = "form",
+  Sent = "sent",
+}
+
+const styles = authCardStyles();
 
 function SignUpForm({ redirectedFrom }: { redirectedFrom: string }) {
   const router = useRouter();
@@ -33,11 +29,9 @@ function SignUpForm({ redirectedFrom }: { redirectedFrom: string }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [step, setStep] = useState<"form" | "sent">("form");
+  const [step, setStep] = useState(SignUpStep.Form);
   const [error, setError] = useState<string | null>(null);
-  const [resendSuccess, setResendSuccess] = useState(false);
   const { trigger: signUp, isMutating: isLoading } = useSignUp();
-  const { trigger: resendVerification } = useResendVerification();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -64,76 +58,32 @@ function SignUpForm({ redirectedFrom }: { redirectedFrom: string }) {
         router.push(redirectedFrom);
         router.refresh();
       } else {
-        setStep("sent");
+        setStep(SignUpStep.Sent);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "An unexpected error occurred. Please try again.");
     }
   }
 
-  async function handleResend() {
-    setError(null);
-    setResendSuccess(false);
-    try {
-      const { error: resendError } = await resendVerification(email);
-      if (resendError) setError(resendError.message || "Failed to resend the email.");
-      else setResendSuccess(true);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to resend the email.");
-    }
-  }
-
-  const sent = sentState();
-
   return (
-    <Card className="w-full">
-      {step === "sent" ? (
-        <CardPanel className={sent.root()}>
-          <span className={sent.badge()}>
-            <LetterIcon className="size-6" aria-hidden="true" />
-          </span>
-          <div className={sent.copy()}>
-            <h1 className={sent.title()}>Check your inbox</h1>
-            <p className={sent.body()}>
-              We sent a confirmation link to <span className={sent.highlight()}>{email}</span>. Click it to finish
-              creating your account.
-            </p>
-          </div>
-
-          {error && (
-            <Alert variant="error">
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
-          {resendSuccess && (
-            <Alert variant="success">
-              <AlertDescription>Confirmation email resent.</AlertDescription>
-            </Alert>
-          )}
-
-          <Button type="button" variant="link" onClick={handleResend}>
-            Didn&apos;t get it? Resend email
-          </Button>
-        </CardPanel>
+    <Card className={styles.card()}>
+      {step === SignUpStep.Sent ? (
+        <SignUpSent email={email} />
       ) : (
         <>
-          <CardHeader className="justify-items-center text-center">
-            <CardTitle render={<h1 />} className="font-heading text-xl tracking-tight">
+          <CardHeader className={styles.header()}>
+            <CardTitle render={<h1 />} className={styles.title()}>
               Create your account
             </CardTitle>
             <CardDescription>Start sharing beautiful code in seconds.</CardDescription>
           </CardHeader>
 
-          <CardPanel className="flex flex-col gap-6">
+          <CardPanel className={styles.panel()}>
             <SocialAuthButtons disabled={isLoading} redirectedFrom={redirectedFrom} onError={(m) => setError(m || null)} />
 
-            {error && (
-              <Alert variant="error">
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
+            <FormAlert message={error} tone="error" />
 
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <form onSubmit={handleSubmit} className={styles.form()}>
               <Field name="fullName">
                 <FieldLabel>Full name</FieldLabel>
                 <Input
@@ -148,19 +98,7 @@ function SignUpForm({ redirectedFrom }: { redirectedFrom: string }) {
                 <FieldError match="valueMissing">Please enter your name.</FieldError>
               </Field>
 
-              <Field name="email">
-                <FieldLabel>Email address</FieldLabel>
-                <Input
-                  type="email"
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  autoComplete="email"
-                  disabled={isLoading}
-                />
-                <FieldError match="valueMissing">Please enter your email address.</FieldError>
-              </Field>
+              <EmailField value={email} onChange={setEmail} isDisabled={isLoading} />
 
               <Field name="password">
                 <FieldLabel>Password</FieldLabel>
@@ -179,24 +117,17 @@ function SignUpForm({ redirectedFrom }: { redirectedFrom: string }) {
                 <FieldDescription>Use at least 8 characters.</FieldDescription>
               </Field>
 
-              <Button type="submit" size="lg" disabled={isLoading} className="w-full">
-                {isLoading ? (
-                  <>
-                    <Spinner />
-                    Creating account…
-                  </>
-                ) : (
-                  "Create account"
-                )}
-              </Button>
+              <SubmitButton isLoading={isLoading} loadingLabel="Creating account…">
+                Create account
+              </SubmitButton>
             </form>
           </CardPanel>
         </>
       )}
 
-      <CardFooter className="justify-center gap-1 border-t text-sm text-muted-foreground">
+      <CardFooter className={styles.footer()}>
         Already have an account?
-        <Link href="/account/sign-in" className="font-medium text-foreground hover:underline">
+        <Link href="/account/sign-in" className={styles.footerLink()}>
           Sign in
         </Link>
       </CardFooter>

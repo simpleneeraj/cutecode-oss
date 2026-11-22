@@ -1,12 +1,13 @@
 "use client";
 
-import { motion } from "motion/react";
 import type { Icon } from "@solar-icons/react/lib/types";
-import { cn } from "@cutecode/ui/lib/cn";
 import { Button } from "@cutecode/ui/components/button";
 import { Kbd, KbdGroup } from "@cutecode/ui/components/kbd";
 import { ToolbarButton } from "@cutecode/ui/components/toolbar";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "@cutecode/ui/components/tooltip";
+import { toolbarActionStyles } from "./style";
+
+const styles = toolbarActionStyles();
 
 type ToolbarActionProps = {
   label: string;
@@ -27,20 +28,19 @@ export default function ToolbarAction({ label, icon: Glyph, keys, onClick, disab
             render={
               <Button
                 size="icon-sm"
-                variant="ghost"
+                variant={isDestructive ? "destructive-outline" : "ghost"}
                 onClick={onClick}
                 disabled={disabled}
-                className={cn("rounded-full before:rounded-full", isDestructive ? "text-destructive hover:bg-destructive/8" : "text-foreground")}
-                render={<motion.button whileTap={{ scale: 0.9 }} />}
+                className={styles.button()}
               />
             }
           >
-            <Glyph className="size-4" aria-hidden="true" />
+            <Glyph aria-hidden="true" />
           </ToolbarButton>
         }
       />
       <TooltipPopup sideOffset={8}>
-        <span className="flex items-center gap-2">
+        <span className={styles.shortcut()}>
           {label}
           <KbdGroup>
             {keys.map((key) => (

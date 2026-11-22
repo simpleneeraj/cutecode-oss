@@ -1,11 +1,11 @@
 import { useSetAtom } from "jotai";
-import { motion } from "motion/react";
 import { PlayIcon } from "@solar-icons/react/linear/play";
 import { Button } from "@cutecode/ui/components/button";
 import { typingIsPausedAtom, typingReplayCountAtom } from "@/store/editor/editor";
 import HoldToggle from "./hold-toggle";
 import SettingRow from "./setting-row";
 import SpeedToggle from "./speed-toggle";
+import { panelButton } from "../dock-styles";
 
 export default function ReplayPanel() {
   const setIsPaused = useSetAtom(typingIsPausedAtom);
@@ -24,7 +24,7 @@ export default function ReplayPanel() {
       <SettingRow label="Hold at end">
         <HoldToggle />
       </SettingRow>
-      <Button size="sm" variant="outline" onClick={preview} render={<motion.button whileTap={{ scale: 0.96 }} />}>
+      <Button size="sm" variant="outline" className={panelButton()} onClick={preview}>
         <PlayIcon aria-hidden="true" />
         Play preview
       </Button>

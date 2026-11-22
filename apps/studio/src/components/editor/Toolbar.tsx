@@ -75,11 +75,11 @@ export default function ToolbarParticle() {
 
   return (
     <TooltipProvider>
-      <Toolbar className="rounded-full bg-card/80 px-1.5 shadow-sm/5 backdrop-blur-xl">
+      <Toolbar className="p-1">
         <ToolbarGroup>
           <ToolbarAction label="Previous slide" icon={AltArrowLeftIcon} keys={["Shift", "←"]} onClick={previousSlide} disabled={isFirst} />
           {canDelete && (
-            <span className="px-1 text-xs text-muted-foreground tabular-nums select-none" aria-live="polite">
+            <span className="px-1 text-density-footnote text-muted-foreground tabular-nums select-none" aria-live="polite">
               {currentIndex + 1}/{slides.length}
             </span>
           )}

@@ -20,10 +20,10 @@ const dock = tv({
   slots: {
     root: "relative z-10 flex shrink-0 flex-col items-center gap-2 pt-2 sm:px-3 sm:pb-4",
     bar: [
-      "scrollbar-hide w-full overflow-x-auto overscroll-x-contain border-t bg-background/70 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl",
-      "sm:w-auto sm:max-w-full sm:rounded-2xl sm:border sm:border-border/60 sm:bg-popover/90 sm:pb-0 sm:shadow-lg",
+      "scrollbar-hide glass w-full overflow-x-auto overscroll-x-contain border-t border-border",
+      "sm:w-auto sm:max-w-full sm:rounded-2xl sm:edge sm:shadow-glass",
     ],
-    track: "flex h-16 w-max min-w-full items-center gap-0 px-1 sm:h-auto sm:min-w-0 sm:justify-start sm:gap-0.5 sm:p-1",
+    track: "flex w-max min-w-full items-center gap-0.5 p-1 sm:min-w-0 sm:justify-start",
   },
 });
 

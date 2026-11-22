@@ -10,9 +10,8 @@ import {
   resetEditorAtom,
 } from "@/store/editor/editor";
 import useHotkeys from "@/utils/useHotkeys";
-import { motion } from "motion/react";
 import OptionToggle from "./option-toggle";
-import { dockLabel, dockPopup, dockTrigger } from "../dock-styles";
+import { dockLabel, dockTrigger } from "../dock-styles";
 import { GalleryIcon } from "@solar-icons/react/linear/gallery";
 import { HashtagIcon } from "@solar-icons/react/linear/hashtag";
 import { SliderHorizontalIcon } from "@solar-icons/react/linear/slider-horizontal";
@@ -51,7 +50,6 @@ const OptionsControl: React.FC = () => {
                   size="icon"
                   aria-label="Display options"
                   className={dockTrigger()}
-                  render={<motion.button whileTap={{ scale: 0.92 }} />}
                 />
               }
             />
@@ -63,7 +61,7 @@ const OptionsControl: React.FC = () => {
         <TooltipPopup sideOffset={8}>Display options</TooltipPopup>
       </Tooltip>
 
-      <MenuPopup side="top" align="center" sideOffset={8} className={dockPopup({ className: "w-56" })}>
+      <MenuPopup side="top" align="center" sideOffset={8} className="w-56">
         <div className="flex flex-col gap-0.5">
           <OptionToggle
             icon={GalleryIcon}
@@ -81,7 +79,7 @@ const OptionsControl: React.FC = () => {
 
         <MenuSeparator />
 
-        <MenuItem variant="destructive" onClick={handleReset} className="min-h-8 rounded-md text-sm">
+        <MenuItem variant="destructive" onClick={handleReset}>
           <TrashBinMinimalisticIcon className="size-4" aria-hidden="true" />
           Reset storage
         </MenuItem>
